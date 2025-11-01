@@ -161,9 +161,10 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         TPasien = new widget.TextBox();
         TNoRM = new widget.TextBox();
         jLabel13 = new widget.Label();
-        HasilPeriksa = new widget.ComboBox();
         jLabel14 = new widget.Label();
         TanggalPeriksa = new widget.Tanggal();
+        HasilPeriksa = new widget.TextBox();
+        Pdiagnosa = new widget.Button();
         ChkInput = new widget.CekBox();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
@@ -359,7 +360,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-05-2020" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-04-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -372,7 +373,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         panelGlass9.add(DTPCari1);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-05-2020" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-04-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -452,7 +453,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
             }
         });
         FormInput.add(NoSurat);
-        NoSurat.setBounds(74, 40, 141, 23);
+        NoSurat.setBounds(70, 40, 141, 23);
 
         jLabel4.setText("No.Rawat :");
         jLabel4.setName("jLabel4"); // NOI18N
@@ -496,21 +497,50 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         FormInput.add(jLabel13);
         jLabel13.setBounds(227, 40, 65, 23);
 
-        HasilPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "tidak ditemukan tanda-tanda kehamilan", "ditemukan tanda-tanda kehamilan" }));
-        HasilPeriksa.setName("HasilPeriksa"); // NOI18N
-        FormInput.add(HasilPeriksa);
-        HasilPeriksa.setBounds(477, 40, 245, 23);
-
         jLabel14.setText("Hasil Periksa :");
         jLabel14.setName("jLabel14"); // NOI18N
         FormInput.add(jLabel14);
         jLabel14.setBounds(396, 40, 77, 23);
 
-        TanggalPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-05-2020" }));
+        TanggalPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-04-2025" }));
         TanggalPeriksa.setDisplayFormat("dd-MM-yyyy");
         TanggalPeriksa.setName("TanggalPeriksa"); // NOI18N
         FormInput.add(TanggalPeriksa);
         TanggalPeriksa.setBounds(296, 40, 90, 23);
+
+        HasilPeriksa.setHighlighter(null);
+        HasilPeriksa.setName("HasilPeriksa"); // NOI18N
+        HasilPeriksa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HasilPeriksaActionPerformed(evt);
+            }
+        });
+        HasilPeriksa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                HasilPeriksaKeyPressed(evt);
+            }
+        });
+        FormInput.add(HasilPeriksa);
+        HasilPeriksa.setBounds(470, 40, 250, 23);
+
+        Pdiagnosa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        Pdiagnosa.setMnemonic('3');
+        Pdiagnosa.setText("Ambil dari Asesment");
+        Pdiagnosa.setToolTipText("Alt+3");
+        Pdiagnosa.setGlassColor(new java.awt.Color(0, 204, 255));
+        Pdiagnosa.setName("Pdiagnosa"); // NOI18N
+        Pdiagnosa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PdiagnosaActionPerformed(evt);
+            }
+        });
+        Pdiagnosa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                PdiagnosaKeyPressed(evt);
+            }
+        });
+        FormInput.add(Pdiagnosa);
+        Pdiagnosa.setBounds(720, 42, 170, 20);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -567,7 +597,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
             Valid.textKosong(TNoRw,"pasien");
         }else{
             if(Sequel.menyimpantf("surat_hamil","?,?,?,?","No.Surat",4,new String[]{
-                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getSelectedItem()+""
+                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getText()+""
             })==true){
                 tampil();
                 emptTeks();
@@ -622,14 +652,14 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         }else{    
             if(tbObat.getSelectedRow()!= -1){
                 if(Sequel.mengedittf("surat_hamil","no_surat=?","no_surat=?,no_rawat=?,tanggalperiksa=?,hasilperiksa=?",5,new String[]{
-                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getSelectedItem()+"",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
+                    NoSurat.getText(),TNoRw.getText(),Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),HasilPeriksa.getText()+"",tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
                 })==true){
                     tbObat.setValueAt(NoSurat.getText(),tbObat.getSelectedRow(),0);
                     tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),1);
                     tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),2);
                     tbObat.setValueAt(TPasien.getText(),tbObat.getSelectedRow(),3);
                     tbObat.setValueAt(Valid.SetTgl(TanggalPeriksa.getSelectedItem()+""),tbObat.getSelectedRow(),4);
-                    tbObat.setValueAt(HasilPeriksa.getSelectedItem().toString(),tbObat.getSelectedRow(),5);
+                    tbObat.setValueAt(HasilPeriksa.getText().toString(),tbObat.getSelectedRow(),5);
                     tampil();
                     emptTeks();
                 }
@@ -800,6 +830,23 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         // TODO add your handling code here:
     }//GEN-LAST:event_DTPCari2ActionPerformed
 
+    private void HasilPeriksaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_HasilPeriksaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HasilPeriksaKeyPressed
+
+    private void HasilPeriksaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HasilPeriksaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_HasilPeriksaActionPerformed
+
+    private void PdiagnosaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PdiagnosaActionPerformed
+        // TODO add your handling code here:
+        HasilPeriksa.setText(Sequel.cariIsi("SELECT pemeriksaan_ralan.penilaian FROM pemeriksaan_ralan WHERE no_rawat ='"+TNoRw.getText()+"' ORDER BY jam_rawat DESC LIMIT 1"));
+    }//GEN-LAST:event_PdiagnosaActionPerformed
+
+    private void PdiagnosaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_PdiagnosaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PdiagnosaKeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -829,11 +876,12 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.PanelBiasa FormInput;
-    private widget.ComboBox HasilPeriksa;
+    private widget.TextBox HasilPeriksa;
     private widget.Label LCount;
     private javax.swing.JMenuItem MnCetakSuratHamil;
     private widget.TextBox NoSurat;
     private javax.swing.JPanel PanelInput;
+    private widget.Button Pdiagnosa;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.TextBox TNoRM;
@@ -881,7 +929,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
             try {
                 rs=ps.executeQuery();
                 while(rs.next()){
-                    tabMode.addRow(new Object[]{
+                    tabMode.addRow(new String[]{
                         rs.getString(1),rs.getString(2),rs.getString(3),
                         rs.getString(4),rs.getString(5),rs.getString(6),
                         rs.getString(7),rs.getString(8)                         
@@ -922,7 +970,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
             TNoRM.setText(tbObat.getValueAt(tbObat.getSelectedRow(),2).toString());
             TPasien.setText(tbObat.getValueAt(tbObat.getSelectedRow(),3).toString());
             Valid.SetTgl(TanggalPeriksa,tbObat.getValueAt(tbObat.getSelectedRow(),4).toString());
-            HasilPeriksa.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());      
+            HasilPeriksa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),5).toString());      
         }
     }
 
@@ -943,6 +991,7 @@ public final class SuratTidakHamil extends javax.swing.JDialog {
         TPasien.setText(pasien);
         ChkInput.setSelected(true);
         isForm();
+              
     }
     
     private void isForm(){

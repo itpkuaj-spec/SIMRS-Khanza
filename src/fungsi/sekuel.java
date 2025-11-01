@@ -1408,15 +1408,16 @@ public final class sekuel {
         return bool;
     }
     
+    //perubahanku
     public boolean cekTanggal48jam(String tanggalmulai,String tanggalinputdata){
         bool=false;
         try {
             waktumulai = formattanggal.parse(tanggalmulai);
             kegiatan = formattanggal.parse(tanggalinputdata);
             bedawaktu = (kegiatan.getTime()-waktumulai.getTime())/1000;
-            if(bedawaktu>172800){
+            if(bedawaktu>1296000){
                 bool=false;
-                JOptionPane.showMessageDialog(null,"Maaf, perubahan data / penghapusan data tidak boleh lebih dari 2 x 24 jam !");
+                JOptionPane.showMessageDialog(null,"Maaf, perubahan data / penghapusan data tidak boleh lebih dari 15 x 24 jam !");
             }else{
                 bool=true;
             }
@@ -1426,6 +1427,7 @@ public final class sekuel {
         }
         return bool;
     }
+    //sampe sini
     
     public String ambiltanggalsekarang(){
         return formattanggal.format(new Date());
