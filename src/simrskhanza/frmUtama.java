@@ -7261,6 +7261,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnMenu.setText("Menu");
         BtnMenu.setToolTipText("Alt+M");
         BtnMenu.setEnabled(false);
+        BtnMenu.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnMenu.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnMenu.setIconTextGap(2);
         BtnMenu.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7289,6 +7290,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnToolReg.setText("Registrasi");
         BtnToolReg.setToolTipText("Alt+R");
         BtnToolReg.setEnabled(false);
+        BtnToolReg.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnToolReg.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnToolReg.setIconTextGap(2);
         BtnToolReg.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7308,6 +7310,7 @@ public class frmUtama extends javax.swing.JFrame {
         btnToolIGD.setText("IGD/UGD");
         btnToolIGD.setToolTipText("Alt+D");
         btnToolIGD.setEnabled(false);
+        btnToolIGD.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnToolIGD.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnToolIGD.setIconTextGap(2);
         btnToolIGD.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7335,6 +7338,7 @@ public class frmUtama extends javax.swing.JFrame {
         btnToolLab.setMnemonic('O');
         btnToolLab.setText("Laborat");
         btnToolLab.setToolTipText("Alt+O");
+        btnToolLab.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnToolLab.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnToolLab.setIconTextGap(2);
         btnToolLab.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7353,6 +7357,7 @@ public class frmUtama extends javax.swing.JFrame {
         btnToolRad.setMnemonic('A');
         btnToolRad.setText("Radiologi");
         btnToolRad.setToolTipText("Alt+A");
+        btnToolRad.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnToolRad.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         btnToolRad.setIconTextGap(2);
         btnToolRad.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7371,6 +7376,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnToolJualObat.setMnemonic('j');
         BtnToolJualObat.setText("Farmasi");
         BtnToolJualObat.setToolTipText("Alt+J");
+        BtnToolJualObat.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnToolJualObat.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnToolJualObat.setIconTextGap(2);
         BtnToolJualObat.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7399,6 +7405,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnToolKamnap.setText("Rawat Inap");
         BtnToolKamnap.setToolTipText("Alt+K");
         BtnToolKamnap.setEnabled(false);
+        BtnToolKamnap.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnToolKamnap.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnToolKamnap.setIconTextGap(2);
         BtnToolKamnap.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7418,6 +7425,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnToolKasir.setText("Rawat Jalan");
         BtnToolKasir.setToolTipText("Alt+S");
         BtnToolKasir.setEnabled(false);
+        BtnToolKasir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnToolKasir.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnToolKasir.setIconTextGap(2);
         BtnToolKasir.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7460,6 +7468,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnLog.setMnemonic('L');
         BtnLog.setText("Log In");
         BtnLog.setToolTipText("Alt+L");
+        BtnLog.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnLog.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnLog.setIconTextGap(2);
         BtnLog.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -7478,6 +7487,7 @@ public class frmUtama extends javax.swing.JFrame {
         BtnClose.setMnemonic('U');
         BtnClose.setText("Keluar");
         BtnClose.setToolTipText("Alt+U");
+        BtnClose.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         BtnClose.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         BtnClose.setIconTextGap(2);
         BtnClose.setMargin(new java.awt.Insets(0, 0, 0, 0));

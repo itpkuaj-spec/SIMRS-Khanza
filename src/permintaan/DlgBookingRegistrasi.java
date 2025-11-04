@@ -1,5 +1,6 @@
 package permintaan;
 
+import bridging.FonnteAPI;//tambahan
 import fungsi.WarnaTable;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
@@ -9,6 +10,8 @@ import fungsi.akses;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -25,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -41,13 +45,14 @@ import simrskhanza.DlgPasien;
 public class DlgBookingRegistrasi extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private Connection koneksi=koneksiDB.condb();
+    private Connection koneksiwa;//tambahan
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i=0,kuota=0;
     private DlgPasien pasien=new DlgPasien(null,false);
-    private String aktifjadwal="",URUTNOREG="",status="",no_rawat="",umur="",sttsumur="",nohp="";
+    private String aktifjadwal="",URUTNOREG="",status="",no_rawat="",umur="",sttsumur="",nohp="", notifwapasien = "", pesan = "", tanggaljamkirim = "";//tambahan notif wa pasien
     private StringBuilder htmlContent;
     
     
@@ -196,6 +201,10 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         
         ChkInput.setSelected(false);
         isForm();
+        //tambahan
+        ChkJln.setSelected(true);
+        jam_kirim();   
+        //akhir
         
         pasien.addWindowListener(new WindowListener() {
             @Override
@@ -314,7 +323,15 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
             aktifjadwal="";
             URUTNOREG="";
         }
+        //tambahan wa
+        try {
+            notifwapasien = koneksiDB.NOTIFWAPASIEN();
         
+        } catch (Exception e) {
+            notifwapasien = "no";
+            
+    }
+ 
     }
  
     /** This method is called from within the constructor to
@@ -385,6 +402,17 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         btnPenjab = new widget.Button();
         jLabel20 = new widget.Label();
         Kuota = new widget.TextBox();
+        jLabel15 = new widget.Label();
+        Tanggal = new widget.Tanggal();
+        CmbJam = new widget.ComboBox();
+        CmbMenit = new widget.ComboBox();
+        CmbDetik = new widget.ComboBox();
+        ChkJln = new widget.CekBox();
+        pesanKustom = new widget.TextBox();
+        lblhp1 = new javax.swing.JLabel();
+        lblhp = new javax.swing.JLabel();
+        TUDhp = new widget.TextBox();
+        BtnUDhp = new widget.Button();
 
         Popup.setName("Popup"); // NOI18N
 
@@ -669,7 +697,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(125, 23));
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -692,7 +720,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         jLabel22.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel22);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -714,7 +742,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         R3.setPreferredSize(new java.awt.Dimension(135, 23));
         panelCari.add(R3);
 
-        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022" }));
+        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025" }));
         DTPCari3.setDisplayFormat("dd-MM-yyyy");
         DTPCari3.setName("DTPCari3"); // NOI18N
         DTPCari3.setOpaque(false);
@@ -737,7 +765,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel25);
 
-        DTPCari4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022" }));
+        DTPCari4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025" }));
         DTPCari4.setDisplayFormat("dd-MM-yyyy");
         DTPCari4.setName("DTPCari4"); // NOI18N
         DTPCari4.setOpaque(false);
@@ -821,7 +849,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         TPasien.setBounds(151, 10, 311, 23);
 
         TanggalBooking.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalBooking.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022 01:07:29" }));
+        TanggalBooking.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025 22:18:41" }));
         TanggalBooking.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalBooking.setName("TanggalBooking"); // NOI18N
         TanggalBooking.setOpaque(false);
@@ -901,7 +929,7 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         jLabel14.setBounds(506, 40, 70, 23);
 
         TanggalPeriksa.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "31-07-2022 01:07:29" }));
+        TanggalPeriksa.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-03-2025 22:18:41" }));
         TanggalPeriksa.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPeriksa.setName("TanggalPeriksa"); // NOI18N
         TanggalPeriksa.setOpaque(false);
@@ -1003,6 +1031,110 @@ public class DlgBookingRegistrasi extends javax.swing.JDialog {
         });
         FormInput.add(Kuota);
         Kuota.setBounds(630, 100, 90, 23);
+
+        jLabel15.setText("Tanggal :");
+        jLabel15.setName("jLabel15"); // NOI18N
+        FormInput.add(jLabel15);
+        jLabel15.setBounds(710, 10, 67, 23);
+
+        Tanggal.setForeground(new java.awt.Color(50, 70, 50));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
+        Tanggal.setDisplayFormat("dd-MM-yyyy");
+        Tanggal.setName("Tanggal"); // NOI18N
+        Tanggal.setOpaque(false);
+        Tanggal.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                TanggalItemStateChanged(evt);
+            }
+        });
+        Tanggal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TanggalKeyPressed(evt);
+            }
+        });
+        FormInput.add(Tanggal);
+        Tanggal.setBounds(780, 10, 90, 23);
+
+        CmbJam.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        CmbJam.setName("CmbJam"); // NOI18N
+        FormInput.add(CmbJam);
+        CmbJam.setBounds(880, 10, 62, 23);
+
+        CmbMenit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        CmbMenit.setName("CmbMenit"); // NOI18N
+        FormInput.add(CmbMenit);
+        CmbMenit.setBounds(940, 10, 62, 23);
+
+        CmbDetik.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        CmbDetik.setName("CmbDetik"); // NOI18N
+        FormInput.add(CmbDetik);
+        CmbDetik.setBounds(1010, 10, 62, 23);
+
+        ChkJln.setBorder(null);
+        ChkJln.setSelected(true);
+        ChkJln.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ChkJln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkJln.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ChkJln.setName("ChkJln"); // NOI18N
+        ChkJln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkJlnActionPerformed(evt);
+            }
+        });
+        FormInput.add(ChkJln);
+        ChkJln.setBounds(1080, 10, 23, 23);
+
+        pesanKustom.setForeground(new java.awt.Color(51, 51, 51));
+        pesanKustom.setHighlighter(null);
+        pesanKustom.setName("pesanKustom"); // NOI18N
+        pesanKustom.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                pesanKustomKeyPressed(evt);
+            }
+        });
+        FormInput.add(pesanKustom);
+        pesanKustom.setBounds(810, 44, 370, 30);
+
+        lblhp1.setText("Pesan WA R : ");
+        lblhp1.setName("lblhp1"); // NOI18N
+        FormInput.add(lblhp1);
+        lblhp1.setBounds(730, 50, 90, 16);
+
+        lblhp.setText("No HP :");
+        lblhp.setName("lblhp"); // NOI18N
+        FormInput.add(lblhp);
+        lblhp.setBounds(730, 100, 50, 16);
+
+        TUDhp.setForeground(new java.awt.Color(51, 51, 255));
+        TUDhp.setHighlighter(null);
+        TUDhp.setName("TUDhp"); // NOI18N
+        TUDhp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TUDhpKeyPressed(evt);
+            }
+        });
+        FormInput.add(TUDhp);
+        TUDhp.setBounds(780, 100, 220, 24);
+
+        BtnUDhp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/refresh.png"))); // NOI18N
+        BtnUDhp.setMnemonic('S');
+        BtnUDhp.setText("Ubah No HP");
+        BtnUDhp.setToolTipText("Alt+S");
+        BtnUDhp.setGlassColor(new java.awt.Color(0, 153, 255));
+        BtnUDhp.setName("BtnUDhp"); // NOI18N
+        BtnUDhp.setPreferredSize(new java.awt.Dimension(170, 30));
+        BtnUDhp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnUDhpActionPerformed(evt);
+            }
+        });
+        BtnUDhp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnUDhpKeyPressed(evt);
+            }
+        });
+        FormInput.add(BtnUDhp);
+        BtnUDhp.setBounds(1010, 100, 120, 20);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -1268,6 +1400,23 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_DTPCari4KeyPressed
 
     private void BtnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEditActionPerformed
+                        // Tampilkan dialog konfirmasi
+    int pilihan = JOptionPane.showConfirmDialog(
+        null, 
+        "Ges, NO HP Sudah dicek?", 
+        "Konfirmasi", 
+        JOptionPane.YES_NO_OPTION
+    );
+    
+    // Jika memilih Tidak, hentikan proses
+    if (pilihan != JOptionPane.YES_OPTION) {
+        JOptionPane.showMessageDialog(null, "Pastikan dulu ya ges", "Informasi", JOptionPane.INFORMATION_MESSAGE);
+        TUDhp.requestFocus();
+        return;
+    }
+    
+    // Jika memilih Ya, lanjutkan proses
+        
         for(i=0;i<tbObat.getRowCount();i++){ 
             if(tbObat.getValueAt(i,0).toString().equals("true")&&tbObat.getValueAt(i,23).toString().equals("Belum")){
                 Sequel.mengedit("pasien","no_rkm_medis=?","umur=CONCAT(CONCAT(CONCAT(TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()), ' Th '),CONCAT(TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12), ' Bl ')),CONCAT(TIMESTAMPDIFF(DAY, DATE_ADD(DATE_ADD(tgl_lahir,INTERVAL TIMESTAMPDIFF(YEAR, tgl_lahir, CURDATE()) YEAR), INTERVAL TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) - ((TIMESTAMPDIFF(MONTH, tgl_lahir, CURDATE()) div 12) * 12) MONTH), CURDATE()), ' Hr'))",1,new String[]{tbObat.getValueAt(i,3).toString()});
@@ -1302,6 +1451,9 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     Sequel.queryu2("update booking_registrasi set status='Terdaftar' where no_rkm_medis=? and tanggal_periksa=?",2,new String[]{
                         tbObat.getValueAt(i,3).toString(),tbObat.getValueAt(i,5).toString()
                     });
+                    //tambahan
+                    JOptionPane.showMessageDialog(null, "Data berhasil di regist hari ini!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                    NotifWaBuktiRegister();
                 }
             }
         }
@@ -1585,6 +1737,13 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 "\"No.HP\";\"Isi Pesan\"\n"
             ); 
             
+            //tambahan
+            // Ambil teks pembuka dari JTextField pesanKustom
+                String pembukaPesan = pesanKustom.getText().trim();
+                if(pembukaPesan.equals("")) {
+                    pembukaPesan = "Mengingatkan kembali kepada saudara";
+                }
+                //sampe sini
             for(i=0;i<tabMode.getRowCount();i++){  
                 try {
                     nohp="";
@@ -1593,10 +1752,27 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     }else{
                         nohp=tabMode.getValueAt(i,26).toString();
                     }
+//                    htmlContent.append(
+//                        "\" "+nohp+"\";\""+"Mengingatkan kembali kepada saudara "+tabMode.getValueAt(i,4)+" dengan No.RM "+tabMode.getValueAt(i,3)+", berdasarkan booking pada tanggal "+tabMode.getValueAt(i,1)+" "+tabMode.getValueAt(i,2)+" dengan tujuan pemeriksaan di "+tabMode.getValueAt(i,9)+" pada tanggal "+tabMode.getValueAt(i,5)+" agar bisa datang dengan nomor antrian "+tabMode.getValueAt(i,10)+". Customer Service "+akses.getnamars()+"\"\n"
+//                    );
+
+                    //ubah
                     htmlContent.append(
-                        "\" "+nohp+"\";\""+"Mengingatkan kembali kepada saudara "+tabMode.getValueAt(i,4)+" dengan No.RM "+tabMode.getValueAt(i,3)+", berdasarkan booking pada tanggal "+tabMode.getValueAt(i,1)+" "+tabMode.getValueAt(i,2)+" dengan tujuan pemeriksaan di "+tabMode.getValueAt(i,9)+" pada tanggal "+tabMode.getValueAt(i,5)+" agar bisa datang dengan nomor antrian "+tabMode.getValueAt(i,10)+". Customer Service "+akses.getnamars()+"\"\n"
+                                "\" " + nohp + "\";\"" +
+            "Yth. " + tabMode.getValueAt(i, 4) + "\n" +
+            "No.RM : " + tabMode.getValueAt(i, 3) + "\n\n" +
+            "Tanggal Booking : " + tabMode.getValueAt(i, 1) + "\n" +
+            "Tanggal Periksa : " + tabMode.getValueAt(i, 5) + "\n\n" +
+            "Klinik : " + tabMode.getValueAt(i, 9) + "\n" +
+            "Dokter : " + tabMode.getValueAt(i, 7) + "\n" +
+            "Nomor Antrian : " + tabMode.getValueAt(i, 10) + "\n\n" +
+            pembukaPesan + "\n\n\n" +
+            "Informasi " + akses.getnamars() + "\"\n"
                     );
+                    //sampe sini
+
                 } catch (Exception e) {
+                    e.printStackTrace(); // Tambahkan log error
                 }
             }                   
                                 
@@ -1608,6 +1784,45 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         } catch (Exception e) {
         }
     }//GEN-LAST:event_ppCSVWARocketActionPerformed
+
+    private void TanggalItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_TanggalItemStateChanged
+
+    }//GEN-LAST:event_TanggalItemStateChanged
+
+    private void TanggalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TanggalKeyPressed
+
+    }//GEN-LAST:event_TanggalKeyPressed
+
+    private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkJlnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChkJlnActionPerformed
+
+    private void pesanKustomKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_pesanKustomKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pesanKustomKeyPressed
+
+    private void TUDhpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TUDhpKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TUDhpKeyPressed
+
+    private void BtnUDhpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnUDhpActionPerformed
+        String noRm = TNoRM.getText();
+        String noTelepon = TUDhp.getText();
+
+        // Validasi input kosong
+        if (noRm.isEmpty() || noTelepon.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Harap isi nomor rekam medis dan nomor telepon!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            return;
+
+        }
+        Sequel.queryu("UPDATE pasien SET no_tlp = '"+TUDhp.getText()+"' WHERE no_rkm_medis ='"+TNoRM.getText()+"'");
+        TUDhp.setText("");
+        tampil();
+    }//GEN-LAST:event_BtnUDhpActionPerformed
+
+    private void BtnUDhpKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnUDhpKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnUDhpKeyPressed
 
     /**
     * @param args the command line arguments
@@ -1637,7 +1852,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Button BtnPoli;
     private widget.Button BtnPrint;
     private widget.Button BtnSimpan;
+    private widget.Button BtnUDhp;
     private widget.CekBox ChkInput;
+    private widget.CekBox ChkJln;
+    private widget.ComboBox CmbDetik;
+    private widget.ComboBox CmbJam;
+    private widget.ComboBox CmbMenit;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.Tanggal DTPCari3;
@@ -1658,6 +1878,8 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.TextBox TCari;
     private widget.TextBox TNoRM;
     private widget.TextBox TPasien;
+    private widget.TextBox TUDhp;
+    private widget.Tanggal Tanggal;
     private widget.Tanggal TanggalBooking;
     private widget.Tanggal TanggalPeriksa;
     private widget.Button btnPenjab;
@@ -1666,6 +1888,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel10;
     private widget.Label jLabel11;
     private widget.Label jLabel14;
+    private widget.Label jLabel15;
     private widget.Label jLabel18;
     private widget.Label jLabel19;
     private widget.Label jLabel20;
@@ -1677,16 +1900,76 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private widget.TextBox kdpnj;
+    private javax.swing.JLabel lblhp;
+    private javax.swing.JLabel lblhp1;
     private widget.TextBox nmpnj;
     private widget.panelisi panelCari;
     private widget.panelisi panelGlass10;
     private widget.panelisi panelGlass8;
+    private widget.TextBox pesanKustom;
     private javax.swing.JMenuItem ppBersihkan;
     private javax.swing.JMenuItem ppCSVWARocket;
     private javax.swing.JMenuItem ppSemua;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
 
+    //tambahan
+    private void jam_kirim(){
+        ActionListener taskPerformer = new ActionListener(){
+            private int nilai_jam;
+            private int nilai_menit;
+            private int nilai_detik;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nol_jam = "";
+                String nol_menit = "";
+                String nol_detik = "";
+                // Membuat Date
+                //Date dt = new Date();
+                Date now = Calendar.getInstance().getTime();
+
+                // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
+                if(ChkJln.isSelected()==true){
+                    nilai_jam = now.getHours();
+                    nilai_menit = now.getMinutes();
+                    nilai_detik = now.getSeconds();
+                }else if(ChkJln.isSelected()==false){
+                    nilai_jam =CmbJam.getSelectedIndex();
+                    nilai_menit =CmbMenit.getSelectedIndex();
+                    nilai_detik =CmbDetik.getSelectedIndex();
+                }
+
+                // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_jam <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_jam = "0";
+                }
+                // Jika nilai MENIT lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_menit <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_menit = "0";
+                }
+                // Jika nilai DETIK lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_detik <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_detik = "0";
+                }
+                // Membuat String JAM, MENIT, DETIK
+                String jam = nol_jam + Integer.toString(nilai_jam);
+                String menit = nol_menit + Integer.toString(nilai_menit);
+                String detik = nol_detik + Integer.toString(nilai_detik);
+                // Menampilkan pada Layar
+                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                CmbJam.setSelectedItem(jam);
+                CmbMenit.setSelectedItem(menit);
+                CmbDetik.setSelectedItem(detik);
+            }
+        };
+        // Timer
+        new Timer(1000, taskPerformer).start();
+    }
+    //akhir
+    
     private void tampil() {     
         if(R2.isSelected()==true){
             status=" booking_registrasi.tanggal_booking between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' ";
@@ -1757,6 +2040,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         nmpnj.setText("");
         TanggalBooking.setDate(new Date());
         BtnPasien.requestFocus();
+        TUDhp.setText("");
         isNomer();
     }
     
@@ -1790,6 +2074,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             NoReg.setText(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
             kdpnj.setText(tbObat.getValueAt(tbObat.getSelectedRow(),24).toString());
             nmpnj.setText(tbObat.getValueAt(tbObat.getSelectedRow(),25).toString());
+            TUDhp.setText(tbObat.getValueAt(tbObat.getSelectedRow(),26).toString());
         }
     }
     
@@ -1881,4 +2166,47 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             tampil();
         } 
     }
+    
+    //tambahan wa
+    
+        private void NotifWaBuktiRegister() {
+        String tgl_lahir = Sequel.cariIsi("select DATE_FORMAT(tgl_lahir,'%d-%m-%Y')as tgl_lahir from pasien where no_rkm_medis = '" + TNoRM.getText() + "'");
+        String jk = Sequel.cariIsi("select jk from pasien where no_rkm_medis = '" + TNoRM.getText() + "'");
+        String noTelpPasien = TUDhp.getText();
+
+        if (notifwapasien.equals("yes")) {
+            
+            String pesan = "============================"
+                    + "\nHalo! Assalamualaikum.. "
+                    + "\n============================"
+                    + "\nSelamat datang di " + akses.getnamars()
+                    + "\nTanggal Periksa : " + Tanggal.getSelectedItem()
+                    + "\nNo RM : " + TNoRM.getText() + ""
+                    + "\nNama : " + TPasien.getText() + ""
+                    + "\nTanggal Lahir : " + tgl_lahir + ""
+                    + "\nJK : " + jk + ""
+                    + "\nPoli : " + NmPoli.getText() + ""
+                    + "\nDokter : " + NmDokter.getText() + ""
+//                    + "\n0xF0 0x9F 0x92 0xB3 Cara bayar : " + nmpnj.getText() + ""
+                    + "\nNo Antri Klinik : " + NoReg.getText() + ""
+                    + "\n"
+                    + "\n-Langkah selanjutnya silahkan menuju ke Nurstation kami di samping kasir"
+                    + "\n-Sampaikan keluhan yang anda rasakan ke petugas kami"
+                    + "\n-Jika sudah, Silahkan tunggu, lalu petugas kami akan memanggil sesuai nomor antrian masuk poli."
+                    + "\n============================";
+            
+                        // kirim WA
+            // Format nomor agar sesuai internasional (628xxxx)
+            String nomorTujuan = noTelpPasien.replaceFirst("^0", "62");
+            boolean terkirim = FonnteAPI.sendMessage(noTelpPasien, pesan);
+
+            if (terkirim) {
+                System.out.println("Pesan WA berhasil dikirim!");
+            } else {
+                System.out.println("Gagal mengirim pesan WA.");
+}
+        }
+    }
+        
+    
 }

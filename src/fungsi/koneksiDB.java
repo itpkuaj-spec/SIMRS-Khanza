@@ -1685,4 +1685,196 @@ public class koneksiDB {
         }
         return var;
     }
+    
+    //tambahan
+    public static String NOTIFWA(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWA");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+        public static String NOTIFWAADMISI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWAADMISI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWALAB(){
+       try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWALAB");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWAFARMASI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWAFARMASI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWARAD(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWARAD");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWAPENGAJUAN(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWAPENGAJUAN");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWARESEPPETU(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWARESEPPETU");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String NOTIFWAGIZI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("NOTIFWAGIZI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWA(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWA");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWAADMISI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWAADMISI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWAFARMASI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWAFARMASI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWALAB(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWALAB");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWARAD(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWARAD");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+        public static String NOTIFWAPASIEN() {
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var = prop.getProperty("NOTIFWAPASIEN");
+        } catch (Exception e) {
+            var = "";
+        }
+        return var;
+    }
+        
+    public static String IDGROUPWAPENGAJUAN(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWAPENGAJUAN");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWARESEPPETU(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWARESEPPETU");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String IDGROUPWAGIZI(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("IDGROUPWAGIZI");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String TOKENFONTE(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("TOKENFONTE");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+        public static String FOLDERIDRG(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("FOLDERIDRG");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    //akhir tambahan
 }

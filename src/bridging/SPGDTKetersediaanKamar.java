@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,11 +41,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import simrskhanza.DlgCariBangsal;
 
+import java.security.MessageDigest;
+import org.springframework.http.ResponseEntity;
+
 /**
  *
  * @author dosen
  */
-public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
+public final class SPGDTKetersediaanKamar extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
@@ -53,8 +57,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
     private ResultSet rs;    
     private int i=0;
     private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
-    private AplicareCekReferensiKamar referensi=new AplicareCekReferensiKamar(null,false);
-    private SPGDTKetersediaanKamar spgdtkamar=new SPGDTKetersediaanKamar(null,false);//tambahan
+    private SPGDTCekReferensiKelas referensi=new SPGDTCekReferensiKelas(null,false);
     private String requestJson,URL="",kodeppk=akses.getkodeppkbpjs(),CONSIDAPIAPLICARE="",utc="";
     private ApiBPJSAplicare api=new ApiBPJSAplicare();
     private HttpHeaders headers;
@@ -66,14 +69,14 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
      * @param modal */
-    public AplicareKetersediaanKamar(java.awt.Frame parent, boolean modal) {
+    public SPGDTKetersediaanKamar(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
         this.setLocation(8,1);
         setSize(628,674);
 
-        Object[] row={"P","Kode Kelas Aplicare","Kode Ruang","Kamar/Ruang","Kelas","Kapasitas","Tersedia",
+        Object[] row={"P","Kode Kelas SPGDT","Kode Ruang","Kode Kamar SPGDT","Kamar/Ruang","Kelas","Kapasitas","Tersedia","Terisi",
                       "Tersedia Pria & Wanita","Tersedia Pria","Tersedia Wanita"};
         tabMode=new DefaultTableModel(null,row){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){
@@ -86,7 +89,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
              Class[] types = new Class[] {
                 java.lang.Boolean.class, java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
                 java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,
-                java.lang.Object.class,java.lang.Object.class
+                java.lang.Object.class,java.lang.Object.class,java.lang.Object.class,java.lang.Object.class
              };
              @Override
              public Class getColumnClass(int columnIndex) {
@@ -99,27 +102,31 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 10; i++) {
+        for (i = 0; i < 12; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(20);
             }else if(i==1){
-                column.setPreferredWidth(115);
+                column.setPreferredWidth(90);
             }else if(i==2){
                 column.setPreferredWidth(90);
             }else if(i==3){
-                column.setPreferredWidth(170);
+                column.setPreferredWidth(110);
             }else if(i==4){
-                column.setPreferredWidth(90);
+                column.setPreferredWidth(170);
             }else if(i==5){
-                column.setPreferredWidth(65);
+                column.setPreferredWidth(90);
             }else if(i==6){
                 column.setPreferredWidth(65);
             }else if(i==7){
-                column.setPreferredWidth(120);
+                column.setPreferredWidth(65);
             }else if(i==8){
-                column.setPreferredWidth(80);
+                column.setPreferredWidth(120);
             }else if(i==9){
+                column.setPreferredWidth(80);
+            }else if(i==10){
+                column.setPreferredWidth(90);
+            }else if(i==11){
                 column.setPreferredWidth(90);
             }
         }
@@ -277,7 +284,10 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         TersediaPria = new widget.TextBox();
         jLabel12 = new widget.Label();
         TersediaWanita = new widget.TextBox();
-        btnspgdt = new javax.swing.JButton();
+        Terisi = new widget.TextBox();
+        jLabel13 = new widget.Label();
+        kd_kamar_spgdt = new widget.TextBox();
+        jLabel14 = new widget.Label();
         ChkInput = new widget.CekBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -289,7 +299,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Ketersediaan Kamar Aplicare BPJS ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Ketersediaan Kamar SPGDT ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -525,7 +535,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         FormInput.add(Kapasitas);
         Kapasitas.setBounds(367, 72, 50, 23);
 
-        jLabel4.setText("Kode Kelas Aplicare :");
+        jLabel4.setText("Kode Kelas SPGDT :");
         jLabel4.setName("jLabel4"); // NOI18N
         FormInput.add(jLabel4);
         jLabel4.setBounds(0, 12, 112, 23);
@@ -627,10 +637,10 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         FormInput.add(Kelas);
         Kelas.setBounds(116, 72, 120, 23);
 
-        jLabel9.setText("Tersedia :");
+        jLabel9.setText("Terisi :");
         jLabel9.setName("jLabel9"); // NOI18N
         FormInput.add(jLabel9);
-        jLabel9.setBounds(418, 12, 77, 23);
+        jLabel9.setBounds(450, 80, 60, 23);
 
         Tersedia.setText("0");
         Tersedia.setHighlighter(null);
@@ -641,17 +651,17 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tersedia);
-        Tersedia.setBounds(498, 12, 50, 23);
+        Tersedia.setBounds(520, 50, 50, 23);
 
         jLabel10.setText("Tersedia Pria :");
         jLabel10.setName("jLabel10"); // NOI18N
         FormInput.add(jLabel10);
-        jLabel10.setBounds(418, 42, 77, 23);
+        jLabel10.setBounds(640, 80, 77, 23);
 
         jLabel11.setText("Tersedia Pria & Wanita :");
         jLabel11.setName("jLabel11"); // NOI18N
         FormInput.add(jLabel11);
-        jLabel11.setBounds(548, 12, 125, 23);
+        jLabel11.setBounds(590, 20, 125, 23);
 
         TersediaPW.setText("0");
         TersediaPW.setHighlighter(null);
@@ -662,7 +672,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
             }
         });
         FormInput.add(TersediaPW);
-        TersediaPW.setBounds(676, 12, 50, 23);
+        TersediaPW.setBounds(720, 20, 50, 23);
 
         TersediaPria.setText("0");
         TersediaPria.setHighlighter(null);
@@ -673,12 +683,12 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
             }
         });
         FormInput.add(TersediaPria);
-        TersediaPria.setBounds(498, 42, 50, 23);
+        TersediaPria.setBounds(720, 80, 50, 23);
 
         jLabel12.setText("Tersedia Wanita :");
         jLabel12.setName("jLabel12"); // NOI18N
         FormInput.add(jLabel12);
-        jLabel12.setBounds(548, 42, 125, 23);
+        jLabel12.setBounds(590, 50, 125, 23);
 
         TersediaWanita.setText("0");
         TersediaWanita.setHighlighter(null);
@@ -689,17 +699,41 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
             }
         });
         FormInput.add(TersediaWanita);
-        TersediaWanita.setBounds(676, 42, 50, 23);
+        TersediaWanita.setBounds(720, 50, 50, 23);
 
-        btnspgdt.setText("SPGDT");
-        btnspgdt.setName("btnspgdt"); // NOI18N
-        btnspgdt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnspgdtActionPerformed(evt);
+        Terisi.setText("0");
+        Terisi.setHighlighter(null);
+        Terisi.setName("Terisi"); // NOI18N
+        Terisi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TerisiKeyPressed(evt);
             }
         });
-        FormInput.add(btnspgdt);
-        btnspgdt.setBounds(490, 70, 110, 23);
+        FormInput.add(Terisi);
+        Terisi.setBounds(520, 80, 50, 23);
+
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel13.setText("Kd Kamar SPGDT :");
+        jLabel13.setName("jLabel13"); // NOI18N
+        FormInput.add(jLabel13);
+        jLabel13.setBounds(430, 20, 100, 23);
+
+        kd_kamar_spgdt.setEditable(false);
+        kd_kamar_spgdt.setText("0");
+        kd_kamar_spgdt.setHighlighter(null);
+        kd_kamar_spgdt.setName("kd_kamar_spgdt"); // NOI18N
+        kd_kamar_spgdt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                kd_kamar_spgdtKeyPressed(evt);
+            }
+        });
+        FormInput.add(kd_kamar_spgdt);
+        kd_kamar_spgdt.setBounds(520, 20, 50, 23);
+
+        jLabel14.setText("Tersedia :");
+        jLabel14.setName("jLabel14"); // NOI18N
+        FormInput.add(jLabel14);
+        jLabel14.setBounds(440, 50, 77, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -727,6 +761,7 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         internalFrame1.add(PanelInput, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
+        internalFrame1.getAccessibleContext().setAccessibleName("::[ Data Ketersediaan Kamar SPGDT ]::");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -761,63 +796,97 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         
 }//GEN-LAST:event_btnKelasKeyPressed
 
-    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
-        if(KdKelas.getText().trim().equals("")||NmKelas.getText().trim().equals("")){
-            Valid.textKosong(KdKelas,"Kode Kelas Aplicare");
-        }else if(KdKamar.getText().trim().equals("")||NmKamar.getText().trim().equals("")){
-            Valid.textKosong(KdKamar,"Kode Kamar/Ruang");
-        }else if(Kapasitas.getText().trim().equals("")){
-            Valid.textKosong(Kapasitas,"Kapasitas");
-        }else if(Tersedia.getText().trim().equals("")){
-            Valid.textKosong(Tersedia,"Tersedia");
-        }else if(TersediaPW.getText().trim().equals("")){
-            Valid.textKosong(TersediaPW,"Tersedia Pria & Wanita");
-        }else if(TersediaPria.getText().trim().equals("")){
-            Valid.textKosong(TersediaPria,"Tersedia Pria");
-        }else if(TersediaWanita.getText().trim().equals("")){
-            Valid.textKosong(TersediaWanita,"Tersedia Wanita");
-        }else{
-            try {
-                headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.add("X-Cons-ID",CONSIDAPIAPLICARE);
-                utc=String.valueOf(api.GetUTCdatetimeAsString());
-                headers.add("X-Timestamp",utc);
-                headers.add("X-Signature",api.getHmac(utc));
-                headers.add("user_key",koneksiDB.USERKEYAPIAPLICARE());
-                requestJson ="{\"kodekelas\":\""+KdKelas.getText()+"\", "+
-                              "\"koderuang\":\""+KdKamar.getText()+"\","+ 
-                              "\"namaruang\":\""+NmKamar.getText()+"\","+ 
-                              "\"kapasitas\":\""+Kapasitas.getText()+"\","+ 
-                              "\"tersedia\":\""+Tersedia.getText()+"\","+
-                              "\"tersediapria\":\""+TersediaPria.getText()+"\","+ 
-                              "\"tersediawanita\":\""+TersediaWanita.getText()+"\","+ 
-                              "\"tersediapriawanita\":\""+TersediaPW.getText()+"\""+
-                              "}";
-                requestEntity = new HttpEntity(requestJson,headers);
-                //System.out.println(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                root = mapper.readTree(api.getRest().exchange(URL+"/rest/bed/create/"+kodeppk, HttpMethod.POST, requestEntity, String.class).getBody());
-                nameNode = root.path("metadata");
-                System.out.println("code : "+nameNode.path("code").asText());
-                System.out.println("message : "+nameNode.path("message").asText());
-                if(nameNode.path("message").asText().equals("Data berhasil disimpan.")){
-                    if(Sequel.menyimpantf("aplicare_ketersediaan_kamar","?,?,?,?,?,?,?,?","Data",8,new String[]{
-                            KdKelas.getText(),KdKamar.getText(),Kelas.getSelectedItem().toString(),Kapasitas.getText(),
-                            Tersedia.getText(),TersediaPria.getText(),TersediaWanita.getText(),TersediaPW.getText()
-                        })==true){
-                            emptTeks();
-                            tampil();
-                    }                     
-                }else{
-                    JOptionPane.showMessageDialog(null,nameNode.path("message").asText());
-                }
-            }catch (Exception ex) {
-                System.out.println("Notifikasi Bridging : "+ex);
-                if(ex.toString().contains("UnknownHostException")){
-                    JOptionPane.showMessageDialog(null,"Koneksi ke server BPJS terputus...!");
-                }
-            }
+    
+    private String md5(String input) {
+    try {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] messageDigest = md.digest(input.getBytes());
+        StringBuilder sb = new StringBuilder();
+        for (byte b : messageDigest) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) sb.append('0');
+            sb.append(hex);
         }
+        return sb.toString();
+    } catch (Exception e) {
+        throw new RuntimeException(e);
+    }
+}
+    
+    
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
+    if(KdKelas.getText().trim().equals("") || NmKelas.getText().trim().equals("")) {
+        Valid.textKosong(KdKelas, "Kode Kelas SPGDT");
+    } else if(KdKamar.getText().trim().equals("") || NmKamar.getText().trim().equals("")) {
+        Valid.textKosong(KdKamar, "Kode Kamar/Ruang");
+    } else if(Kapasitas.getText().trim().equals("")) {
+        Valid.textKosong(Kapasitas, "Kapasitas");
+    } else if(Terisi.getText().trim().equals("")) {
+        Valid.textKosong(Terisi, "Jumlah Terisi");
+    } else {
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            requestEntity = new HttpEntity(headers);
+
+            String idFaskes = "3320102";
+            String username = "3320102";
+            String password = "pkuaisyiyah";
+            String md5Token = md5(username + password);
+
+            // POST ke SPGDT
+            String fullUrl = "https://spgdt-service.sik-jepara.co.id/add_kamar.php?idFaskes=" + idFaskes +
+                             "&idKelas=" + KdKelas.getText() +
+//                             "&namaKamar=" + URLEncoder.encode(NmKamar.getText(), "UTF-8") +
+                             "&namaKamar=" + NmKamar.getText() +
+                             "&kapasitas=" + Kapasitas.getText() +
+                             "&terisi=" + Terisi.getText() +
+                             "&token=" + md5Token;
+
+            System.out.println("URL POST SPGDT : " + fullUrl);
+            String responseStr = api.getRest().exchange(fullUrl, HttpMethod.POST, requestEntity, String.class).getBody();
+            System.out.println("RESPON SPGDT : " + responseStr);
+            root = mapper.readTree(responseStr);
+            String status = root.path("response").asText();
+
+            if (status.equalsIgnoreCase("success")) {
+                // Ambil idKamar setelah POST sukses
+                String listUrl = "https://spgdt-service.sik-jepara.co.id/list_kamar.php?idFaskes=" + idFaskes +
+                                 "&token=" + md5Token +
+                                 "&idKelas=" + KdKelas.getText() +
+                                 "&namaKamar=" + NmKamar.getText();
+
+                String listResponse = api.getRest().exchange(listUrl, HttpMethod.GET, requestEntity, String.class).getBody();
+                JsonNode listRoot = mapper.readTree(listResponse);
+                JsonNode resultArray = listRoot.path("result");
+
+                String idKamarSPGDT = "";
+                if (resultArray.isArray() && resultArray.size() > 0) {
+                    idKamarSPGDT = resultArray.get(0).path("idKamar").asText();
+                }
+
+                JOptionPane.showMessageDialog(null, "Data berhasil dikirim ke SPGDT.");
+
+                // Simpan ke DB lokal
+                if(Sequel.menyimpantf("spgdt_ketersediaan_kamar",
+                    "?,?,?,?,?,?,?,?,?,?",
+                    "Data", 10, new String[]{
+                        KdKelas.getText(), KdKamar.getText(), idKamarSPGDT, Kelas.getSelectedItem().toString(), Kapasitas.getText(),
+                        Tersedia.getText(), Terisi.getText(), TersediaPria.getText(), TersediaWanita.getText(), TersediaPW.getText()
+                        
+                })) {
+                    emptTeks();
+                    tampil();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal menyimpan data ke SPGDT.");
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Notifikasi SPGDT : " + ex);
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat kirim data: " + ex.getMessage());
+        }
+    }
 }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
@@ -839,40 +908,58 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        for(i=0;i<tbJnsPerawatan.getRowCount();i++){ 
-            if(tbJnsPerawatan.getValueAt(i,0).toString().equals("true")){
-                try {
-                    headers = new HttpHeaders();
-                    headers.setContentType(MediaType.APPLICATION_JSON);
-                    headers.add("X-Cons-ID",CONSIDAPIAPLICARE);
-                    utc=String.valueOf(api.GetUTCdatetimeAsString());
-                    headers.add("X-Timestamp",utc);
-                    headers.add("X-Signature",api.getHmac(utc));
-                    headers.add("user_key",koneksiDB.USERKEYAPIAPLICARE());
-                    requestJson ="{\"kodekelas\":\""+tbJnsPerawatan.getValueAt(i,1).toString()+"\", "+
-                                  "\"koderuang\":\""+tbJnsPerawatan.getValueAt(i,2).toString()+"\""+ 
-                                  "}";
-                    requestEntity = new HttpEntity(requestJson,headers);
-                    //System.out.println(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                    root = mapper.readTree(api.getRest().exchange(URL+"/rest/bed/delete/"+kodeppk, HttpMethod.POST, requestEntity, String.class).getBody());
-                    nameNode = root.path("metadata");
-                    System.out.println("code : "+nameNode.path("code").asText());
-                    System.out.println("message : "+nameNode.path("message").asText());
-                    if(nameNode.path("message").asText().equals("Data berhasil dihapus.")){
-                        Sequel.queryu2("delete from aplicare_ketersediaan_kamar where kode_kelas_aplicare=? and kd_bangsal=? and kelas=?",3,new String[]{
-                            tbJnsPerawatan.getValueAt(i,1).toString(),tbJnsPerawatan.getValueAt(i,2).toString(),tbJnsPerawatan.getValueAt(i,4).toString()
-                        });
-                    }else{
-                        JOptionPane.showMessageDialog(null,nameNode.path("message").asText());
-                    }
-                }catch (Exception ex) {
-                    System.out.println("Notifikasi Bridging : "+ex);
-                    if(ex.toString().contains("UnknownHostException")){
-                        JOptionPane.showMessageDialog(null,"Koneksi ke server BPJS terputus...!");
-                    }
+
+            for (int i = 0; i < tbJnsPerawatan.getRowCount(); i++) {
+        if (tbJnsPerawatan.getValueAt(i, 0).toString().equals("true")) {
+            try {
+                // Ambil id kamar dari kolom ke-10
+                String idKamarSPGDT = tbJnsPerawatan.getValueAt(i, 3).toString();
+                String md5Token = md5("3320102" + "pkuaisyiyah"); // Sesuaikan
+
+                // URL DELETE SPGDT
+                String fullUrl = "https://spgdt-service.sik-jepara.co.id/delete_kamar.php?" +
+                                 "idKamar=" + idKamarSPGDT +
+                                 "&token=" + md5Token;
+
+                // Kirim DELETE request
+                headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                requestEntity = new HttpEntity(headers);
+
+                String responseStr = api.getRest()
+                                        .exchange(fullUrl, HttpMethod.DELETE, requestEntity, String.class)
+                                        .getBody();
+
+                System.out.println("RESPON DELETE SPGDT: " + responseStr);
+
+                // Parsing respon JSON
+                root = mapper.readTree(responseStr);
+                String status = root.path("response").asText();
+
+                if (status.equalsIgnoreCase("success")) {
+                     // Tampilkan notifikasi bahwa SPGDT berhasil dihapus
+                    JOptionPane.showMessageDialog(null, "Berhasil menghapus kamar di SPGDT: ID " + idKamarSPGDT);
+                    // Hapus data lokal dari DB
+                    Sequel.queryu2(
+                        "DELETE FROM spgdt_ketersediaan_kamar WHERE id_spgdt_kamar=?",
+                        1,
+                        new String[]{idKamarSPGDT}
+                    );
+                    System.out.println("Data lokal berhasil dihapus untuk ID: " + idKamarSPGDT);
+                    // Tampilkan pesan berhasil
+                    JOptionPane.showMessageDialog(null, "Berhasil menghapus data lokal SPGDT untuk ID: " + idKamarSPGDT);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Gagal menghapus dari SPGDT: " + status);
+                }
+
+            } catch (Exception ex) {
+                System.out.println("Notifikasi SPGDT: " + ex);
+                if (ex.toString().contains("UnknownHostException")) {
+                    JOptionPane.showMessageDialog(null, "Koneksi ke server SPGDT terputus!");
                 }
             }
-        }  
+        }
+    }
         BtnCariActionPerformed(evt);
         emptTeks();
 }//GEN-LAST:event_BtnHapusActionPerformed
@@ -901,51 +988,57 @@ public final class AplicareKetersediaanKamar extends javax.swing.JDialog {
         }else if(TersediaWanita.getText().trim().equals("")){
             Valid.textKosong(TersediaWanita,"Tersedia Wanita");
         }else{
-            try {     
-                headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.add("X-Cons-ID",CONSIDAPIAPLICARE);
-                utc=String.valueOf(api.GetUTCdatetimeAsString());
-                headers.add("X-Timestamp",utc);
-                headers.add("X-Signature",api.getHmac(utc));
-                headers.add("user_key",koneksiDB.USERKEYAPIAPLICARE());
-                requestJson ="{\"kodekelas\":\""+KdKelas.getText()+"\", "+
-                              "\"koderuang\":\""+KdKamar.getText()+"\","+ 
-                              "\"namaruang\":\""+NmKamar.getText()+"\","+ 
-                              "\"kapasitas\":\""+Kapasitas.getText()+"\","+ 
-                              "\"tersedia\":\""+Tersedia.getText()+"\","+
-                              "\"tersediapria\":\""+TersediaPria.getText()+"\","+ 
-                              "\"tersediawanita\":\""+TersediaWanita.getText()+"\","+ 
-                              "\"tersediapriawanita\":\""+TersediaPW.getText()+"\""+
-                              "}";
-                requestEntity = new HttpEntity(requestJson,headers);
-                //System.out.println(rest.exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                root = mapper.readTree(api.getRest().exchange(URL+"/rest/bed/update/"+kodeppk, HttpMethod.POST, requestEntity, String.class).getBody());
-                nameNode = root.path("metadata");
-                System.out.println("code : "+nameNode.path("code").asText());
-                System.out.println("message : "+nameNode.path("message").asText());
-                if(nameNode.path("message").asText().equals("Data berhasil diupdate.")){
-                    if(Sequel.mengedittf("aplicare_ketersediaan_kamar","kode_kelas_aplicare=? and kd_bangsal=? and kelas=?",
-                        "kode_kelas_aplicare=?,kd_bangsal=?,kelas=?,kapasitas=?,tersedia=?,tersediapria=?,tersediawanita=?,tersediapriawanita=?",11,new String[]{
-                        KdKelas.getText(),KdKamar.getText(),Kelas.getSelectedItem().toString(),Kapasitas.getText(),
-                        Tersedia.getText(),TersediaPria.getText(),TersediaWanita.getText(),TersediaPW.getText(),
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString(),
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString(),
-                        tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString()
-                      })==true){
-                        emptTeks();
-                        tampil();
-                    }                     
-                }else{
-                    JOptionPane.showMessageDialog(null,nameNode.path("message").asText());
-                }
-            }catch (Exception ex) {
-                System.out.println("Notifikasi Bridging : "+ex);
-                if(ex.toString().contains("UnknownHostException")){
-                    JOptionPane.showMessageDialog(null,"Koneksi ke server BPJS terputus...!");
-                }
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            requestEntity = new HttpEntity(headers);
+
+            String md5Token = md5("3320102" + "pkuaisyiyah"); // Sesuaikan user/pass
+            String fullUrl = "https://spgdt-service.sik-jepara.co.id/update_kamar.php?" +
+                             "idFaskes=3320102" +
+                             "&idKelas=" + KdKelas.getText() +
+//                             "&namaKamar=" + URLEncoder.encode(NmKamar.getText(), "UTF-8") +
+                             "&namaKamar=" + NmKamar.getText() +
+                             "&kapasitas=" + Kapasitas.getText() +
+                             "&terisi=" + Terisi.getText() +
+                             "&idKamar=" + kd_kamar_spgdt.getText() +
+                             "&token=" + md5Token;
+
+            System.out.println("URL PUT SPGDT: " + fullUrl);
+
+            String responseStr = api.getRest().exchange(fullUrl, HttpMethod.PUT, requestEntity, String.class).getBody();
+            System.out.println("RESPON UPDATE SPGDT: " + responseStr);
+
+            root = mapper.readTree(responseStr);
+            String status = root.path("response").asText();
+
+            if (status.equalsIgnoreCase("success")) {
+                JOptionPane.showMessageDialog(null, "Data kamar berhasil di-update ke SPGDT.");
+                
+                // update lokal jika perlu
+                Sequel.queryu2("UPDATE spgdt_ketersediaan_kamar SET kode_kelas_spgdt=?, kd_bangsal=?, kapasitas=?, tersedia=?, terisi=? WHERE id_spgdt_kamar=?",
+                    6,
+                    new String[]{
+                        KdKelas.getText(),
+                        KdKamar.getText(),
+                        Kapasitas.getText(),
+                        Tersedia.getText(),
+                        Terisi.getText(),
+                        kd_kamar_spgdt.getText()
+                    }
+                );
+
+                tampil(); // refresh tabel
+                emptTeks();
+            } else {
+                JOptionPane.showMessageDialog(null, "Gagal update kamar ke SPGDT: " + status);
             }
+
+        } catch (Exception ex) {
+            System.out.println("Notifikasi SPGDT UPDATE: " + ex);
+            JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat update: " + ex.getMessage());
         }
+    }
 }//GEN-LAST:event_BtnEditActionPerformed
 
     private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnEditKeyPressed
@@ -1107,20 +1200,20 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_tbJnsPerawatanKeyReleased
 
-    private void btnspgdtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnspgdtActionPerformed
+    private void TerisiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TerisiKeyPressed
         // TODO add your handling code here:
+    }//GEN-LAST:event_TerisiKeyPressed
 
-        spgdtkamar.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-        spgdtkamar.setLocationRelativeTo(internalFrame1);
-        spgdtkamar.setVisible(true);
-    }//GEN-LAST:event_btnspgdtActionPerformed
+    private void kd_kamar_spgdtKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kd_kamar_spgdtKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kd_kamar_spgdtKeyPressed
 
     /**
     * @param args the command line arguments
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            AplicareKetersediaanKamar dialog = new AplicareKetersediaanKamar(new javax.swing.JFrame(), true);
+            SPGDTKetersediaanKamar dialog = new SPGDTKetersediaanKamar(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -1152,17 +1245,19 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JPanel PanelInput;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
+    private widget.TextBox Terisi;
     private widget.TextBox Tersedia;
     private widget.TextBox TersediaPW;
     private widget.TextBox TersediaPria;
     private widget.TextBox TersediaWanita;
     private widget.Button btnKamar;
     private widget.Button btnKelas;
-    private javax.swing.JButton btnspgdt;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
     private widget.Label jLabel11;
     private widget.Label jLabel12;
+    private widget.Label jLabel13;
+    private widget.Label jLabel14;
     private widget.Label jLabel19;
     private widget.Label jLabel4;
     private widget.Label jLabel5;
@@ -1171,6 +1266,7 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
+    private widget.TextBox kd_kamar_spgdt;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.Table tbJnsPerawatan;
@@ -1180,15 +1276,15 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         Valid.tabelKosong(tabMode);
         try{
            ps=koneksi.prepareStatement(
-                   "select aplicare_ketersediaan_kamar.kode_kelas_aplicare,aplicare_ketersediaan_kamar.kd_bangsal,"+
-                   "bangsal.nm_bangsal,aplicare_ketersediaan_kamar.kelas,aplicare_ketersediaan_kamar.kapasitas,"+
-                   "aplicare_ketersediaan_kamar.tersedia,aplicare_ketersediaan_kamar.tersediapria,"+
-                   "aplicare_ketersediaan_kamar.tersediawanita,aplicare_ketersediaan_kamar.tersediapriawanita "+
-                   "from aplicare_ketersediaan_kamar inner join bangsal on aplicare_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal where "+
-                   "aplicare_ketersediaan_kamar.kode_kelas_aplicare like ? or "+
-                   "aplicare_ketersediaan_kamar.kd_bangsal like ? or "+
+                   "select spgdt_ketersediaan_kamar.kode_kelas_spgdt,spgdt_ketersediaan_kamar.kd_bangsal,spgdt_ketersediaan_kamar.id_spgdt_kamar,"+
+                   "bangsal.nm_bangsal,spgdt_ketersediaan_kamar.kelas,spgdt_ketersediaan_kamar.kapasitas,"+
+                   "spgdt_ketersediaan_kamar.tersedia,spgdt_ketersediaan_kamar.terisi,spgdt_ketersediaan_kamar.tersediapria,"+
+                   "spgdt_ketersediaan_kamar.tersediawanita,spgdt_ketersediaan_kamar.tersediapriawanita "+
+                   "from spgdt_ketersediaan_kamar inner join bangsal on spgdt_ketersediaan_kamar.kd_bangsal=bangsal.kd_bangsal where "+
+                   "spgdt_ketersediaan_kamar.kode_kelas_spgdt like ? or "+
+                   "spgdt_ketersediaan_kamar.kd_bangsal like ? or "+
                    "bangsal.nm_bangsal like ? or "+
-                   "aplicare_ketersediaan_kamar.kelas like ? order by aplicare_ketersediaan_kamar.kode_kelas_aplicare");
+                   "spgdt_ketersediaan_kamar.kelas like ? order by spgdt_ketersediaan_kamar.kode_kelas_spgdt");
             try {
                 ps.setString(1,"%"+TCari.getText()+"%");
                 ps.setString(2,"%"+TCari.getText()+"%");
@@ -1197,9 +1293,9 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 rs=ps.executeQuery();
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
-                        false,rs.getString("kode_kelas_aplicare"),rs.getString("kd_bangsal"),
+                        false,rs.getString("kode_kelas_spgdt"),rs.getString("kd_bangsal"), rs.getString("id_spgdt_kamar"),
                         rs.getString("nm_bangsal"),rs.getString("kelas"),rs.getString("kapasitas"),
-                        rs.getString("tersedia"),rs.getString("tersediapriawanita"),
+                        rs.getString("tersedia"),rs.getString("terisi"),rs.getString("tersediapriawanita"),
                         rs.getString("tersediapria"),rs.getString("tersediawanita"),
                     });
                 }
@@ -1229,6 +1325,8 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         TersediaPW.setText("0");
         TersediaPria.setText("0");
         TersediaWanita.setText("0");
+        Terisi.setText("0");
+        kd_kamar_spgdt.setText("");
         KdKelas.requestFocus();
     }
 
@@ -1236,13 +1334,15 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
        if(tbJnsPerawatan.getSelectedRow()!= -1){
            KdKelas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString());
            KdKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),2).toString());
-           NmKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
-           Kelas.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
-           Kapasitas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
-           Tersedia.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),6).toString());
-           TersediaPW.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
-           TersediaPria.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),8).toString());
-           TersediaWanita.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),9).toString());
+           kd_kamar_spgdt.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),3).toString());
+           NmKamar.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),4).toString());
+           Kelas.setSelectedItem(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),5).toString());
+           Kapasitas.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),6).toString());
+           Tersedia.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),7).toString());
+           Terisi.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),8).toString());
+           TersediaPW.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),9).toString());
+           TersediaPria.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),10).toString());
+           TersediaWanita.setText(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),11).toString());
        }
     }
 
@@ -1277,6 +1377,7 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         if(!KdKamar.getText().equals("")){
             Kapasitas.setText(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+Kelas.getSelectedItem()+"' and kd_bangsal=?",KdKamar.getText()));
             Tersedia.setText(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+Kelas.getSelectedItem()+"' and status='KOSONG' and kd_bangsal=?",KdKamar.getText()));
+            Terisi.setText(Sequel.cariIsi("select count(kd_kamar) from kamar where statusdata='1' and kelas='"+Kelas.getSelectedItem()+"' and status='ISI' and kd_bangsal=?",KdKamar.getText()));
             TersediaPW.setText(Tersedia.getText());
         }
     }

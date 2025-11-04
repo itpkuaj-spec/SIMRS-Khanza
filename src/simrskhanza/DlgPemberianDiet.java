@@ -1425,6 +1425,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         DTPCari2.setDate(tgl2);
         ChkInput.setSelected(true);
         isForm();
+        WaktuDiet.setText("Pagi");
+        JamDiet.setText("07:00");
+        KdDiet.setText("D44");
+        NmDiet.setText("NASI BIASA");
     }
     
     private void isForm(){

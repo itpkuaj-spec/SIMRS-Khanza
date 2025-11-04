@@ -10,7 +10,7 @@
  */
 
 package permintaan;
-
+import bridging.FonnteAPI;
 import kepegawaian.DlgCariDokter;
 import fungsi.WarnaTable;
 import fungsi.batasInput;
@@ -48,14 +48,17 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement pstindakan,pstampil,
+    private Connection koneksiwa;
+    private DlgCariDokter dokter=new DlgCariDokter(null,false);
+    private PreparedStatement ps,pstindakan,pstampil,
             psset_tarif;
-    private ResultSet rstindakan,rstampil,rsset_tarif;
+    private ResultSet rs,rstindakan,rstampil,rsset_tarif;
     private boolean[] pilih,pilih2; 
     private String[] kode,nama,pemeriksaan2,satuan2,nilai_rujukan2,idtemplate2;
     private int jml=0,i=0,index=0,jml2=0,jml3=0,i2=0,index2=0,jmlparsial=0;
-    private String aktifkanparsial="no",norawatibu="",kelas="",kamar,namakamar,cara_bayar_lab="Yes",kelas_lab="Yes",status="",la="",ld="",pa="",pd="",finger="";
-    private boolean sukses=true;
+    private String aktifkanparsial="no",norawatibu="",kelas="",kamar,namakamar,cara_bayar_lab="Yes",kelas_lab="Yes",status="",la="",ld="",pa="",pd="",finger="",notifwalab = "", idgroupwalab = "", pesan = "", tanggaljamkirim = "", petugas = "";
+    private boolean sukses = true;
+   
     
 
     /** Creates new form DlgPerawatan
@@ -323,6 +326,29 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         ChkJln.setSelected(true);
         jam();        
         
+        dokter.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(dokter.getTable().getSelectedRow()!= -1){
+                    KodePerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
+                    NmPerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    KodePerujuk.requestFocus();                       
+                }  
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
+        
         try {
             psset_tarif=koneksi.prepareStatement("select set_tarif.cara_bayar_lab,set_tarif.kelas_lab from set_tarif");
             try {
@@ -352,6 +378,14 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
             aktifkanparsial=koneksiDB.AKTIFKANBILLINGPARSIAL();
         } catch (Exception ex) {            
             aktifkanparsial="no";
+        }
+        
+        try {
+            notifwalab = koneksiDB.NOTIFWALAB();
+            idgroupwalab = koneksiDB.IDGROUPWALAB();
+        } catch (Exception e) {
+            notifwalab = "no";
+            idgroupwalab = "no";
         }
     }
 
@@ -400,8 +434,6 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         jLabel7 = new widget.Label();
         TabRawat = new javax.swing.JTabbedPane();
         PanelCariUtama = new javax.swing.JPanel();
-        Scroll = new widget.ScrollPane();
-        tbDetailPK = new widget.Table();
         panelGlass11 = new widget.panelisi();
         jLabel6 = new widget.Label();
         TCari = new widget.TextBox();
@@ -413,6 +445,9 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         BtnCari1 = new widget.Button();
         jLabel4 = new widget.Label();
         TNoPermintaanPK = new widget.TextBox();
+        tbDetailPK1 = new widget.Table();
+        Scroll = new widget.ScrollPane();
+        tbDetailPK = new widget.Table();
         PanelCariUtama1 = new javax.swing.JPanel();
         panelGlass12 = new widget.panelisi();
         jLabel8 = new widget.Label();
@@ -622,7 +657,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         jLabel9.setBounds(0, 40, 92, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-10-2022" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -641,6 +676,11 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
 
         CmbJam.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
         CmbJam.setName("CmbJam"); // NOI18N
+        CmbJam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CmbJamActionPerformed(evt);
+            }
+        });
         PanelInput.add(CmbJam);
         CmbJam.setBounds(554, 40, 62, 23);
 
@@ -750,27 +790,16 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         PanelCariUtama.setPreferredSize(new java.awt.Dimension(100, 143));
         PanelCariUtama.setLayout(new java.awt.BorderLayout());
 
-        Scroll.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        Scroll.setComponentPopupMenu(Popup);
-        Scroll.setName("Scroll"); // NOI18N
-        Scroll.setOpaque(true);
-
-        tbDetailPK.setComponentPopupMenu(Popup);
-        tbDetailPK.setName("tbDetailPK"); // NOI18N
-        Scroll.setViewportView(tbDetailPK);
-
-        PanelCariUtama.add(Scroll, java.awt.BorderLayout.CENTER);
-
         panelGlass11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         panelGlass11.setName("panelGlass11"); // NOI18N
-        panelGlass11.setPreferredSize(new java.awt.Dimension(44, 157));
+        panelGlass11.setPreferredSize(new java.awt.Dimension(44, 500));
         panelGlass11.setLayout(null);
 
         jLabel6.setText("Detail Pemeriksaan :");
         jLabel6.setName("jLabel6"); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(110, 23));
         panelGlass11.add(jLabel6);
-        jLabel6.setBounds(4, 130, 110, 23);
+        jLabel6.setBounds(780, 10, 110, 23);
 
         TCari.setName("TCari"); // NOI18N
         TCari.setPreferredSize(new java.awt.Dimension(625, 23));
@@ -780,7 +809,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
             }
         });
         panelGlass11.add(TCari);
-        TCari.setBounds(117, 130, 623, 23);
+        TCari.setBounds(900, 10, 470, 23);
 
         BtnCari2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/accept.png"))); // NOI18N
         BtnCari2.setMnemonic('4');
@@ -798,7 +827,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
             }
         });
         panelGlass11.add(BtnCari2);
-        BtnCari2.setBounds(744, 130, 28, 23);
+        BtnCari2.setBounds(1380, 10, 28, 23);
 
         jLabel11.setText("Pemeriksaan :");
         jLabel11.setName("jLabel11"); // NOI18N
@@ -827,7 +856,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         Scroll1.setViewportView(tbTarifPK);
 
         panelGlass11.add(Scroll1);
-        Scroll1.setBounds(85, 35, 687, 90);
+        Scroll1.setBounds(85, 35, 687, 390);
 
         BtnCari1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/accept.png"))); // NOI18N
         BtnCari1.setMnemonic('1');
@@ -856,6 +885,23 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         });
         panelGlass11.add(TNoPermintaanPK);
         TNoPermintaanPK.setBounds(642, 10, 130, 23);
+
+        tbDetailPK1.setComponentPopupMenu(Popup);
+        tbDetailPK1.setName("tbDetailPK1"); // NOI18N
+        panelGlass11.add(tbDetailPK1);
+        tbDetailPK1.setBounds(0, 0, 0, 0);
+
+        Scroll.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        Scroll.setComponentPopupMenu(Popup);
+        Scroll.setName("Scroll"); // NOI18N
+        Scroll.setOpaque(true);
+
+        tbDetailPK.setComponentPopupMenu(Popup);
+        tbDetailPK.setName("tbDetailPK"); // NOI18N
+        Scroll.setViewportView(tbDetailPK);
+
+        panelGlass11.add(Scroll);
+        Scroll.setBounds(900, 42, 500, 370);
 
         PanelCariUtama.add(panelGlass11, java.awt.BorderLayout.PAGE_START);
 
@@ -971,7 +1017,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         jLabel17.setBounds(235, 10, 120, 23);
 
         TanggalPA.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-10-2022" }));
+        TanggalPA.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         TanggalPA.setDisplayFormat("dd-MM-yyyy");
         TanggalPA.setName("TanggalPA"); // NOI18N
         TanggalPA.setOpaque(false);
@@ -1014,7 +1060,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         DiagnosaPA.setBounds(432, 100, 340, 23);
 
         TanggalBahan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalBahan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "12-10-2022" }));
+        TanggalBahan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "03-11-2025" }));
         TanggalBahan.setDisplayFormat("dd-MM-yyyy");
         TanggalBahan.setName("TanggalBahan"); // NOI18N
         TanggalBahan.setOpaque(false);
@@ -1567,6 +1613,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
+        dokter.dispose();
         dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
@@ -1626,6 +1673,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             try {
                 Valid.tabelKosong(tabMode);
                 tampil();
+                ppSemuaActionPerformed(null);
             } catch (java.lang.NullPointerException e) {
             }
         }
@@ -1642,7 +1690,9 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_BtnHapusKeyPressed
 
     private void KodePerujukKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_KodePerujukKeyPressed
-        if(evt.getKeyCode()==KeyEvent.VK_UP){
+        if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
+            NmPerujuk.setText(dokter.tampil3(KodePerujuk.getText()));
+        }else if(evt.getKeyCode()==KeyEvent.VK_UP){
             btnDokterActionPerformed(null);
         }else{            
             Valid.pindah(evt,TCari,Tanggal);
@@ -1650,29 +1700,6 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_KodePerujukKeyPressed
 
     private void btnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDokterActionPerformed
-        DlgCariDokter dokter=new DlgCariDokter(null,false);
-        dokter.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    KodePerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                    NmPerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                    KodePerujuk.requestFocus();                       
-                }  
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });
         dokter.emptTeks();
         dokter.isCek();
         dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
@@ -1901,6 +1928,10 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_ppSemua1ActionPerformed
 
+    private void CmbJamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CmbJamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CmbJamActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -2011,6 +2042,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JMenuItem ppSemua1;
     private widget.Table tbDetailMB;
     private widget.Table tbDetailPK;
+    private widget.Table tbDetailPK1;
     private widget.Table tbTarifMB;
     private widget.Table tbTarifPA;
     private widget.Table tbTarifPK;
@@ -2282,18 +2314,21 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             tbTarifPK.setValueAt(false,i,0);
         }
         Valid.tabelKosong(tabMode);
+        tampiltarif();
         
         jml=tbTarifPA.getRowCount();
         for(i=0;i<jml;i++){ 
             tbTarifPA.setValueAt(false,i,0);
         }
         Valid.tabelKosong(tabMode3);
+        tampiltarif2();
         
         jml3=tbTarifMB.getRowCount();
         for(i=0;i<jml3;i++){ 
             tbTarifMB.setValueAt(false,i,0);
         }
         Valid.tabelKosong(tabModeDetailMB);
+        tampiltarifmb();
     }
     
     private void jam(){
@@ -2756,6 +2791,7 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 }
                 
                 if(sukses==true){
+                    NotifWa();
                     isReset();
                     emptTeks();
                     JOptionPane.showMessageDialog(null,"Proses simpan selesai...!");
@@ -2978,5 +3014,54 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             System.out.println("Notifikasi : "+e);
         }
     }
+    
+    private void NotifWa() {
+        if (notifwalab.equals("yes")) {
+            petugas = Sequel.cariIsi("select nama from pegawai where nik = ?", akses.getkode());
+           
+
+            String PasienTx = TPasien.getText();
+            String NoRMTx = TNoRM.getText();
+            String DokterTx = NmPerujuk.getText();
+            String Diagnosa = DiagnosisKlinis.getText();
+            String InfoTambahan = InformasiTambahan.getText();
+            String nopk = TNoPermintaanPK.getText();
+            String InfoTanggal =Tanggal.getSelectedItem().toString();
+            String InfoJam = CmbJam.getSelectedItem() + ":" + CmbMenit.getSelectedItem();
+            
+            String pemeriksaan = "";
+            for (i = 0; i < tbTarifPK.getRowCount(); i++) {
+                if (tbTarifPK.getValueAt(i, 0).toString().equals("true")) {
+                    pemeriksaan += " - *" + tbTarifPK.getValueAt(i, 2).toString() + "*\n";
+                }
+            }
+
+
+            String pesan = "*PERMINTAAN LAB*\n"
+                    + "==========================\n"
+                    + "Pasien: " + PasienTx + "\n"
+                    + "No. RM: " + NoRMTx + "\n"
+                    + "Dokter Perujuk : *" + DokterTx + "*\n"
+                    + "Indikasi/Klinis: " + Diagnosa + "\n"
+                    + "Informasi Tambahan : " + InfoTambahan + "\n\n"
+                    + "Jenis Pemeriksaan : " + pemeriksaan + "\n"
+                    + "Asal Permintaan : " + status + "\n\n"
+                    + "Petugas : " + petugas + "\n\n"
+                    + "*JADWAL PEMERIKSA*\n"
+                    + "No. PK : " + nopk + "\n"
+                    + "Tgl Permintaan : " + InfoTanggal + "\n"
+                    + "Info Waktu : " + InfoJam + " WIB\n\n"
+                    + "===========================";            
+            // kirim WA
+            boolean terkirim = FonnteAPI.sendMessage(idgroupwalab, pesan);
+
+            if (terkirim) {
+                System.out.println("Pesan WA berhasil dikirim!");
+            } else {
+                System.out.println("Gagal mengirim pesan WA.");
+            }
+        }
+    }
+
 
 }

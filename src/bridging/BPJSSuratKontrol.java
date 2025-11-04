@@ -1,5 +1,5 @@
 package bridging;
-
+import bridging.FonnteAPI;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.WarnaTable;
@@ -61,7 +61,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode nameNode;
     private JsonNode response;
-    private String link="",requestJson="",URL="",user="",URUTNOREG="",utc="",JADIKANBOOKINGSURATKONTROLAPIBPJS="no",kodedokter="",kodepoli="",noreg="";
+    private String link="",requestJson="",URL="",user="",URUTNOREG="",utc="",JADIKANBOOKINGSURATKONTROLAPIBPJS="no",kodedokter="",kodepoli="",noreg="",notifwapasien = "", pesan = "";//tambahan wa
     private ApiBPJS api=new ApiBPJS();
     private boolean status=false;
 
@@ -496,7 +496,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         R1.setPreferredSize(new java.awt.Dimension(115, 23));
         panelCari.add(R1);
 
-        DTPTanggalSurat1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalSurat1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025" }));
         DTPTanggalSurat1.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalSurat1.setName("DTPTanggalSurat1"); // NOI18N
         DTPTanggalSurat1.setOpaque(false);
@@ -519,7 +519,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel22.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel22);
 
-        DTPTanggalSurat2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalSurat2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025" }));
         DTPTanggalSurat2.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalSurat2.setName("DTPTanggalSurat2"); // NOI18N
         DTPTanggalSurat2.setOpaque(false);
@@ -545,7 +545,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(120, 23));
         panelCari.add(R2);
 
-        DTPTanggalKontrol1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalKontrol1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025" }));
         DTPTanggalKontrol1.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalKontrol1.setName("DTPTanggalKontrol1"); // NOI18N
         DTPTanggalKontrol1.setOpaque(false);
@@ -568,7 +568,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel25);
 
-        DTPTanggalKontrol2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        DTPTanggalKontrol2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025" }));
         DTPTanggalKontrol2.setDisplayFormat("dd-MM-yyyy");
         DTPTanggalKontrol2.setName("DTPTanggalKontrol2"); // NOI18N
         DTPTanggalKontrol2.setOpaque(false);
@@ -647,7 +647,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         NoSEP.setBounds(286, 10, 150, 23);
 
         TanggalSurat.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalSurat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023" }));
+        TanggalSurat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025" }));
         TanggalSurat.setDisplayFormat("dd-MM-yyyy");
         TanggalSurat.setName("TanggalSurat"); // NOI18N
         TanggalSurat.setOpaque(false);
@@ -727,8 +727,8 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel14.setBounds(491, 70, 100, 23);
 
         TanggalKontrol.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-07-2023 16:29:08" }));
-        TanggalKontrol.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
+        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "15-04-2025 09:33:47" }));
+        TanggalKontrol.setDisplayFormat("dd-MM-yyyy");
         TanggalKontrol.setName("TanggalKontrol"); // NOI18N
         TanggalKontrol.setOpaque(false);
         TanggalKontrol.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -860,6 +860,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
                     if(Sequel.menyimpantf("bridging_surat_kontrol_bpjs","?,?,?,?,?,?,?,?","No.Surat",8,new String[]{
                             NoSEP.getText(),Valid.SetTgl(TanggalSurat.getSelectedItem()+""),response.asText(),Valid.SetTgl(TanggalKontrol.getSelectedItem()+""),KdDokter.getText(),NmDokter.getText(),KdPoli.getText(),NmPoli.getText()
                         })==true){
+                        KirimWaPasienSekarang();
                         emptTeks();
                         tampil();
                         if(JADIKANBOOKINGSURATKONTROLAPIBPJS.equals("yes")){
@@ -1138,6 +1139,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                         if(Sequel.mengedittf("bridging_surat_kontrol_bpjs","no_surat=?","tgl_surat=?,tgl_rencana=?,kd_dokter_bpjs=?,nm_dokter_bpjs=?,kd_poli_bpjs=?,nm_poli_bpjs=?",7,new String[]{
                                 Valid.SetTgl(TanggalSurat.getSelectedItem()+""),Valid.SetTgl(TanggalKontrol.getSelectedItem()+""),KdDokter.getText(),NmDokter.getText(),KdPoli.getText(),NmPoli.getText(),NoSurat.getText()
                             })==true){
+                            KirimWaPasienSekarang();
                             emptTeks();
                             tampil();
                         }
@@ -1648,4 +1650,60 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             
         return status;
     }
+    
+    //tambahan notif wa
+        private void KirimWaPasienSekarang() {
+        if (notifwapasien.equals("yes")) {
+        
+        
+        String noSurat = Sequel.cariIsi("select no_surat from bridging_surat_kontrol_bpjs where no_sep='" + NoSEP.getText() + "' ");
+        String noTelp = Sequel.cariIsi("select no_tlp from pasien where no_rkm_medis='" + NoRM.getText() + "' ");
+
+        // Membuat pesan WA
+        String pesan = "============================\n"
+                + akses.getnamars() + "\n"
+                + "*Jadwal Kontrol BPJS*\n"
+                + "============================\n"
+                + "Kepada Yth Pasien/ Keluarga dari\n"              
+                + "Nama Pasien:*" + NmPasien.getText() + "*\n"
+                + "Nomor RM :" + NoRM.getText() + "\n"
+                + "Tanggal Lahir:" + TglLahir.getText() + "\n"
+                + "Jenis Kelamin:" + JK.getText() + "\n"
+                + "\n"
+                + "*diharap untuk kontrol kembali ke RS*\n"
+                + "Tanggal Kontrol:*" + TanggalKontrol.getSelectedItem() + "*\n"
+                + "Nomor Surat: " + noSurat + "\n"
+                + "Poli:*" + NmPoli.getText() + "*\n"
+                + "Dokter:*" + NmDokter.getText() + "*\n"
+                + "*Mohon daftar online melalui Mobile JKN*\n"
+                + "===========================\n"
+                + "\n"
+                + "Terimakasih Telah Berkunjung ke RS PKU Aisyiyah Jepara\n"
+                + "dan semoga lekas membaik..\n"
+                + "*Mohon tidak menghubungi No WA ini,*\n"
+                + "Jika membutuhkan bantuan kami,bisa menghububgi WA Resmi Kami dibawah\n"
+                + "\n"
+                + "Silahkan Klik Link berikut.\n"
+                + "https://wa.link/o8javn\n"
+                + "\n"
+                + "===========================\n"
+                + "Ikuti Saluran kami di WhatsApp untuk mendapatkan informasi up to date dari kami.\n"
+                + "Silahkan Klik Link berikut.\n"
+                + "https://shorturl.at/0L6ag"
+                + "\n"
+                + "===========================\n";
+
+            // kirim WA
+            // Format nomor agar sesuai internasional (628xxxx)
+            String nomorTujuan = noTelp.replaceFirst("^0", "62");
+            boolean terkirim = FonnteAPI.sendMessage(noTelp, pesan);
+
+            if (terkirim) {
+                System.out.println("Pesan WA berhasil dikirim!");
+            } else {
+                System.out.println("Gagal mengirim pesan WA.");
+}
+
+            }
+        }
 }

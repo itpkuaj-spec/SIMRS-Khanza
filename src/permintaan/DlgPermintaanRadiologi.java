@@ -11,6 +11,7 @@
 
 package permintaan;
 
+import bridging.FonnteAPI;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kepegawaian.DlgCariDokter;
@@ -53,13 +54,14 @@ public final class DlgPermintaanRadiologi extends javax.swing.JDialog {
     private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
-    private PreparedStatement psset_tarif,pspemeriksaan;
+    private Connection koneksiwa;
+    private PreparedStatement ps,psset_tarif,pspemeriksaan;
     private ResultSet rs,rsset_tarif;
     private boolean[] pilih; 
     private String[] kode,nama;
     private int jml=0,i=0,index=0,jmlparsial=0;
     private String kelas_radiologi="Yes",kelas="",cara_bayar_radiologi="Yes",kamar,namakamar,status="",
-            norawatibu="",aktifkanparsial="no",finger="";
+            norawatibu="",aktifkanparsial="no",finger="",notifwaradiologi="",idgroupwaradiologi="",pesan="",tanggaljamkirim="",petugaswa="";
     private File file;
     private FileWriter fileWriter;
     private ObjectMapper mapper = new ObjectMapper();
@@ -169,6 +171,14 @@ public final class DlgPermintaanRadiologi extends javax.swing.JDialog {
             aktifkanparsial=koneksiDB.AKTIFKANBILLINGPARSIAL();
         } catch (Exception ex) {            
             aktifkanparsial="no";
+        }
+        
+        try {
+            notifwaradiologi = koneksiDB.NOTIFWARAD();
+            idgroupwaradiologi = koneksiDB.IDGROUPWARAD();
+        } catch (Exception e) {
+            notifwaradiologi = "no";
+            idgroupwaradiologi = "no";
         }
     }
 
@@ -419,7 +429,7 @@ public final class DlgPermintaanRadiologi extends javax.swing.JDialog {
         PanelInput.add(jLabel9);
         jLabel9.setBounds(0, 42, 92, 23);
 
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "24-10-2023" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06-10-2025" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -1168,6 +1178,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             tbPemeriksaan.setValueAt(false,i,0);
         }
         Valid.tabelKosong(tabMode);
+        tampil2();
     }
     
     public void emptTeks() {
@@ -1370,6 +1381,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                             });
                         }                        
                     } 
+                    NotifWa();
                     isReset();
                     emptTeks();
                 }else{
@@ -1387,6 +1399,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                                 });
                             }                        
                         } 
+                        NotifWa();
                         isReset();
                         emptTeks();
                     }else{
@@ -1404,6 +1417,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                                     });
                                 }                        
                             } 
+                            NotifWa();
                             isReset();
                             emptTeks();
                         }else{
@@ -1421,6 +1435,7 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                                         });
                                     }                        
                                 } 
+                                NotifWa();
                                 isReset();
                                 emptTeks();
                             } 
@@ -1434,6 +1449,54 @@ private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
                 System.out.println(e);
             }    
             ChkJln.setSelected(true);            
+        }
+    }
+
+    private void NotifWa() {
+        if (notifwaradiologi.equals("yes")) {
+            petugaswa = Sequel.cariIsi("select nama from pegawai where nik = ?", akses.getkode());
+            
+
+            String PasienTx = TPasien.getText();
+            String NoRMTx = TNoRM.getText();
+            String DokterTx = NmPerujuk.getText();
+            String Diagnosa = DiagnosisKlinis.getText();
+            String InfoTambahan = InformasiTambahan.getText();
+            String nopk = TNoPermintaan.getText();
+            String InfoTanggal =Tanggal.getSelectedItem().toString();
+            String InfoJam = CmbJam.getSelectedItem() + ":" + CmbMenit.getSelectedItem();
+            String pemeriksaan = "";
+            for (i = 0; i < tbPemeriksaan.getRowCount(); i++) {
+                if (tbPemeriksaan.getValueAt(i, 0).toString().equals("true")) {
+                    pemeriksaan += " - *" + tbPemeriksaan.getValueAt(i, 2).toString() + "*\n";
+}
+            }
+
+
+            String pesan = "*PERMINTAAN RADIOLOGI*\n"
+                    + "==========================\n"
+                    + "Pasien: " + PasienTx + "\n"
+                    + "No. RM: " + NoRMTx + "\n"
+                    + "Dokter Perujuk : *" + DokterTx + "*\n"
+                    + "Indikasi/Klinis: " + Diagnosa + "\n"
+                    + "Informasi Tambahan : " + InfoTambahan + "\n\n"
+                    + "Jenis Pemeriksaan : " + pemeriksaan + "\n"
+                    + "Asal Permintaan : " + status + "\n\n"
+                    + "Petugas : " + petugaswa + "\n\n"
+                    + "*JADWAL PEMERIKSA*\n"
+                    + "No. Permintaan : " + nopk + "\n"
+                    + "Tgl Permintaan : " + InfoTanggal + "\n"
+                    + "Info Waktu : " + InfoJam + " WIB\n\n"
+                    + "===========================";   
+            // kirim WA
+            boolean terkirim = FonnteAPI.sendMessage(idgroupwaradiologi, pesan);
+
+            if (terkirim) {
+                System.out.println("Pesan WA berhasil dikirim!");
+            } else {
+                System.out.println("Gagal mengirim pesan WA.");
+            }
+
         }
     }
 
