@@ -106,6 +106,18 @@ public class DlgTagihanOperasi extends javax.swing.JDialog {
                 column.setPreferredWidth(85);
             }
         }
+            //menyembunyikan tarif/biaya
+            // Contoh: cek apakah user bukan admin
+            System.out.println("User login saat ini: " + akses.getkode());
+        if (!akses.getkode().equals("Admin Utama")) {
+            // Sembunyikan kolom mulai dari 4 s.d. terakhir
+            for (int i = 4; i < tbtindakan.getColumnCount(); i++) {
+                TableColumn column = tbtindakan.getColumnModel().getColumn(i);
+                column.setMinWidth(0);
+                column.setMaxWidth(0);
+                column.setPreferredWidth(0);
+            }
+        }
         tbtindakan.setDefaultRenderer(Object.class, new WarnaTable());
         
         //tagihan obat

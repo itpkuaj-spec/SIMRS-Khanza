@@ -53,7 +53,7 @@ public final class DlgPelayananPoli extends javax.swing.JDialog {
         this.setLocation(8,1);
         setSize(885,674);
 
-        Object[] rowRwJlDr={"No.","No.RM","Nama Pasien","Dokter","Poli","Jam Registrasi","Jam Pelayanan Poli","Durasi(m)"};
+        Object[] rowRwJlDr={ "Dokter", "Jumlah Pasien", "Rata-rata Tunggu Poli (Menit)", "Total Menit"};
         tabMode=new DefaultTableModel(null,rowRwJlDr){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -62,10 +62,10 @@ public final class DlgPelayananPoli extends javax.swing.JDialog {
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 8; i++) {
+        for (i = 0; i < 4; i++) {
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
             if(i==0){
-                column.setPreferredWidth(35);
+                column.setPreferredWidth(175);
             }else if(i==1){
                 column.setPreferredWidth(70);
             }else if(i==2){
@@ -73,13 +73,7 @@ public final class DlgPelayananPoli extends javax.swing.JDialog {
             }else if(i==3){
                 column.setPreferredWidth(175);
             }else if(i==4){
-                column.setPreferredWidth(130);
-            }else if(i==5){
-                column.setPreferredWidth(110);
-            }else if(i==6){
-                column.setPreferredWidth(110);
-            }else if(i==7){
-                column.setPreferredWidth(55);
+                column.setPreferredWidth(130);            
             }
         }
         tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
@@ -142,6 +136,14 @@ public final class DlgPelayananPoli extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Data Lama Pelayanan Poliklinik ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
@@ -365,6 +367,10 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         }
 }//GEN-LAST:event_BtnCariKeyPressed
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        tampil();
+    }//GEN-LAST:event_formWindowOpened
+
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             BtnCariActionPerformed(null);
@@ -387,6 +393,11 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
             
         }
     }//GEN-LAST:event_BtnAllKeyPressed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        tampil();
+
+    }//GEN-LAST:event_formWindowActivated
 
     /**
     * @param args the command line arguments
@@ -424,91 +435,79 @@ private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     // End of variables declaration//GEN-END:variables
 
     public void tampil(){        
-        try{   
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
-            Valid.tabelKosong(tabMode);   
-            limabelas=0;
-            tigapuluh=0;
-            satujam=0;
-            lebihsatujam=0;
-            ps=koneksi.prepareStatement(
-                "select reg_periksa.no_rkm_medis,pasien.nm_pasien,dokter.nm_dokter,poliklinik.nm_poli," +
-                "reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat," +
-                "round((TIME_TO_SEC(concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat))-TIME_TO_SEC(concat(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg)))/60,2) as durasi " +
-                "from reg_periksa inner join dokter inner join pasien inner join poliklinik inner join pemeriksaan_ralan " +
-                "on reg_periksa.kd_dokter=dokter.kd_dokter " +
-                "and reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
-                "and reg_periksa.kd_poli=poliklinik.kd_poli " +
-                "and reg_periksa.no_rawat=pemeriksaan_ralan.no_rawat "+
-                "where reg_periksa.tgl_registrasi between ? and ? and poliklinik.nm_poli like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and dokter.nm_dokter like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and reg_periksa.no_rkm_medis like ? or " +
-                "reg_periksa.tgl_registrasi between ? and ? and pasien.nm_pasien like ?  "+
-                "group by pemeriksaan_ralan.no_rawat order by reg_periksa.tgl_registrasi,reg_periksa.jam_reg");
-            try {
-                ps.setString(1,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(5,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(6,"%"+TCari.getText().trim()+"%");
-                ps.setString(7,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(8,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(9,"%"+TCari.getText().trim()+"%");
-                ps.setString(10,Valid.SetTgl(Tgl1.getSelectedItem()+""));
-                ps.setString(11,Valid.SetTgl(Tgl2.getSelectedItem()+""));
-                ps.setString(12,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                i=1;  
-                totaljam=0;
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        i,rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                        rs.getString(5)+" "+rs.getString(6),rs.getString(7)+" "+rs.getString(8),rs.getString(9)
-                    });
-                    i++;
-                    totaljam=totaljam+rs.getDouble(9);
-                    if(rs.getDouble(9)<=15){
-                        limabelas++;
-                    }else if((rs.getDouble(9)>15)&&(rs.getDouble(9)<=30)){
-                        tigapuluh++;
-                    }else if((rs.getDouble(9)>30)&&(rs.getDouble(9)<=60)){
-                        satujam++;
-                    }else if(rs.getDouble(9)>60){
-                        lebihsatujam++;
-                    }
-                }               
-                if(totaljam>0){
-                    tabMode.addRow(new Object[]{
-                        "","","Rata-rata (Menit)",": ","","","",""+Valid.SetAngka6(totaljam/(i-1))
-                    });
-                    tabMode.addRow(new Object[]{
-                        "","","0 - 15 Menit",": ","","","",""+limabelas
-                    });
-                    tabMode.addRow(new Object[]{
-                        "","",">15 - <=30 Menit",": ","","","",""+tigapuluh
-                    });
-                    tabMode.addRow(new Object[]{
-                        "","",">30 - <=60 Menit",": ","","","",""+satujam
-                    });
-                    tabMode.addRow(new Object[]{
-                        "","",">60 Menit",": ","","","",""+lebihsatujam
-                    });
-                }                    
-            } catch (Exception e) {
-                System.out.println("laporan.DlgPelayananRalan.tampil() : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
-            }
-            this.setCursor(Cursor.getDefaultCursor());
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+        try {   
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+        Valid.tabelKosong(tabMode);   
+
+        // Query rekap per dokter
+        String sql = 
+            "SELECT dokter.nm_dokter, " +
+            "       COUNT(*) AS jumlah_pasien, " +
+            "       ROUND(AVG(TIMESTAMPDIFF(MINUTE, " +
+            "             CONCAT(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg), " +
+            "             antri_masuk_poli.tgl_jam)), 2) AS rata_tunggu_poli, " +
+            "       SUM(TIMESTAMPDIFF(MINUTE, " +
+            "             CONCAT(reg_periksa.tgl_registrasi,' ',reg_periksa.jam_reg), " +
+            "             antri_masuk_poli.tgl_jam)) AS total_menit " +
+            "FROM reg_periksa " +
+            "INNER JOIN dokter ON reg_periksa.kd_dokter = dokter.kd_dokter " +
+            "INNER JOIN antri_masuk_poli ON reg_periksa.no_rawat = antri_masuk_poli.no_rawat " +
+            "WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? AND reg_periksa.stts = 'Sudah' AND reg_periksa.status_bayar = 'Sudah Bayar' " +
+            "GROUP BY dokter.nm_dokter " +
+            "ORDER BY dokter.nm_dokter";
+
+        ps = koneksi.prepareStatement(sql);
+        ps.setString(1, Valid.SetTgl(Tgl1.getSelectedItem() + ""));
+        ps.setString(2, Valid.SetTgl(Tgl2.getSelectedItem() + ""));
+
+        rs = ps.executeQuery();
+
+        // Variabel untuk total keseluruhan
+        int totalPasienSemua = 0;
+        double totalMenitSemua = 0;
+
+        while (rs.next()) {
+            String namaDokter = rs.getString("nm_dokter");
+            int jumlahPasien = rs.getInt("jumlah_pasien");
+            double rataTunggu = rs.getDouble("rata_tunggu_poli");
+            double totalMenit = rs.getDouble("total_menit");
+
+            // Tambahkan ke tabel
+            tabMode.addRow(new Object[]{
+                namaDokter,
+                jumlahPasien,
+                rataTunggu,
+                totalMenit
+            });
+
+            // Akumulasi untuk semua dokter
+            totalPasienSemua += jumlahPasien;
+            totalMenitSemua += totalMenit;
         }
+
+        // Setelah loop, tampilkan total & rata-rata keseluruhan
+        if (totalPasienSemua > 0) {
+            double rataKeseluruhan = totalMenitSemua / totalPasienSemua;
+
+            tabMode.addRow(new Object[]{
+                "=== TOTAL SEMUA DOKTER ===",
+                totalPasienSemua,
+                rataKeseluruhan,
+                totalMenitSemua
+            });
+        }
+
+        this.setCursor(Cursor.getDefaultCursor());
+    } catch (Exception e) {
+        System.out.println("laporan.DlgPelayananRalan.tampil() : " + e);
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        } catch (Exception e) {
+            System.out.println("Notifikasi (close) : " + e);
+        }
+    }
     }
 
     private void getData() {

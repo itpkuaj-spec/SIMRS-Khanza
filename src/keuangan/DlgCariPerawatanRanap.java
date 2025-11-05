@@ -158,7 +158,10 @@ public final class DlgCariPerawatanRanap extends javax.swing.JDialog {
             }else if(i==11){
                 column.setPreferredWidth(75);
             }else{
-                column.setPreferredWidth(120);
+                //menyembunyikan tarif/biaya
+//                column.setPreferredWidth(120);
+                column.setMinWidth(0);
+                column.setMaxWidth(0);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable());

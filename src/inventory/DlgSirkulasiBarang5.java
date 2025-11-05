@@ -1049,7 +1049,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     "from databarang inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "+
                     "inner join jenis on databarang.kdjns=jenis.kdjns "+
                     "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "+
-                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where "+
+                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where databarang.status='1' AND "+
                     "jenis.nama like ? and kategori_barang.nama like ? and golongan_barang.nama like ? and "+
                     "(databarang.kode_brng like ? or databarang.nama_brng like ?) order by databarang.kode_brng");
             try {
@@ -1063,11 +1063,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 if(aktifkanbatch.equals("yes")){
                     qrystok="select sum(gudangbarang.stok),(sum(gudangbarang.stok)*databarang."+hppfarmasi+") as aset,databarang."+hppfarmasi+" as harga "+
                             "from gudangbarang inner join databarang on gudangbarang.kode_brng=databarang.kode_brng "+
-                            "where gudangbarang.kode_brng=? and gudangbarang.no_batch<>'' and gudangbarang.no_faktur<>''";
+                            "where databarang.status='1' AND gudangbarang.kode_brng=? and gudangbarang.no_batch<>'' and gudangbarang.no_faktur<>''";
                 }else{
                     qrystok="select sum(gudangbarang.stok),(sum(gudangbarang.stok)*databarang."+hppfarmasi+") as aset,databarang."+hppfarmasi+" as harga "+
                             "from gudangbarang inner join databarang on gudangbarang.kode_brng=databarang.kode_brng "+
-                            "where gudangbarang.kode_brng=? and gudangbarang.no_batch='' and gudangbarang.no_faktur=''";
+                            "where databarang.status='1' AND gudangbarang.kode_brng=? and gudangbarang.no_batch='' and gudangbarang.no_faktur=''";
                 }
                 
                 while(rs.next()){
@@ -1563,7 +1563,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     "from databarang inner join kodesatuan on databarang.kode_sat=kodesatuan.kode_sat "+
                     "inner join jenis on databarang.kdjns=jenis.kdjns "+
                     "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "+
-                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where "+
+                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where databarang.status='1' AND "+
                     "jenis.nama like ? and kategori_barang.nama like ? and golongan_barang.nama like ? and "+
                     "(databarang.kode_brng like ? or databarang.nama_brng like ?) order by databarang.kode_brng");
             try {
@@ -1577,11 +1577,11 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 if(aktifkanbatch.equals("yes")){
                     qrystok="select sum(gudangbarang.stok),(sum(gudangbarang.stok)*databarang."+hppfarmasi+") as aset,databarang."+hppfarmasi+" as harga "+
                             "from gudangbarang inner join databarang on gudangbarang.kode_brng=databarang.kode_brng "+
-                            "where gudangbarang.kode_brng=? and gudangbarang.kd_bangsal=? and gudangbarang.no_batch<>'' and gudangbarang.no_faktur<>''";
+                            "where databarang.status='1' AND gudangbarang.kode_brng=? and gudangbarang.kd_bangsal=? and gudangbarang.no_batch<>'' and gudangbarang.no_faktur<>''";
                 }else{
                     qrystok="select sum(gudangbarang.stok),(sum(gudangbarang.stok)*databarang."+hppfarmasi+") as aset,databarang."+hppfarmasi+" as harga "+
                             "from gudangbarang inner join databarang on gudangbarang.kode_brng=databarang.kode_brng "+
-                            "where gudangbarang.kode_brng=? and gudangbarang.kd_bangsal=? and gudangbarang.no_batch='' and gudangbarang.no_faktur=''";
+                            "where databarang.status='1' AND gudangbarang.kode_brng=? and gudangbarang.kd_bangsal=? and gudangbarang.no_batch='' and gudangbarang.no_faktur=''";
                 }
                 
                 while(rs.next()){

@@ -196,7 +196,10 @@ import surat.SuratPersetujuanUmum;
 import surat.SuratPulangAtasPermintaanSendiri;
 import surat.SuratSakit;
 import surat.SuratSakitPihak2;
+//tambahan
 
+import integration_idrg.DlgDetailKlaim;
+//akhi
 /**
  *
  * @author perpustakaan
@@ -1075,6 +1078,11 @@ public class DlgKamarInap extends javax.swing.JDialog {
         TPasienCari = new widget.TextBox();
         jLabel37 = new widget.Label();
         cmbStatusBayar = new widget.ComboBox();
+        //tambahan
+        Tnik = new widget.TextBox();
+        Lnik = new widget.Label();
+        ppGenerateBerkasKlaim = new javax.swing.JMenuItem();
+        //akhir
 
         WindowInputKamar.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowInputKamar.setName("WindowInputKamar"); // NOI18N
@@ -5670,6 +5678,45 @@ public class DlgKamarInap extends javax.swing.JDialog {
         cmbStatusBayar.setPreferredSize(new java.awt.Dimension(120, 23));
         panelGlass9.add(cmbStatusBayar);
 
+        //tambahan
+        
+        Lnik.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Lnik.setText("NIK :");
+        Lnik.setName("Lnik"); // NOI18N
+        Lnik.setPreferredSize(new java.awt.Dimension(30, 23));
+        panelGlass9.add(Lnik);
+        
+        Tnik.setHighlighter(null);
+        Tnik.setName("Tnik"); // NOI18N
+        Tnik.setPreferredSize(new java.awt.Dimension(134, 23));
+        Tnik.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TnikMouseClicked(evt);
+            }
+        });
+        panelGlass9.add(Tnik);
+        
+        
+        
+        ppGenerateBerkasKlaim.setBackground(new java.awt.Color(255, 255, 254));
+        ppGenerateBerkasKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        ppGenerateBerkasKlaim.setForeground(new java.awt.Color(50, 50, 50));
+        ppGenerateBerkasKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        ppGenerateBerkasKlaim.setText("Kirim E-Klaim");
+        ppGenerateBerkasKlaim.setToolTipText("");
+        ppGenerateBerkasKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ppGenerateBerkasKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ppGenerateBerkasKlaim.setName("ppGenerateBerkasKlaim"); // NOI18N
+        ppGenerateBerkasKlaim.setPreferredSize(new java.awt.Dimension(200, 26));
+        ppGenerateBerkasKlaim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppGenerateBerkasKlaimBtnPrintActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(ppGenerateBerkasKlaim);//taruh dibawah jPopupMenu1.add(MnUrut);      
+        
+        //akhir
+
         internalFrame1.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
@@ -6105,6 +6152,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
                             kdkamar.requestFocus();
                             break;
                         case "KOSONG":
+                        // Menambahkan dialog konfirmasi
+                        int confirm = JOptionPane.showConfirmDialog(null, "Apakah Persyaratan RANAP sudah lengkap?,FOTO dll?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                        if (confirm == JOptionPane.YES_OPTION) {
                             if(Sequel.menyimpantf("kamar_inap","'"+norawat.getText()+"','"+
                                     kdkamar.getText()+"','"+TTarif.getText()+"','"+
                                     diagnosaawal.getText()+"','"+
@@ -6117,6 +6167,10 @@ public class DlgKamarInap extends javax.swing.JDialog {
                                 emptTeks();  
                                 tampil(); 
                             }   
+                        } else {
+                            // Jika memilih NO, tetap di form ini
+                            return;
+                        }
                             break;
                     }
                     norawat.requestFocus();
@@ -6127,6 +6181,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
                 }else if(diagnosaakhir.getText().equals("")){
                     Valid.textKosong(diagnosaakhir,"Diagnosa Akhir");
                 }else{
+                // Menambahkan dialog konfirmasi
+                int confirm = JOptionPane.showConfirmDialog(null, "Apakah data sudah lengkap?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+                if (confirm == JOptionPane.YES_OPTION) {
                     if(Sequel.mengedittf("kamar_inap","no_rawat='"+norawat.getText()+"' and kd_kamar='"+kdkamar.getText()+"' and tgl_masuk='"+TIn.getText()+"' and jam_masuk='"+JamMasuk.getText()+"'",
                             "tgl_keluar='"+CmbTahun.getSelectedItem()+"-"+CmbBln.getSelectedItem()+"-"+CmbTgl.getSelectedItem()+
                             "',trf_kamar='"+TTarif.getText()+"',jam_keluar='"+cmbJam.getSelectedItem()+":"+cmbMnt.getSelectedItem()+":"+cmbDtk.getSelectedItem()+
@@ -6171,9 +6228,14 @@ public class DlgKamarInap extends javax.swing.JDialog {
                         WindowInputKamar.dispose();
                         emptTeks();  
                     }                  
+                } else {
+                    // Jika memilih NO, tetap di form ini
+                    return;
                 }                
             }          
         }
+    }
+
     }//GEN-LAST:event_BtnSimpanActionPerformed
 
     private void BtnSimpanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnSimpanKeyPressed
@@ -8830,6 +8892,74 @@ public class DlgKamarInap extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_MnDPJPRanapActionPerformed
 
+    //tambahan
+    
+    private void ppGenerateBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                              
+//        if(tabMode.getRowCount()==0){
+//            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+//            TCari.requestFocus();
+//        }else{
+//            if(tbKamIn.getSelectedRow()>-1){
+//                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+////                RMGenerateKlaim resume=new RMGenerateKlaim(null,true);
+////                resume.setNoRm(TNoRM.getText(),TPasien.getText());
+////                resume.setNoRawat(norawat.getText());
+////                resume.setSize(internalFrame1.getWidth(),internalFrame1.getHeight());
+////                resume.setLocationRelativeTo(internalFrame1);
+////                resume.setVisible(true);
+////                this.setCursor(Cursor.getDefaultCursor());
+//                
+//                DlgDetailKlaim form=new DlgDetailKlaim(null,true);
+////                form.setSize(this.getWidth(), this.getHeight() + 20);
+//                form.setSize(this.getWidth(),this.getHeight() - 2);
+//                form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ranap");
+//                form.setLocationRelativeTo(this);
+//                form.setVisible(true);
+//                this.setCursor(Cursor.getDefaultCursor());
+//            }
+//        }
+
+            if (tabMode.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+                    TCari.requestFocus();
+                } else {
+                    // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
+                    if (TNoRwCari.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
+                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
+                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
+                        return; // ⛔ Hentikan eksekusi
+                    }
+
+                    int row = tbKamIn.getSelectedRow();
+                    if (row > -1) {
+                        // ✅ Cek apakah kolom ke-6 berisi "UMUM"
+                        String jenisPembiayaan = tbKamIn.getValueAt(row, 6).toString().trim();
+                        if (jenisPembiayaan.equalsIgnoreCase("UMUM")) {
+                            JOptionPane.showMessageDialog(null, 
+                                "Pasien dengan status 'UMUM' bukan peserta BPJS.\nTidak dapat membuat berkas klaim INACBG.",
+                                "Informasi", JOptionPane.WARNING_MESSAGE);
+                            return; // ⛔ Hentikan eksekusi, jangan buka form klaim
+                        }
+
+                        // ✅ Jika bukan UMUM, lanjutkan proses klaim
+                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+                        DlgDetailKlaim form = new DlgDetailKlaim(null, true);
+                        form.setSize(this.getWidth(), this.getHeight() - 2);
+                        form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ranap");
+                        form.setLocationRelativeTo(this);
+                        form.setVisible(true);
+
+                        this.setCursor(Cursor.getDefaultCursor());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Silakan pilih data pasien terlebih dahulu!");
+                    }
+                }
+    }
+    
+    //akhir
+    
     private void MnSEPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnSEPActionPerformed
         if(tabMode.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
@@ -18518,6 +18648,11 @@ public class DlgKamarInap extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+   //tambahan
+    private widget.TextBox Tnik;
+    private widget.Label Lnik;
+    private javax.swing.JMenuItem ppGenerateBerkasKlaim;
+    //akhir
     private widget.TextBox BangsalCari;
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
@@ -19063,6 +19198,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
             TOut.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(),13).toString());
             ttlbiaya.setText(tbKamIn.getValueAt(tbKamIn.getSelectedRow(),15).toString());
             cmbStatus.setSelectedItem(tbKamIn.getValueAt(tbKamIn.getSelectedRow(),16).toString());
+            //tambahan
+            Tnik.setText(Sequel.cariIsi("SELECT no_ktp FROM pasien WHERE no_rkm_medis='"+TNoRMCari.getText()+"'"));
+            //akhir
         }
     }
 
@@ -20288,15 +20426,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
         
         MnPermintaan.add(MnPermintaanKonsultasiMedik);
         MnTindakan.add(MnDataOperasi);
-        
-        MnLaporan.add(MnSuratPersetujuan);
-        MnSuratPersetujuan.add(MnPenolakanAnjuranMedis);
-        MnSuratPersetujuan.add(MnPersetujuanPenundaanPelayanan);
-        MnSuratPersetujuan.add(MnPernyataanPasienUmum);
-        MnSuratPersetujuan.add(MnPulangAtasPermintaanSendiri);
-        MnSuratPersetujuan.add(MnPersetujuanPenolakanTindakan);
-        MnSuratPersetujuan.add(MnPersetujuanUmum);
-        MnSuratPersetujuan.add(MnPersetujuanPemeriksaanHIV);
-        MnSuratPersetujuan.add(MnSuratPernyataanMemilihDPJP);
+    }       
+    //tambahan
+    private void TnikMouseClicked(java.awt.event.MouseEvent evt) {                                  
+        // TODO add your handling code here:
     }
 }

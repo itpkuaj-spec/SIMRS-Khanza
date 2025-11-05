@@ -120,7 +120,10 @@ public final class DlgCariPerawatanRanap2 extends javax.swing.JDialog {
             }else if(i==6){
                 column.setPreferredWidth(150);
             }else if(i==7){
+                //menyembunyikan tarif/biaya
                 column.setPreferredWidth(120);
+//                column.setMinWidth(0);
+//                column.setMaxWidth(0);
             }else if(i==14){
                 column.setPreferredWidth(75);
             }else{

@@ -642,7 +642,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     "select kode_brng,nama_brng,kode_sat,"+hppfarmasi+" as dasar from databarang "+
                     "inner join jenis on databarang.kdjns=jenis.kdjns "+
                     "inner join golongan_barang on databarang.kode_golongan=golongan_barang.kode "+
-                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where "+
+                    "inner join kategori_barang on databarang.kode_kategori=kategori_barang.kode where databarang.status='1' AND "+
                     "jenis.nama like ? and kategori_barang.nama like ? and golongan_barang.nama like ? "+
                     (TCari.getText().trim().equals("")?"":"and (kode_brng like ? or nama_brng like ?)")+
                     " order by kode_brng");

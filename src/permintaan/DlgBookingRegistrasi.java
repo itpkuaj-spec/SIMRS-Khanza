@@ -2204,7 +2204,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                 System.out.println("Pesan WA berhasil dikirim!");
             } else {
                 System.out.println("Gagal mengirim pesan WA.");
-}
+            }
         }
     }
         

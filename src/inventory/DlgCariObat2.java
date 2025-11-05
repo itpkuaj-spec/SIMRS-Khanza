@@ -334,7 +334,13 @@ public final class DlgCariObat2 extends javax.swing.JDialog {
                 if(caribangsal.getTable().getSelectedRow()!= -1){                   
                     kdgudang.setText(caribangsal.getTable().getValueAt(caribangsal.getTable().getSelectedRow(),0).toString());
                     nmgudang.setText(caribangsal.getTable().getValueAt(caribangsal.getTable().getSelectedRow(),1).toString());
+                    
+                    // Panggil tampil setelah bangsal dipilih
+                TCari.setText("");
+                buatcacheberiobat();
+        
                 } 
+                
                 kdgudang.requestFocus();
             }
             @Override
