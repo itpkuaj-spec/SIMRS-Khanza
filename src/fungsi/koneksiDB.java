@@ -44,8 +44,8 @@ public class koneksiDB {
                     while (retries > 0) {
                         try {
                             connection=dataSource.getConnection();
-                            System.out.println("  Koneksi Berhasil. Sorry bro loading, silahkan baca dulu.... \n\n"+
-                                    "  software (Khanza.Soft Media).\n"+
+                            System.out.println("  Koneksi Berhasil. Terimakasih telah menunggu.. \n\n"+
+                                    "  SIM RS PKU Aisyiyah Jepara\n"+
                                     "                                                                           \n"+
                                     "  #    ____  ___  __  __  ____   ____    _  __ _                              \n" +
                                     "  #   / ___||_ _||  \\/  ||  _ \\ / ___|  | |/ /| |__    __ _  _ __   ____ __ _ \n" +
@@ -54,9 +54,9 @@ public class koneksiDB {
                                     "  #   |____/|___||_|  |_||_| \\_\\|____/  |_|\\_\\|_| |_| \\__,_||_| |_|/___|\\__,_|\n" +
                                     "  #                                                                           \n"+
                                     "                                                                           \n"+
-                                    "  Licensi yang dianut di software ini https://en.wikipedia.org/wiki/Aladdin_Free_Public_License \n"+
-                                    "  Informasi dan panduan bisa dicek di halaman https://github.com/mas-elkhanza/SIMRS-Khanza/wiki \n"+
-                                    "  Bagi yang ingin berdonasi untuk pengembangan aplikasi ini bisa ke BSI 1015369872 atas nama Windiarto\n"+
+//                                    "  Licensi yang dianut di software ini https://en.wikipedia.org/wiki/Aladdin_Free_Public_License \n"+
+//                                    "  Informasi dan panduan bisa dicek di halaman https://github.com/mas-elkhanza/SIMRS-Khanza/wiki \n"+
+//                                    "  Bagi yang ingin berdonasi untuk pengembangan aplikasi ini bisa ke BSI 1015369872 atas nama Windiarto\n"+
                                     "  Lakukan pergantian password secara berkala ya...\n"+
                                     "  IT RS PKU Aisyiyah Jepara 2025\n"+
                                     "                                                                           ");
