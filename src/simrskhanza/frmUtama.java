@@ -1276,7 +1276,7 @@ public class frmUtama extends javax.swing.JFrame {
         initKhanza();
         initKhanza2();
         setIconImage(new ImageIcon(super.getClass().getResource("/picture/yaski24.png")).getImage());
-        
+        loadBuildInfo();//tambahan
         this.setExtendedState(MAXIMIZED_BOTH);
         //this.setSize(screen.width,screen.height);
         edAdmin.setDocument(new batasInput((byte)100).getKata(edAdmin));
@@ -1367,7 +1367,20 @@ public class frmUtama extends javax.swing.JFrame {
         }catch(Exception e){            
         } 
     }
-    
+    //tambahan
+    private void loadBuildInfo() {
+        try {
+            Properties p = new Properties();
+            p.load(getClass().getResourceAsStream("/resources/build-info.properties"));
+
+            String buildDate = p.getProperty("build.date", "-");
+            lblUpdate.setText("Update : " + buildDate);
+
+        } catch (Exception e) {
+            lblUpdate.setText("Update : unknown");
+        }
+    }
+    //sampe sini
     public static frmUtama getInstance() {
         if (myInstance == null)
             myInstance = new frmUtama();
@@ -1895,7 +1908,7 @@ public class frmUtama extends javax.swing.JFrame {
         jSeparator6 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
         jSeparator8 = new javax.swing.JSeparator();
-        jLabel1 = new javax.swing.JLabel();
+        lblUpdate = new javax.swing.JLabel();
         PanelUtama = new javax.swing.JPanel();
         scrollPane1 = new widget.ScrollPane();
         PanelWall = new usu.widget.glass.PanelGlass();
@@ -2170,7 +2183,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01/11/2025" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06/11/2025" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -7603,10 +7616,9 @@ public class frmUtama extends javax.swing.JFrame {
         jSeparator8.setPreferredSize(new java.awt.Dimension(1, 21));
         internalFrame4.add(jSeparator8);
 
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Update : 31 Okt 2025");
-        jLabel1.setName("jLabel1"); // NOI18N
-        internalFrame4.add(jLabel1);
+        lblUpdate.setForeground(new java.awt.Color(255, 255, 255));
+        lblUpdate.setName("lblUpdate"); // NOI18N
+        internalFrame4.add(lblUpdate);
 
         getContentPane().add(internalFrame4, java.awt.BorderLayout.PAGE_END);
 
@@ -23725,7 +23737,6 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.InternalFrame internalFrame2;
     private widget.InternalFrame internalFrame3;
     private widget.InternalFrame internalFrame4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -23756,6 +23767,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private widget.Label label36;
     private javax.swing.JLabel lblStts;
     private javax.swing.JLabel lblTgl;
+    private javax.swing.JLabel lblUpdate;
     private javax.swing.JLabel lblUser;
     private javax.swing.JLabel lbl_nm_login;
     private usu.widget.glass.PanelGlass panelGlass1;
