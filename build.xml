@@ -107,4 +107,15 @@
             <fileset dir="gambar/" includes="**/*.png, **/*.jpg" />
         </copy>
     </target>
+            <!-- Tambahan otomatis untuk Build Date -->
+        <tstamp>
+            <format property="build.date" pattern="dd MMM yyyy HH:mm:ss"/>
+        </tstamp>
+
+        <!-- Simpan tanggal ke file properties -->
+        <propertyfile file="src/resources/build-info.properties">
+            <entry key="build.date" value="${build.date}"/>
+            <entry key="build.version" value="1"/>
+        </propertyfile>
+        <!-- Sampe sini -->
 </project>

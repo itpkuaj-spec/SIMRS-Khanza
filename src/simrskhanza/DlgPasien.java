@@ -1694,6 +1694,7 @@ public class DlgPasien extends javax.swing.JDialog {
         jLabel10 = new widget.Label();
         LCount = new widget.Label();
         BtnKeluar = new widget.Button();
+        btnubahpassword = new javax.swing.JButton();
         panelGlass9 = new widget.panelisi();
         jLabel11 = new widget.Label();
         Carialamat = new widget.TextBox();
@@ -3220,6 +3221,17 @@ public class DlgPasien extends javax.swing.JDialog {
         });
         panelGlass8.add(BtnKeluar);
 
+        btnubahpassword.setBackground(new java.awt.Color(204, 255, 204));
+        btnubahpassword.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnubahpassword.setText("Update Password E-pasien dg NIK");
+        btnubahpassword.setName("btnubahpassword"); // NOI18N
+        btnubahpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnubahpasswordActionPerformed(evt);
+            }
+        });
+        panelGlass8.add(btnubahpassword);
+
         jPanel3.add(panelGlass8, java.awt.BorderLayout.CENTER);
 
         panelGlass9.setName("panelGlass9"); // NOI18N
@@ -3381,7 +3393,7 @@ public class DlgPasien extends javax.swing.JDialog {
         FormInput.add(jLabel13);
         jLabel13.setBounds(4, 102, 95, 23);
 
-        DTPLahir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "04-06-2025" }));
+        DTPLahir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-11-2025" }));
         DTPLahir.setDisplayFormat("dd-MM-yyyy");
         DTPLahir.setName("DTPLahir"); // NOI18N
         DTPLahir.setOpaque(false);
@@ -3513,7 +3525,7 @@ public class DlgPasien extends javax.swing.JDialog {
         FormInput.add(TKtp);
         TKtp.setBounds(743, 132, 130, 23);
 
-        DTPDaftar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "04-06-2025" }));
+        DTPDaftar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "08-11-2025" }));
         DTPDaftar.setDisplayFormat("dd-MM-yyyy");
         DTPDaftar.setName("DTPDaftar"); // NOI18N
         DTPDaftar.setOpaque(false);
@@ -4808,6 +4820,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                     Sequel.queryu2("delete from set_no_rkm_medis");
                     Sequel.queryu2("insert into set_no_rkm_medis values(?)",1,new String[]{TNo.getText()});            
                 }                
+                simpanpassword();
                 emptTeks(); 
             }else{
                 autoNomor();
@@ -4839,6 +4852,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                         Sequel.queryu2("delete from set_no_rkm_medis");
                         Sequel.queryu2("insert into set_no_rkm_medis values(?)",1,new String[]{TNo.getText()});            
                     }                
+                    simpanpassword();
                     emptTeks(); 
                 }else{
                     autoNomor();
@@ -4870,6 +4884,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                             Sequel.queryu2("delete from set_no_rkm_medis");
                             Sequel.queryu2("insert into set_no_rkm_medis values(?)",1,new String[]{TNo.getText()});            
                         }                
+                        simpanpassword();
                         emptTeks(); 
                     }else{
                         autoNomor();
@@ -4901,6 +4916,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                 Sequel.queryu2("delete from set_no_rkm_medis");
                                 Sequel.queryu2("insert into set_no_rkm_medis values(?)",1,new String[]{TNo.getText()});            
                             }                
+                            simpanpassword();
                             emptTeks(); 
                         }else{
                             autoNomor();
@@ -4932,6 +4948,7 @@ private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                                     Sequel.queryu2("delete from set_no_rkm_medis");
                                     Sequel.queryu2("insert into set_no_rkm_medis values(?)",1,new String[]{TNo.getText()});            
                                 }                
+                                simpanpassword();
                                 emptTeks(); 
                             }else{
                                 TNm.requestFocus();
@@ -8628,6 +8645,11 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
         Valid.pindah(evt,NmIbu,Saudara);
     }//GEN-LAST:event_CmbKeluargaKeyPressed
 
+    private void btnubahpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnubahpasswordActionPerformed
+        // TODO add your handling code here:
+        updatepassword();
+    }//GEN-LAST:event_btnubahpasswordActionPerformed
+
     /**
      * @data args the command line arguments
      */
@@ -8844,6 +8866,7 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     private widget.Button btnAmbilPhoto;
     private widget.Button btnPropinsiPj;
     private widget.Button btnUbahPassword;
+    private javax.swing.JButton btnubahpassword;
     private javax.swing.ButtonGroup buttonGroup1;
     private widget.CekBox chkPolri;
     private widget.CekBox chkTNI;
@@ -10084,4 +10107,29 @@ private void KabupatenMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
             } 
         }
     }
+    
+    //tambahan
+
+    public void updatepassword() {
+
+        if (Sequel.menyimpantf("personal_pasien", "?,'',aes_encrypt(?,'windi')", 2, new String[]{NoRekamMedisDipilih.getText(), TKtp.getText()}, "no_rkm_medis=?", "password=aes_encrypt(?,'windi')", 2, new String[]{TKtp.getText(), NoRekamMedisDipilih.getText()}) == true) {
+            JOptionPane.showMessageDialog(null, "Update password pasien berhasil..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Update password pasien gagal..!!");
+            //PasswordPasien.requestFocus();
+        }
+
+    }
+    
+    public void simpanpassword() {
+
+        if (Sequel.menyimpantf("personal_pasien", "?,'',aes_encrypt(?,'windi')", 2, new String[]{TNo.getText(), TKtp.getText()}, "no_rkm_medis=?", "password=aes_encrypt(?,'windi')", 2, new String[]{TKtp.getText(), TNo.getText()}) == true) {
+            JOptionPane.showMessageDialog(null, "Update password pasien berhasil..!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Update password pasien gagal..!!");
+            //PasswordPasien.requestFocus();
+        }
+
+    }
+//akhir
 }
