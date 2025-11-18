@@ -10110,10 +10110,12 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                     TNoRM.setText(rs.getString("no_rkm_medis"));
                     TCariPasien.setText(TNoRM.getText());
                     TPasien.setText(rs.getString("pasien"));
-                    KdDok.setText(Sequel.cariIsi("select dpjp_ranap.kd_dokter from dpjp_ranap where dpjp_ranap.no_rawat=?",TNoRw.getText()));
-                    if(KdDok.getText().equals("")){
-                        KdDok.setText(rs.getString("kd_dokter"));
-                    }
+
+//                    KdDok.setText(Sequel.cariIsi("select dpjp_ranap.kd_dokter from dpjp_ranap where dpjp_ranap.no_rawat=?",TNoRw.getText()));
+//                    if(KdDok.getText().equals("")){
+//                        KdDok.setText(rs.getString("kd_dokter"));
+//                    }
+                    KdDok.setText(akses.getkode());//tambahan
                     TDokter.setText(perawatan.dokter.tampil3(KdDok.getText()));
                     TanggalRegistrasi.setText(rs.getString("tgl_registrasi")+" "+rs.getString("jam_reg"));
                 }
@@ -10140,6 +10142,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 //        TDokter2.setText(TDokter.getText()); 
         TDokter2.setText(perawatan.dokter.tampil3(KdDok2.getText()));//tambahan 
         //tambahan
+        btnTindakan3.setVisible(false);
         kdptg2.setText(akses.getkode());//tambahan
         TPerawat2.setText(Sequel.cariIsi("select nama from pegawai where nik=?",kdptg2.getText()));//tambhan
         Sequel.cariIsi("select concat(pasien.nm_pasien,' (',pasien.umur,')') from pasien where pasien.no_rkm_medis=? ",TPasien,TNoRM.getText());//tambahan
