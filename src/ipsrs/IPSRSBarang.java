@@ -185,6 +185,7 @@ public final class IPSRSBarang extends javax.swing.JDialog {
 
         });
         
+        cmbJenis.addActionListener(e -> tampil());//tambahan
     }
     
 
@@ -215,6 +216,8 @@ public final class IPSRSBarang extends javax.swing.JDialog {
         jLabel6 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        jLabel1 = new javax.swing.JLabel();
+        cmbJenis = new widget.ComboBox();
         jLabel7 = new widget.Label();
         LCount = new widget.Label();
         PanelInput = new javax.swing.JPanel();
@@ -235,6 +238,9 @@ public final class IPSRSBarang extends javax.swing.JDialog {
         kdjenis = new widget.TextBox();
         nmjenis = new widget.TextBox();
         btnJenis = new widget.Button();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        btnBukaSO = new javax.swing.JButton();
         ChkInput = new widget.CekBox();
 
         Popup.setName("Popup"); // NOI18N
@@ -463,6 +469,20 @@ public final class IPSRSBarang extends javax.swing.JDialog {
         });
         panelGlass9.add(BtnCari);
 
+        jLabel1.setText("Jns/UNIT :");
+        jLabel1.setName("jLabel1"); // NOI18N
+        panelGlass9.add(jLabel1);
+
+        cmbJenis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua" }));
+        cmbJenis.setName("cmbJenis"); // NOI18N
+        cmbJenis.setPreferredSize(new java.awt.Dimension(90, 20));
+        cmbJenis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbJenisKeyPressed(evt);
+            }
+        });
+        panelGlass9.add(cmbJenis);
+
         jLabel7.setText("Record :");
         jLabel7.setName("jLabel7"); // NOI18N
         jLabel7.setPreferredSize(new java.awt.Dimension(75, 23));
@@ -615,6 +635,36 @@ public final class IPSRSBarang extends javax.swing.JDialog {
         });
         FormInput.add(btnJenis);
         btnJenis.setBounds(698, 70, 25, 23);
+
+        jButton2.setText("Lihat Pengajuan");
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        FormInput.add(jButton2);
+        jButton2.setBounds(730, 40, 160, 23);
+
+        jButton1.setText("Pengajuan Barang");
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        FormInput.add(jButton1);
+        jButton1.setBounds(730, 10, 160, 23);
+
+        btnBukaSO.setText("Buka Stok Opname");
+        btnBukaSO.setName("btnBukaSO"); // NOI18N
+        btnBukaSO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBukaSOActionPerformed(evt);
+            }
+        });
+        FormInput.add(btnBukaSO);
+        btnBukaSO.setBounds(900, 10, 170, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -874,6 +924,7 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         tampil();
+        isiComboJenis();
     }//GEN-LAST:event_formWindowOpened
 
     private void stokKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stokKeyPressed
@@ -884,6 +935,25 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         Valid.pindah(evt,kode_brng,nama_brng);
     }//GEN-LAST:event_hargaKeyPressed
 
+        private void isiComboJenis() {
+            cmbJenis.removeAllItems();
+            cmbJenis.addItem("Semua"); // Opsi default
+
+            try {
+                PreparedStatement psJenis = koneksi.prepareStatement(
+                    "SELECT nm_jenis FROM ipsrsjenisbarang ORDER BY nm_jenis"
+                );
+                ResultSet rsJenis = psJenis.executeQuery();
+                while (rsJenis.next()) {
+                    cmbJenis.addItem(rsJenis.getString("nm_jenis"));
+                }
+                rsJenis.close();
+                psJenis.close();
+            } catch (SQLException e) {
+                System.out.println("Gagal memuat jenis barang: " + e);
+            }
+    }
+    
     private void kdjenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_kdjenisKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
             Sequel.cariIsi("select ipsrsjenisbarang.nm_jenis from ipsrsjenisbarang where ipsrsjenisbarang.kd_jenis=?", nmjenis,kdjenis.getText());           
@@ -910,6 +980,45 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         restore.setLocationRelativeTo(internalFrame1);
         restore.setVisible(true);
     }//GEN-LAST:event_MnRestoreActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        IPSRSCariSuratPemesanan form=new IPSRSCariSuratPemesanan(null,false);
+        form.emptTeks();
+        form.isCek();
+        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        form.setLocationRelativeTo(internalFrame1);
+        form.setAlwaysOnTop(false);
+        form.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        IPSRSPengajuanBarangNonMedis form=new IPSRSPengajuanBarangNonMedis(null,true);
+        form.isCek();
+        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        form.setLocationRelativeTo(internalFrame1);
+        form.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnBukaSOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBukaSOActionPerformed
+        // TODO add your handling code here:
+
+        IPSRSInputStok form=new IPSRSInputStok(null,true);
+        form.isCek();
+        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        form.setLocationRelativeTo(internalFrame1);
+        form.setVisible(true);
+
+    }//GEN-LAST:event_btnBukaSOActionPerformed
+
+    private void cmbJenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbJenisKeyPressed
+
+    }//GEN-LAST:event_cmbJenisKeyPressed
 
     /**
     * @param args the command line arguments
@@ -944,10 +1053,15 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JPopupMenu Popup;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
+    private javax.swing.JButton btnBukaSO;
     private widget.Button btnJenis;
     private widget.Button btnSatuan;
+    private widget.ComboBox cmbJenis;
     private widget.TextBox harga;
     private widget.InternalFrame internalFrame1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
     private javax.swing.JPanel jPanel3;
@@ -970,41 +1084,100 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     // End of variables declaration//GEN-END:variables
 
     public void tampil() {
-        Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                        "select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng, kodesatuan.satuan, ipsrsjenisbarang.nm_jenis, "+
-                        "ipsrsbarang.stok,ipsrsbarang.harga from ipsrsbarang inner join kodesatuan inner join ipsrsjenisbarang "+
-                        "on ipsrsbarang.kode_sat=kodesatuan.kode_sat and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "+
-                        "where ipsrsbarang.status='1' and ipsrsbarang.kode_brng like ? "+
-                        "or ipsrsbarang.status='1' and ipsrsbarang.nama_brng like ? "+
-                        "or ipsrsbarang.status='1' and kodesatuan.satuan like ? "+
-                        "or ipsrsbarang.status='1' and ipsrsjenisbarang.nm_jenis like ? order by ipsrsbarang.kode_brng");
-            try {
-                ps.setString(1,"%"+TCari.getText().trim()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        rs.getString("kode_brng"),rs.getString("nama_brng"),rs.getString("satuan"),rs.getString("nm_jenis"),rs.getDouble("stok"),rs.getDouble("harga")
-                    });
-                }
-            } catch (Exception e) {
-                System.out.println("Data : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
-            }
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
+//        Valid.tabelKosong(tabMode);
+//        try{
+//            ps=koneksi.prepareStatement(
+//                        "select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng, kodesatuan.satuan, ipsrsjenisbarang.nm_jenis, "+
+//                        "ipsrsbarang.stok,ipsrsbarang.harga from ipsrsbarang inner join kodesatuan inner join ipsrsjenisbarang "+
+//                        "on ipsrsbarang.kode_sat=kodesatuan.kode_sat and ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "+
+//                        "where ipsrsbarang.status='1' and ipsrsbarang.kode_brng like ? "+
+//                        "or ipsrsbarang.status='1' and ipsrsbarang.nama_brng like ? "+
+//                        "or ipsrsbarang.status='1' and kodesatuan.satuan like ? "+
+//                        "or ipsrsbarang.status='1' and ipsrsjenisbarang.nm_jenis like ? order by ipsrsbarang.kode_brng");
+//            try {
+//                ps.setString(1,"%"+TCari.getText().trim()+"%");
+//                ps.setString(2,"%"+TCari.getText().trim()+"%");
+//                ps.setString(3,"%"+TCari.getText().trim()+"%");
+//                ps.setString(4,"%"+TCari.getText().trim()+"%");
+//                rs=ps.executeQuery();
+//                while(rs.next()){
+//                    tabMode.addRow(new Object[]{
+//                        rs.getString("kode_brng"),rs.getString("nama_brng"),rs.getString("satuan"),rs.getString("nm_jenis"),rs.getDouble("stok"),rs.getDouble("harga")
+//                    });
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Data : "+e);
+//            } finally{
+//                if(rs!=null){
+//                    rs.close();
+//                }
+//                if(ps!=null){
+//                    ps.close();
+//                }
+//            }
+//        }catch(SQLException e){
+//            System.out.println("Notifikasi : "+e);
+//        }
+//        LCount.setText(""+tabMode.getRowCount());
+
+            Valid.tabelKosong(tabMode);
+    try {
+        String keyword = "%" + TCari.getText().trim() + "%";
+        String jenisTerpilih = cmbJenis.getSelectedItem().toString().trim();
+        boolean filterJenis = !jenisTerpilih.equalsIgnoreCase("Semua");
+
+        // SQL base
+        String sql = 
+            "SELECT ipsrsbarang.kode_brng, ipsrsbarang.nama_brng, kodesatuan.satuan, ipsrsjenisbarang.nm_jenis, " +
+            "ipsrsbarang.stok, ipsrsbarang.harga FROM ipsrsbarang " +
+            "INNER JOIN kodesatuan ON ipsrsbarang.kode_sat = kodesatuan.kode_sat " +
+            "INNER JOIN ipsrsjenisbarang ON ipsrsbarang.jenis = ipsrsjenisbarang.kd_jenis " +
+            "WHERE ipsrsbarang.status = '1' AND ( " +
+            "ipsrsbarang.kode_brng LIKE ? OR " +
+            "ipsrsbarang.nama_brng LIKE ? OR " +
+            "kodesatuan.satuan LIKE ? OR " +
+            "ipsrsjenisbarang.nm_jenis LIKE ?) ";
+
+        // Tambahkan filter jenis jika dipilih
+        if (filterJenis) {
+            sql += "AND ipsrsjenisbarang.nm_jenis = ? ";
         }
-        LCount.setText(""+tabMode.getRowCount());
+
+        sql += "ORDER BY ipsrsbarang.kode_brng";
+        ps = koneksi.prepareStatement(sql);
+
+        // Set parameter
+        ps.setString(1, keyword);
+        ps.setString(2, keyword);
+        ps.setString(3, keyword);
+        ps.setString(4, keyword);
+        if (filterJenis) {
+            ps.setString(5, jenisTerpilih);
+        }
+
+        // Eksekusi dan tampilkan
+        rs = ps.executeQuery();
+        while (rs.next()) {
+            tabMode.addRow(new Object[]{
+                rs.getString("kode_brng"),
+                rs.getString("nama_brng"),
+                rs.getString("satuan"),
+                rs.getString("nm_jenis"),
+                rs.getDouble("stok"),
+                rs.getDouble("harga")
+            });
+        }
+    } catch (Exception e) {
+        System.out.println("Data : " + e);
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+        } catch (Exception ex) {
+            System.out.println("Notifikasi (close): " + ex);
+        }
+    }
+    LCount.setText("" + tabMode.getRowCount());
     }
 
     public void emptTeks() {

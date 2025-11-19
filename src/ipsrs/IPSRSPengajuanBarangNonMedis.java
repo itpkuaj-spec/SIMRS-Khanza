@@ -1,6 +1,7 @@
 package ipsrs;
 
 
+import bridging.FonnteAPI; 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.WarnaTable2;
@@ -11,6 +12,8 @@ import fungsi.validasi;
 import fungsi.akses;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -21,8 +24,12 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Calendar;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.Timer;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -48,6 +55,7 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode response;
     private FileReader myObj;
+    private String notifwapengajuan = "", idgroupwapengajuan = "", pesan = "", tanggaljamkirim = "", petugas = "";//tambahan string
     /** Creates new form
      * @param parent
      * @param modal */
@@ -164,6 +172,18 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
+        
+        //tambahan
+        cmbJenis.addActionListener(e -> tampil());
+        try {
+            notifwapengajuan = koneksiDB.NOTIFWAPENGAJUAN();
+            idgroupwapengajuan = koneksiDB.IDGROUPWAPENGAJUAN();
+        } catch (Exception e) {
+            notifwapengajuan = "no";
+            idgroupwapengajuan = "no";
+    }
+        ChkJln.setSelected(true);
+        jam();
     }
 
     /** This method is called from within the constructor to
@@ -186,6 +206,8 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
         TCari = new widget.TextBox();
         BtnCari1 = new widget.Button();
         BtnAll = new widget.Button();
+        jLabel1 = new javax.swing.JLabel();
+        cmbJenis = new widget.ComboBox();
         BtnTambah = new widget.Button();
         label17 = new widget.Label();
         LTotal = new widget.Label();
@@ -204,6 +226,10 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
         label14 = new widget.Label();
         Departemen = new widget.TextBox();
         Keterangan = new widget.TextBox();
+        CmbJam = new widget.ComboBox();
+        CmbMenit = new widget.ComboBox();
+        CmbDetik = new widget.ComboBox();
+        ChkJln = new widget.CekBox();
 
         Popup.setName("Popup"); // NOI18N
 
@@ -343,6 +369,20 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
             }
         });
         panelisi1.add(BtnAll);
+
+        jLabel1.setText("Jns/UNIT :");
+        jLabel1.setName("jLabel1"); // NOI18N
+        panelisi1.add(jLabel1);
+
+        cmbJenis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "IPSRS", "LAB", "RAD", "LOGISTIK", "LOUND" }));
+        cmbJenis.setName("cmbJenis"); // NOI18N
+        cmbJenis.setPreferredSize(new java.awt.Dimension(90, 20));
+        cmbJenis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbJenisKeyPressed(evt);
+            }
+        });
+        panelisi1.add(cmbJenis);
 
         BtnTambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/plus_16.png"))); // NOI18N
         BtnTambah.setMnemonic('3');
@@ -509,6 +549,40 @@ public class IPSRSPengajuanBarangNonMedis extends javax.swing.JDialog {
         panelisi3.add(Keterangan);
         Keterangan.setBounds(95, 40, 273, 23);
 
+        CmbJam.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23" }));
+        CmbJam.setName("CmbJam"); // NOI18N
+        CmbJam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CmbJamActionPerformed(evt);
+            }
+        });
+        panelisi3.add(CmbJam);
+        CmbJam.setBounds(800, 10, 62, 23);
+
+        CmbMenit.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        CmbMenit.setName("CmbMenit"); // NOI18N
+        panelisi3.add(CmbMenit);
+        CmbMenit.setBounds(870, 10, 62, 23);
+
+        CmbDetik.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59" }));
+        CmbDetik.setName("CmbDetik"); // NOI18N
+        panelisi3.add(CmbDetik);
+        CmbDetik.setBounds(930, 10, 62, 23);
+
+        ChkJln.setBorder(null);
+        ChkJln.setSelected(true);
+        ChkJln.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ChkJln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkJln.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        ChkJln.setName("ChkJln"); // NOI18N
+        ChkJln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkJlnActionPerformed(evt);
+            }
+        });
+        panelisi3.add(ChkJln);
+        ChkJln.setBounds(1000, 10, 23, 23);
+
         internalFrame1.add(panelisi3, java.awt.BorderLayout.PAGE_START);
 
         getContentPane().add(internalFrame1, java.awt.BorderLayout.CENTER);
@@ -586,6 +660,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                 System.out.println("Notifikasi : "+e);
                             }                
                         }
+                        // Tambahan
+                NotifWaPengajuan();
                 }else{
                     sukses=false;
                 } 
@@ -752,6 +828,18 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
+    private void cmbJenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbJenisKeyPressed
+
+    }//GEN-LAST:event_cmbJenisKeyPressed
+
+    private void CmbJamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CmbJamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CmbJamActionPerformed
+
+    private void ChkJlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkJlnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChkJlnActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -775,6 +863,10 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.Button BtnKeluar;
     private widget.Button BtnSimpan;
     private widget.Button BtnTambah;
+    private widget.CekBox ChkJln;
+    private widget.ComboBox CmbDetik;
+    private widget.ComboBox CmbJam;
+    private widget.ComboBox CmbMenit;
     private widget.TextBox Departemen;
     private widget.TextBox Keterangan;
     private widget.Label LTotal;
@@ -783,7 +875,9 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     private widget.TextBox TCari;
     private widget.Tanggal Tanggal;
     private widget.Button btnPetugas;
+    private widget.ComboBox cmbJenis;
     private widget.InternalFrame internalFrame1;
+    private javax.swing.JLabel jLabel1;
     private widget.TextBox kdptg;
     private widget.Label label10;
     private widget.Label label11;
@@ -801,47 +895,105 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     // End of variables declaration//GEN-END:variables
 
     private void tampil() {
-        try{
-            Valid.tabelKosong(tabMode);
-            file=new File("./cache/pengajuanipsrs.iyem");
-            file.createNewFile();
-            fileWriter = new FileWriter(file);
-            StringBuilder iyembuilder = new StringBuilder();
-            
-            ps=koneksi.prepareStatement(
-                "select ipsrsbarang.kode_brng,ipsrsbarang.nama_brng,ipsrsbarang.kode_sat,ipsrsjenisbarang.nm_jenis,"+
-                "ipsrsbarang.harga from ipsrsbarang inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "+
-                " where ipsrsbarang.status='1' order by ipsrsbarang.nama_brng");
-            try {
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    tabMode.addRow(new Object[]{
-                        "",rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getDouble(5),0
-                    });
-                    iyembuilder.append("{\"KodeBarang\":\"").append(rs.getString(1)).append("\",\"NamaBarang\":\"").append(rs.getString(2).replaceAll("\"","")).append("\",\"Satuan\":\"").append(rs.getString(3)).append("\",\"Jenis\":\"").append(rs.getString(4)).append("\",\"Harga\":\"").append(rs.getString(5)).append("\"},");
-                } 
-            } catch (Exception e) {
-                System.out.println("Notifikasi : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
-            }      
-            
-            if (iyembuilder.length() > 0) {
-                iyembuilder.setLength(iyembuilder.length() - 1);
-                fileWriter.write("{\"pengajuanipsrs\":["+iyembuilder+"]}");
-                fileWriter.flush();
-            }
-            
-            fileWriter.close();
-            iyembuilder=null;
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }
+//        try{
+//            Valid.tabelKosong(tabMode);
+//            file=new File("./cache/pengajuanipsrs.iyem");
+//            file.createNewFile();
+//            fileWriter = new FileWriter(file);
+//            StringBuilder iyembuilder = new StringBuilder();
+//            
+//            ps=koneksi.prepareStatement(
+//                "select ipsrsbarang.kode_brng,ipsrsbarang.nama_brng,ipsrsbarang.kode_sat,ipsrsjenisbarang.nm_jenis,"+
+//                "ipsrsbarang.harga from ipsrsbarang inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis "+
+//                " where ipsrsbarang.status='1' order by ipsrsbarang.nama_brng");
+//            try {
+//                rs=ps.executeQuery();
+//                while(rs.next()){
+//                    tabMode.addRow(new Object[]{
+//                        "",rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getDouble(5),0
+//                    });
+//                    iyembuilder.append("{\"KodeBarang\":\"").append(rs.getString(1)).append("\",\"NamaBarang\":\"").append(rs.getString(2).replaceAll("\"","")).append("\",\"Satuan\":\"").append(rs.getString(3)).append("\",\"Jenis\":\"").append(rs.getString(4)).append("\",\"Harga\":\"").append(rs.getString(5)).append("\"},");
+//                } 
+//            } catch (Exception e) {
+//                System.out.println("Notifikasi : "+e);
+//            } finally{
+//                if(rs!=null){
+//                    rs.close();
+//                }
+//                if(ps!=null){
+//                    ps.close();
+//                }
+//            }      
+//            
+//            if (iyembuilder.length() > 0) {
+//                iyembuilder.setLength(iyembuilder.length() - 1);
+//                fileWriter.write("{\"pengajuanipsrs\":["+iyembuilder+"]}");
+//                fileWriter.flush();
+//            }
+//            
+//            fileWriter.close();
+//            iyembuilder=null;
+//        }catch(Exception e){
+//            System.out.println("Notifikasi : "+e);
+//        }
+         try {
+              Valid.tabelKosong(tabMode);
+              file = new File("./cache/pengajuanipsrs.iyem");
+              file.createNewFile();
+              fileWriter = new FileWriter(file);
+              StringBuilder iyembuilder = new StringBuilder();
+
+              // Ambil isi dari cmbJenis
+              String jenisDipilih = cmbJenis.getSelectedItem().toString();
+              String jenisFilter = jenisDipilih.equalsIgnoreCase("Semua") ? "%" : jenisDipilih;
+
+              ps = koneksi.prepareStatement(
+                  "SELECT ipsrsbarang.kode_brng, ipsrsbarang.nama_brng, ipsrsbarang.kode_sat, " +
+                  "ipsrsjenisbarang.nm_jenis, ipsrsbarang.harga " +
+                  "FROM ipsrsbarang " +
+                  "INNER JOIN ipsrsjenisbarang ON ipsrsbarang.jenis = ipsrsjenisbarang.kd_jenis " +
+                  "WHERE ipsrsbarang.status = '1' AND ipsrsjenisbarang.nm_jenis LIKE ? " +
+                  "ORDER BY ipsrsbarang.nama_brng"
+              );
+
+              ps.setString(1, "%" + jenisFilter + "%");
+
+              try {
+                  rs = ps.executeQuery();
+                  while (rs.next()) {
+                      tabMode.addRow(new Object[]{
+                          "", rs.getString(1), rs.getString(2),
+                          rs.getString(3), rs.getString(4),
+                          rs.getDouble(5), 0
+                      });
+                      iyembuilder.append("{\"KodeBarang\":\"").append(rs.getString(1))
+                              .append("\",\"NamaBarang\":\"").append(rs.getString(2).replaceAll("\"", ""))
+                              .append("\",\"Satuan\":\"").append(rs.getString(3))
+                              .append("\",\"Jenis\":\"").append(rs.getString(4))
+                              .append("\",\"Harga\":\"").append(rs.getString(5)).append("\"},");
+                  }
+              } catch (Exception e) {
+                  System.out.println("Notifikasi : " + e);
+              } finally {
+                  if (rs != null) {
+                      rs.close();
+                  }
+                  if (ps != null) {
+                      ps.close();
+                  }
+              }
+
+              if (iyembuilder.length() > 0) {
+                  iyembuilder.setLength(iyembuilder.length() - 1); // hapus koma terakhir
+                  fileWriter.write("{\"pengajuanipsrs\":[" + iyembuilder + "]}");
+                  fileWriter.flush();
+              }
+
+              fileWriter.close();
+              iyembuilder = null;
+          } catch (Exception e) {
+              System.out.println("Notifikasi : " + e);
+          }      
     }
 
     private void tampil2() {
@@ -969,5 +1121,107 @@ private void btnPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         
     }
 
+    //tambahan
+    private void NotifWaPengajuan() {
+        if (notifwapengajuan.equals("yes")) {
+            petugas = Sequel.cariIsi("select nama from pegawai where nik = ?", akses.getkode());
+            String Kete = Keterangan.getText();
+            String nop = NoPengajuan.getText();
+            String InfoTanggal =Tanggal.getSelectedItem().toString();
+            String InfoJam = CmbJam.getSelectedItem() + ":" + CmbMenit.getSelectedItem();
+            String pengajuan = "";
+                    for (i = 0; i < tbDokter.getRowCount(); i++) {
+                        try {
+                            if (Valid.SetAngka(tbDokter.getValueAt(i, 0).toString()) > 0) {
+                                String namaBarang = tbDokter.getValueAt(i, 2).toString(); // atau kolom ke-2 jika nama barang di situ
+                                String jumlah = tbDokter.getValueAt(i, 0).toString();
+                                String satuan = tbDokter.getValueAt(i, 3).toString();
+                                String hargatotal = tbDokter.getValueAt(i, 6).toString();
+                                pengajuan += " - *" + namaBarang + "* Jumlah : " + jumlah + " " + satuan + " Harga : "+ hargatotal +"\n";
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Notifikasi : " + e);
+                        }
+                    }
+ 
+            
+            String pesan = "*Assalamulaikum*\n"
+                    + "==========================\n"
+                    + "*Pengajuan Barang*\n"  
+                    + "*Yth. Ka.Bag UMUM & Kuangan*\n"
+                    + "*drg Krisna Wijayanti*\n"
+                    + "No. Pengajuan : " + nop + "\n"              
+                    + "Petugas : " + petugas + "\n\n"
+                    + "Pengajuan Barang : " + pengajuan + "\n\n"
+                    + "Keterangan : " + Kete + "\n\n"
+                    + "*Mohon pengajuan ini dapat ditindak Lanjuti*\n"                    
+                    + "Tgl Pengajuan : " + InfoTanggal + "\n"
+                    + "Info Waktu : " + InfoJam + " WIB\n\n"
+                    + "===========================";            
+            // kirim WA
+            boolean terkirim = FonnteAPI.sendMessage(idgroupwapengajuan, pesan);
+
+            if (terkirim) {
+                System.out.println("Pesan WA berhasil dikirim!");
+            } else {
+                System.out.println("Gagal mengirim pesan WA.");
+}
+        }
+    }
+    
+        private void jam(){
+        ActionListener taskPerformer = new ActionListener(){
+            private int nilai_jam;
+            private int nilai_menit;
+            private int nilai_detik;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nol_jam = "";
+                String nol_menit = "";
+                String nol_detik = "";
+                // Membuat Date
+                //Date dt = new Date();
+                Date now = Calendar.getInstance().getTime();
+
+                // Mengambil nilaj JAM, MENIT, dan DETIK Sekarang
+                if(ChkJln.isSelected()==true){
+                    nilai_jam = now.getHours();
+                    nilai_menit = now.getMinutes();
+                    nilai_detik = now.getSeconds();
+                }else if(ChkJln.isSelected()==false){
+                    nilai_jam =CmbJam.getSelectedIndex();
+                    nilai_menit =CmbMenit.getSelectedIndex();
+                    nilai_detik =CmbDetik.getSelectedIndex();
+                }
+
+                // Jika nilai JAM lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_jam <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_jam = "0";
+                }
+                // Jika nilai MENIT lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_menit <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_menit = "0";
+                }
+                // Jika nilai DETIK lebih kecil dari 10 (hanya 1 digit)
+                if (nilai_detik <= 9) {
+                    // Tambahkan "0" didepannya
+                    nol_detik = "0";
+                }
+                // Membuat String JAM, MENIT, DETIK
+                String jam = nol_jam + Integer.toString(nilai_jam);
+                String menit = nol_menit + Integer.toString(nilai_menit);
+                String detik = nol_detik + Integer.toString(nilai_detik);
+                // Menampilkan pada Layar
+                //tampil_jam.setText("  " + jam + " : " + menit + " : " + detik + "  ");
+                CmbJam.setSelectedItem(jam);
+                CmbMenit.setSelectedItem(menit);
+                CmbDetik.setSelectedItem(detik);
+            }
+        };
+        // Timer
+        new Timer(1000, taskPerformer).start();
+    }
  
 }

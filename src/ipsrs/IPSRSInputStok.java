@@ -134,6 +134,9 @@ public class IPSRSInputStok extends javax.swing.JDialog {
             });
         }        
         TCari.requestFocus();
+        
+
+    cmbJenis.addActionListener(e -> tampil());//tambahan
     }
     
 
@@ -178,6 +181,8 @@ public class IPSRSInputStok extends javax.swing.JDialog {
         BtnCari1 = new widget.Button();
         BtnTambah = new widget.Button();
         BtnPrint = new widget.Button();
+        jLabel1 = new javax.swing.JLabel();
+        cmbJenis = new widget.ComboBox();
         panelisi3 = new widget.panelisi();
         label18 = new widget.Label();
         catatan = new widget.TextBox();
@@ -575,6 +580,20 @@ public class IPSRSInputStok extends javax.swing.JDialog {
             }
         });
         panelisi5.add(BtnPrint);
+
+        jLabel1.setText("Jns/UNIT :");
+        jLabel1.setName("jLabel1"); // NOI18N
+        panelisi5.add(jLabel1);
+
+        cmbJenis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "IPSRS", "LAB", "RAD", "LOGISTIK", "LOUND" }));
+        cmbJenis.setName("cmbJenis"); // NOI18N
+        cmbJenis.setPreferredSize(new java.awt.Dimension(90, 20));
+        cmbJenis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbJenisKeyPressed(evt);
+            }
+        });
+        panelisi5.add(cmbJenis);
 
         jPanel1.add(panelisi5, java.awt.BorderLayout.CENTER);
 
@@ -982,6 +1001,10 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         }
     }//GEN-LAST:event_BtnPrintKeyPressed
 
+    private void cmbJenisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbJenisKeyPressed
+
+    }//GEN-LAST:event_cmbJenisKeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -1021,7 +1044,9 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private widget.TextBox TCari;
     private widget.Tanggal Tgl;
     private widget.TextBox catatan;
+    private widget.ComboBox cmbJenis;
     private widget.InternalFrame internalFrame1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private widget.Label label10;
     private widget.Label label11;
@@ -1039,83 +1064,180 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     // End of variables declaration//GEN-END:variables
 
     public void tampil() {        
-        try{     
-            jml=0;
-            for(i=0;i<tbDokter.getRowCount();i++){
-                if(!tbDokter.getValueAt(i,0).toString().equals("")){
-                    jml++;
-                }
-            }
-            real=new String[jml];
-            kodebarang=new String[jml];
-            namabarang=new String[jml];
-            kategori=new String[jml];
-            satuan=new String[jml];
-            hargabeli=new double[jml];
-            stok=new double[jml];
-            selisih=new double[jml];
-            nomihilang=new double[jml];
-            lebih=new double[jml];
-            nomilebih=new double[jml];
+//        try{     
+//            jml=0;
+//            for(i=0;i<tbDokter.getRowCount();i++){
+//                if(!tbDokter.getValueAt(i,0).toString().equals("")){
+//                    jml++;
+//                }
+//            }
+//            real=new String[jml];
+//            kodebarang=new String[jml];
+//            namabarang=new String[jml];
+//            kategori=new String[jml];
+//            satuan=new String[jml];
+//            hargabeli=new double[jml];
+//            stok=new double[jml];
+//            selisih=new double[jml];
+//            nomihilang=new double[jml];
+//            lebih=new double[jml];
+//            nomilebih=new double[jml];
+//
+//            index=0;        
+//            for(i=0;i<tbDokter.getRowCount();i++){
+//                if(!tbDokter.getValueAt(i,0).toString().equals("")){
+//                    real[index]=tbDokter.getValueAt(i,0).toString();
+//                    kodebarang[index]=tbDokter.getValueAt(i,1).toString();
+//                    namabarang[index]=tbDokter.getValueAt(i,2).toString();
+//                    kategori[index]=tbDokter.getValueAt(i,3).toString();
+//                    satuan[index]=tbDokter.getValueAt(i,4).toString();
+//                    hargabeli[index]=Double.parseDouble(tbDokter.getValueAt(i,5).toString());
+//                    stok[index]=Double.parseDouble(tbDokter.getValueAt(i,6).toString());
+//                    selisih[index]=Double.parseDouble(tbDokter.getValueAt(i,7).toString());
+//                    nomihilang[index]=Double.parseDouble(tbDokter.getValueAt(i,8).toString());
+//                    lebih[index]=Double.parseDouble(tbDokter.getValueAt(i,9).toString());
+//                    nomilebih[index]=Double.parseDouble(tbDokter.getValueAt(i,10).toString());
+//                    index++;
+//                }
+//            }
+//
+//            Valid.tabelKosong(tabMode);
+//            for(i=0;i<jml;i++){
+//                tabMode.addRow(new Object[]{
+//                    real[i],kodebarang[i],namabarang[i],kategori[i],satuan[i],
+//                    hargabeli[i],stok[i],selisih[i],nomihilang[i],lebih[i],nomilebih[i]
+//                });
+//            }
+//            pstampil=koneksi.prepareStatement(
+//                "select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng,ipsrsjenisbarang.nm_jenis, ipsrsbarang.kode_sat,ipsrsbarang.harga,ipsrsbarang.stok from ipsrsbarang "+
+//                " inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis where ipsrsbarang.status='1' and (ipsrsbarang.kode_brng like ? or "+
+//                " ipsrsbarang.nama_brng like ? or ipsrsbarang.kode_sat like ? or ipsrsjenisbarang.nm_jenis like ?) "+order);
+//            try {
+//                pstampil.setString(1,"%"+TCari.getText().trim()+"%");
+//                pstampil.setString(2,"%"+TCari.getText().trim()+"%");
+//                pstampil.setString(3,"%"+TCari.getText().trim()+"%");
+//                pstampil.setString(4,"%"+TCari.getText().trim()+"%");
+//                rstampil=pstampil.executeQuery();
+//                while(rstampil.next()){                            
+//                    tabMode.addRow(new Object[]{
+//                        "",rstampil.getString("kode_brng"),
+//                        rstampil.getString("nama_brng"),
+//                        rstampil.getString("nm_jenis"),
+//                        rstampil.getString("kode_sat"),
+//                        rstampil.getDouble("harga"),
+//                        rstampil.getDouble("stok"),0,0,0,0
+//                    });
+//                }    
+//            } catch (Exception e) {
+//                System.out.println("Ntif : "+e);
+//            } finally{
+//                if(rstampil!=null){
+//                    rstampil.close();
+//                }
+//                if(pstampil!=null){
+//                    pstampil.close();
+//                }
+//            }                            
+//        }catch(SQLException e){
+//            System.out.println("Notifikasi : "+e);
+//        }
 
-            index=0;        
-            for(i=0;i<tbDokter.getRowCount();i++){
-                if(!tbDokter.getValueAt(i,0).toString().equals("")){
-                    real[index]=tbDokter.getValueAt(i,0).toString();
-                    kodebarang[index]=tbDokter.getValueAt(i,1).toString();
-                    namabarang[index]=tbDokter.getValueAt(i,2).toString();
-                    kategori[index]=tbDokter.getValueAt(i,3).toString();
-                    satuan[index]=tbDokter.getValueAt(i,4).toString();
-                    hargabeli[index]=Double.parseDouble(tbDokter.getValueAt(i,5).toString());
-                    stok[index]=Double.parseDouble(tbDokter.getValueAt(i,6).toString());
-                    selisih[index]=Double.parseDouble(tbDokter.getValueAt(i,7).toString());
-                    nomihilang[index]=Double.parseDouble(tbDokter.getValueAt(i,8).toString());
-                    lebih[index]=Double.parseDouble(tbDokter.getValueAt(i,9).toString());
-                    nomilebih[index]=Double.parseDouble(tbDokter.getValueAt(i,10).toString());
-                    index++;
+                            try{     
+                jml = 0;
+                for(i = 0; i < tbDokter.getRowCount(); i++){
+                    if(!tbDokter.getValueAt(i,0).toString().equals("")){
+                        jml++;
+                    }
                 }
-            }
 
-            Valid.tabelKosong(tabMode);
-            for(i=0;i<jml;i++){
-                tabMode.addRow(new Object[]{
-                    real[i],kodebarang[i],namabarang[i],kategori[i],satuan[i],
-                    hargabeli[i],stok[i],selisih[i],nomihilang[i],lebih[i],nomilebih[i]
-                });
-            }
-            pstampil=koneksi.prepareStatement(
-                "select ipsrsbarang.kode_brng, ipsrsbarang.nama_brng,ipsrsjenisbarang.nm_jenis, ipsrsbarang.kode_sat,ipsrsbarang.harga,ipsrsbarang.stok from ipsrsbarang "+
-                " inner join ipsrsjenisbarang on ipsrsbarang.jenis=ipsrsjenisbarang.kd_jenis where ipsrsbarang.status='1' and (ipsrsbarang.kode_brng like ? or "+
-                " ipsrsbarang.nama_brng like ? or ipsrsbarang.kode_sat like ? or ipsrsjenisbarang.nm_jenis like ?) "+order);
-            try {
-                pstampil.setString(1,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(2,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(3,"%"+TCari.getText().trim()+"%");
-                pstampil.setString(4,"%"+TCari.getText().trim()+"%");
-                rstampil=pstampil.executeQuery();
+                real = new String[jml];
+                kodebarang = new String[jml];
+                namabarang = new String[jml];
+                kategori = new String[jml];
+                satuan = new String[jml];
+                hargabeli = new double[jml];
+                stok = new double[jml];
+                selisih = new double[jml];
+                nomihilang = new double[jml];
+                lebih = new double[jml];
+                nomilebih = new double[jml];
+
+                index = 0;        
+                for(i = 0; i < tbDokter.getRowCount(); i++){
+                    if(!tbDokter.getValueAt(i,0).toString().equals("")){
+                        real[index] = tbDokter.getValueAt(i,0).toString();
+                        kodebarang[index] = tbDokter.getValueAt(i,1).toString();
+                        namabarang[index] = tbDokter.getValueAt(i,2).toString();
+                        kategori[index] = tbDokter.getValueAt(i,3).toString();
+                        satuan[index] = tbDokter.getValueAt(i,4).toString();
+                        hargabeli[index] = Double.parseDouble(tbDokter.getValueAt(i,5).toString());
+                        stok[index] = Double.parseDouble(tbDokter.getValueAt(i,6).toString());
+                        selisih[index] = Double.parseDouble(tbDokter.getValueAt(i,7).toString());
+                        nomihilang[index] = Double.parseDouble(tbDokter.getValueAt(i,8).toString());
+                        lebih[index] = Double.parseDouble(tbDokter.getValueAt(i,9).toString());
+                        nomilebih[index] = Double.parseDouble(tbDokter.getValueAt(i,10).toString());
+                        index++;
+                    }
+                }
+
+                Valid.tabelKosong(tabMode);
+                for(i = 0; i < jml; i++){
+                    tabMode.addRow(new Object[]{
+                        real[i], kodebarang[i], namabarang[i], kategori[i], satuan[i],
+                        hargabeli[i], stok[i], selisih[i], nomihilang[i], lebih[i], nomilebih[i]
+                    });
+                }
+
+                // Ambil nilai dari cmbJenis dan siapkan filter
+                String jenisDipilih = cmbJenis.getSelectedItem().toString();
+                String jenisFilter = jenisDipilih.equalsIgnoreCase("Semua") ? "%" : jenisDipilih;
+                if(jenisFilter.equalsIgnoreCase("Semua")) {
+                    jenisFilter = "%";
+                }
+
+                pstampil = koneksi.prepareStatement(      
+                                    "SELECT b.kode_brng, b.nama_brng, j.nm_jenis, b.kode_sat, b.harga, b.stok " +
+                                    "FROM ipsrsbarang b " +
+                                    "INNER JOIN ipsrsjenisbarang j ON b.jenis = j.kd_jenis " +
+                                    "WHERE b.status = '1' AND " +
+                                    "(b.kode_brng LIKE ? OR b.nama_brng LIKE ? OR b.kode_sat LIKE ? OR j.nm_jenis LIKE ?) " +
+                                    "AND j.nm_jenis LIKE ? ORDER BY b.nama_brng"
+                                );
+
+                // Set parameter pencarian dan jenis
+                String keyword = "%" + TCari.getText().trim() + "%";
+                pstampil.setString(1, keyword);
+                pstampil.setString(2, keyword);
+                pstampil.setString(3, keyword);
+                pstampil.setString(4, keyword);
+                pstampil.setString(5, "%" + jenisFilter + "%");
+
+                rstampil = pstampil.executeQuery();
                 while(rstampil.next()){                            
                     tabMode.addRow(new Object[]{
-                        "",rstampil.getString("kode_brng"),
+                        "", rstampil.getString("kode_brng"),
                         rstampil.getString("nama_brng"),
                         rstampil.getString("nm_jenis"),
                         rstampil.getString("kode_sat"),
                         rstampil.getDouble("harga"),
-                        rstampil.getDouble("stok"),0,0,0,0
+                        rstampil.getDouble("stok"),
+                        0, 0, 0, 0
                     });
                 }    
             } catch (Exception e) {
-                System.out.println("Ntif : "+e);
-            } finally{
-                if(rstampil!=null){
-                    rstampil.close();
+                System.out.println("Notifikasi : " + e);
+            } finally {
+                try {
+                    if(rstampil != null){
+                        rstampil.close();
+                    }
+                    if(pstampil != null){
+                        pstampil.close();
+                    }
+                } catch (SQLException e) {
+                    System.out.println("Notifikasi Close: " + e);
                 }
-                if(pstampil!=null){
-                    pstampil.close();
-                }
-            }                            
-        }catch(SQLException e){
-            System.out.println("Notifikasi : "+e);
-        }
+            }
         
     }
     

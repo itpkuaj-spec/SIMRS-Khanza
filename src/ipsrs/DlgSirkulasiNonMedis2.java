@@ -555,13 +555,14 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private void prosesCari() {
        Valid.tabelKosong(tabMode);      
        try{   
-            ps=koneksi.prepareStatement("select ipsrsbarang.kode_brng,ipsrsbarang.nama_brng, "+
+            ps=koneksi.prepareStatement("select ipsrsbarang.kode_brng,CONCAT(ipsrsbarang.nama_brng,' (',ipsrsjenisbarang.nm_jenis,')') AS nama_jenis, "+
                         "kodesatuan.satuan,ipsrsbarang.stok,(ipsrsbarang.stok*ipsrsbarang.harga) as aset "+
                         "from ipsrsbarang inner join kodesatuan on ipsrsbarang.kode_sat=kodesatuan.kode_sat "+
+                        "inner join ipsrsjenisbarang on ipsrsbarang.jenis = ipsrsjenisbarang.kd_jenis " +
                         "where ipsrsbarang.nama_brng like ? and ipsrsbarang.kode_brng like ? or "+
                         "ipsrsbarang.nama_brng like ? and ipsrsbarang.nama_brng like ? or "+
-                        "ipsrsbarang.nama_brng like ? and kodesatuan.satuan like ? "+
-                        " order by ipsrsbarang.kode_brng");
+                        "ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? "
+                        );
             try {
                 ttltotalbeli=0;ttltotalpesan=0;ttltotalkeluar=0;ttltotalstokawal=0;ttltotalstokakhir=0;ttltotalutd=0;ttltotalhibah=0;
                 ps.setString(1,"%"+nmbar.getText()+"%");
