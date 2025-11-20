@@ -173,6 +173,17 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         } catch (Exception ex) {
             JADIKANBOOKINGSURATKONTROLAPIBPJS="no";
         }
+        
+                //tambahan wa
+        try {
+            notifwapasien = koneksiDB.NOTIFWAPASIEN();
+            
+        } catch (Exception e) {
+            notifwapasien = "no";
+            
+        }
+        
+        //akhir
     }
  
     /** This method is called from within the constructor to

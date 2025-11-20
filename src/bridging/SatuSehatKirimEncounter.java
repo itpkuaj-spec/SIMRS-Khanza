@@ -33,7 +33,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-
+//tambahan
+import tambahan_it.SatuSehatKirimAllergyIntollerance;
+import tambahan_it.SatuSehatKirimQuestionnaireRequest;
+import tambahan_it.SatuSehatKirimRencanaKontrol;
 /**
  *
  * @author dosen
@@ -55,6 +58,10 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
     private JsonNode response;
     private SatuSehatCekNIK cekViaSatuSehat=new SatuSehatCekNIK();  
     private StringBuilder htmlContent;    
+    //tambahan
+    private SatuSehatKirimQuestionnaireRequest qustionnaire=new SatuSehatKirimQuestionnaireRequest(null,false);
+    private SatuSehatKirimRencanaKontrol rencanakontrol=new SatuSehatKirimRencanaKontrol(null,false);
+    private SatuSehatKirimAllergyIntollerance kirimalergi=new SatuSehatKirimAllergyIntollerance (null,false);
     
     /** Creates new form DlgKamar
      * @param parent
@@ -210,6 +217,9 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         BtnUpdate = new widget.Button();
         BtnPrint = new widget.Button();
         BtnKeluar = new widget.Button();
+        Rkontrol = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         panelGlass9 = new widget.panelisi();
         jLabel15 = new widget.Label();
         DTPCari1 = new widget.Tanggal();
@@ -218,6 +228,7 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jLabel16 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        ChkBelumTerkirim = new widget.CekBox();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -372,6 +383,33 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         });
         panelGlass8.add(BtnKeluar);
 
+        Rkontrol.setText("Rencana Kontrol");
+        Rkontrol.setName("Rkontrol"); // NOI18N
+        Rkontrol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RkontrolActionPerformed(evt);
+            }
+        });
+        panelGlass8.add(Rkontrol);
+
+        jButton2.setText("Allergy");
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        panelGlass8.add(jButton2);
+
+        jButton1.setText("QR");
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        panelGlass8.add(jButton1);
+
         jPanel3.add(panelGlass8, java.awt.BorderLayout.CENTER);
 
         panelGlass9.setName("panelGlass9"); // NOI18N
@@ -383,7 +421,7 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-06-2023" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-09-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -396,7 +434,7 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-06-2023" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-09-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -433,6 +471,27 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
             }
         });
         panelGlass9.add(BtnCari);
+
+        ChkBelumTerkirim.setBorder(null);
+        ChkBelumTerkirim.setText("Data belum terkirim");
+        ChkBelumTerkirim.setBorderPainted(true);
+        ChkBelumTerkirim.setBorderPaintedFlat(true);
+        ChkBelumTerkirim.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        ChkBelumTerkirim.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ChkBelumTerkirim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        ChkBelumTerkirim.setIconTextGap(2);
+        ChkBelumTerkirim.setName("ChkBelumTerkirim"); // NOI18N
+        ChkBelumTerkirim.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                ChkBelumTerkirimItemStateChanged(evt);
+            }
+        });
+        ChkBelumTerkirim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ChkBelumTerkirimActionPerformed(evt);
+            }
+        });
+        panelGlass9.add(ChkBelumTerkirim);
 
         jPanel3.add(panelGlass9, java.awt.BorderLayout.PAGE_START);
 
@@ -935,6 +994,37 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_BtnAllKeyPressed
 
+    private void ChkBelumTerkirimItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_ChkBelumTerkirimItemStateChanged
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tampil();
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_ChkBelumTerkirimItemStateChanged
+
+    private void ChkBelumTerkirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ChkBelumTerkirimActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ChkBelumTerkirimActionPerformed
+
+    private void RkontrolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RkontrolActionPerformed
+        // TODO add your handling code here:
+        rencanakontrol.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        rencanakontrol.setLocationRelativeTo(internalFrame1);
+        rencanakontrol.setVisible(true);
+    }//GEN-LAST:event_RkontrolActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        kirimalergi.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        kirimalergi.setLocationRelativeTo(internalFrame1);
+        kirimalergi.setVisible(true);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        qustionnaire.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        qustionnaire.setLocationRelativeTo(internalFrame1);
+        qustionnaire.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -958,13 +1048,17 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
     private widget.Button BtnKirim;
     private widget.Button BtnPrint;
     private widget.Button BtnUpdate;
+    private widget.CekBox ChkBelumTerkirim;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.Label LCount;
     private widget.editorpane LoadHTML;
+    private javax.swing.JButton Rkontrol;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.InternalFrame internalFrame1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private widget.Label jLabel15;
     private widget.Label jLabel16;
     private widget.Label jLabel17;
@@ -978,54 +1072,182 @@ public final class SatuSehatKirimEncounter extends javax.swing.JDialog {
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
     private void tampil() {
-        Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,pasien.nm_pasien,pasien.no_ktp,reg_periksa.no_rkm_medis,reg_periksa.kd_poli,reg_periksa.stts,"+
-                   "pegawai.nama,pegawai.no_ktp as ktpdokter,poliklinik.nm_poli,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,reg_periksa.kd_dokter,"+
-                   "reg_periksa.status_lanjut,concat(reg_periksa.tgl_registrasi,'T',reg_periksa.jam_reg,'+07:00') as pulang,ifnull(satu_sehat_encounter.id_encounter,'') as id_encounter "+
-                   "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join pegawai on pegawai.nik=reg_periksa.kd_dokter "+
-                   "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=poliklinik.kd_poli "+
-                   "left join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
-                   "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.tgl_registrasi between ? and ? "+
-                   (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
-                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.nama like ? or poliklinik.nm_poli like ? or "+
-                   "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)"));
-            try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                if(!TCari.getText().equals("")){
-                    ps.setString(3,"%"+TCari.getText()+"%");
-                    ps.setString(4,"%"+TCari.getText()+"%");
-                    ps.setString(5,"%"+TCari.getText()+"%");
-                    ps.setString(6,"%"+TCari.getText()+"%");
-                    ps.setString(7,"%"+TCari.getText()+"%");
-                    ps.setString(8,"%"+TCari.getText()+"%");
-                    ps.setString(9,"%"+TCari.getText()+"%");
-                    ps.setString(10,"%"+TCari.getText()+"%");
+//        Valid.tabelKosong(tabMode);
+//        try{
+//            ps=koneksi.prepareStatement(
+//                   "select reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,pasien.nm_pasien,pasien.no_ktp,reg_periksa.no_rkm_medis,reg_periksa.kd_poli,reg_periksa.stts,"+
+//                   "pegawai.nama,pegawai.no_ktp as ktpdokter,poliklinik.nm_poli,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat,reg_periksa.kd_dokter,"+
+//                   "reg_periksa.status_lanjut,concat(reg_periksa.tgl_registrasi,'T',reg_periksa.jam_reg,'+07:00') as pulang,ifnull(satu_sehat_encounter.id_encounter,'') as id_encounter "+
+//                   "from reg_periksa inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join pegawai on pegawai.nik=reg_periksa.kd_dokter "+
+//                   "inner join poliklinik on reg_periksa.kd_poli=poliklinik.kd_poli inner join satu_sehat_mapping_lokasi_ralan on satu_sehat_mapping_lokasi_ralan.kd_poli=poliklinik.kd_poli "+
+//                   "left join satu_sehat_encounter on satu_sehat_encounter.no_rawat=reg_periksa.no_rawat "+
+//                   "where reg_periksa.status_bayar='Sudah Bayar' and reg_periksa.tgl_registrasi between ? and ? "+
+//                   (TCari.getText().equals("")?"":"and (reg_periksa.no_rawat like ? or reg_periksa.no_rkm_medis like ? or "+
+//                   "pasien.nm_pasien like ? or pasien.no_ktp like ? or pegawai.nama like ? or poliklinik.nm_poli like ? or "+
+//                   "reg_periksa.stts like ? or reg_periksa.status_lanjut like ?)"));
+//            try {
+//                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
+//                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
+//                if(!TCari.getText().equals("")){
+//                    ps.setString(3,"%"+TCari.getText()+"%");
+//                    ps.setString(4,"%"+TCari.getText()+"%");
+//                    ps.setString(5,"%"+TCari.getText()+"%");
+//                    ps.setString(6,"%"+TCari.getText()+"%");
+//                    ps.setString(7,"%"+TCari.getText()+"%");
+//                    ps.setString(8,"%"+TCari.getText()+"%");
+//                    ps.setString(9,"%"+TCari.getText()+"%");
+//                    ps.setString(10,"%"+TCari.getText()+"%");
+//                }
+//                rs=ps.executeQuery();
+//                while(rs.next()){
+//                    tabMode.addRow(new Object[]{
+//                        false,rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00",rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
+//                        rs.getString("no_ktp"),rs.getString("kd_dokter"),rs.getString("nama"),rs.getString("ktpdokter"),rs.getString("kd_poli"),rs.getString("nm_poli"),
+//                        rs.getString("id_lokasi_satusehat"),rs.getString("stts"),rs.getString("status_lanjut"),rs.getString("pulang"),rs.getString("id_encounter")
+//                    });
+//                }
+//            } catch (Exception e) {
+//                System.out.println("Notif : "+e);
+//            } finally{
+//                if(rs!=null){
+//                    rs.close();
+//                }
+//                if(ps!=null){
+//                    ps.close();
+//                }
+//            }
+//        }catch(Exception e){
+//            System.out.println("Notifikasi : "+e);
+//        }
+//        LCount.setText(""+tabMode.getRowCount());
+                Valid.tabelKosong(tabMode);
+                try {
+                // Filter tambahan
+                String filterBelumTerkirim = "";
+                if (ChkBelumTerkirim.isSelected()) {
+                    filterBelumTerkirim = "satu_sehat_encounter.id_encounter IS NULL";
                 }
-                rs=ps.executeQuery();
-                while(rs.next()){
+
+                // ========================
+                // Query Rawat Jalan
+                // ========================
+                String sqlRalan =
+                    "SELECT reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis," +
+                    "pasien.nm_pasien,pasien.no_ktp,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp AS ktpdokter," +
+                    "reg_periksa.kd_poli,poliklinik.nm_poli,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat," +
+                    "reg_periksa.stts,reg_periksa.status_lanjut," +
+                    "CONCAT(nota_jalan.tanggal,'T',nota_jalan.jam,'+07:00') AS pulang," +
+                    "IFNULL(satu_sehat_encounter.id_encounter,'') AS id_encounter " +
+                    "FROM reg_periksa " +
+                    "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
+                    "INNER JOIN pegawai ON pegawai.nik=reg_periksa.kd_dokter " +
+                    "INNER JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli " +
+                    "INNER JOIN satu_sehat_mapping_lokasi_ralan ON satu_sehat_mapping_lokasi_ralan.kd_poli=poliklinik.kd_poli " +
+                    "INNER JOIN nota_jalan ON nota_jalan.no_rawat=reg_periksa.no_rawat " +
+                    "LEFT JOIN satu_sehat_encounter ON satu_sehat_encounter.no_rawat=reg_periksa.no_rawat " +
+                    "WHERE " +
+                    (filterBelumTerkirim.equals("") ? "" : filterBelumTerkirim + " AND ") +
+                    "reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
+                    (TCari.getText().equals("") ? "" :
+                        "AND (reg_periksa.no_rawat LIKE ? OR reg_periksa.no_rkm_medis LIKE ? OR " +
+                        "pasien.nm_pasien LIKE ? OR pasien.no_ktp LIKE ? OR pegawai.nama LIKE ? OR " +
+                        "poliklinik.nm_poli LIKE ? OR reg_periksa.stts LIKE ? OR reg_periksa.status_lanjut LIKE ?)"
+                    );
+
+                ps = koneksi.prepareStatement(sqlRalan);
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().equals("")) {
+                    for (int i = 3; i <= 10; i++) {
+                        ps.setString(i, "%" + TCari.getText() + "%");
+                    }
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
                     tabMode.addRow(new Object[]{
-                        false,rs.getString("tgl_registrasi")+"T"+rs.getString("jam_reg")+"+07:00",rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),
-                        rs.getString("no_ktp"),rs.getString("kd_dokter"),rs.getString("nama"),rs.getString("ktpdokter"),rs.getString("kd_poli"),rs.getString("nm_poli"),
-                        rs.getString("id_lokasi_satusehat"),rs.getString("stts"),rs.getString("status_lanjut"),rs.getString("pulang"),rs.getString("id_encounter")
+                        false,
+                        rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                        rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"),
+                        rs.getString("kd_dokter"),
+                        rs.getString("nama"),
+                        rs.getString("ktpdokter"),
+                        rs.getString("kd_poli"),
+                        rs.getString("nm_poli"),
+                        rs.getString("id_lokasi_satusehat"),
+                        rs.getString("stts"),
+                        rs.getString("status_lanjut"),
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter")
                     });
                 }
+                rs.close();
+                ps.close();
+
+                // ========================
+                // Query Rawat Inap
+                // ========================
+                String sqlRanap =
+                    "SELECT reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.no_rawat,reg_periksa.no_rkm_medis," +
+                    "pasien.nm_pasien,pasien.no_ktp,reg_periksa.kd_dokter,pegawai.nama,pegawai.no_ktp AS ktpdokter," +
+                    "reg_periksa.kd_poli,poliklinik.nm_poli,satu_sehat_mapping_lokasi_ralan.id_lokasi_satusehat," +
+                    "reg_periksa.stts,reg_periksa.status_lanjut," +
+                    "CONCAT(nota_inap.tanggal,'T',nota_inap.jam,'+07:00') AS pulang," +
+                    "IFNULL(satu_sehat_encounter.id_encounter,'') AS id_encounter " +
+                    "FROM reg_periksa " +
+                    "INNER JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis " +
+                    "INNER JOIN pegawai ON pegawai.nik=reg_periksa.kd_dokter " +
+                    "INNER JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli " +
+                    "INNER JOIN satu_sehat_mapping_lokasi_ralan ON satu_sehat_mapping_lokasi_ralan.kd_poli=poliklinik.kd_poli " +
+                    "INNER JOIN nota_inap ON nota_inap.no_rawat=reg_periksa.no_rawat " +
+                    "LEFT JOIN satu_sehat_encounter ON satu_sehat_encounter.no_rawat=reg_periksa.no_rawat " +
+                    "WHERE " +
+                    (filterBelumTerkirim.equals("") ? "" : filterBelumTerkirim + " AND ") +
+                    "reg_periksa.tgl_registrasi BETWEEN ? AND ? " +
+                    (TCari.getText().equals("") ? "" :
+                        "AND (reg_periksa.no_rawat LIKE ? OR reg_periksa.no_rkm_medis LIKE ? OR " +
+                        "pasien.nm_pasien LIKE ? OR pasien.no_ktp LIKE ? OR pegawai.nama LIKE ? OR " +
+                        "poliklinik.nm_poli LIKE ? OR reg_periksa.stts LIKE ? OR reg_periksa.status_lanjut LIKE ?)"
+                    );
+
+                ps = koneksi.prepareStatement(sqlRanap);
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                if (!TCari.getText().equals("")) {
+                    for (int i = 3; i <= 10; i++) {
+                        ps.setString(i, "%" + TCari.getText() + "%");
+                    }
+                }
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    tabMode.addRow(new Object[]{
+                        false,
+                        rs.getString("tgl_registrasi") + "T" + rs.getString("jam_reg") + "+07:00",
+                        rs.getString("no_rawat"),
+                        rs.getString("no_rkm_medis"),
+                        rs.getString("nm_pasien"),
+                        rs.getString("no_ktp"),
+                        rs.getString("kd_dokter"),
+                        rs.getString("nama"),
+                        rs.getString("ktpdokter"),
+                        rs.getString("kd_poli"),
+                        rs.getString("nm_poli"),
+                        rs.getString("id_lokasi_satusehat"),
+                        rs.getString("stts"),
+                        rs.getString("status_lanjut"),
+                        rs.getString("pulang"),
+                        rs.getString("id_encounter")
+                    });
+                }
+                rs.close();
+                ps.close();
+
             } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
+                System.out.println("Notifikasi : " + e);
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }
-        LCount.setText(""+tabMode.getRowCount());
+            LCount.setText("" + tabMode.getRowCount());
     }
 
     public void isCek(){
