@@ -330,6 +330,14 @@ public final class ICareRiwayatPerawatan extends javax.swing.JDialog {
     public void setPasien(String param,String kodedokter){
         NoKartu.setText(param);
         KdDPJPLayanan.setText(kodedokter);
+        //tambahan
+            // Timer dengan delay 3000 ms (3 detik)
+        // Buat Timer, atur agar tidak mengulang, lalu start
+        javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+            tampil();
+        });
+        timer.setRepeats(false); // hanya sekali eksekusi
+        timer.start();           // baru kemudian dijalankan
     }
     
     private void createScene() {        

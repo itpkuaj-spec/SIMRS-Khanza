@@ -18,6 +18,7 @@ import rekammedis.RMRiwayatPenunjang;
 import bridging.ICareRiwayatPerawatan;
 import surat.SuratKontrolUmum;
 import rekammedis.DlgDataAlergiPasien;
+import tambahan_it.RMIntervensiPencegahanPasienJatuh;
 //akhir
 import surat.SuratKontrol;
 import kepegawaian.DlgCariDokter;
@@ -1327,6 +1328,7 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         //tambahan
+        BtnIntervensiPasienJatuh = new widget.Button();
         lblno_antri = new widget.Label();
         lblno_antripoli = new widget.Label();
         BtnPanggilPasien = new widget.Button();
@@ -1728,6 +1730,24 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
         });
         FormMenu.add(BtnSurkonUmum);
         
+        BtnIntervensiPasienJatuh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
+        BtnIntervensiPasienJatuh.setText("Lanjutan Intervensi Jatuh PKU");
+        BtnIntervensiPasienJatuh.setToolTipText("");
+        BtnIntervensiPasienJatuh.setFocusPainted(false);
+        BtnIntervensiPasienJatuh.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        BtnIntervensiPasienJatuh.setGlassColor(new java.awt.Color(255, 255, 255));
+        BtnIntervensiPasienJatuh.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        BtnIntervensiPasienJatuh.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        BtnIntervensiPasienJatuh.setName("BtnIntervensiPasienJatuh"); // NOI18N
+        BtnIntervensiPasienJatuh.setPreferredSize(new java.awt.Dimension(190, 23));
+        BtnIntervensiPasienJatuh.setRoundRect(false);
+        BtnIntervensiPasienJatuh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnIntervensiPasienJatuhActionPerformed(evt);
+            }
+        });
+        
+        //sampe sini
         
         BtnRiwayatFKTP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Hospital.png"))); // NOI18N
         BtnRiwayatFKTP.setMnemonic('4');
@@ -5503,6 +5523,24 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     //tambahan
+    private void BtnIntervensiPasienJatuhActionPerformed(java.awt.event.ActionEvent evt) {                                                         
+        // TODO add your handling code here:
+        if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, Silahkan anda pilih dulu dengan menklik data pada table...!!!");
+            TCari.requestFocus();
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            RMIntervensiPencegahanPasienJatuh form=new RMIntervensiPencegahanPasienJatuh(null,false);
+            form.isCek();
+            form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            form.emptTeks();
+            form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+            form.tampil();
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    } 
     
     private void BtnAllergyActionPerformed(java.awt.event.ActionEvent evt) {                                           
         // TODO add your handling code here:
@@ -11037,6 +11075,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Label lblno_antri;
     private widget.Label lblno_antripoli;
     private javax.swing.JButton BtnAllergy;
+    private widget.Button BtnIntervensiPasienJatuh;
     //akhir
     private widget.Button Btn5Soap;
     private widget.Button BtnAll;
@@ -14466,6 +14505,23 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         BtnChecklistKriteriaMasukPICU.setRoundRect(false);
         BtnChecklistKriteriaMasukPICU.addActionListener(this::BtnChecklistKriteriaMasukPICUActionPerformed);
         
+        //tambahan
+        BtnSurkonBpjs = new widget.Button();
+        BtnSurkonBpjs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
+        BtnSurkonBpjs.setText("Surat Kontrol BPJS");
+        BtnSurkonBpjs.setActionCommand("Surat Kontrol BPJS");
+        BtnSurkonBpjs.setFocusPainted(false);
+        BtnSurkonBpjs.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        BtnSurkonBpjs.setGlassColor(new java.awt.Color(255, 255, 255));
+        BtnSurkonBpjs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        BtnSurkonBpjs.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        BtnSurkonBpjs.setName("BtnSurkonBpjs"); // NOI18N
+        BtnSurkonBpjs.setPreferredSize(new java.awt.Dimension(190, 23));
+        BtnSurkonBpjs.setRoundRect(false);
+        BtnSurkonBpjs.addActionListener(this::BtnSurkonBpjsActionPerformed);
+        FormMenu.add(BtnSurkonBpjs);//masukkan dibawah = FormMenu.add(BtnSkriningGiziLanjut);
+        //akhir
+        
         TanggalRegistrasi = new widget.TextBox();
         TanggalRegistrasi.setHighlighter(null);
         TanggalRegistrasi.setName("TanggalRegistrasi");
@@ -14557,6 +14613,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         FormMenu.add(BtnMedicalCheckUp);
         FormMenu.add(BtnPenilaianPsikolog);
         FormMenu.add(BtnPenilaianPsikologKlinis);
+        FormMenu.add(BtnIntervensiPasienJatuh);//tambahan
         FormMenu.add(BtnPenilaianLanjutanRisikoJatuhDewasa);
         FormMenu.add(BtnPenilaianLanjutanRisikoJatuhAnak);
         FormMenu.add(BtnPenilaianLanjutanRisikoJatuhLansia);
