@@ -11,7 +11,9 @@
  */
 
 package simrskhanza;
-
+//tambahan
+import tambahan_it.FRMKirimBilling;
+//akhir
 import bridging.AkunRekeningBankJabar;
 import bridging.AkunRekeningBankJateng;
 import bridging.AkunRekeningBankMandiri;
@@ -1956,6 +1958,7 @@ public class frmUtama extends javax.swing.JFrame {
         MnKoleksiPenelitian = new javax.swing.JMenuItem();
         MnCariEbook = new javax.swing.JMenuItem();
         MnCariInventarisPerpustakaan = new javax.swing.JMenuItem();
+        Mnkirimbillingpasien = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         MnAnjungan = new javax.swing.JMenuItem();
         jSeparator12 = new javax.swing.JPopupMenu.Separator();
@@ -2183,7 +2186,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06/11/2025" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20/11/2025" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -8184,6 +8187,20 @@ public class frmUtama extends javax.swing.JFrame {
             }
         });
         jMenu6.add(MnCariInventarisPerpustakaan);
+
+        Mnkirimbillingpasien.setBackground(new java.awt.Color(255, 255, 254));
+        Mnkirimbillingpasien.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        Mnkirimbillingpasien.setForeground(new java.awt.Color(50, 90, 40));
+        Mnkirimbillingpasien.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Preview.png"))); // NOI18N
+        Mnkirimbillingpasien.setText("Kirim Billing Pasien");
+        Mnkirimbillingpasien.setName("Mnkirimbillingpasien"); // NOI18N
+        Mnkirimbillingpasien.setPreferredSize(new java.awt.Dimension(220, 30));
+        Mnkirimbillingpasien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnkirimbillingpasienActionPerformed(evt);
+            }
+        });
+        jMenu6.add(Mnkirimbillingpasien);
 
         MenuBar.add(jMenu6);
 
@@ -14805,6 +14822,17 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         Valid.panggilUrl("antrianmobilejkn.php");
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_MnInfoMobileJKNActionPerformed
+
+    private void MnkirimbillingpasienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnkirimbillingpasienActionPerformed
+        // TODO add your handling code here:
+        isTutup();
+        DlgHome.dispose();  
+        FRMKirimBilling kirimbilling=new FRMKirimBilling(this,true);
+        kirimbilling.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        kirimbilling.setLocationRelativeTo(PanelUtama);
+        kirimbilling.setVisible(true);
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_MnkirimbillingpasienActionPerformed
 
     private void btnKategoriPerpustakaanActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
@@ -23292,6 +23320,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JMenuItem MnSudahPulang6;
     private javax.swing.JMenu MnTarif;
     private javax.swing.JMenu MnTarif1;
+    private javax.swing.JMenuItem Mnkirimbillingpasien;
     private javax.swing.JPanel PanelUtama;
     private usu.widget.glass.PanelGlass PanelWall;
     private widget.panelGlass Panelmenu;

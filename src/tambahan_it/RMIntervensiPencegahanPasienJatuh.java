@@ -295,7 +295,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         MnPenilaianRisikoJatuh.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         MnPenilaianRisikoJatuh.setForeground(new java.awt.Color(50, 50, 50));
         MnPenilaianRisikoJatuh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnPenilaianRisikoJatuh.setText("Formulir Pengkajian Risiko Jatuh Neonatus");
+        MnPenilaianRisikoJatuh.setText("Cetak Formulir Intervensi PKU AJE");
         MnPenilaianRisikoJatuh.setName("MnPenilaianRisikoJatuh"); // NOI18N
         MnPenilaianRisikoJatuh.setPreferredSize(new java.awt.Dimension(270, 26));
         MnPenilaianRisikoJatuh.addActionListener(new java.awt.event.ActionListener() {
@@ -322,7 +322,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
 
         Scroll.setName("Scroll"); // NOI18N
         Scroll.setOpaque(true);
-        Scroll.setPreferredSize(new java.awt.Dimension(452, 200));
+        Scroll.setPreferredSize(new java.awt.Dimension(452, 250));
 
         tbObat.setToolTipText("Silahkan klik untuk memilih data yang mau diedit ataupun dihapus");
         tbObat.setComponentPopupMenu(jPopupMenu1);
@@ -684,13 +684,13 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
             }
         });
         FormInput.add(RT3);
-        RT3.setBounds(250, 150, 80, 23);
+        RT3.setBounds(270, 150, 80, 23);
 
         jLabel58.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel58.setText("3. Tempatkan benda pasien di dekat pasien :");
         jLabel58.setName("jLabel58"); // NOI18N
         FormInput.add(jLabel58);
-        jLabel58.setBounds(40, 150, 210, 23);
+        jLabel58.setBounds(40, 150, 230, 23);
 
         jLabel5.setText(":");
         jLabel5.setName("jLabel5"); // NOI18N
@@ -735,7 +735,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         RT8.setBounds(820, 120, 80, 23);
 
         jLabel61.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel61.setText("12. Beritahukan efek dari obat/ anestesi kepada pasien/ keluarga :");
+        jLabel61.setText("12. Berikan orientasi ruangan sekitar kepada pasien/penunggu :");
         jLabel61.setName("jLabel61"); // NOI18N
         FormInput.add(jLabel61);
         jLabel61.setBounds(430, 240, 330, 23);
@@ -767,10 +767,10 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         jLabel63.setBounds(40, 120, 310, 23);
 
         jLabel65.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel65.setText("1. Sarankan untuk meninta bantuan :");
+        jLabel65.setText("1. Sarankan untuk meminta bantuan :");
         jLabel65.setName("jLabel65"); // NOI18N
         FormInput.add(jLabel65);
-        jLabel65.setBounds(40, 90, 170, 23);
+        jLabel65.setBounds(40, 90, 200, 23);
 
         RT1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ya", "Tidak" }));
         RT1.setName("RT1"); // NOI18N
@@ -780,7 +780,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
             }
         });
         FormInput.add(RT1);
-        RT1.setBounds(220, 90, 80, 23);
+        RT1.setBounds(240, 90, 80, 23);
 
         jLabel66.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel66.setText("7. Pasangkan pengaman sisi tempat tidur :");
@@ -806,13 +806,13 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
             }
         });
         FormInput.add(RT4);
-        RT4.setBounds(290, 180, 80, 23);
+        RT4.setBounds(300, 180, 80, 23);
 
         jLabel67.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel67.setText("4. Pastikan TT dalam posisi rendan dan roda terkunci :");
         jLabel67.setName("jLabel67"); // NOI18N
         FormInput.add(jLabel67);
-        jLabel67.setBounds(40, 180, 250, 23);
+        jLabel67.setBounds(40, 180, 270, 23);
 
         jLabel69.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel69.setText("9. Tawarkan ke pasien untuk ke toilet setiap 4 jam :");
@@ -992,7 +992,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         jLabel73.setText("5. Pastikan celana panjang diatas mata kaki :");
         jLabel73.setName("jLabel73"); // NOI18N
         FormInput.add(jLabel73);
-        jLabel73.setBounds(40, 210, 210, 23);
+        jLabel73.setBounds(40, 210, 230, 23);
 
         jLabel62.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel62.setText("10. Pasangkan tali pengaman bila perlu :");
@@ -1014,7 +1014,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
             }
         });
         FormInput.add(RT5);
-        RT5.setBounds(250, 210, 80, 23);
+        RT5.setBounds(270, 210, 80, 23);
 
         RT10.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ya", "Tidak" }));
         RT10.setName("RT10"); // NOI18N
@@ -1179,7 +1179,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         }else if(KodePetugas.getText().trim().equals("")||NamaPetugas.getText().trim().equals("")){
             Valid.textKosong(btnPetugas,"Petugas");
         }else{
-            if(Sequel.menyimpantf("intervensi_pasien_jatuh","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",25,new String[]{
+            if(Sequel.menyimpantf("pku_intervensi_pasien_jatuh","?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?","Data",25,new String[]{
                 TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),RT1.getSelectedItem().toString(),
                 RT2.getSelectedItem().toString(),RT3.getSelectedItem().toString(),RT4.getSelectedItem().toString(),RT5.getSelectedItem().toString(),
                 RT6.getSelectedItem().toString(),RT7.getSelectedItem().toString(),RT8.getSelectedItem().toString(),RT9.getSelectedItem().toString(),
@@ -1489,22 +1489,22 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());   
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),27).toString());
-            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronip oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),28).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),27).toString():finger)+"\n"+Tanggal.getSelectedItem()); 
-            Valid.MyReportqry("rptFormulirRisikoJatuhNeonatus.jasper","report","::[ Formulir Risiko Jatuh Neonatus ]::",
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,intervensi_pasien_jatuh.tanggal,"+
-                    "intervensi_pasien_jatuh.RT1,intervensi_pasien_jatuh.RT2,intervensi_pasien_jatuh.RT3,"+
-                    "intervensi_pasien_jatuh.RT4,intervensi_pasien_jatuh.RT5,intervensi_pasien_jatuh.RT6,"+
-                    "intervensi_pasien_jatuh.RT7,intervensi_pasien_jatuh.RT8,intervensi_pasien_jatuh.RT9,"+
-                    "intervensi_pasien_jatuh.RT10,intervensi_pasien_jatuh.RT11,intervensi_pasien_jatuh.RT12,"+
-                    "intervensi_pasien_jatuh.RS1,intervensi_pasien_jatuh.RS2,intervensi_pasien_jatuh.RS3,"+
-                    "intervensi_pasien_jatuh.RS4,intervensi_pasien_jatuh.RS5,intervensi_pasien_jatuh.RS6,"+
-                    "intervensi_pasien_jatuh.RS7,intervensi_pasien_jatuh.RS8,intervensi_pasien_jatuh.RR1,intervensi_pasien_jatuh.RR2,"+
-                    "intervensi_pasien_jatuh.nip,petugas.nama "+
-                    "from intervensi_pasien_jatuh inner join reg_periksa on intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
+            finger=Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?",tbObat.getValueAt(tbObat.getSelectedRow(),28).toString());
+            param.put("finger","Dikeluarkan di "+akses.getnamars()+", Kabupaten/Kota "+akses.getkabupatenrs()+"\nDitandatangani secara elektronip oleh "+tbObat.getValueAt(tbObat.getSelectedRow(),29).toString()+"\nID "+(finger.equals("")?tbObat.getValueAt(tbObat.getSelectedRow(),27).toString():finger)+"\n"+Tanggal.getSelectedItem()); 
+            Valid.MyReportqry("rptPKUFormulirRisikoJatuhIntervensi.jasper","report","::[ Formulir Risiko Jatuh Intervensi PKU Aisyiyah Jepara ]::",
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,pku_intervensi_pasien_jatuh.tanggal,"+
+                    "pku_intervensi_pasien_jatuh.RT1,pku_intervensi_pasien_jatuh.RT2,pku_intervensi_pasien_jatuh.RT3,"+
+                    "pku_intervensi_pasien_jatuh.RT4,pku_intervensi_pasien_jatuh.RT5,pku_intervensi_pasien_jatuh.RT6,"+
+                    "pku_intervensi_pasien_jatuh.RT7,pku_intervensi_pasien_jatuh.RT8,pku_intervensi_pasien_jatuh.RT9,"+
+                    "pku_intervensi_pasien_jatuh.RT10,pku_intervensi_pasien_jatuh.RT11,pku_intervensi_pasien_jatuh.RT12,"+
+                    "pku_intervensi_pasien_jatuh.RS1,pku_intervensi_pasien_jatuh.RS2,pku_intervensi_pasien_jatuh.RS3,"+
+                    "pku_intervensi_pasien_jatuh.RS4,pku_intervensi_pasien_jatuh.RS5,pku_intervensi_pasien_jatuh.RS6,"+
+                    "pku_intervensi_pasien_jatuh.RS7,pku_intervensi_pasien_jatuh.RS8,pku_intervensi_pasien_jatuh.RR1,pku_intervensi_pasien_jatuh.RR2,"+
+                    "pku_intervensi_pasien_jatuh.nip,petugas.nama "+
+                    "from pku_intervensi_pasien_jatuh inner join reg_periksa on pku_intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join petugas on petugas.nip=intervensi_pasien_jatuh.nip "+
-                    "where intervensi_pasien_jatuh.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"' and intervensi_pasien_jatuh.tanggal='"+tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()+"' ",param);
+                    "inner join petugas on petugas.nip=pku_intervensi_pasien_jatuh.nip "+
+                    "where pku_intervensi_pasien_jatuh.no_rawat='"+tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()+"' ",param);
         }
     }//GEN-LAST:event_MnPenilaianRisikoJatuhActionPerformed
 
@@ -1751,35 +1751,35 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
         try{
             if(TCari.getText().trim().equals("")){
                 ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,intervensi_pasien_jatuh.tanggal,"+
-                    "intervensi_pasien_jatuh.RT1,intervensi_pasien_jatuh.RT2,intervensi_pasien_jatuh.RT3,"+
-                    "intervensi_pasien_jatuh.RT4,intervensi_pasien_jatuh.RT5,intervensi_pasien_jatuh.RT6,"+
-                    "intervensi_pasien_jatuh.RT7,intervensi_pasien_jatuh.RT8,intervensi_pasien_jatuh.RT9,"+
-                    "intervensi_pasien_jatuh.RT10,intervensi_pasien_jatuh.RT11,intervensi_pasien_jatuh.RT12,"+
-                    "intervensi_pasien_jatuh.RS1,intervensi_pasien_jatuh.RS2,intervensi_pasien_jatuh.RS3,"+
-                    "intervensi_pasien_jatuh.RS4,intervensi_pasien_jatuh.RS5,intervensi_pasien_jatuh.RS6,"+
-                    "intervensi_pasien_jatuh.RS7,intervensi_pasien_jatuh.RS8,intervensi_pasien_jatuh.RR1,intervensi_pasien_jatuh.RR2,"+
-                    "intervensi_pasien_jatuh.nip,petugas.nama "+
-                    "from intervensi_pasien_jatuh inner join reg_periksa on intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,pku_intervensi_pasien_jatuh.tanggal,"+
+                    "pku_intervensi_pasien_jatuh.RT1,pku_intervensi_pasien_jatuh.RT2,pku_intervensi_pasien_jatuh.RT3,"+
+                    "pku_intervensi_pasien_jatuh.RT4,pku_intervensi_pasien_jatuh.RT5,pku_intervensi_pasien_jatuh.RT6,"+
+                    "pku_intervensi_pasien_jatuh.RT7,pku_intervensi_pasien_jatuh.RT8,pku_intervensi_pasien_jatuh.RT9,"+
+                    "pku_intervensi_pasien_jatuh.RT10,pku_intervensi_pasien_jatuh.RT11,pku_intervensi_pasien_jatuh.RT12,"+
+                    "pku_intervensi_pasien_jatuh.RS1,pku_intervensi_pasien_jatuh.RS2,pku_intervensi_pasien_jatuh.RS3,"+
+                    "pku_intervensi_pasien_jatuh.RS4,pku_intervensi_pasien_jatuh.RS5,pku_intervensi_pasien_jatuh.RS6,"+
+                    "pku_intervensi_pasien_jatuh.RS7,pku_intervensi_pasien_jatuh.RS8,pku_intervensi_pasien_jatuh.RR1,pku_intervensi_pasien_jatuh.RR2,"+
+                    "pku_intervensi_pasien_jatuh.nip,petugas.nama "+
+                    "from pku_intervensi_pasien_jatuh inner join reg_periksa on pku_intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join petugas on petugas.nip=intervensi_pasien_jatuh.nip "+
-                    "where intervensi_pasien_jatuh.tanggal between ? and ? order by intervensi_pasien_jatuh.tanggal ");
+                    "inner join petugas on petugas.nip=pku_intervensi_pasien_jatuh.nip "+
+                    "where pku_intervensi_pasien_jatuh.tanggal between ? and ? order by pku_intervensi_pasien_jatuh.tanggal ");
             }else{
                 ps=koneksi.prepareStatement(
-                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,intervensi_pasien_jatuh.tanggal,"+
-                    "intervensi_pasien_jatuh.RT1,intervensi_pasien_jatuh.RT2,intervensi_pasien_jatuh.RT3,"+
-                    "intervensi_pasien_jatuh.RT4,intervensi_pasien_jatuh.RT5,intervensi_pasien_jatuh.RT6,"+
-                    "intervensi_pasien_jatuh.RT7,intervensi_pasien_jatuh.RT8,intervensi_pasien_jatuh.RT9,"+
-                    "intervensi_pasien_jatuh.RT10,intervensi_pasien_jatuh.RT11,intervensi_pasien_jatuh.RT12,"+
-                    "intervensi_pasien_jatuh.RS1,intervensi_pasien_jatuh.RS2,intervensi_pasien_jatuh.RS3,"+
-                    "intervensi_pasien_jatuh.RS4,intervensi_pasien_jatuh.RS5,intervensi_pasien_jatuh.RS6,"+
-                    "intervensi_pasien_jatuh.RS7,intervensi_pasien_jatuh.RS8,intervensi_pasien_jatuh.RR1,intervensi_pasien_jatuh.RR2,"+
-                    "intervensi_pasien_jatuh.nip,petugas.nama "+
-                    "from intervensi_pasien_jatuh inner join reg_periksa on intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
+                    "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,pasien.jk,pku_intervensi_pasien_jatuh.tanggal,"+
+                    "pku_intervensi_pasien_jatuh.RT1,pku_intervensi_pasien_jatuh.RT2,pku_intervensi_pasien_jatuh.RT3,"+
+                    "pku_intervensi_pasien_jatuh.RT4,pku_intervensi_pasien_jatuh.RT5,pku_intervensi_pasien_jatuh.RT6,"+
+                    "pku_intervensi_pasien_jatuh.RT7,pku_intervensi_pasien_jatuh.RT8,pku_intervensi_pasien_jatuh.RT9,"+
+                    "pku_intervensi_pasien_jatuh.RT10,pku_intervensi_pasien_jatuh.RT11,pku_intervensi_pasien_jatuh.RT12,"+
+                    "pku_intervensi_pasien_jatuh.RS1,pku_intervensi_pasien_jatuh.RS2,pku_intervensi_pasien_jatuh.RS3,"+
+                    "pku_intervensi_pasien_jatuh.RS4,pku_intervensi_pasien_jatuh.RS5,pku_intervensi_pasien_jatuh.RS6,"+
+                    "pku_intervensi_pasien_jatuh.RS7,pku_intervensi_pasien_jatuh.RS8,pku_intervensi_pasien_jatuh.RR1,pku_intervensi_pasien_jatuh.RR2,"+
+                    "pku_intervensi_pasien_jatuh.nip,petugas.nama "+
+                    "from pku_intervensi_pasien_jatuh inner join reg_periksa on pku_intervensi_pasien_jatuh.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
-                    "inner join petugas on petugas.nip=intervensi_pasien_jatuh.nip "+
-                    "where intervensi_pasien_jatuh.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or "+
-                    "pasien.nm_pasien like ? or petugas.nama like ? or intervensi_pasien_jatuh.nip like ?) order by intervensi_pasien_jatuh.tanggal ");
+                    "inner join petugas on petugas.nip=pku_intervensi_pasien_jatuh.nip "+
+                    "where pku_intervensi_pasien_jatuh.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or "+
+                    "pasien.nm_pasien like ? or petugas.nama like ? or pku_intervensi_pasien_jatuh.nip like ?) order by pku_intervensi_pasien_jatuh.tanggal ");
             }
                 
             try {
@@ -1964,7 +1964,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("intervensi_pasien_jatuh","no_rawat=? and tanggal=?","no_rawat=?,tanggal=?,rt1=?,rt2=?,rt3=?,rt4=?,rt5=?,rt6=?,"+
+        if(Sequel.mengedittf("pku_intervensi_pasien_jatuh","no_rawat=? and tanggal=?","no_rawat=?,tanggal=?,rt1=?,rt2=?,rt3=?,rt4=?,rt5=?,rt6=?,"+
                 "rt7=?,rt8=?,rt9=?,rt10=?,rt11=?,rt12=?,rs1=?,rs2=?,rs3=?,rs4=?,rs5=?,rs6=?,rs7=?,rs8=?,rr1=?,rr2=?,"+
                 "nip=?",27,new String[]{
                 TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),RT1.getSelectedItem().toString(),
@@ -2010,7 +2010,7 @@ public final class RMIntervensiPencegahanPasienJatuh extends javax.swing.JDialog
     }
 
     private void hapus() {
-        if(Sequel.queryu2tf("delete from intervensi_pasien_jatuh where no_rawat=? and tanggal=?",2,new String[]{
+        if(Sequel.queryu2tf("delete from pku_intervensi_pasien_jatuh where no_rawat=? and tanggal=?",2,new String[]{
             tbObat.getValueAt(tbObat.getSelectedRow(),0).toString(),tbObat.getValueAt(tbObat.getSelectedRow(),5).toString()
         })==true){
             tabMode.removeRow(tbObat.getSelectedRow());
