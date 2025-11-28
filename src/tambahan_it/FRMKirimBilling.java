@@ -2,8 +2,10 @@ package tambahan_it;
 import informasi.*;
 import simrskhanza.DlgCariBangsal;
 import fungsi.WarnaTable;
+import fungsi.akses;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
+import fungsi.sekuel;
 import fungsi.validasi;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -13,13 +15,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-
+import tambahan_it.*;
 /**
  *
  * @author perpustakaan
@@ -29,8 +32,8 @@ public class FRMKirimBilling extends javax.swing.JDialog {
     private Connection koneksi=koneksiDB.condb();
     private validasi Valid=new validasi();
     private DlgCariBangsal bangsal=new DlgCariBangsal(null,false);
-    
-    private String kmr="",key="",terbitsep="",namadokter="",order="order by bangsal.nm_bangsal,kamar_inap.tgl_masuk,kamar_inap.jam_masuk";
+    private sekuel Sequel=new sekuel();
+    private String kmr="",key="",terbitsep="",namadokter="",order="order by bangsal.nm_bangsal,kamar_inap.tgl_masuk,kamar_inap.jam_masuk",hariawal="";
     private PreparedStatement ps,psibu,psanak;
     private ResultSet rs,rs2;
     private int i;
@@ -46,9 +49,9 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         this.setLocation(8,1);
         setSize(628,674);
 
-        Object[] row={"No.Rawat","No.RM","Nama Pasien","Alamat Pasien","Jenis Bayar","Kamar","Tarif Kamar",
-                    "Diagnosa Awal","Diagnosa Akhir","Tgl.Masuk","Jam Masuk","Tgl.Keluar","Jam Keluar",
-                    "Ttl.Biaya Kamar","Stts.Pulang","Lama Rawat","Dokter P.J."};
+        Object[] row={"No. Telp","No.Rawat","Nomer RM","Nama Pasien","Alamat Pasien","Penanggung Jawab","Hubungan P.J.","Jenis Bayar","Kamar","Tarif Kamar",
+            "Diagnosa Awal","Diagnosa Akhir","Tgl.Masuk","Jam Masuk","Tgl.Keluar","Jam Keluar",
+            "Ttl.Biaya","Stts.Pulang","Lama","Dokter P.J.","Kamar","Status Bayar","Agama"};
         tabMode=new DefaultTableModel(null,row){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -58,46 +61,53 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         tbKamIn.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbKamIn.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 17; i++) {
+        for (i = 0; i < 22; i++) {
             TableColumn column = tbKamIn.getColumnModel().getColumn(i);
             if(i==0){
-                column.setPreferredWidth(105);
-            }else if(i==1){
                 column.setPreferredWidth(70);
+            }else if(i==1){
+                column.setPreferredWidth(105);
             }else if(i==2){
-                column.setPreferredWidth(170);
+                column.setPreferredWidth(70);
             }else if(i==3){
                 column.setPreferredWidth(170);
             }else if(i==4){
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(150);
             }else if(i==5){
-                column.setPreferredWidth(200);
+                column.setPreferredWidth(120);
             }else if(i==6){
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
+                column.setPreferredWidth(80);
             }else if(i==7){
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
+                column.setPreferredWidth(80);
             }else if(i==8){
-                column.setMinWidth(0);
-                column.setMaxWidth(0);
+                column.setPreferredWidth(150);
             }else if(i==9){
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(75);
             }else if(i==10){
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(90);
             }else if(i==11){
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(90);
             }else if(i==12){
                 column.setPreferredWidth(70);
             }else if(i==13){
+                column.setPreferredWidth(60);
+            }else if(i==14){
+                column.setPreferredWidth(70);
+            }else if(i==15){
+                column.setPreferredWidth(60);
+            }else if(i==16){
+                column.setPreferredWidth(80);
+            }else if(i==17){
+                column.setPreferredWidth(75);
+            }else if(i==18){
+                column.setPreferredWidth(40);
+            }else if(i==19){
+                column.setPreferredWidth(130);
+            }else if(i==20){
                 column.setMinWidth(0);
                 column.setMaxWidth(0);
-            }else if(i==14){
-                column.setPreferredWidth(80);
-            }else if(i==15){
-                column.setPreferredWidth(70);
-            }else if(i==16){
-                column.setPreferredWidth(150);
+            }else if(i==22){
+                column.setPreferredWidth(60);
             }
         }
         tbKamIn.setDefaultRenderer(Object.class, new WarnaTable());
@@ -168,12 +178,13 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         jLabel6 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
+        BtnAll = new widget.Button();
         jLabel37 = new widget.Label();
         cmbStatusBayar = new widget.ComboBox();
-        BtnAll = new widget.Button();
         jLabel8 = new widget.Label();
         LCount = new widget.Label();
         BtnKeluar = new widget.Button();
+        BtnDpjp2 = new widget.Button();
         panelCari = new widget.panelisi();
         R1 = new widget.RadioButton();
         R2 = new widget.RadioButton();
@@ -189,6 +200,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         cmbJam2 = new widget.ComboBox();
         cmbMnt2 = new widget.ComboBox();
         cmbDtk2 = new widget.ComboBox();
+        btnkirimwa = new widget.Button();
         Scroll = new widget.ScrollPane();
         tbKamIn = new widget.Table();
 
@@ -204,7 +216,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Informasi Kamar Inap Pasien ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ KIRIM BILLING PASIEN UMUM]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -253,6 +265,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         jLabel6.setPreferredSize(new java.awt.Dimension(70, 23));
         panelGlass11.add(jLabel6);
 
+        TCari.setEditable(false);
         TCari.setName("TCari"); // NOI18N
         TCari.setPreferredSize(new java.awt.Dimension(250, 23));
         TCari.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -279,16 +292,6 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelGlass11.add(BtnCari);
 
-        jLabel37.setText("Stts.Bayar :");
-        jLabel37.setName("jLabel37"); // NOI18N
-        jLabel37.setPreferredSize(new java.awt.Dimension(90, 23));
-        panelGlass11.add(jLabel37);
-
-        cmbStatusBayar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "Sudah Bayar", "Belum Bayar" }));
-        cmbStatusBayar.setName("cmbStatusBayar"); // NOI18N
-        cmbStatusBayar.setPreferredSize(new java.awt.Dimension(120, 23));
-        panelGlass11.add(cmbStatusBayar);
-
         BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
         BtnAll.setMnemonic('4');
         BtnAll.setToolTipText("Alt+4");
@@ -306,6 +309,16 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelGlass11.add(BtnAll);
 
+        jLabel37.setText("Stts.Bayar :");
+        jLabel37.setName("jLabel37"); // NOI18N
+        jLabel37.setPreferredSize(new java.awt.Dimension(90, 23));
+        panelGlass11.add(jLabel37);
+
+        cmbStatusBayar.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua", "Sudah Bayar", "Belum Bayar" }));
+        cmbStatusBayar.setName("cmbStatusBayar"); // NOI18N
+        cmbStatusBayar.setPreferredSize(new java.awt.Dimension(120, 23));
+        panelGlass11.add(cmbStatusBayar);
+
         jLabel8.setText("Record :");
         jLabel8.setName("jLabel8"); // NOI18N
         jLabel8.setPreferredSize(new java.awt.Dimension(60, 23));
@@ -319,9 +332,10 @@ public class FRMKirimBilling extends javax.swing.JDialog {
 
         BtnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar.setMnemonic('4');
+        BtnKeluar.setText("KELUAR");
         BtnKeluar.setToolTipText("Alt+4");
         BtnKeluar.setName("BtnKeluar"); // NOI18N
-        BtnKeluar.setPreferredSize(new java.awt.Dimension(28, 23));
+        BtnKeluar.setPreferredSize(new java.awt.Dimension(100, 29));
         BtnKeluar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnKeluarActionPerformed(evt);
@@ -329,10 +343,30 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelGlass11.add(BtnKeluar);
 
+        BtnDpjp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/report24.png"))); // NOI18N
+        BtnDpjp2.setMnemonic('K');
+        BtnDpjp2.setText("Update Hari Rawat");
+        BtnDpjp2.setToolTipText("Alt+K");
+        BtnDpjp2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        BtnDpjp2.setGlassColor(new java.awt.Color(255, 255, 255));
+        BtnDpjp2.setName("BtnDpjp2"); // NOI18N
+        BtnDpjp2.setPreferredSize(new java.awt.Dimension(170, 30));
+        BtnDpjp2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDpjp2ActionPerformed(evt);
+            }
+        });
+        BtnDpjp2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnDpjp2KeyPressed(evt);
+            }
+        });
+        panelGlass11.add(BtnDpjp2);
+
         PanelCariUtama.add(panelGlass11, java.awt.BorderLayout.CENTER);
 
         panelCari.setName("panelCari"); // NOI18N
-        panelCari.setPreferredSize(new java.awt.Dimension(44, 43));
+        panelCari.setPreferredSize(new java.awt.Dimension(44, 47));
         panelCari.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 2, 9));
 
         R1.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.pink));
@@ -346,6 +380,11 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         R1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 R1ItemStateChanged(evt);
+            }
+        });
+        R1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                R1ActionPerformed(evt);
             }
         });
         panelCari.add(R1);
@@ -526,6 +565,24 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelCari.add(cmbDtk2);
 
+        btnkirimwa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        btnkirimwa.setMnemonic('3');
+        btnkirimwa.setText("KIRIM WA");
+        btnkirimwa.setToolTipText("Alt+3");
+        btnkirimwa.setName("btnkirimwa"); // NOI18N
+        btnkirimwa.setPreferredSize(new java.awt.Dimension(200, 23));
+        btnkirimwa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnkirimwaActionPerformed(evt);
+            }
+        });
+        btnkirimwa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnkirimwaKeyPressed(evt);
+            }
+        });
+        panelCari.add(btnkirimwa);
+
         PanelCariUtama.add(panelCari, java.awt.BorderLayout.PAGE_START);
 
         internalFrame1.add(PanelCariUtama, java.awt.BorderLayout.PAGE_END);
@@ -674,7 +731,9 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
 }//GEN-LAST:event_R3ItemStateChanged
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        TCari.setText("UMUM");
         tampil();
+       
     }//GEN-LAST:event_formWindowOpened
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
@@ -701,6 +760,95 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
         TCari.requestFocus();
     }//GEN-LAST:event_formWindowActivated
 
+    private void BtnDpjp2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDpjp2ActionPerformed
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else if(R1.isSelected()==false){
+            JOptionPane.showMessageDialog(rootPane,"Tampilkan data yang belum pulang terlebih dahulu");
+        }else{
+            updateHari();
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnDpjp2ActionPerformed
+
+    private void BtnDpjp2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnDpjp2KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_BtnDpjp2KeyPressed
+
+    private void R1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_R1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_R1ActionPerformed
+
+    private void btnkirimwaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnkirimwaActionPerformed
+        // TODO add your handling code here:
+            
+            new Thread(() -> {
+            int rowCount = tbKamIn.getRowCount();
+
+            for (int i = 0; i < rowCount; i++) {
+                String noRawat = tbKamIn.getValueAt(i, 1).toString();
+                String namaPasien = tbKamIn.getValueAt(i, 3).toString();
+                String totalBiaya = tbKamIn.getValueAt(i, 16).toString(); // misal kolom biaya
+                String tanggalmasuk = tbKamIn.getValueAt(i, 12).toString();
+                String noRM = tbKamIn.getValueAt(i, 2).toString();
+                String noTelp = tbKamIn.getValueAt(i, 0).toString();
+                String lamainap = tbKamIn.getValueAt(i, 18).toString();
+                String alamat = tbKamIn.getValueAt(i, 4).toString();
+                if(noTelp == null || noTelp.trim().equals("")) continue;
+
+                String pesan = "============================\n"
+                                + akses.getnamars() + "\n"
+                                + "*Pemberitahuan Billing Pasien*\n"
+                                + "============================\n"
+                                + "Assalamu'alaikum ..\n" 
+                                + "\n"
+                                + "Kepada Yth Pasien/ Keluarga dari\n"              
+                                + "Nama Pasien: *" + namaPasien + "*\n"
+                                + "Alamat : *" + alamat + "*\n"
+                                + "Nomor Rawat : " + noRawat + "\n"
+                                + "Nomor RM : " + noRM + "\n"
+                                + "Tanggal Masuk : " + tanggalmasuk + "\n"
+                                + "Lama Inap : " + lamainap + "\n"
+                                + "Total biaya kamar sampai saat pesan ini dikirim adalah sebesar Rp " + totalBiaya + "\n"
+                                + "\n"
+                                + "Terimakasih atas perhatian Bapak/Ibu, semoga lekas membaik ..\n"
+                                + "Pesan ini otomatis dikirm dari sistem, dan hanya pemberitahuan kepada pasien/ keluarga\n"
+                                + "===========================\n"
+                                + "*Mohon tidak menghubungi No WA ini,*\n"
+                                + "Jika membutuhkan bantuan kami mengenai billing, mohon bisa menghubungi KASIR kami.\n"
+                                + "\n"
+                                + "Silahkan Klik Link berikut.\n"
+                                + "https://wa.me/6282313968400"
+                                + "\n"
+                                + "===========================\n"
+                                + "Ikuti Saluran kami di WhatsApp untuk mendapatkan informasi up to date dari kami.\n"
+                                + "Silahkan Klik Link berikut.\n"
+                                + "https://shorturl.at/0L6ag"
+                                + "\n"
+                                + "===========================\n";
+                        
+                        
+//                        "Yth. " + namaPasien + ",\n"
+//                        + "Total biaya perawatan Anda adalah Rp " + totalBiaya + "\n"
+//                        + "Silakan melakukan pembayaran. Terima kasih.";
+
+                
+                
+                String nomorTujuan = noTelp.replaceFirst("^0", "62");
+                String result = FonnteAPIkirimbanyak.sendMessage(noTelp, pesan);
+                System.out.println("Kirim ke " + namaPasien + ": " + result);
+
+                try { Thread.sleep(120); } catch (Exception e) {}
+            }
+
+            JOptionPane.showMessageDialog(null, "Pengiriman WA selesai");
+        }).start();
+    }//GEN-LAST:event_btnkirimwaActionPerformed
+
+    private void btnkirimwaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnkirimwaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnkirimwaKeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -721,6 +869,7 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
     private widget.TextBox BangsalCari;
     private widget.Button BtnAll;
     private widget.Button BtnCari;
+    private widget.Button BtnDpjp2;
     private widget.Button BtnKeluar;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
@@ -733,6 +882,7 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.Button btnBangsalCari;
+    private widget.Button btnkirimwa;
     private javax.swing.ButtonGroup buttonGroup1;
     private widget.ComboBox cmbDtk1;
     private widget.ComboBox cmbDtk2;
@@ -788,7 +938,7 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
                 protected Void doInBackground() {
                     try{
                         ps=koneksi.prepareStatement(
-                           "select kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab) as alamat,reg_periksa.p_jawab,reg_periksa.hubunganpj,"+
+                           "select pasien.no_tlp,kamar_inap.no_rawat,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.alamat,reg_periksa.p_jawab,reg_periksa.hubunganpj,"+
                            "penjab.png_jawab,concat(kamar_inap.kd_kamar,' ',bangsal.nm_bangsal) as kamar,kamar_inap.trf_kamar,kamar_inap.diagnosa_awal,kamar_inap.diagnosa_akhir," +
                            "kamar_inap.tgl_masuk,kamar_inap.jam_masuk,if(kamar_inap.tgl_keluar='0000-00-00','',kamar_inap.tgl_keluar) as tgl_keluar,if(kamar_inap.jam_keluar='00:00:00','',kamar_inap.jam_keluar) as jam_keluar,"+
                            "kamar_inap.ttl_biaya,kamar_inap.stts_pulang,kamar_inap.lama,dokter.nm_dokter,kamar_inap.kd_kamar,reg_periksa.kd_pj,concat(reg_periksa.umurdaftar,' ',reg_periksa.sttsumur)as umur,reg_periksa.status_bayar, "+
@@ -802,7 +952,7 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
                             i=0;
                             while(rs.next()){
                                 Object[] row = new Object[]{
-                                    rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien")+" ("+rs.getString("umur")+")",
+                                    rs.getString("no_tlp"),rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien")+" ("+rs.getString("umur")+")",
                                     rs.getString("alamat"),rs.getString("p_jawab"),rs.getString("hubunganpj"),rs.getString("png_jawab"),
                                     rs.getString("kamar"),Valid.SetAngka(rs.getDouble("trf_kamar")),rs.getString("diagnosa_awal"),
                                     rs.getString("diagnosa_akhir"),rs.getString("tgl_masuk"),rs.getString("jam_masuk"),rs.getString("tgl_keluar"),
@@ -867,5 +1017,28 @@ private void R3ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event
         }
     }
 
+        private void updateHari(){
+        if((R1.isSelected()==true)&&(akses.getstatus()==false)){
+            for(i=0;i<tbKamIn.getRowCount();i++){
+                if(tbKamIn.getValueAt(i,13).toString().equals("")){        
+                    if(hariawal.equals("Yes")){
+                        Sequel.mengedit(" kamar_inap "," no_rawat='"+tbKamIn.getValueAt(i,1).toString()+"' and "+
+                            " kd_kamar='"+Sequel.cariIsi("select kd_kamar from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where concat(kamar.kd_kamar,' ',bangsal.nm_bangsal)=? ",tbKamIn.getValueAt(i,8).toString())+"' "+
+                            " and tgl_masuk='"+tbKamIn.getValueAt(i,12).toString()+"' and jam_masuk='"+tbKamIn.getValueAt(i,13).toString()+"'",
+                            " lama=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*"+lama+"),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1,"+
+                            " ttl_biaya=(if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*"+lama+"),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1)*trf_kamar");                
+                    }else{
+                        Sequel.mengedit(" kamar_inap "," no_rawat='"+tbKamIn.getValueAt(i,1).toString()+"' and "+
+                            " kd_kamar='"+Sequel.cariIsi("select kd_kamar from kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal where concat(kamar.kd_kamar,' ',bangsal.nm_bangsal)=? ",tbKamIn.getValueAt(i,8).toString())+"' "+
+                            " and tgl_masuk='"+tbKamIn.getValueAt(i,12).toString()+"' and jam_masuk='"+tbKamIn.getValueAt(i,13).toString()+"'",
+                            " lama=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*"+lama+"),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))),"+
+                            " ttl_biaya=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*"+lama+"),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))*trf_kamar");
+                    }         
+                }
+            }
+        }
+        tampil();
+    }
+    
 
 }
