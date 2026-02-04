@@ -34,6 +34,7 @@ import kepegawaian.DlgCariDokter;
 import simrskhanza.DlgCariBangsal;
 import simrskhanza.DlgCariPoli;
 import simrskhanza.DlgPeriksaRadiologi;
+import tambahan_it.OrthancMWLService;
 
 public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
     private final DefaultTableModel tabMode,tabMode2,tabMode3,tabMode4;
@@ -48,6 +49,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
     private ResultSet rs,rs2;
     private Date now;
     private ApiCareStream carestream=new ApiCareStream();
+    private OrthancMWLService orthancMWLService=new OrthancMWLService();
     private boolean aktif=false,semua;
     private String alarm="",formalarm="",nol_detik,detik,tglsampel="",tglhasil="",norm="",kamar="",namakamar="",
             NoPermintaan="",NoRawat="",Pasien="",Permintaan="",JamPermintaan="",Sampel="",JamSampel="",Hasil="",JamHasil="",KodeDokter="",DokterPerujuk="",Ruang="",
@@ -380,6 +382,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         BtnAmbilDataFUJI = new widget.Button();
         BtnKirimDataCareStream = new widget.Button();
         BtnAmbilDataFUJI1 = new widget.Button();
+        BtnKirimDataOrthanc = new widget.Button();
 
         WindowAmbilSampel.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowAmbilSampel.setName("WindowAmbilSampel"); // NOI18N
@@ -421,7 +424,7 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
         internalFrame5.add(jLabel26);
         jLabel26.setBounds(6, 32, 100, 23);
 
-        TanggalPulang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "04-11-2024 12:42:19" }));
+        TanggalPulang.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "01-06-2025 09:33:19" }));
         TanggalPulang.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPulang.setName("TanggalPulang"); // NOI18N
         TanggalPulang.setOpaque(false);
@@ -1077,6 +1080,23 @@ public class DlgCariPermintaanRadiologi extends javax.swing.JDialog {
             }
         });
         FormMenu.add(BtnAmbilDataFUJI1);
+
+        BtnKirimDataOrthanc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
+        BtnKirimDataOrthanc.setText("Kirim Permintaan ke AGFA");
+        BtnKirimDataOrthanc.setFocusPainted(false);
+        BtnKirimDataOrthanc.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        BtnKirimDataOrthanc.setGlassColor(new java.awt.Color(255, 255, 255));
+        BtnKirimDataOrthanc.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        BtnKirimDataOrthanc.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        BtnKirimDataOrthanc.setName("BtnKirimDataOrthanc"); // NOI18N
+        BtnKirimDataOrthanc.setPreferredSize(new java.awt.Dimension(215, 23));
+        BtnKirimDataOrthanc.setRoundRect(false);
+        BtnKirimDataOrthanc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnKirimDataOrthancActionPerformed(evt);
+            }
+        });
+        FormMenu.add(BtnKirimDataOrthanc);
 
         ScrollMenu.setViewportView(FormMenu);
 
@@ -2308,6 +2328,27 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
         }
     }//GEN-LAST:event_BtnAmbilDataFUJI1ActionPerformed
 
+    private void BtnKirimDataOrthancActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimDataOrthancActionPerformed
+        // TODO add your handling code here:
+        if(!NoRawat.equals("")){
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+            if(NoPermintaan.trim().equals("")){
+                Valid.textKosong(TCari,"No.Permintaan");
+            }else{
+                // === KIRIM KE ORTHANC MWL ===
+                orthancMWLService.kirimOrderKeMWL(NoPermintaan);
+            }
+
+            TeksKosong();
+            this.setCursor(Cursor.getDefaultCursor());
+        }else{            
+            JOptionPane.showMessageDialog(null,
+                "Maaf, silahkan pilih data permintaan radiologi...!!!!");
+            TCari.requestFocus();
+        } 
+    }//GEN-LAST:event_BtnKirimDataOrthancActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -2338,6 +2379,7 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
     private widget.Button BtnKeluar;
     private widget.Button BtnKirimDataCareStream;
     private widget.Button BtnKirimDataFuji;
+    private widget.Button BtnKirimDataOrthanc;
     private widget.Button BtnPrint;
     private widget.Button BtnSampel;
     private widget.Button BtnSeek3;

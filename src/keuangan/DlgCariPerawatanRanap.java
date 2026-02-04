@@ -1693,7 +1693,7 @@ private void ppPetugasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         cmbJam.setSelectedItem(jam);
         cmbMnt.setSelectedItem(menit);
         cmbDtk.setSelectedItem(detik);
-        ChkJln.setSelected(status);
+        ChkJln.setSelected(true);
     }
     
     public void setPetugas(String kode, String nama,String kode2, String nama2){

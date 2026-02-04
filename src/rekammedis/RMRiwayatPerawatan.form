@@ -265,7 +265,7 @@
         </Property>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="1">
-            <StringItem index="0" value="22-11-2025 11:11:42"/>
+            <StringItem index="0" value="28-01-2026 10:17:03"/>
           </StringArray>
         </Property>
         <Property name="displayFormat" type="java.lang.String" value="dd-MM-yyyy HH:mm:ss"/>
@@ -989,6 +989,22 @@
                               <Events>
                                 <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkKRanapItemStateChanged"/>
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkKRanapActionPerformed"/>
+                              </Events>
+                            </Component>
+                            <Component class="widget.CekBox" name="chkKNonaktifsoap">
+                              <Properties>
+                                <Property name="text" type="java.lang.String" value="Matikan SOAP (KFR)"/>
+                                <Property name="toolTipText" type="java.lang.String" value=""/>
+                                <Property name="horizontalAlignment" type="int" value="2"/>
+                                <Property name="name" type="java.lang.String" value="chkKNonaktifsoap" noResource="true"/>
+                                <Property name="opaque" type="boolean" value="false"/>
+                                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                                  <Dimension value="[245, 22]"/>
+                                </Property>
+                              </Properties>
+                              <Events>
+                                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="chkKNonaktifsoapItemStateChanged"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="chkKNonaktifsoapActionPerformed"/>
                               </Events>
                             </Component>
                             <Component class="widget.CekBox" name="chkDiagnosaPenyakit">
@@ -2206,7 +2222,7 @@
                             <Component class="widget.CekBox" name="chkPKUintervensiJatuh">
                               <Properties>
                                 <Property name="selected" type="boolean" value="true"/>
-                                <Property name="text" type="java.lang.String" value="  "/>
+                                <Property name="text" type="java.lang.String" value="Lanjutan Intervensi Jatuh PKU"/>
                                 <Property name="toolTipText" type="java.lang.String" value=""/>
                                 <Property name="horizontalAlignment" type="int" value="2"/>
                                 <Property name="name" type="java.lang.String" value="chkPKUintervensiJatuh" noResource="true"/>

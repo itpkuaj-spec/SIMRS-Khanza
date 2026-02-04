@@ -6,6 +6,7 @@ package bridging;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import fungsi.WarnaTable;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
@@ -34,6 +35,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 /**
  *
@@ -632,99 +635,225 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCariKeyPressed
 
     private void BtnKirimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKirimActionPerformed
-        for(i=0;i<tbObat.getRowCount();i++){
-            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,5).toString().equals(""))&&(!tbObat.getValueAt(i,8).toString().equals(""))&&tbObat.getValueAt(i,27).toString().equals("")){
+//        for(i=0;i<tbObat.getRowCount();i++){
+//            if(tbObat.getValueAt(i,0).toString().equals("true")&&(!tbObat.getValueAt(i,5).toString().equals(""))&&(!tbObat.getValueAt(i,8).toString().equals(""))&&tbObat.getValueAt(i,27).toString().equals("")){
+//                try {
+//                    idpasien=cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i,5).toString());
+//                    iddokter=cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i,26).toString());
+//                    try{
+//                        headers = new HttpHeaders();
+//                        headers.setContentType(MediaType.APPLICATION_JSON);
+//                        headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
+//                        json = "{" +
+//                                    "\"resourceType\": \"Immunization\"," +
+//                                    "\"status\": \"completed\"," +
+//                                    "\"vaccineCode\": {" +
+//                                        "\"coding\": [" +
+//                                            "{" +
+//                                                "\"system\": \""+tbObat.getValueAt(i,10).toString()+"\"," +
+//                                                "\"code\": \""+tbObat.getValueAt(i,9).toString()+"\"," +
+//                                                "\"display\": \""+tbObat.getValueAt(i,12).toString()+"\"" +
+//                                            "}" +
+//                                        "]" +
+//                                    "}," +
+//                                    "\"patient\": {" +
+//                                        "\"reference\": \"Patient/"+idpasien+"\"" +
+//                                    "}," +
+//                                    "\"encounter\": {" +
+//                                        "\"reference\": \"Encounter/"+tbObat.getValueAt(i,8).toString()+"\"" +
+//                                    "}," +
+//                                    "\"occurrenceDateTime\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
+//                                    "\"expirationDate\": \""+Sequel.cariIsi("SELECT data_batch.tgl_kadaluarsa FROM data_batch WHERE data_batch.no_batch='"+tbObat.getValueAt(i,19).toString()+"' and data_batch.kode_brng='"+tbObat.getValueAt(i,11).toString()+"' and data_batch.no_faktur='"+tbObat.getValueAt(i,28).toString()+"'")+"\"," +
+//                                    "\"recorded\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
+//                                    "\"primarySource\": true," +
+//                                    "\"location\": {" +
+//                                        "\"reference\": \"Location/"+tbObat.getValueAt(i,23).toString()+"\"," +
+//                                        "\"display\": \""+tbObat.getValueAt(i,24).toString()+"\"" +
+//                                    "}," +
+//                                    "\"lotNumber\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
+//                                    "\"route\": {" +
+//                                        "\"coding\": [" +
+//                                            "{" +
+//                                                "\"system\": \""+tbObat.getValueAt(i,14).toString()+"\"," +
+//                                                "\"code\": \""+tbObat.getValueAt(i,13).toString()+"\"," +
+//                                                "\"display\": \""+tbObat.getValueAt(i,15).toString()+"\"" +
+//                                            "}" +
+//                                        "]" +
+//                                    "}," +
+//                                    "\"doseQuantity\": {" +
+//                                        "\"value\": "+tbObat.getValueAt(i,21).toString()+"," +
+//                                        "\"unit\": \""+tbObat.getValueAt(i,18).toString()+"\"," +
+//                                        "\"system\": \""+tbObat.getValueAt(i,17).toString()+"\"," +
+//                                        "\"code\": \""+tbObat.getValueAt(i,16).toString()+"\"" +
+//                                    "}," +
+//                                    "\"performer\": [" +
+//                                        "{" +
+//                                            "\"function\": {" +
+//                                                "\"coding\": [" +
+//                                                    "{" +
+//                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/v2-0443\"," +
+//                                                        "\"code\": \"AP\"," +
+//                                                        "\"display\": \"Administering Provider\"" +
+//                                                    "}" +
+//                                                "]" +
+//                                            "},"+
+//                                            "\"actor\": {" +
+//                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
+//                                            "}" +
+//                                        "}" +
+//                                    "],"+
+//                                    "\"reasonCode\": [" +
+//                                        "{" +
+//                                            "\"coding\": [" +
+//                                                "{" +
+//                                                    "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+//                                                    "\"code\": \"IM-Program\"," +
+//                                                    "\"display\" : \"Imunisasi Program\"" +
+//                                                "}" +
+//                                            "]" +
+//                                        "}" +
+//                                    "]," +
+//                                    "\"protocolApplied\" : ["+
+//                                        "{"+
+//                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,21).toString().replaceAll("[^0-9.]", "")+
+//                                        "}"+
+//                                    "]"+
+//                                "}";
+//                        System.out.println("URL : "+link+"/Immunization");
+//                        System.out.println("Request JSON : "+json);
+//                        requestEntity = new HttpEntity(json,headers);
+//                        json=api.getRest().exchange(link+"/Immunization", HttpMethod.POST, requestEntity, String.class).getBody();
+//                        System.out.println("Result JSON : "+json);
+//                        root = mapper.readTree(json);
+//                        response = root.path("id");
+//                        if(!response.asText().equals("")){
+//                            if(Sequel.menyimpantf2("satu_sehat_immunization","?,?,?,?,?,?,?","Imunisasi/Vaksin",7,new String[]{
+//                                tbObat.getValueAt(i,2).toString(),tbObat.getValueAt(i,20).toString().substring(0,10),tbObat.getValueAt(i,20).toString().substring(11,19), 
+//                                tbObat.getValueAt(i,11).toString(),tbObat.getValueAt(i,19).toString(),tbObat.getValueAt(i,28).toString(),response.asText()
+//                            })==true){
+//                                tbObat.setValueAt(response.asText(),i,27);
+//                                tbObat.setValueAt(false,i,0);
+//                            }
+//                        }
+//                    }catch(Exception e){
+//                        System.out.println("Notifikasi Bridging : "+e);
+//                    }
+//                } catch (Exception e) {
+//                    System.out.println("Notifikasi : "+e);
+//                }
+//            }
+//        }
+                                         
+        for (i = 0; i < tbObat.getRowCount(); i++) {
+            String displaykfavaksin = Sequel.cariIsi("select obat_display from satu_sehat_mapping_obat where kode_brng='" + tbObat.getValueAt(i, 11).toString() + "'");
+            String codekfavaksin = Sequel.cariIsi("select obat_code from satu_sehat_mapping_obat where kode_brng='" + tbObat.getValueAt(i, 11).toString() + "'");
+            String tgl_batch = Sequel.cariIsi("SELECT tgl_kadaluarsa from data_batch WHERE no_batch='" + tbObat.getValueAt(i, 19).toString() + "'");
+            if (tbObat.getValueAt(i, 0).toString().equals("true")) {
                 try {
-                    idpasien=cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i,5).toString());
-                    iddokter=cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i,26).toString());
-                    try{
+                    idpasien = cekViaSatuSehat.tampilIDPasien(tbObat.getValueAt(i, 5).toString());
+                    iddokter = cekViaSatuSehat.tampilIDParktisi(tbObat.getValueAt(i, 26).toString());
+                    try {
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
-                        json = "{" +
-                                    "\"resourceType\": \"Immunization\"," +
-                                    "\"status\": \"completed\"," +
-                                    "\"vaccineCode\": {" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \""+tbObat.getValueAt(i,10).toString()+"\"," +
-                                                "\"code\": \""+tbObat.getValueAt(i,9).toString()+"\"," +
-                                                "\"display\": \""+tbObat.getValueAt(i,12).toString()+"\"" +
-                                            "}" +
-                                        "]" +
-                                    "}," +
-                                    "\"patient\": {" +
-                                        "\"reference\": \"Patient/"+idpasien+"\"" +
-                                    "}," +
-                                    "\"encounter\": {" +
-                                        "\"reference\": \"Encounter/"+tbObat.getValueAt(i,8).toString()+"\"" +
-                                    "}," +
-                                    "\"occurrenceDateTime\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
-                                    "\"expirationDate\": \""+Sequel.cariIsi("SELECT data_batch.tgl_kadaluarsa FROM data_batch WHERE data_batch.no_batch='"+tbObat.getValueAt(i,19).toString()+"' and data_batch.kode_brng='"+tbObat.getValueAt(i,11).toString()+"' and data_batch.no_faktur='"+tbObat.getValueAt(i,28).toString()+"'")+"\"," +
-                                    "\"recorded\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
-                                    "\"primarySource\": true," +
-                                    "\"location\": {" +
-                                        "\"reference\": \"Location/"+tbObat.getValueAt(i,23).toString()+"\"," +
-                                        "\"display\": \""+tbObat.getValueAt(i,24).toString()+"\"" +
-                                    "}," +
-                                    "\"lotNumber\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
-                                    "\"route\": {" +
-                                        "\"coding\": [" +
-                                            "{" +
-                                                "\"system\": \""+tbObat.getValueAt(i,14).toString()+"\"," +
-                                                "\"code\": \""+tbObat.getValueAt(i,13).toString()+"\"," +
-                                                "\"display\": \""+tbObat.getValueAt(i,15).toString()+"\"" +
-                                            "}" +
-                                        "]" +
-                                    "}," +
-                                    "\"doseQuantity\": {" +
-                                        "\"value\": "+tbObat.getValueAt(i,21).toString()+"," +
-                                        "\"unit\": \""+tbObat.getValueAt(i,18).toString()+"\"," +
-                                        "\"system\": \""+tbObat.getValueAt(i,17).toString()+"\"," +
-                                        "\"code\": \""+tbObat.getValueAt(i,16).toString()+"\"" +
-                                    "}," +
-                                    "\"performer\": [" +
-                                        "{" +
-                                            "\"function\": {" +
-                                                "\"coding\": [" +
-                                                    "{" +
-                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/v2-0443\"," +
-                                                        "\"code\": \"AP\"," +
-                                                        "\"display\": \"Administering Provider\"" +
-                                                    "}" +
-                                                "]" +
-                                            "},"+
-                                            "\"actor\": {" +
-                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
-                                            "}" +
-                                        "}" +
-                                    "],"+
-                                    "\"reasonCode\": [" +
-                                        "{" +
-                                            "\"coding\": [" +
-                                                "{" +
-                                                    "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
-                                                    "\"code\": \"IM-Program\"," +
-                                                    "\"display\" : \"Imunisasi Program\"" +
-                                                "}" +
-                                            "]" +
-                                        "}" +
-                                    "]," +
-                                    "\"protocolApplied\" : ["+
-                                        "{"+
-                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().replaceAll("[^0-9.]", "")+
-                                        "}"+
-                                    "]"+
-                                "}";
-                        System.out.println("URL : "+link+"/Immunization");
-                        System.out.println("Request JSON : "+json);
-                        requestEntity = new HttpEntity(json,headers);
-                        json=api.getRest().exchange(link+"/Immunization", HttpMethod.POST, requestEntity, String.class).getBody();
-                        System.out.println("Result JSON : "+json);
+                        headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
+                        json = "{\n"
+                                + "    \"resourceType\": \"Immunization\",\n"
+                                + "    \"status\": \"completed\",\n"
+                                + "    \"vaccineCode\": {\n"
+                                + "        \"coding\": [\n"
+                                + "            {\n"
+                                + "                \"system\": \"http://sys-ids.kemkes.go.id/kfa\",\n"
+//                                + "                \"code\": \"" + codekfavaksin + "\",\n"
+//                                + "                \"display\": \"" + displaykfavaksin + "\"\n"
+                                + "                \"code\": \"93015718\",\n"
+                                + "                \"display\": \"Vaksin Meningococcal Polysaccharide 0,5 mL Larutan Injeksi(FORMENING)\"\n"
+                                + "            },\n"
+                                + "            {\n"
+                                + "                \"system\": \"" + tbObat.getValueAt(i, 10).toString() + "\",\n"
+                                + "                \"code\": \"" + tbObat.getValueAt(i, 9).toString() + "\",\n"
+                                + "                \"display\": \"" + tbObat.getValueAt(i, 12).toString() + "\"\n"
+                                + "            }\n"
+                                + "        ]\n"
+                                + "    },\n"
+                                + "    \"patient\": {\n"
+                                + "        \"reference\": \"Patient/" + idpasien + "\",\n"
+                                + "        \"display\": \"" + tbObat.getValueAt(i, 4).toString() + "\"\n"
+                                + "    },\n"
+                                + "    \"encounter\": {\n"
+                                + "        \"reference\": \"Encounter/" + tbObat.getValueAt(i, 8).toString() + "\"\n"
+                                + "    },\n"
+                                + "    \"occurrenceDateTime\": \"" + tbObat.getValueAt(i, 1).toString() + "\",\n"
+                                + "    \"recorded\": \"" + tbObat.getValueAt(i, 20).toString() + "\",\n"
+                                + "    \"primarySource\": true,\n"
+                                + "    \"location\": {\n"
+                                + "        \"reference\": \"Location/" + tbObat.getValueAt(i, 23).toString() + "\",\n"
+                                + "        \"display\": \"" + tbObat.getValueAt(i, 24).toString() + "\"\n"
+                                + "    },\n"
+                                + "    \"lotNumber\": \"" + tbObat.getValueAt(i, 19).toString() + "\",\n"
+                                + "    \"expirationDate\": \"" + tgl_batch + "\",\n"
+                                + "    \"route\": {\n"
+                                + "        \"coding\": [\n"
+                                + "            {\n"
+                                + "                \"system\": \"" + tbObat.getValueAt(i, 14).toString() + "\",\n"
+                                + "                \"code\": \"" + tbObat.getValueAt(i, 13).toString() + "\",\n"
+                                + "                \"display\": \"" + tbObat.getValueAt(i, 15).toString() + "\"\n"
+                                + "            }\n"
+                                + "        ]\n"
+                                + "    },\n"
+                                + "    \"doseQuantity\": {\n"
+                                + "        \"value\": " + tbObat.getValueAt(i, 21).toString() + ",\n"
+                                + "        \"unit\": \"" + tbObat.getValueAt(i, 18).toString() + "\",\n"
+                                + "        \"system\": \"" + tbObat.getValueAt(i, 17).toString() + "\",\n"
+                                + "        \"code\": \"" + tbObat.getValueAt(i, 16).toString() + "\"\n"
+                                + "    },\n"
+                                + "    \"performer\": [\n"
+                                + "        {\n"
+                                + "            \"function\": {\n"
+                                + "                \"coding\": [\n"
+                                + "                    {\n"
+                                + "                        \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0443\",\n"
+                                + "                        \"code\": \"AP\",\n"
+                                + "                        \"display\": \"Administering Provider\"\n"
+                                + "                    }\n"
+                                + "                ]\n"
+                                + "            },\n"
+                                + "            \"actor\": {\n"
+                                + "                \"reference\": \"Practitioner/" + iddokter + "\"\n"
+                                + "            }\n"
+                                + "        }\n"
+                                + "    ],\n"
+                                + "    \"reasonCode\": [\n"
+                                + "        {\n"
+                                + "            \"coding\": [\n"
+                                + "                {\n"
+                                + "                    \"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\",\n"
+//                                + "                    \"code\": \"" + tbObat.getValueAt(i, 31).toString() + "\",\n"
+//                                + "                    \"display\" : \"" + tbObat.getValueAt(i, 32).toString() + "\"\n"
+                                + "                    \"code\": \"IM-HighRisk\",\n"
+                                + "                    \"display\" : \"Risiko Tinggi\"\n"
+                                + "                },\n"
+                                + "                {\n"
+                                + "                    \"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-routine-timing\",\n"
+                                + "                    \"code\": \"IM-Ideal\",\n"
+                                + "                    \"display\" : \"Imunisasi Ideal\"\n"
+                                + "                }\n"
+                                + "            ]\n"
+                                + "        }\n"
+                                + "    ]" + (tbObat.getValueAt(i, 21).toString().equals("") ? ",\n \"protocolApplied\" : [{ \"doseNumberPositiveInt\" : 1 }]" : ",\n \"protocolApplied\" : [{ \"doseNumberPositiveInt\" : " + tbObat.getValueAt(i, 21).toString() + " }]") + "\n"
+                                + "}";
+                        System.out.println("URL : " + link + "/Immunization");
+                        System.out.println("Request JSON : " + json);
+                        requestEntity = new HttpEntity(json, headers);
+                        json = api.getRest().exchange(link + "/Immunization", HttpMethod.POST, requestEntity, String.class).getBody();
+                        System.out.println("Result JSON : " + json);
                         root = mapper.readTree(json);
                         response = root.path("id");
-                        if(!response.asText().equals("")){
-                            if(Sequel.menyimpantf2("satu_sehat_immunization","?,?,?,?,?,?,?","Imunisasi/Vaksin",7,new String[]{
+                        if (!response.asText().equals("")) {
+//                            Sequel.menyimpan("satu_sehat_immunization", "?,?,?,?,?,?,?", "Imunisasi/Vaksin", 7, new String[]{
+//                                tbObat.getValueAt(i, 2).toString(), tbObat.getValueAt(i, 20).toString().substring(0, 10), tbObat.getValueAt(i, 20).toString().substring(11, 19),
+//                                tbObat.getValueAt(i, 11).toString(), tbObat.getValueAt(i, 19).toString(), tbObat.getValueAt(i, 28).toString(), response.asText()
+//                            });
+                        if(Sequel.menyimpantf2("satu_sehat_immunization","?,?,?,?,?,?,?","Imunisasi/Vaksin",7,new String[]{
                                 tbObat.getValueAt(i,2).toString(),tbObat.getValueAt(i,20).toString().substring(0,10),tbObat.getValueAt(i,20).toString().substring(11,19), 
                                 tbObat.getValueAt(i,11).toString(),tbObat.getValueAt(i,19).toString(),tbObat.getValueAt(i,28).toString(),response.asText()
                             })==true){
@@ -732,14 +861,24 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                 tbObat.setValueAt(false,i,0);
                             }
                         }
-                    }catch(Exception e){
-                        System.out.println("Notifikasi Bridging : "+e);
+                    } catch (HttpClientErrorException | HttpServerErrorException e) {
+                        // Handle client and server errors
+                        System.err.println("Error Response Status Code: " + e.getStatusCode());
+                        // System.err.println("Error Response Body: " + e.getResponseBodyAsString());
+                        // You can further parse the error response body if needed
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode errorResponse = mapper.readTree(e.getResponseBodyAsString());
+                        ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
+                        String prettyErrorResponse = writer.writeValueAsString(errorResponse);
+                        System.err.println("Error Response JSON: \n" + prettyErrorResponse);
                     }
                 } catch (Exception e) {
-                    System.out.println("Notifikasi : "+e);
+                    System.out.println("Notifikasi : " + e);
                 }
             }
         }
+        tampil();
+    
     }//GEN-LAST:event_BtnKirimActionPerformed
 
     private void ppPilihSemuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemuaActionPerformed

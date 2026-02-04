@@ -2332,7 +2332,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKaryawan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKaryawan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2342,7 +2342,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKaryawan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKaryawan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2354,7 +2354,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaRalan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaRalan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2364,7 +2364,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaRalan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaRalan").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2376,7 +2376,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaBeliLuar").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaBeliLuar").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2386,7 +2386,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaBeliLuar").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaBeliLuar").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2398,7 +2398,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaUtama").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaUtama").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2408,7 +2408,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaUtama").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaUtama").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2420,7 +2420,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas1").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas1").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2430,7 +2430,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas1").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas1").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2442,7 +2442,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas2").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas2").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2452,7 +2452,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas2").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas2").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2464,7 +2464,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas3").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas3").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2474,7 +2474,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaKelas3").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaKelas3").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2486,7 +2486,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2496,7 +2496,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -2508,7 +2508,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                         for(JsonNode list:response){
                             tabModeDetailResepRacikan.addRow(new Object[] {
                                 tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaVVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                list.path("Satuan").asText(),Double.parseDouble(list.path("HargaVVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                 list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                 list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                             }); 
@@ -2518,7 +2518,7 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             if(list.path("KodeBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("NamaBarang").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Jenis").asText().toLowerCase().contains(TCari.getText().toLowerCase())||list.path("Kandungan").asText().toLowerCase().contains(TCari.getText().toLowerCase())){
                                 tabModeDetailResepRacikan.addRow(new Object[] {
                                     tbObatResepRacikan.getValueAt(tbObatResepRacikan.getSelectedRow(),0).toString(),list.path("KodeBarang").asText(),list.path("NamaBarang").asText(),
-                                    list.path("NamaBarang").asText(),Double.parseDouble(list.path("HargaVVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
+                                    list.path("Satuan").asText(),Double.parseDouble(list.path("HargaVVIP").asText()),Double.parseDouble(list.path("HargaBeli").asText()),
                                     list.path("Jenis").asText(),Double.parseDouble(list.path("Stok").asText()),Double.parseDouble(list.path("Kapasitas").asText()),1,"/",1,"",0,
                                     list.path("IndustriFarmasi").asText(),list.path("Kandungan").asText()
                                 }); 
@@ -4223,6 +4223,13 @@ private void ppBersihkanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             }
         }
         LTotal.setText(Valid.SetAngka(ttl));
+        // Logic untuk mengubah warna
+if (ttl > 50000) {
+    LTotal.setForeground(java.awt.Color.RED);
+} else {
+    // Kembalikan ke warna hitam atau warna default jika di bawah 50.000
+    LTotal.setForeground(new java.awt.Color(40, 40, 40)); 
+}
         ppnobat=0;
         if(tampilkan_ppnobat_ralan.equals("Yes")){
             ppnobat=Math.round(ttl*0.11);

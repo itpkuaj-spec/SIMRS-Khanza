@@ -184,7 +184,6 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         jLabel8 = new widget.Label();
         LCount = new widget.Label();
         BtnKeluar = new widget.Button();
-        BtnDpjp2 = new widget.Button();
         panelCari = new widget.panelisi();
         R1 = new widget.RadioButton();
         R2 = new widget.RadioButton();
@@ -201,6 +200,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         cmbMnt2 = new widget.ComboBox();
         cmbDtk2 = new widget.ComboBox();
         btnkirimwa = new widget.Button();
+        BtnDpjp2 = new widget.Button();
         Scroll = new widget.ScrollPane();
         tbKamIn = new widget.Table();
 
@@ -343,26 +343,6 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelGlass11.add(BtnKeluar);
 
-        BtnDpjp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/report24.png"))); // NOI18N
-        BtnDpjp2.setMnemonic('K');
-        BtnDpjp2.setText("Update Hari Rawat");
-        BtnDpjp2.setToolTipText("Alt+K");
-        BtnDpjp2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
-        BtnDpjp2.setGlassColor(new java.awt.Color(255, 255, 255));
-        BtnDpjp2.setName("BtnDpjp2"); // NOI18N
-        BtnDpjp2.setPreferredSize(new java.awt.Dimension(170, 30));
-        BtnDpjp2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnDpjp2ActionPerformed(evt);
-            }
-        });
-        BtnDpjp2.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnDpjp2KeyPressed(evt);
-            }
-        });
-        panelGlass11.add(BtnDpjp2);
-
         PanelCariUtama.add(panelGlass11, java.awt.BorderLayout.CENTER);
 
         panelCari.setName("panelCari"); // NOI18N
@@ -403,7 +383,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-11-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-12-2025" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -421,7 +401,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         jLabel22.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel22);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-11-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-12-2025" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -452,7 +432,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         });
         panelCari.add(R3);
 
-        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-11-2025" }));
+        DTPCari3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "02-12-2025" }));
         DTPCari3.setDisplayFormat("dd-MM-yyyy");
         DTPCari3.setName("DTPCari3"); // NOI18N
         DTPCari3.setOpaque(false);
@@ -570,7 +550,7 @@ public class FRMKirimBilling extends javax.swing.JDialog {
         btnkirimwa.setText("KIRIM WA");
         btnkirimwa.setToolTipText("Alt+3");
         btnkirimwa.setName("btnkirimwa"); // NOI18N
-        btnkirimwa.setPreferredSize(new java.awt.Dimension(200, 23));
+        btnkirimwa.setPreferredSize(new java.awt.Dimension(100, 23));
         btnkirimwa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnkirimwaActionPerformed(evt);
@@ -582,6 +562,26 @@ public class FRMKirimBilling extends javax.swing.JDialog {
             }
         });
         panelCari.add(btnkirimwa);
+
+        BtnDpjp2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/report24.png"))); // NOI18N
+        BtnDpjp2.setMnemonic('K');
+        BtnDpjp2.setText("Update Hari Rawat");
+        BtnDpjp2.setToolTipText("Alt+K");
+        BtnDpjp2.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
+        BtnDpjp2.setGlassColor(new java.awt.Color(255, 255, 255));
+        BtnDpjp2.setName("BtnDpjp2"); // NOI18N
+        BtnDpjp2.setPreferredSize(new java.awt.Dimension(150, 30));
+        BtnDpjp2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnDpjp2ActionPerformed(evt);
+            }
+        });
+        BtnDpjp2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnDpjp2KeyPressed(evt);
+            }
+        });
+        panelCari.add(BtnDpjp2);
 
         PanelCariUtama.add(panelCari, java.awt.BorderLayout.PAGE_START);
 

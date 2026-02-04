@@ -39,6 +39,8 @@ import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 import kepegawaian.DlgCariPetugas;
+import simrskhanza.DlgCariPoli;
+import simrskhanza.DlgCariPoli2;
 
 
 /**
@@ -55,8 +57,12 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private int i=0;    
     private DlgCariPetugas petugas=new DlgCariPetugas(null,false);
     private StringBuilder htmlContent;
-    private String TANGGALMUNDUR="yes",pilihan="";
+    private String TANGGALMUNDUR="yes",pilihan="",aktifjadwal="";
     public boolean status=false;
+    //tamabahan
+    private DlgCariPoli poli=new DlgCariPoli(null,false);
+    private DlgCariPoli2 poli2=new DlgCariPoli2(null,false);
+    //akhir
     /** Creates new form DlgRujuk
      * @param parent
      * @param modal */
@@ -68,7 +74,8 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
 
         tabMode=new DefaultTableModel(null,new Object[]{
             "No.Rawat","No.R.M.","Nama Pasien","Umur","JK","Tgl.Lahir","Tanggal","No.Permintaan",
-            "Diagnosa","Permintaan Terapi","Program","NIP","Nama Petugas"
+            "Diagnosa","Permintaan Terapi","Program","NIP","Nama Petugas","Terpai Ke","Subjec","Objec","Assesmen","Procedure",
+            "Kontrol klinik","Tgl Kontrol","Keterangan"
         }){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -78,7 +85,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         tbObat.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbObat.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 13; i++) {
+        for (i = 0; i < 18; i++) {
             TableColumn column = tbObat.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(105);
@@ -105,6 +112,22 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             }else if(i==11){
                 column.setPreferredWidth(90);
             }else if(i==12){
+                column.setPreferredWidth(150);
+            }else if(i==13){
+                column.setPreferredWidth(70);
+            }else if(i==14){
+                column.setPreferredWidth(150);
+            }else if(i==15){
+                column.setPreferredWidth(150);
+            }else if(i==16){
+                column.setPreferredWidth(150);
+            }else if(i==17){
+                column.setPreferredWidth(150);
+            }else if(i==18){
+                column.setPreferredWidth(150);
+            }else if(i==19){
+                column.setPreferredWidth(150);
+            }else if(i==20){
                 column.setPreferredWidth(150);
             }
         }
@@ -136,6 +159,29 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
                 }
             });
         }
+        
+        poli.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(poli.getTable().getSelectedRow()!= -1){                    
+                    
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
+                    
+                }   
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
         
         petugas.addWindowListener(new WindowListener() {
             @Override
@@ -262,6 +308,24 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         Program = new widget.TextBox();
         jLabel15 = new widget.Label();
         jLabel17 = new widget.Label();
+        terapi_ke = new widget.TextBox();
+        jLabel10 = new widget.Label();
+        asses = new widget.TextBox();
+        subjec = new widget.TextBox();
+        objec = new widget.TextBox();
+        prosedur = new widget.TextBox();
+        jLabel11 = new widget.Label();
+        jLabel20 = new widget.Label();
+        jLabel22 = new widget.Label();
+        jLabel23 = new widget.Label();
+        jLabel24 = new widget.Label();
+        Tanggal1 = new widget.Tanggal();
+        jLabel25 = new widget.Label();
+        jLabel26 = new widget.Label();
+        NmPoli = new widget.TextBox();
+        BtnPoli = new widget.Button();
+        keterangan = new widget.TextBox();
+        jLabel27 = new widget.Label();
         ChkInput = new widget.CekBox();
         PanelAccor = new widget.PanelBiasa();
         ChkAccor = new widget.CekBox();
@@ -470,7 +534,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-03-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-01-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -484,7 +548,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-03-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-01-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -580,7 +644,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         TPasien.setBounds(326, 10, 295, 23);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "19-03-2025" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "27-01-2026" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -590,7 +654,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             }
         });
         FormInput.add(Tanggal);
-        Tanggal.setBounds(74, 40, 90, 23);
+        Tanggal.setBounds(70, 40, 90, 23);
 
         TNoRM.setEditable(false);
         TNoRM.setHighlighter(null);
@@ -686,15 +750,16 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         FormInput.add(btnPetugas);
         btnPetugas.setBounds(761, 40, 28, 23);
 
-        jLabel8.setText("Tgl.Lahir :");
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel8.setText("Assesmen :");
         jLabel8.setName("jLabel8"); // NOI18N
         FormInput.add(jLabel8);
-        jLabel8.setBounds(625, 10, 60, 23);
+        jLabel8.setBounds(800, 10, 80, 23);
 
         TglLahir.setHighlighter(null);
         TglLahir.setName("TglLahir"); // NOI18N
         FormInput.add(TglLahir);
-        TglLahir.setBounds(689, 10, 100, 23);
+        TglLahir.setBounds(690, 10, 100, 23);
 
         jLabel12.setText("Diagnosa :");
         jLabel12.setName("jLabel12"); // NOI18N
@@ -729,7 +794,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         scrollPane1.setViewportView(PermintaanTerapi);
 
         FormInput.add(scrollPane1);
-        scrollPane1.setBounds(119, 100, 670, 53);
+        scrollPane1.setBounds(119, 100, 310, 53);
 
         jLabel13.setText(":");
         jLabel13.setName("jLabel13"); // NOI18N
@@ -750,7 +815,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             }
         });
         FormInput.add(Program);
-        Program.setBounds(70, 160, 719, 23);
+        Program.setBounds(70, 160, 360, 23);
 
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel15.setText("Permintaan Terapi");
@@ -762,6 +827,126 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         jLabel17.setName("jLabel17"); // NOI18N
         FormInput.add(jLabel17);
         jLabel17.setBounds(0, 160, 66, 23);
+
+        terapi_ke.setForeground(new java.awt.Color(0, 0, 255));
+        terapi_ke.setHighlighter(null);
+        terapi_ke.setName("terapi_ke"); // NOI18N
+        FormInput.add(terapi_ke);
+        terapi_ke.setBounds(630, 90, 40, 23);
+
+        jLabel10.setText("Tgl.Lahir :");
+        jLabel10.setName("jLabel10"); // NOI18N
+        FormInput.add(jLabel10);
+        jLabel10.setBounds(625, 10, 60, 23);
+
+        asses.setHighlighter(null);
+        asses.setName("asses"); // NOI18N
+        FormInput.add(asses);
+        asses.setBounds(800, 30, 320, 23);
+
+        subjec.setHighlighter(null);
+        subjec.setName("subjec"); // NOI18N
+        FormInput.add(subjec);
+        subjec.setBounds(440, 120, 320, 23);
+
+        objec.setHighlighter(null);
+        objec.setName("objec"); // NOI18N
+        FormInput.add(objec);
+        objec.setBounds(440, 160, 320, 23);
+
+        prosedur.setHighlighter(null);
+        prosedur.setName("prosedur"); // NOI18N
+        FormInput.add(prosedur);
+        prosedur.setBounds(800, 70, 320, 23);
+
+        jLabel11.setText("Terapi Ke :");
+        jLabel11.setName("jLabel11"); // NOI18N
+        FormInput.add(jLabel11);
+        jLabel11.setBounds(570, 90, 60, 23);
+
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel20.setText("Subjective :");
+        jLabel20.setName("jLabel20"); // NOI18N
+        FormInput.add(jLabel20);
+        jLabel20.setBounds(440, 100, 70, 23);
+
+        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel22.setText("Objective :");
+        jLabel22.setName("jLabel22"); // NOI18N
+        FormInput.add(jLabel22);
+        jLabel22.setBounds(440, 140, 60, 23);
+
+        jLabel23.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel23.setText("Notif untuk pasien pada pertemuan selanjutnya :");
+        jLabel23.setName("jLabel23"); // NOI18N
+        FormInput.add(jLabel23);
+        jLabel23.setBounds(800, 100, 250, 23);
+
+        jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel24.setText("Tanggal Kontrol :");
+        jLabel24.setName("jLabel24"); // NOI18N
+        FormInput.add(jLabel24);
+        jLabel24.setBounds(790, 166, 90, 23);
+
+        Tanggal1.setForeground(new java.awt.Color(50, 70, 50));
+        Tanggal1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-01-2026" }));
+        Tanggal1.setDisplayFormat("dd-MM-yyyy");
+        Tanggal1.setName("Tanggal1"); // NOI18N
+        Tanggal1.setOpaque(false);
+        Tanggal1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                Tanggal1KeyPressed(evt);
+            }
+        });
+        FormInput.add(Tanggal1);
+        Tanggal1.setBounds(875, 166, 90, 23);
+
+        jLabel25.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel25.setText("Procedure :");
+        jLabel25.setName("jLabel25"); // NOI18N
+        FormInput.add(jLabel25);
+        jLabel25.setBounds(800, 50, 60, 23);
+
+        jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel26.setText("Keterangan :");
+        jLabel26.setName("jLabel26"); // NOI18N
+        FormInput.add(jLabel26);
+        jLabel26.setBounds(1020, 120, 90, 23);
+
+        NmPoli.setEditable(false);
+        NmPoli.setHighlighter(null);
+        NmPoli.setName("NmPoli"); // NOI18N
+        FormInput.add(NmPoli);
+        NmPoli.setBounds(800, 140, 180, 23);
+
+        BtnPoli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png"))); // NOI18N
+        BtnPoli.setMnemonic('X');
+        BtnPoli.setToolTipText("Alt+X");
+        BtnPoli.setName("BtnPoli"); // NOI18N
+        BtnPoli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnPoliActionPerformed(evt);
+            }
+        });
+        BtnPoli.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BtnPoliKeyPressed(evt);
+            }
+        });
+        FormInput.add(BtnPoli);
+        BtnPoli.setBounds(980, 140, 28, 23);
+
+        keterangan.setHighlighter(null);
+        keterangan.setName("keterangan"); // NOI18N
+        FormInput.add(keterangan);
+        keterangan.setBounds(1010, 140, 180, 23);
+
+        jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel27.setText("kembali ke klinik :");
+        jLabel27.setName("jLabel27"); // NOI18N
+        FormInput.add(jLabel27);
+        jLabel27.setBounds(800, 120, 90, 23);
 
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
 
@@ -1302,8 +1487,9 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             param.put("kontakrs",akses.getkontakrs());
             param.put("emailrs",akses.getemailrs());   
             param.put("logo",Sequel.cariGambar("select setting.logo from setting")); 
-            Valid.MyReportqry("rptFormulirLayananProgramKFR.jasper","report","::[ Formulir Layanan Program KFR ]::",
+            Valid.MyReportqry("rptFormulirLayananProgramKFRPKU.jasper","report","::[ Formulir Layanan Program KFR ]::",
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,layanan_program_kfr.tanggal,layanan_program_kfr.no_rawat_layanan,layanan_kedokteran_fisik_rehabilitasi.diagnosa_medis,"+
+                    "layanan_program_kfr.klinik,layanan_program_kfr.tgl_kontrol,layanan_program_kfr.ket,layanan_program_kfr.terapike,"+
                     "replace(replace(replace(layanan_kedokteran_fisik_rehabilitasi.tatalaksana,'\t',''),'\n','; '),'\r','; ') as tatalaksana,layanan_program_kfr.program,layanan_program_kfr.nip,petugas.nama,replace(replace(replace(layanan_kedokteran_fisik_rehabilitasi.evaluasi,'\t',''),'\n','; '),'\r','; ') as evaluasi,"+
                     "concat('http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/layananprogramkfr/',bukti_layanan_program_kfr.photo) as photo,layanan_kedokteran_fisik_rehabilitasi.kd_dokter,dokter.nm_dokter,now() as sekarang from layanan_program_kfr "+
                     "inner join reg_periksa on layanan_program_kfr.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on layanan_program_kfr.nip=petugas.nip "+
@@ -1349,6 +1535,41 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_BtnRefreshPhoto1ActionPerformed
 
+    private void Tanggal1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tanggal1KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Tanggal1KeyPressed
+
+    private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPoliActionPerformed
+        if(aktifjadwal.equals("aktif")){
+            if(akses.getkode().equals("Admin Utama")){
+                poli.isCek();
+                poli.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                poli.setLocationRelativeTo(internalFrame1);
+                poli.setVisible(true);
+            }else{
+                poli2.isCek();
+                poli2.SetHari(Tanggal1.getDate());
+                poli2.tampil();
+                poli2.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                poli2.setLocationRelativeTo(internalFrame1);
+                poli2.setVisible(true);
+            }
+        }else{
+            poli.isCek();
+            poli.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            poli.setLocationRelativeTo(internalFrame1);
+            poli.setVisible(true);
+        }
+    }//GEN-LAST:event_BtnPoliActionPerformed
+
+    private void BtnPoliKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnPoliKeyPressed
+        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            BtnPoliActionPerformed(null);
+        }else{
+//            Valid.pindah(evt,BtnDokter,btnPenjab);
+        }
+    }//GEN-LAST:event_BtnPoliKeyPressed
+
     /**
     * @param args the command line arguments
     */
@@ -1372,6 +1593,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private widget.Button BtnEdit;
     private widget.Button BtnHapus;
     private widget.Button BtnKeluar;
+    private widget.Button BtnPoli;
     private widget.Button BtnPrint;
     private widget.Button BtnRefreshPhoto1;
     private widget.Button BtnSimpan;
@@ -1394,6 +1616,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private javax.swing.JMenuItem MnCetakLayananProgramKFR;
     private widget.TextBox NIP;
     private widget.TextBox NamaPetugas;
+    private widget.TextBox NmPoli;
     public widget.TextBox NoPermintaan;
     private widget.PanelBiasa PanelAccor;
     private javax.swing.JPanel PanelInput;
@@ -1406,12 +1629,16 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private widget.TextBox TNoRw;
     private widget.TextBox TPasien;
     private widget.Tanggal Tanggal;
+    private widget.Tanggal Tanggal1;
     private widget.TextBox TanggalRegistrasi;
     private widget.TextBox TglLahir;
     private widget.TextBox Umur;
+    private widget.TextBox asses;
     private widget.Button btnAmbil;
     private widget.Button btnPetugas;
     private widget.InternalFrame internalFrame1;
+    private widget.Label jLabel10;
+    private widget.Label jLabel11;
     private widget.Label jLabel12;
     private widget.Label jLabel13;
     private widget.Label jLabel14;
@@ -1420,7 +1647,14 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private widget.Label jLabel17;
     private widget.Label jLabel18;
     private widget.Label jLabel19;
+    private widget.Label jLabel20;
     private widget.Label jLabel21;
+    private widget.Label jLabel22;
+    private widget.Label jLabel23;
+    private widget.Label jLabel24;
+    private widget.Label jLabel25;
+    private widget.Label jLabel26;
+    private widget.Label jLabel27;
     private widget.Label jLabel4;
     private widget.Label jLabel6;
     private widget.Label jLabel7;
@@ -1428,10 +1662,15 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private widget.TextBox keterangan;
+    private widget.TextBox objec;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
+    private widget.TextBox prosedur;
     private widget.ScrollPane scrollPane1;
+    private widget.TextBox subjec;
     private widget.Table tbObat;
+    private widget.TextBox terapi_ke;
     // End of variables declaration//GEN-END:variables
     
     public void tampil() {
@@ -1441,7 +1680,8 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
                 ps=koneksi.prepareStatement(
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,layanan_program_kfr.tanggal,"+
                     "layanan_program_kfr.no_rawat_layanan,layanan_kedokteran_fisik_rehabilitasi.diagnosa_medis,layanan_kedokteran_fisik_rehabilitasi.tatalaksana,layanan_program_kfr.program,"+
-                    "layanan_program_kfr.nip,petugas.nama,layanan_kedokteran_fisik_rehabilitasi.evaluasi from layanan_program_kfr inner join reg_periksa on layanan_program_kfr.no_rawat=reg_periksa.no_rawat "+
+                    "layanan_program_kfr.klinik,layanan_program_kfr.tgl_kontrol,layanan_program_kfr.ket,"+
+                    "layanan_program_kfr.nip,layanan_program_kfr.terapike,layanan_program_kfr.subjec,layanan_program_kfr.objec,layanan_program_kfr.asses,layanan_program_kfr.prosedur,petugas.nama,layanan_kedokteran_fisik_rehabilitasi.evaluasi from layanan_program_kfr inner join reg_periksa on layanan_program_kfr.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on layanan_program_kfr.nip=petugas.nip "+
                     "inner join layanan_kedokteran_fisik_rehabilitasi on layanan_kedokteran_fisik_rehabilitasi.no_rawat=layanan_program_kfr.no_rawat_layanan "+
                     "where layanan_program_kfr.tanggal between ? and ? order by layanan_program_kfr.tanggal");
@@ -1449,7 +1689,8 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
                 ps=koneksi.prepareStatement(
                     "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,pasien.jk,pasien.tgl_lahir,layanan_program_kfr.tanggal,"+
                     "layanan_program_kfr.no_rawat_layanan,layanan_kedokteran_fisik_rehabilitasi.diagnosa_medis,layanan_kedokteran_fisik_rehabilitasi.tatalaksana,layanan_program_kfr.program,"+
-                    "layanan_program_kfr.nip,petugas.nama,layanan_kedokteran_fisik_rehabilitasi.evaluasi from layanan_program_kfr inner join reg_periksa on layanan_program_kfr.no_rawat=reg_periksa.no_rawat "+
+                    "layanan_program_kfr.klinik,layanan_program_kfr.tgl_kontrol,layanan_program_kfr.ket,"+
+                    "layanan_program_kfr.nip,layanan_program_kfr.terapike,layanan_program_kfr.subjec,layanan_program_kfr.objec,layanan_program_kfr.asses,layanan_program_kfr.prosedur,petugas.nama,layanan_kedokteran_fisik_rehabilitasi.evaluasi from layanan_program_kfr inner join reg_periksa on layanan_program_kfr.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on layanan_program_kfr.nip=petugas.nip "+
                     "inner join layanan_kedokteran_fisik_rehabilitasi on layanan_kedokteran_fisik_rehabilitasi.no_rawat=layanan_program_kfr.no_rawat_layanan "+
                     "where layanan_program_kfr.tanggal between ? and ? and (reg_periksa.no_rawat like ? or pasien.no_rkm_medis like ? or pasien.nm_pasien like ? or layanan_program_kfr.nip like ? or "+
@@ -1475,7 +1716,8 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
                         rs.getString("no_rawat"),rs.getString("no_rkm_medis"),rs.getString("nm_pasien"),rs.getString("umurdaftar")+" "+rs.getString("sttsumur"),rs.getString("jk"),rs.getDate("tgl_lahir"),rs.getString("tanggal"),rs.getString("no_rawat_layanan"),rs.getString("diagnosa_medis"),
-                        rs.getString("tatalaksana").replaceAll("\t", "").replaceAll("(\r\n|\r|\n|\n\r)","; ")+". "+rs.getString("evaluasi").replaceAll("\t", "").replaceAll("(\r\n|\r|\n|\n\r)","; "),rs.getString("program"),rs.getString("nip"),rs.getString("nama")
+                        rs.getString("tatalaksana").replaceAll("\t", "").replaceAll("(\r\n|\r|\n|\n\r)","; ")+". "+rs.getString("evaluasi").replaceAll("\t", "").replaceAll("(\r\n|\r|\n|\n\r)","; "),rs.getString("program"),rs.getString("nip"),rs.getString("nama"),
+                        rs.getString("terapike"),rs.getString("subjec"),rs.getString("objec"),rs.getString("asses"),rs.getString("prosedur"),rs.getString("klinik"),rs.getString("tgl_kontrol"),rs.getString("ket")
                     });
                 }
             } catch (Exception e) {
@@ -1498,6 +1740,13 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         Program.setText("");
         Tanggal.setDate(new Date());
         Program.requestFocus();
+        terapi_ke.setText("");
+        subjec.setText("");
+        objec.setText("");
+        asses.setText("");
+        prosedur.setText("");
+        NmPoli.setText("");
+        keterangan.setText("");
     } 
 
     private void getData() {
@@ -1516,6 +1765,14 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             Menit.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString().substring(14,16));
             Detik.setSelectedItem(tbObat.getValueAt(tbObat.getSelectedRow(),6).toString().substring(17,19));
             Valid.SetTgl(Tanggal,tbObat.getValueAt(tbObat.getSelectedRow(),6).toString());
+            terapi_ke.setText(tbObat.getValueAt(tbObat.getSelectedRow(),13).toString());
+            subjec.setText(tbObat.getValueAt(tbObat.getSelectedRow(),14).toString());
+            objec.setText(tbObat.getValueAt(tbObat.getSelectedRow(),15).toString());
+            asses.setText(tbObat.getValueAt(tbObat.getSelectedRow(),16).toString());
+            prosedur.setText(tbObat.getValueAt(tbObat.getSelectedRow(),17).toString());
+            NmPoli.setText(tbObat.getValueAt(tbObat.getSelectedRow(),18).toString());
+            Valid.SetTgl(Tanggal1,tbObat.getValueAt(tbObat.getSelectedRow(),19).toString());
+            keterangan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),20).toString());
         }
     }
     
@@ -1551,13 +1808,16 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         }
     }
     
-    public void setNoRm(String norwt, Date tgl2) {
+    public void setNoRm(String norwt, Date tgl2, String terapike) {
         TNoRw.setText(norwt);
         TCari.setText(norwt);
+        terapi_ke.setText(terapike);
         DTPCari2.setDate(tgl2);
         isRawat();
         ChkInput.setSelected(true);
         isForm();
+        tampil_soap();
+        Program.setText(Sequel.cariIsi("SELECT frequensi FROM `pku_asesmen_kfr` WHERE no_rawat ='"+TNoRw.getText()+"'order BY tanggal DESC"));
     }
     
     private void isForm(){
@@ -1656,9 +1916,10 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     }
 
     private void ganti() {
-        if(Sequel.mengedittf("layanan_program_kfr","no_rawat=?","no_rawat_layanan=?,no_rawat=?,tanggal=?,nip=?,program=?",6,new String[]{
+        if(Sequel.mengedittf("layanan_program_kfr","no_rawat=?","no_rawat_layanan=?,no_rawat=?,tanggal=?,nip=?,program=?,terapike=?,subjec=?,objec=?,asses=?,prosedur=?,klinik=?,tgl_kontrol=?,ket=?",14,new String[]{
             NoPermintaan.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-            NIP.getText(),Program.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
+            NIP.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
+            NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
             tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
             tbObat.setValueAt(TNoRM.getText(),tbObat.getSelectedRow(),1);
@@ -1673,6 +1934,14 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             tbObat.setValueAt(Program.getText(),tbObat.getSelectedRow(),10);
             tbObat.setValueAt(NIP.getText(),tbObat.getSelectedRow(),11);
             tbObat.setValueAt(NamaPetugas.getText(),tbObat.getSelectedRow(),12);
+            tbObat.setValueAt(terapi_ke.getText(),tbObat.getSelectedRow(),13);
+            tbObat.setValueAt(subjec.getText(),tbObat.getSelectedRow(),14);
+            tbObat.setValueAt(objec.getText(),tbObat.getSelectedRow(),15);
+            tbObat.setValueAt(asses.getText(),tbObat.getSelectedRow(),16);
+            tbObat.setValueAt(prosedur.getText(),tbObat.getSelectedRow(),17);
+            tbObat.setValueAt(NmPoli.getText(),tbObat.getSelectedRow(),18);
+            tbObat.setValueAt(Valid.SetTgl(Tanggal1.getSelectedItem()+""),tbObat.getSelectedRow(),19);
+            tbObat.setValueAt(keterangan.getText(),tbObat.getSelectedRow(),20);
             emptTeks();
         }
     }
@@ -1690,14 +1959,17 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     }
 
     private void simpan() {
-        if(Sequel.menyimpantf("layanan_program_kfr","?,?,?,?,?","Data",5,new String[]{
+        if(Sequel.menyimpantf("layanan_program_kfr","?,?,?,?,?,?,?,?,?,?,?,?,?","Data",13,new String[]{
             NoPermintaan.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-            NIP.getText(),Program.getText()
+            NIP.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
+            NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText()
         })==true){
             tabMode.addRow(new Object[]{
                 TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),TglLahir.getText(),
                 Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-                NoPermintaan.getText(),Diagnosa.getText(),PermintaanTerapi.getText(),Program.getText(),NIP.getText(),NamaPetugas.getText()
+                NoPermintaan.getText(),Diagnosa.getText(),PermintaanTerapi.getText(),Program.getText(),NIP.getText(),NamaPetugas.getText(),
+                terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
+                NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText()
             });
             LCount.setText(""+tabMode.getRowCount());
             emptTeks();
@@ -1748,6 +2020,34 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             } catch (Exception e) {
                 System.out.println("Notif : "+e);
             }
+        }
+    }
+    
+        private void tampil_soap() {
+        try {
+            ps=koneksi.prepareStatement(
+                    "SELECT pemeriksaan_ralan.keluhan, pemeriksaan_ralan.pemeriksaan, pemeriksaan_ralan.penilaian , pemeriksaan_ralan.rtl FROM pemeriksaan_ralan WHERE pemeriksaan_ralan.no_rawat=? order BY tgl_perawatan DESC LIMIT 1");
+            try {
+                ps.setString(1,TNoRw.getText());
+                rs=ps.executeQuery();
+                if(rs.next()){
+                    subjec.setText(rs.getString("keluhan"));
+                    objec.setText(rs.getString("pemeriksaan"));
+                    asses.setText(rs.getString("penilaian"));
+                    prosedur.setText(rs.getString("rtl"));                    
+                }
+            } catch (Exception e) {
+                System.out.println("Notif : "+e);
+            } finally{
+                if(rs!=null){
+                    rs.close();
+                }
+                if(ps!=null){
+                    ps.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Notif : "+e);
         }
     }
 }

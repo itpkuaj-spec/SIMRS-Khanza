@@ -34,6 +34,7 @@ import rekammedis.RMLayananProgramKFR;
 import rekammedis.RMPenilaianFisioterapi;
 import rekammedis.RMRiwayatPerawatan;
 import simrskhanza.DlgRawatJalan;
+import tambahan_it.RMAsesmenReasesmenKFR;
 
 /**
  *
@@ -204,6 +205,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         BtnSOAPTindakan = new widget.Button();
         BtnDetailPermintaan = new widget.Button();
         BtnRiwayatProgram = new widget.Button();
+        Btnasesmenkfr = new widget.Button();
 
         LoadHTML.setBorder(null);
         LoadHTML.setName("LoadHTML"); // NOI18N
@@ -560,7 +562,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         });
         panelCari.add(R3);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20-03-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-01-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -578,7 +580,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(25, 23));
         panelCari.add(jLabel25);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20-03-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "17-01-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -645,7 +647,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         FormMenu.add(BtnRiwayatPasien);
 
         BtnAwalFisioTerapi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
-        BtnAwalFisioTerapi.setText("Pengkajian Awal Fisioterapi");
+        BtnAwalFisioTerapi.setText("Penilaian Awal Fisioterapi");
         BtnAwalFisioTerapi.setFocusPainted(false);
         BtnAwalFisioTerapi.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         BtnAwalFisioTerapi.setGlassColor(new java.awt.Color(255, 255, 255));
@@ -712,6 +714,23 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         });
         FormMenu.add(BtnRiwayatProgram);
 
+        Btnasesmenkfr.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
+        Btnasesmenkfr.setText("Form Asesmen/Reasesmen");
+        Btnasesmenkfr.setFocusPainted(false);
+        Btnasesmenkfr.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        Btnasesmenkfr.setGlassColor(new java.awt.Color(255, 255, 255));
+        Btnasesmenkfr.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Btnasesmenkfr.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        Btnasesmenkfr.setName("Btnasesmenkfr"); // NOI18N
+        Btnasesmenkfr.setPreferredSize(new java.awt.Dimension(170, 23));
+        Btnasesmenkfr.setRoundRect(false);
+        Btnasesmenkfr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnasesmenkfrActionPerformed(evt);
+            }
+        });
+        FormMenu.add(Btnasesmenkfr);
+
         ScrollMenu.setViewportView(FormMenu);
 
         PanelAccor.add(ScrollMenu, java.awt.BorderLayout.CENTER);
@@ -736,7 +755,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
                     form.setLocationRelativeTo(internalFrame1);
                     form.setVisible(true);
                     form.emptTeks();
-                    form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date());
+                    form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date(),tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
                     form.Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
                     form.NoPermintaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
                     form.PermintaanTerapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
@@ -929,7 +948,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
                 form.setLocationRelativeTo(internalFrame1);
                 form.setVisible(true);
                 form.emptTeks();
-                form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date());
+                form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date(),tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
                 form.Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
                 form.NoPermintaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
                 form.PermintaanTerapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
@@ -1215,6 +1234,55 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         tampil();
     }//GEN-LAST:event_R3ActionPerformed
 
+    private void BtnasesmenkfrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnasesmenkfrActionPerformed
+        // TODO add your handling code here:
+        if(tabMode.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
+        }else{
+            if(tbObat.getSelectedRow()!= -1){
+                if(R1.isSelected()==true){
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    RMAsesmenReasesmenKFR form=new RMAsesmenReasesmenKFR(null,false);
+                    form.isCek();
+                    form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                    form.setLocationRelativeTo(internalFrame1);
+                    form.setVisible(true);
+                    form.emptTeks();
+                    form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date(),tbObat.getValueAt(tbObat.getSelectedRow(),10).toString());
+                    form.Diagnosa.setText(tbObat.getValueAt(tbObat.getSelectedRow(),8).toString());
+                    form.NoPermintaan.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
+                    form.PermintaanTerapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
+                    form.addWindowListener(new WindowListener() {
+                        @Override
+                        public void windowOpened(WindowEvent e) {}
+                        @Override
+                        public void windowClosing(WindowEvent e) {}
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            if(form.status==true){
+                                tabMode.removeRow(tbObat.getSelectedRow());
+                                LCount.setText(""+tabMode.getRowCount());
+                            }
+                        }
+                        @Override
+                        public void windowIconified(WindowEvent e) {}
+                        @Override
+                        public void windowDeiconified(WindowEvent e) {}
+                        @Override
+                        public void windowActivated(WindowEvent e) {}
+                        @Override
+                        public void windowDeactivated(WindowEvent e) {}
+                    });
+                    this.setCursor(Cursor.getDefaultCursor());
+                }else{
+                    JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data pasien yang belum terlayani...!!!!");
+                }
+            }else{
+                JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data...!!!!");
+            }
+        }
+    }//GEN-LAST:event_BtnasesmenkfrActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1244,6 +1312,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
     private widget.Button BtnRiwayatProgram;
     private widget.Button BtnSOAPTindakan;
     private widget.Button BtnSelesaiProgram;
+    private widget.Button Btnasesmenkfr;
     private widget.CekBox ChkAccor;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;

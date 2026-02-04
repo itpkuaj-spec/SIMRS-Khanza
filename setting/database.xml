@@ -198,5 +198,27 @@
     <entry key="PORTDUTAPARKING">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USERDUTAPARKING">kMR3WfAwUK6MbhCyydxa0g==</entry>
     <entry key="PASDUTAPARKING">l4nh5eVYrLAER/I2A4b3Tw==</entry>
+    
+        <!-- WA GATEWAY -->
+    <entry key="WAGATEWAY">maskofa</entry>  <!--fonnte,maskofa-->
+    <entry key="HOSTWA">p/0/a4TiRunNPuN2jJ1PMw==</entry>
+    <entry key="DATABASEWA">SW53AdUnTeEBuUEb5iCY0Q==</entry>
+    <entry key="PORTWA">nioxtijcpDaKSUiUiP5FAg==</entry>
+    <entry key="USERWA">g+Vh8jiK3rNds9uXplREow==</entry>
+    <entry key="PASWA">ISJQltyg+yNjstNka/nlQA==</entry>
+    <entry key="FOLDERFILEWA">WA_GATEWAY/media</entry>
+    <entry key="NOTIFWA">yes</entry>
+    <entry key="NOTIFWALAB">no</entry>
+    <entry key="NOTIFWARAD">no</entry>
+    <entry key="NOTIFWAADMISI">no</entry>
+    <entry key="NOTIFWAPENGAJUAN">yes</entry>
+    <entry key="NOTIFWARESEPPETU">yes</entry>
+    <entry key="IDGROUPWA">6285702295281@g.us</entry>
+    <entry key="IDGROUPWAADMISI">6285702295281-6285702295281@g.us</entry>
+    <entry key="IDGROUPWALAB">120363390345236466@g.us</entry>    
+    <entry key="IDGROUPWARAD">120363406305026539@g.us</entry>
+    <entry key="IDGROUPWAPENGAJUAN">120363408748178718@g.us</entry>
+    <entry key="NOTIFWAPASIEN">yes</entry>
+    <entry key="IDGROUPWARESEPPETU">120363420784276000@g.us</entry>
     <entry key="TOKENFONTE">mu1WNcfNaMzKigfZajVU</entry>
 </properties>

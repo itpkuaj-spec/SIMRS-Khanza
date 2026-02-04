@@ -1,5 +1,10 @@
 package bridging;
 
+//tambahan
+import org.springframework.util.MultiValueMap;
+import org.springframework.util.LinkedMultiValueMap;
+
+//akhir
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.koneksiDB;
@@ -18,6 +23,7 @@ import javax.swing.JOptionPane;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -56,7 +62,48 @@ public class ApiOrthanc {
     public String Auth(){
         return authEncrypt;
     }
-    
+    //tambahan
+    private void uploadKeServer(byte[] imageBytes, String noRawat, int index) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+            // Kirim byte[] langsung (BUKAN Resource)
+            body.add("file", new HttpEntity<>(imageBytes, createFileHeaders(noRawat, index)));
+            body.add("no_rawat", noRawat);
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity =
+                    new HttpEntity<>(body, headers);
+
+            RestTemplate rest = new RestTemplate();
+            rest.postForEntity(
+                    "http://192.168.100.8/webapps/radiologi/api/upload_gambar.php",
+                    requestEntity,
+                    String.class
+            );
+
+            System.out.println("Upload PNG berhasil: " + noRawat + "_" + index);
+
+        } catch (Exception e) {
+            System.out.println("Gagal upload: " + e);
+        }
+    }
+
+    private HttpHeaders createFileHeaders(String noRawat, int index) {
+    HttpHeaders fileHeaders = new HttpHeaders();
+    fileHeaders.setContentType(MediaType.IMAGE_PNG);
+    fileHeaders.set(
+        "Content-Disposition",
+        "form-data; name=\"file\"; filename=\"" + noRawat + "_" + index + ".png\""
+    );
+    return fileHeaders;
+    }
+
+
+
+    //akhir
     public JsonNode AmbilSeries(String Norm,String Tanggal1,String Tanggal2){
         System.out.println("Percobaan Mengambil Photo Pasien : "+Norm);
         try{
@@ -105,7 +152,9 @@ public class ApiOrthanc {
                  headers.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
                  HttpEntity<String> entity = new HttpEntity<>(headers);
                  ResponseEntity<byte[]> response = getRest().exchange(koneksiDB.URLORTHANC()+":"+koneksiDB.PORTORTHANC()+"/instances/"+list.asText()+"/preview", HttpMethod.GET, entity, byte[].class);
-                 Files.write(Paths.get("./gambarradiologi/"+NoRawat+i+".png"),response.getBody());
+//                 Files.write(Paths.get("./gambarradiologi/"+NoRawat+i+".png"),response.getBody());//asli tak komen
+                // simpan ke server radiologi + DB
+                uploadKeServer(response.getBody(), NoRawat, i);
                  i++;
             }
             JOptionPane.showMessageDialog(null,"Pengambilan Gambar PNG dari Orthanc berhasil, silahkan lihat di dalam folder Aplikasi..!!");

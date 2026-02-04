@@ -2215,6 +2215,19 @@ public final class RMTriaseIGD extends javax.swing.JDialog {
                     sukses=false;
                     Valid.textKosong(TCariPemeriksaan2,"Skala 3 / Skala 4 / Skala 5");
                 }else{
+                    
+                    // TAMBAHKAN LOGIC DISINI
+                            if (SekunderZonaHijau.isSelected()) {
+                                int pilihan = javax.swing.JOptionPane.showConfirmDialog(rootPane, 
+                                        "Pasien berada dalam zona hijau, apakah ingin tetap menyimpan?", 
+                                        "Konfirmasi Simpan", javax.swing.JOptionPane.YES_NO_OPTION);
+                                if (pilihan != javax.swing.JOptionPane.YES_OPTION) {
+                                    return; // Membatalkan proses simpan
+                                }
+                            }
+
+                    // Lanjut ke proses penyimpanan database
+                    
                     if(Sequel.menyimpantf("data_triase_igd","?,?,?,?,?,?,?,?,?,?,?,?,?","No.Rawat",13,new String[]{
                             TNoRw.getText(),Valid.SetTgl(TanggalKunjungan.getSelectedItem()+"")+" "+TanggalKunjungan.getSelectedItem().toString().substring(11,19),
                             CaraMasuk.getSelectedItem().toString(),Transportasi.getSelectedItem().toString(),AlasanKedatangan.getSelectedItem().toString(), 
