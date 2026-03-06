@@ -35,6 +35,9 @@ import kepegawaian.DlgCariDokter;
 import laporan.DlgBerkasRawat;
 import rekammedis.MasterCariTemplateHasilRadiologi;
 import rekammedis.RMRiwayatPerawatan;
+//tambahan
+import java.awt.Desktop;
+import java.net.URI;
 
 public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
     private final DefaultTableModel tabMode,tabModeDicom;
@@ -417,6 +420,7 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
         tbListDicom = new widget.Table();
         panelGlass7 = new widget.panelisi();
         btnDicom = new widget.Button();
+        btnUploadGambar = new widget.Button();
         PanelDataDicari = new widget.panelisi();
         label17 = new widget.Label();
         NoRawatDicari = new widget.Label();
@@ -1197,6 +1201,19 @@ public class DlgCariPeriksaRadiologi extends javax.swing.JDialog {
             }
         });
         panelGlass7.add(btnDicom);
+
+        btnUploadGambar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
+        btnUploadGambar.setMnemonic('T');
+        btnUploadGambar.setText("Upload Gambar Radiologi");
+        btnUploadGambar.setToolTipText("Alt+T");
+        btnUploadGambar.setName("btnUploadGambar"); // NOI18N
+        btnUploadGambar.setPreferredSize(new java.awt.Dimension(180, 30));
+        btnUploadGambar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUploadGambarActionPerformed(evt);
+            }
+        });
+        panelGlass7.add(btnUploadGambar);
 
         FormOrthan.add(panelGlass7, java.awt.BorderLayout.PAGE_END);
 
@@ -2175,23 +2192,45 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     }//GEN-LAST:event_btnAmbilPhoto1ActionPerformed
 
     private void btnDicomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDicomActionPerformed
-        if(tabModeDicom.getRowCount()==0){
+            if(tabModeDicom.getRowCount()==0){
             JOptionPane.showMessageDialog(null,"Maaf, data sudah habis...!!!!");
             TCari.requestFocus();
         }else {
             if(tbListDicom.getSelectedRow()!= -1){
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                OrthancDICOM orthan=new OrthancDICOM(null,false);
-                orthan.setJudul("::[ DICOM Orthanc Pasien "+tbDokter.getValueAt(tbDokter.getSelectedRow(),1).toString()+", Series "+tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString()+" ]::",tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().replaceAll("/","")+"_"+tbDokter.getValueAt(tbDokter.getSelectedRow(),1).toString().replaceAll(" ","_").replaceAll("/","").replaceAll(":","").replaceAll(",",""),tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString());
                 try {
-                    System.out.println("URL : "+koneksiDB.URLORTHANC()+":"+koneksiDB.PORTORTHANC()+"/web-viewer/app/viewer.html?series="+tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString());
-                    orthan.loadURL(koneksiDB.URLORTHANC()+":"+koneksiDB.PORTORTHANC()+"/web-viewer/app/viewer.html?series="+tbListDicom.getValueAt(tbListDicom.getSelectedRow(),2).toString());
-                } catch (Exception ex) {
-                    System.out.println("Notifikasi : "+ex);
+                    String orthancStudyID = tbListDicom.getValueAt(tbListDicom.getSelectedRow(), 1).toString();
+                    String studyInstanceUID = getStudyInstanceUID(orthancStudyID);
+
+                    String ohifURL;
+                    if(studyInstanceUID != null && !studyInstanceUID.isEmpty()){
+                        ohifURL = koneksiDB.URLORTHANC()+":8080/viewer?StudyInstanceUIDs=" + studyInstanceUID;                        
+                    } else {
+                        ohifURL = "http://192.168.100.61:8080";
+                    }
+                    System.out.println("URL OHIF: " + ohifURL);
+
+//                    OrthancDICOM orthan = new OrthancDICOM(null, false);
+//                    orthan.setJudul("::[ DICOM Viewer - " + 
+//                        tbDokter.getValueAt(tbDokter.getSelectedRow(),1).toString() + " ]::",
+//                        tbDokter.getValueAt(tbDokter.getSelectedRow(),0).toString().replaceAll("/",""),
+//                        orthancStudyID);
+//                    orthan.loadURL(ohifURL);
+//                    orthan.setSize(internalFrame1.getWidth()-20, internalFrame1.getHeight()-20);
+//                    orthan.setLocationRelativeTo(internalFrame1);
+//                    orthan.setVisible(true);
+                // Buka di browser eksternal (Chrome/Firefox)
+                if(java.awt.Desktop.isDesktopSupported()){
+                    java.awt.Desktop.getDesktop().browse(new java.net.URI(ohifURL));
+                } else {
+                    // Fallback untuk Linux
+                    Runtime.getRuntime().exec(new String[]{"xdg-open", ohifURL});
                 }
-                orthan.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-                orthan.setLocationRelativeTo(internalFrame1);
-                orthan.setVisible(true);
+
+                } catch (Exception ex) {
+                    System.out.println("Notifikasi: " + ex);
+                    JOptionPane.showMessageDialog(null, "Gagal membuka DICOM Viewer: " + ex.getMessage());
+                }
                 this.setCursor(Cursor.getDefaultCursor());
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data..!!");
@@ -2250,6 +2289,43 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         statushasil="concat(periksa_radiologi.no_rawat,periksa_radiologi.tgl_periksa,periksa_radiologi.jam) not in (select concat(hasil_radiologi.no_rawat,hasil_radiologi.tgl_periksa,hasil_radiologi.jam) from hasil_radiologi) and ";
         tampil();
     }//GEN-LAST:event_ppBelumKeluarBacaanBtnPrintActionPerformed
+
+    private void btnUploadGambarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadGambarActionPerformed
+        // TODO add your handling code here:
+        if (tbListDicom.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "Silahkan pilih data terlebih dahulu!");
+            return;
+        }
+
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        try {
+            String noRawat  = NoRawatDicari.getText();
+            String seriesID = tbListDicom.getValueAt(tbListDicom.getSelectedRow(), 2).toString();
+            String tgl      = TglDicari.getText();   // yyyy-MM-dd
+            String jam      = JamDicari.getText();   // HH:mm:ss
+
+            // Upload JPEG ke WebApps
+            ApiOrthanc api = new ApiOrthanc();
+            api.UploadJpegKeWebApps(noRawat, seriesID, tgl, jam);
+
+            // Insert ke gambar_radiologi langsung dari Java
+            // Nama file sama dengan yang diupload: noRawat_1.jpg, noRawat_2.jpg dst
+            // Kita insert per gambar di dalam ApiOrthanc, tapi bisa juga di sini
+            // jika mau pakai Sequel:
+            
+            String namaFile = noRawat.replaceAll("[/\\s]", "_") + "_1.jpg";
+            String lokasi = "pages/upload/" + namaFile;
+            Sequel.menyimpan2("gambar_radiologi",
+                "'" + noRawat + "','" + tgl + "','" + jam + "','" + lokasi + "'",
+                "lokasi_gambar");
+            
+
+        } catch (Exception ex) {
+            System.out.println("Error: " + ex);
+            JOptionPane.showMessageDialog(null, "Gagal: " + ex.getMessage());
+        }
+        this.setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_btnUploadGambarActionPerformed
 
     /**
     * @param args the command line arguments
@@ -2326,6 +2402,7 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.Button btnPasien;
     private widget.Button btnPetugas;
     private widget.Button btnPetugas1;
+    private widget.Button btnUploadGambar;
     private widget.InternalFrame internalFrame1;
     private widget.InternalFrame internalFrame5;
     private widget.Label jLabel12;
@@ -2716,4 +2793,34 @@ private void tbDokterKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
             }
         }
     }
+    // Convert Orthanc Internal ID → DICOM StudyInstanceUID
+        private String getStudyInstanceUID(String orthancStudyID) {
+            try {
+                ApiOrthanc api = new ApiOrthanc();
+
+                org.springframework.http.HttpHeaders hdrs = new org.springframework.http.HttpHeaders();
+                hdrs.add("Authorization", "Basic " + api.Auth());
+                org.springframework.http.HttpEntity reqEntity = new org.springframework.http.HttpEntity(hdrs);
+
+                String url = koneksiDB.URLORTHANC()+":"+koneksiDB.PORTORTHANC()+"/studies/"+orthancStudyID;
+                System.out.println("Query Orthanc: " + url);
+
+                String resultJson = api.getRest().exchange(
+                    url,
+                    org.springframework.http.HttpMethod.GET,
+                    reqEntity,
+                    String.class
+                ).getBody();
+
+                System.out.println("Result: " + resultJson);
+
+                com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                com.fasterxml.jackson.databind.JsonNode node = mapper.readTree(resultJson);
+                return node.path("MainDicomTags").path("StudyInstanceUID").asText();
+
+            } catch(Exception e){
+                System.out.println("Error getStudyInstanceUID: " + e);
+                return null;
+            }
+        }
 }

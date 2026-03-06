@@ -63,6 +63,90 @@ public class ApiOrthanc {
         return authEncrypt;
     }
     //tambahan
+    public void UploadJpegKeWebApps(String NoRawat, String Series, String TglPeriksa, String Jam) {
+        System.out.println("Upload JPEG - NoRawat: " + NoRawat + " Series: " + Series);
+        try {
+            HttpHeaders hdrs = new HttpHeaders();
+            hdrs.add("Authorization", "Basic " + authEncrypt);
+            HttpEntity reqEntity = new HttpEntity(hdrs);
+
+            String urlSeries = koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC()
+                             + "/series/" + Series;
+            String resultJson = getRest().exchange(
+                urlSeries, HttpMethod.GET, reqEntity, String.class).getBody();
+
+            JsonNode root = mapper.readTree(resultJson);
+            JsonNode instances = root.path("Instances");
+
+            int total = instances.size();
+            int sukses = 0;
+
+            for (int i = 0; i < instances.size(); i++) {
+                String instanceId = instances.get(i).asText();
+
+                HttpHeaders jpegHdrs = new HttpHeaders();
+                jpegHdrs.add("Authorization", "Basic " + authEncrypt);
+                jpegHdrs.setAccept(Collections.singletonList(MediaType.IMAGE_JPEG));
+                HttpEntity jpegEntity = new HttpEntity(jpegHdrs);
+
+                String urlPreview = koneksiDB.URLORTHANC() + ":" + koneksiDB.PORTORTHANC()
+                                  + "/instances/" + instanceId + "/preview";
+
+                ResponseEntity<byte[]> response = getRest().exchange(
+                    urlPreview, HttpMethod.GET, jpegEntity, byte[].class);
+
+                byte[] jpegBytes = response.getBody();
+                if (jpegBytes == null) continue;
+
+                String namaFile = NoRawat.replaceAll("[/\\s]", "_") + "_" + (i + 1) + ".jpg";
+
+                boolean ok = kirimJpegKeWebApps(jpegBytes, namaFile);
+                if (ok) sukses++;
+
+                System.out.println("Instance " + (i+1) + "/" + total + " - " + namaFile + " : " + (ok ? "OK" : "GAGAL"));
+            }
+
+                JOptionPane.showMessageDialog(null,
+                    "Upload selesai!\nBerhasil: " + sukses + " dari " + total + " gambar.");
+
+            } catch (Exception e) {
+                System.out.println("Error UploadJpegKeWebApps: " + e);
+                JOptionPane.showMessageDialog(null, "Gagal upload: " + e.getMessage());
+            }
+    }
+
+    private boolean kirimJpegKeWebApps(byte[] jpegBytes, String namaFile) {
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+            MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+
+            HttpHeaders fileHeaders = new HttpHeaders();
+            fileHeaders.setContentType(MediaType.IMAGE_JPEG);
+            fileHeaders.set("Content-Disposition",
+                "form-data; name=\"file\"; filename=\"" + namaFile + "\"");
+            body.add("file", new HttpEntity<>(jpegBytes, fileHeaders));
+            body.add("nama_file", namaFile);
+
+            HttpEntity<MultiValueMap<String, Object>> requestEntity =
+                new HttpEntity<>(body, headers);
+
+            RestTemplate rest = new RestTemplate();
+            ResponseEntity<String> response = rest.postForEntity(
+                "http://192.168.100.8/webapps/radiologi/api/upload_jpeg.php",
+                requestEntity,
+                String.class
+            );
+
+            System.out.println("Response upload: " + response.getBody());
+            return response.getBody() != null && response.getBody().startsWith("OK");
+
+        } catch (Exception e) {
+            System.out.println("Error kirimJpeg: " + e);
+            return false;
+        }
+    }
     private void uploadKeServer(byte[] imageBytes, String noRawat, int index) {
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -130,6 +214,25 @@ public class ApiOrthanc {
         }
         return root;
     }
+    
+    //tamabahan
+    public String GetStudyInstanceUID(String Norm, String Tanggal1, String Tanggal2){
+        try {
+            JsonNode studies = AmbilSeries(Norm, Tanggal1, Tanggal2);
+            if(studies != null && studies.isArray() && studies.size() > 0){
+                // Ambil StudyInstanceUID dari study pertama
+                String studyUID = studies.get(0)
+                    .path("MainDicomTags")
+                    .path("StudyInstanceUID")
+                    .asText();
+                System.out.println("StudyInstanceUID: " + studyUID);
+                return studyUID;
+            }
+        } catch(Exception e){
+            System.out.println("Error GetStudyInstanceUID: " + e);
+        }
+        return null;
+   }
     
     public JsonNode AmbilPng(String NoRawat,String Series){
         System.out.println("Percobaan Mengambil Gambar PNG : "+NoRawat+", Series : "+Series);

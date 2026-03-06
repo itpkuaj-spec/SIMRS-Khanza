@@ -15,7 +15,9 @@ public class OrthancMWLService {
 
     private final Connection con = koneksiDB.condb();
 
-    private final String ORTHANC_URL = koneksiDB.URLORTHANC() + "/worklists";
+    private final String ORTHANC_URL =
+    koneksiDB.URLORTHANC() + ":" +
+    koneksiDB.PORTORTHANC() + "/worklists";
     private final String USER = koneksiDB.USERORTHANC();
     private final String PASS = koneksiDB.PASSORTHANC();
 
@@ -109,7 +111,8 @@ public class OrthancMWLService {
         headers.set("Authorization", "Basic " + encoded);
 
         HttpEntity<String> entity = new HttpEntity<>(json, headers);
-
+String targetUrl = ORTHANC_URL + "/" + noOrder;
+System.out.println("ORTHANC TARGET = " + targetUrl);
         ResponseEntity<String> response =
             rest.exchange(
                 ORTHANC_URL + "/" + noOrder,

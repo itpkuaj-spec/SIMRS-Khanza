@@ -170,7 +170,7 @@ public class OrthancDICOM extends javax.swing.JDialog {
             try {
                 engine.getCreatePopupHandler();
                 engine.setJavaScriptEnabled(true);
-                engine.setUserAgent("foo\nAuthorization: Basic "+orthanc.Auth());
+//                engine.setUserAgent("foo\nAuthorization: Basic "+orthanc.Auth());
                 engine.load(url);
             }catch (Exception exception) {
                 engine.load(url);

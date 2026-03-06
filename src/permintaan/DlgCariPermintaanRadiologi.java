@@ -2337,7 +2337,7 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
                 Valid.textKosong(TCari,"No.Permintaan");
             }else{
                 // === KIRIM KE ORTHANC MWL ===
-                orthancMWLService.kirimOrderKeMWL(NoPermintaan);
+                kirimKeMWL(NoPermintaan);
             }
 
             TeksKosong();
@@ -2945,5 +2945,39 @@ private void tbRadiologiRalanKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRS
             FormMenu.setVisible(false);    
             ChkAccor.setVisible(true);
         }
+    }
+    
+    public void kirimKeMWL(String noOrder) {
+            try {
+                String sql =
+                    "INSERT INTO mwl_order (" +
+                    "accession_number, patient_id, patient_name, patient_birth_date, patient_sex, " +
+                    "requesting_physician, study_description, modality, aetitle, " +
+                    "sps_start_date, sps_start_time" +
+                    ") " +
+                    "SELECT pr.noorder, p.no_rkm_medis, " +
+                    "REPLACE(p.nm_pasien,' ','^'), " +
+                    "DATE_FORMAT(p.tgl_lahir,'%Y%m%d'), " +
+                    "IF(p.jk='L','M','F'), " +
+                    "d.nm_dokter, pr.diagnosa_klinis, " +
+                    "'CR', 'ORTHANC', " +
+                    "DATE_FORMAT(pr.tgl_permintaan,'%Y%m%d'), " +
+                    "REPLACE(pr.jam_permintaan,':','') " +
+                    "FROM permintaan_radiologi pr " +
+                    "JOIN reg_periksa rp ON pr.no_rawat = rp.no_rawat " +
+                    "JOIN pasien p ON rp.no_rkm_medis = p.no_rkm_medis " +
+                    "JOIN dokter d ON pr.dokter_perujuk = d.kd_dokter " +
+                    "WHERE pr.noorder = ?";
+
+                PreparedStatement ps = koneksiDB.condb().prepareStatement(sql);
+                ps.setString(1, noOrder);
+                ps.executeUpdate();
+                ps.close();
+                JOptionPane.showMessageDialog(null, "No Permintaan : "+ noOrder + "Berhasil dikirim", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                System.out.println("MWL INSERT OK : " + noOrder);
+
+            } catch (Exception e) {
+                System.out.println("ERROR INSERT MWL : " + e);
+            }
     }
 }
