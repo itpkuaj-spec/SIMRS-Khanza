@@ -9,8 +9,9 @@
  * Created on May 23, 2010, 12:57:16 AM
  */
 
-package rekammedis;
+package tambahan_it;
 
+import rekammedis.*;
 import fungsi.WarnaTable4;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
@@ -29,24 +30,24 @@ import javax.swing.table.TableColumn;
  *
  * @author dosen
  */
-public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
+public final class RMCariSBAR extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
-    private String norm="",nip="";
+    private String norw="";
     private int z=0;
     /** Creates new form DlgPenyakit
      * @param parent
      * @param modal */
-    public RMCari5SOAPTerakhir(java.awt.Frame parent, boolean modal) {
+    public RMCariSBAR(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocation(10,2);
         setSize(656,250);
 
-        Object[] row={"Tanggal","Jam","Subjek","Objek","Asesmen","Plan","Instruksi","Evaluasi"};
+        Object[] row={"Tanggal","Jam","Situation","Background","Assesment","Recomendation","Advice","Petugas","Dokter"};
         tabMode=new DefaultTableModel(null,row){
               @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -54,7 +55,7 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
         //tbPenyakit.setDefaultRenderer(Object.class, new WarnaTable(panelJudul.getBackground(),tbPenyakit.getBackground()));
         tbKamar.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbKamar.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for (z= 0; z < 8; z++) {
+        for (z= 0; z < 9; z++) {
             TableColumn column = tbKamar.getColumnModel().getColumn(z);
             if(z==0){
                 column.setPreferredWidth(65);
@@ -71,7 +72,9 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
             }else if(z==6){
                 column.setPreferredWidth(220);
             }else if(z==7){
-                column.setPreferredWidth(220);
+                column.setPreferredWidth(160);
+            }else if(z==8){
+                column.setPreferredWidth(160);
             }
         }
         tbKamar.setDefaultRenderer(Object.class, new WarnaTable4());
@@ -114,8 +117,6 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
         Scroll = new widget.ScrollPane();
         tbKamar = new widget.Table();
         panelisi3 = new widget.panelisi();
-        jLabel18 = new widget.Label();
-        Status = new widget.ComboBox();
         label9 = new widget.Label();
         TCari = new widget.TextBox();
         BtnCari = new widget.Button();
@@ -133,7 +134,7 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
             }
         });
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Riwayat 5 SOAPIE Terakhir ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ SBAR 10 Terakhir ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -154,17 +155,6 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
         panelisi3.setName("panelisi3"); // NOI18N
         panelisi3.setPreferredSize(new java.awt.Dimension(100, 43));
         panelisi3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 9));
-
-        jLabel18.setText("Status :");
-        jLabel18.setName("jLabel18"); // NOI18N
-        jLabel18.setPreferredSize(new java.awt.Dimension(45, 23));
-        panelisi3.add(jLabel18);
-
-        Status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ralan", "Ranap" }));
-        Status.setLightWeightPopupEnabled(false);
-        Status.setName("Status"); // NOI18N
-        Status.setPreferredSize(new java.awt.Dimension(92, 23));
-        panelisi3.add(Status);
 
         label9.setText("Key Word :");
         label9.setName("label9"); // NOI18N
@@ -306,7 +296,7 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            RMCari5SOAPTerakhir dialog = new RMCari5SOAPTerakhir(new javax.swing.JFrame(), true);
+            RMCariSBAR dialog = new RMCariSBAR(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -323,10 +313,8 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
     private widget.Button BtnKeluar;
     private widget.Label LCount;
     private widget.ScrollPane Scroll;
-    private widget.ComboBox Status;
     private widget.TextBox TCari;
     private widget.InternalFrame internalFrame1;
-    private widget.Label jLabel18;
     private widget.Label label10;
     private widget.Label label9;
     private widget.panelisi panelisi3;
@@ -335,25 +323,24 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        if(Status.getSelectedIndex()==0){
+        
             try{
                 ps=koneksi.prepareStatement(
-                        "select pemeriksaan_ralan.tgl_perawatan,pemeriksaan_ralan.jam_rawat,pemeriksaan_ralan.keluhan,pemeriksaan_ralan.pemeriksaan,"+
-                        "pemeriksaan_ralan.penilaian,pemeriksaan_ralan.rtl,pemeriksaan_ralan.instruksi,pemeriksaan_ralan.evaluasi "+
-                        "from pemeriksaan_ralan inner join reg_periksa on pemeriksaan_ralan.no_rawat=reg_periksa.no_rawat where "+
-                        "reg_periksa.no_rkm_medis=? and pemeriksaan_ralan.nip=? and "+
-                        "(pemeriksaan_ralan.keluhan like ? or pemeriksaan_ralan.pemeriksaan like ?) "+
-                        "order by pemeriksaan_ralan.tgl_perawatan desc,pemeriksaan_ralan.jam_rawat desc limit 5");
+                        "select pemeriksaan_sbar.tgl_perawatan,pemeriksaan_sbar.jam_rawat,pemeriksaan_sbar.situation,pemeriksaan_sbar.background,"+
+                        "pemeriksaan_sbar.assesment,pemeriksaan_sbar.recommendation,pemeriksaan_sbar.advice,petugas.nama,dokter.nm_dokter "+
+                        "from pemeriksaan_sbar inner join petugas on pemeriksaan_sbar.nip=petugas.nip inner join dokter on pemeriksaan_sbar.kd_dokter=dokter.kd_dokter where "+
+                        "pemeriksaan_sbar.no_rawat=? and "+
+                        "(pemeriksaan_sbar.situation like ? or pemeriksaan_sbar.background like ?) "+
+                        "order by pemeriksaan_sbar.tgl_perawatan desc,pemeriksaan_sbar.jam_rawat desc limit 10");
                 try{
-                    ps.setString(1,norm);
-                    ps.setString(2,nip);
+                    ps.setString(1,norw);                    
+                    ps.setString(2,"%"+TCari.getText().trim()+"%");
                     ps.setString(3,"%"+TCari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
                     rs=ps.executeQuery();
                     while(rs.next()){
                         tabMode.addRow(new String[] {
                             rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                            rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)
+                            rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9)
                         });
                     }
                 }catch(Exception ex){
@@ -369,41 +356,7 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
             }catch(Exception e){
                 System.out.println("Notifikasi : "+e);
             }
-        }else{
-            try{
-                ps=koneksi.prepareStatement(
-                        "select pemeriksaan_ranap.tgl_perawatan,pemeriksaan_ranap.jam_rawat,pemeriksaan_ranap.keluhan,pemeriksaan_ranap.pemeriksaan,"+
-                        "pemeriksaan_ranap.penilaian,pemeriksaan_ranap.rtl,pemeriksaan_ranap.instruksi,pemeriksaan_ranap.evaluasi "+
-                        "from pemeriksaan_ranap inner join reg_periksa on pemeriksaan_ranap.no_rawat=reg_periksa.no_rawat where "+
-                        "reg_periksa.no_rkm_medis=? and pemeriksaan_ranap.nip=? and "+
-                        "(pemeriksaan_ranap.keluhan like ? or pemeriksaan_ranap.pemeriksaan like ?) "+
-                        "order by pemeriksaan_ranap.tgl_perawatan desc,pemeriksaan_ranap.jam_rawat desc limit 5");
-                try{
-                    ps.setString(1,norm);
-                    ps.setString(2,nip);
-                    ps.setString(3,"%"+TCari.getText().trim()+"%");
-                    ps.setString(4,"%"+TCari.getText().trim()+"%");
-                    rs=ps.executeQuery();
-                    while(rs.next()){
-                        tabMode.addRow(new String[] {
-                            rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),
-                            rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8)
-                        });
-                    }
-                }catch(Exception ex){
-                    System.out.println(ex);
-                }finally{
-                    if(rs!=null){
-                        rs.close();
-                    }
-                    if(ps!=null){
-                        ps.close();
-                    }
-                }
-            }catch(Exception e){
-                System.out.println("Notifikasi : "+e);
-            }
-        }
+
         LCount.setText(""+tabMode.getRowCount());
     }
 
@@ -411,10 +364,8 @@ public final class RMCari5SOAPTerakhir extends javax.swing.JDialog {
         TCari.requestFocus();
     }
     
-    public void setNoRM(String norm,String nip,String status){
-        this.norm=norm;
-        this.nip=nip;
-        Status.setSelectedItem(status);
+    public void setNoRM(String norw){
+        this.norw=norw;
         tampil();
     }
 

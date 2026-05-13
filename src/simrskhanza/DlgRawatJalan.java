@@ -12,13 +12,27 @@
 
 package simrskhanza;
 //tambahan
+import bridging.ApiBPJS;
 import bridging.BPJSSuratKontrol;
 import rekammedis.RMRiwayatPengobatan;
 import rekammedis.RMRiwayatPenunjang;
 import bridging.ICareRiwayatPerawatan;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import java.util.Collections;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import surat.SuratKontrolUmum;
 import rekammedis.DlgDataAlergiPasien;
 import tambahan_it.RMIntervensiPencegahanPasienJatuh;
+import tambahan_it.SBAR;
 //akhir
 import surat.SuratKontrol;
 import kepegawaian.DlgCariDokter;
@@ -240,7 +254,7 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             Suspen_Piutang_Tindakan_Ralan="",Tindakan_Ralan="",Beban_Jasa_Medik_Dokter_Tindakan_Ralan="",Utang_Jasa_Medik_Dokter_Tindakan_Ralan="",
             Beban_Jasa_Medik_Paramedis_Tindakan_Ralan="",Utang_Jasa_Medik_Paramedis_Tindakan_Ralan="",Beban_KSO_Tindakan_Ralan="",Utang_KSO_Tindakan_Ralan="",
             Beban_Jasa_Sarana_Tindakan_Ralan="",Utang_Jasa_Sarana_Tindakan_Ralan="",HPP_BHP_Tindakan_Ralan="",Persediaan_BHP_Tindakan_Ralan="",
-            Beban_Jasa_Menejemen_Tindakan_Ralan="",Utang_Jasa_Menejemen_Tindakan_Ralan="",variabel="",poli="";
+            Beban_Jasa_Menejemen_Tindakan_Ralan="",Utang_Jasa_Menejemen_Tindakan_Ralan="",variabel="",poli="",URL="",link="",utc="";//tambahan URL="",link="",utc=""
     private boolean[] pilih; 
     private String[] kode,nama,kategori;
     private double[] totaltnd,bagianrs,bhp,jmdokter,jmperawat,kso,menejemen;
@@ -250,6 +264,14 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
     private Jurnal jur=new Jurnal();
     //tambahan
     private DlgDataAlergiPasien alergipasien=new DlgDataAlergiPasien(null,false);
+    private ApiBPJS api=new ApiBPJS();
+    private HttpHeaders headers;
+    private HttpEntity requestEntity;
+    private ObjectMapper mapper = new ObjectMapper();
+    private JsonNode root;
+    private JsonNode nameNode;
+    private JsonNode response;
+//akhir
 
     /** Creates new form DlgPerawatan
      * @param parent
@@ -1328,6 +1350,7 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         //tambahan
+        Btnsbar = new widget.Button();
         BtnIntervensiPasienJatuh = new widget.Button();
         lblno_antri = new widget.Label();
         lblno_antripoli = new widget.Label();
@@ -2199,7 +2222,7 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             }
         });
         panelGlass9.add(BtnCari);
-
+        //tambahan
         BtnAllergy.setText("Input Allergy");
         BtnAllergy.setName("BtnAllergy"); // NOI18N
         BtnAllergy.addActionListener(new java.awt.event.ActionListener() {
@@ -2208,7 +2231,25 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             }
         });
         panelGlass9.add(BtnAllergy);
-
+        
+        Btnsbar.setForeground(new java.awt.Color(0, 0, 0));
+        Btnsbar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/1358372639_kmenuedit.png"))); // NOI18N
+        Btnsbar.setMnemonic('4');
+        Btnsbar.setText("SBAR & TBK");
+        Btnsbar.setToolTipText("");
+        Btnsbar.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        Btnsbar.setGlassColor(new java.awt.Color(0, 153, 255));
+        Btnsbar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Btnsbar.setName("Btnsbar"); // NOI18N
+        Btnsbar.setPreferredSize(new java.awt.Dimension(196, 30));
+        Btnsbar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnsbarActionPerformed(evt);
+            }
+        });
+        panelGlass9.add(Btnsbar);
+        
+        //akhir
         BtnTambahTindakan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/plus_16.png"))); 
         BtnTambahTindakan.setMnemonic('3');
         BtnTambahTindakan.setToolTipText("Alt+3");
@@ -5523,6 +5564,25 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     //tambahan
+    
+    private void BtnsbarActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, pasien masih kosong...!!!");
+            TCari.requestFocus();
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            SBAR form=new SBAR(null,false);
+            form.isCek();
+            form.emptTeks();
+            form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+            form.tampil();
+            form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }        // TODO add your handling code here:
+    }
+    
     private void BtnIntervensiPasienJatuhActionPerformed(java.awt.event.ActionEvent evt) {                                                         
         // TODO add your handling code here:
         if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
@@ -11056,6 +11116,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     //tambahan
+    private widget.Button Btnsbar;
     private widget.Button BtnPanggilPasien;
     private widget.Label lctpasien;
     private widget.TextBox Tcatatan_pasien;
@@ -11695,6 +11756,8 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         TabRawatMouseClicked(null);
         //tambahan
         icare_otomatis();
+        tampil_notif_rujukan();
+        //akhir
     }
     
     private void isForm(){
@@ -14957,5 +15020,171 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         timer.setRepeats(false); // hanya sekali eksekusi
         timer.start();           // baru kemudian dijalankan
     }
+     
+   
+//    private String ambilTglRujukan(String nomorKartu) {
+//        String tanggal = ""; 
+//        try {
+//            // 1. Bersihkan URL
+//            String baseUrl = koneksiDB.URLAPIBPJS().trim();
+//            if (baseUrl.endsWith("/")) {
+//                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+//            }
+//            String alamatLengkap = baseUrl + "/Rujukan/Peserta/" + nomorKartu.trim();
+//
+//            // 2. Siapkan Header dengan teliti
+//            headers = new HttpHeaders();
+//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON)); // Tambahkan ini
+//            headers.setContentType(MediaType.APPLICATION_JSON);
+//
+//            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+//            String utcData = String.valueOf(api.GetUTCdatetimeAsString());
+//            headers.add("X-Timestamp", utcData);
+//            headers.add("X-Signature", api.getHmac(utcData));
+//            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+//
+//            // 3. Eksekusi
+//            requestEntity = new HttpEntity(headers);
+//            ResponseEntity <String> responseEntity = api.getRest().exchange(alamatLengkap, HttpMethod.GET, requestEntity, String.class);
+//
+//            // Cek jika response body adalah JSON
+//            if (responseEntity.getBody().trim().startsWith("{")) {
+//                root = mapper.readTree(responseEntity.getBody());
+//                if (root.path("metaData").path("code").asText().equals("200")) {
+//                    response = mapper.readTree(api.Decrypt(root.path("response").asText(), utcData)).path("rujukan");
+//                    tanggal = response.path("tglKunjungan").asText();
+//                } else {
+//                    System.out.println("BPJS Code: " + root.path("metaData").path("message").asText());
+//                }
+//            } else {
+//                System.out.println("Bukan JSON! Response: " + responseEntity.getBody());
+//            }
+//        } catch (Exception ex) {
+//            System.out.println("Error Detail: " + ex.getMessage());
+//        }
+//        return tanggal;
+//    }
+    private String cekStatusRujukan(String nomorKartu) {
+        String pesanBPJS = ""; 
+        try {
+            String baseUrl = koneksiDB.URLAPIBPJS().trim();
+            if (baseUrl.endsWith("/")) {
+                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+            }
+            String alamatLengkap = baseUrl + "/Rujukan/Peserta/" + nomorKartu.trim();
+
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
+            String utcData = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("X-Timestamp", utcData);
+            headers.add("X-Signature", api.getHmac(utcData));
+            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
+
+            requestEntity = new HttpEntity(headers);
+            ResponseEntity<String> responseEntity = api.getRest().exchange(alamatLengkap, HttpMethod.GET, requestEntity, String.class);
+
+            if (responseEntity.getBody().trim().startsWith("{")) {
+                root = mapper.readTree(responseEntity.getBody());
+                // Ambil pesan dari metaData, apapun kodenya (200, 404, 400, dll)
+                String code = root.path("metaData").path("code").asText();
+                String message = root.path("metaData").path("message").asText();
+
+                if (!code.equals("200")) {
+                    pesanBPJS = message; // Contoh: "Rujukan Tidak Ada"
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error Cek Rujukan: " + ex.getMessage());
+        }
+        return pesanBPJS;
+    }
+    
+    private void tampil_notif_rujukan(){
+        
+        // 1. Ambil Nomor Kartu Pasien berdasarkan No RM yang sedang dibuka
+//    String nomorkartu = Sequel.cariIsi("select no_peserta from pasien where no_rkm_medis = '" + TNoRM.getText() + "'");
+//        if (!nomorkartu.isEmpty()) {
+//            // 2. Panggil fungsi API tadi
+//String tglRujukan = ambilTglRujukan(nomorkartu);
+//
+//            if (!tglRujukan.equals("")) {
+//                try {
+//                    // 1. Format tanggal BPJS adalah yyyy-MM-dd
+//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//                    LocalDate tanggalKunjungan = LocalDate.parse(tglRujukan, formatter);
+//                    LocalDate tanggalSekarang = LocalDate.now();
+//
+//                    // 2. Hitung selisih hari
+//                    long selisihHari = ChronoUnit.DAYS.between(tanggalKunjungan, tanggalSekarang);
+//
+//                    // 3. Tentukan tanggal kadaluwarsa (Tgl Kunjungan + 90 hari)
+//                    LocalDate tglKadaluwarsa = tanggalKunjungan.plusDays(90);
+//                    String tglHabisStr = tglKadaluwarsa.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+//
+//                    // 4. Logika Notifikasi
+//                    if (selisihHari >= 90) {
+//                        JOptionPane.showMessageDialog(null, 
+//                            "<html><p style='width: 250px; color: red;'><b>PERINGATAN: RUJUKAN HABIS!</b><br>" +
+//                            "Rujukan sudah melewati masa berlaku 90 hari.<br>" +
+//                            "Habis pada tanggal: <b>" + tglHabisStr + "</b></p></html>", 
+//                            "Masa Berlaku Rujukan", 
+//                            JOptionPane.ERROR_MESSAGE);
+//                    } else if (selisihHari >= 80) {
+//                        // Notifikasi tambahan jika hampir habis (H-10)
+//                        JOptionPane.showMessageDialog(null, 
+//                            "<html><p style='width: 250px; color: orange;'><b>PERINGATAN: RUJUKAN SEGERA HABIS</b><br>" +
+//                            "Masa berlaku tinggal " + (90 - selisihHari) + " hari lagi.<br>" +
+//                            "Akan habis pada: <b>" + tglHabisStr + "</b></p></html>", 
+//                            "Informasi Rujukan", 
+//                            JOptionPane.WARNING_MESSAGE);
+//                    } else {
+//                        // Jika masih jauh dari 90 hari, tampilkan info normal
+//                        JOptionPane.showMessageDialog(null, 
+//                            "Rujukan Valid. Masa berlaku sampai: " + tglHabisStr);
+//                    }
+//
+//                } catch (Exception e) {
+//                    System.out.println("Error hitung selisih tanggal: " + e.getMessage());
+//                }
+//            }
+//        }
+
+        // 1. Ambil kode user yang sedang login
+        String kodeLogin = akses.getkode();
+
+        // 2. Cek apakah user yang login adalah Dokter
+        // Kita hitung apakah kode login ada di tabel dokter
+        String cekDokter = Sequel.cariIsi("select count(kd_dokter) from dokter where kd_dokter = '" + kodeLogin + "'");
+
+        // 3. Filter: Jika hasil query 0, artinya user BUKAN dokter (Perawat/Admin)
+        if (cekDokter.equals("0")) {
+
+            // 4. Cek apakah pasien menggunakan penjamin BPJS (BPJ)
+            // Berdasarkan No Rawat yang sedang dibuka di form
+            String penjawab = Sequel.cariIsi("select kd_pj from reg_periksa where no_rawat = '" + TNoRw.getText() + "'");
+
+            if (penjawab.equals("BPJ")) {
+
+                // 5. Ambil nomor kartu BPJS berdasarkan No RM
+                String nomorkartu = Sequel.cariIsi("select no_peserta from pasien where no_rkm_medis = '" + TNoRM.getText() + "'");
+
+                if (!nomorkartu.isEmpty()) {
+                    // 6. Panggil fungsi pengecekan API
+                    String responGagal = cekStatusRujukan(nomorkartu);
+
+                    // 7. Jika ada respon error, tampilkan notifikasi
+                    if (!responGagal.equals("")) {
+                        JOptionPane.showMessageDialog(null, 
+                            "<html><p style='width: 250px;'><b>Peringatan VClaim BPJS:</b><br>" +
+                            "<span style='color:red; font-size:13px;'>" + responGagal + "</span></p></html>", 
+                            "Informasi Rujukan", 
+                            JOptionPane.WARNING_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+    //akhir
     
 }

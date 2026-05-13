@@ -1384,7 +1384,7 @@ public final class RMDataMonitoringReaksiTranfusi extends javax.swing.JDialog {
                     "select reg_periksa.no_rawat,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,pasien.no_rkm_medis,pasien.nm_pasien,reg_periksa.umurdaftar,reg_periksa.sttsumur,"+
                     "pasien.jk,pasien.tgl_lahir,monitoring_reaksi_tranfusi.tgl_perawatan,monitoring_reaksi_tranfusi.jam_rawat,monitoring_reaksi_tranfusi.produk_darah,"+
                     "monitoring_reaksi_tranfusi.no_kantong,monitoring_reaksi_tranfusi.lokasi_insersi,monitoring_reaksi_tranfusi.td,monitoring_reaksi_tranfusi.hr,"+
-                    "monitoring_reaksi_tranfusi.golda,monitoring_reaksi_tranfusi.kadaluarsa,monitoring_reaksi_tranfusi.jumlah_darah,"+//tambahan
+                    "monitoring_reaksi_tranfusi.golda,monitoring_reaksi_tranfusi.kadaluarsa,monitoring_reaksi_tranfusi.jmlh_darah,"+//tambahan
                     "monitoring_reaksi_tranfusi.rr,monitoring_reaksi_tranfusi.suhu,monitoring_reaksi_tranfusi.jenis_reaksi_alergi,monitoring_reaksi_tranfusi.keterangan,"+
                     "monitoring_reaksi_tranfusi.nip,petugas.nama from monitoring_reaksi_tranfusi inner join reg_periksa on monitoring_reaksi_tranfusi.no_rawat=reg_periksa.no_rawat "+
                     "inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis inner join petugas on monitoring_reaksi_tranfusi.nip=petugas.nip "+

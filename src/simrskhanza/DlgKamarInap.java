@@ -198,7 +198,7 @@ import surat.SuratPulangAtasPermintaanSendiri;
 import surat.SuratSakit;
 import surat.SuratSakitPihak2;
 //tambahan
-
+import tambahan_it.DlgInputGrouperSementara;
 import integration_idrg.DlgDetailKlaim;
 //akhi
 /**
@@ -5680,7 +5680,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
         panelGlass9.add(cmbStatusBayar);
 
         //tambahan
-        
         Lnik.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         Lnik.setText("NIK :");
         Lnik.setName("Lnik"); // NOI18N
@@ -8896,30 +8895,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
     //tambahan
     
     private void ppGenerateBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                              
-//        if(tabMode.getRowCount()==0){
-//            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
-//            TCari.requestFocus();
-//        }else{
-//            if(tbKamIn.getSelectedRow()>-1){
-//                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-////                RMGenerateKlaim resume=new RMGenerateKlaim(null,true);
-////                resume.setNoRm(TNoRM.getText(),TPasien.getText());
-////                resume.setNoRawat(norawat.getText());
-////                resume.setSize(internalFrame1.getWidth(),internalFrame1.getHeight());
-////                resume.setLocationRelativeTo(internalFrame1);
-////                resume.setVisible(true);
-////                this.setCursor(Cursor.getDefaultCursor());
-//                
-//                DlgDetailKlaim form=new DlgDetailKlaim(null,true);
-////                form.setSize(this.getWidth(), this.getHeight() + 20);
-//                form.setSize(this.getWidth(),this.getHeight() - 2);
-//                form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ranap");
-//                form.setLocationRelativeTo(this);
-//                form.setVisible(true);
-//                this.setCursor(Cursor.getDefaultCursor());
-//            }
-//        }
-
             if (tabMode.getRowCount() == 0) {
                     JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
                     TCari.requestFocus();
@@ -19146,7 +19121,12 @@ public class DlgKamarInap extends javax.swing.JDialog {
                            "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
                            "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
                            "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                           (namadokter.equals("")?"where "+key+" "+order:"inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" "+order));
+                           //(namadokter.equals("")?"where "+key+" "+order:"inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" "+order));//ubahanku
+                           (namadokter.equals("") ? 
+                            "where "+key+" order by kamar_inap.ttl_biaya desc" : 
+                            "inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" order by kamar_inap.ttl_biaya desc")
+                            //sampe sini
+                );
                         try {
                             rs=ps.executeQuery();
                             i=0;
@@ -19700,7 +19680,7 @@ public class DlgKamarInap extends javax.swing.JDialog {
             }
         } 
    }
-    
+  
     private void updateHari(){
         if((R1.isSelected()==true)&&(akses.getstatus()==false)){
             for(i=0;i<tbKamIn.getRowCount();i++){

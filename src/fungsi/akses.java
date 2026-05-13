@@ -255,7 +255,7 @@ public final class akses {
             penilaian_awal_medis_ralan_jantung=false,penilaian_awal_medis_ralan_urologi=false,hasil_pemeriksaan_treadmill=false,hasil_pemeriksaan_echo_pediatrik=false,
             template_pelaksanaan_informasi_edukasi=false,skrining_instrumen_esat=false,penilaian_awal_medis_ranap_jantung=false,e_eksekutif=false,penugasan_pengujian_sampel_lab_kesehatan_lingkungan=false,
             hasil_pengujian_sampel_lab_kesehatan_lingkungan=false,verifikasi_pengujian_sampel_lab_kesehatan_lingkungan=false,validasi_pengujian_sampel_lab_kesehatan_lingkungan=false,
-            rekap_pelayanan_lab_kesehatan_lingkungan=false,pembayaran_pengujian_sampel_lab_kesehatan_lingkungan=false;
+            rekap_pelayanan_lab_kesehatan_lingkungan=false,pembayaran_pengujian_sampel_lab_kesehatan_lingkungan=false,bpjs_potensi_prb=false,bpjs_rekap_peserta_prb_apotek=false;
     
     public static void setData(String user, String pass) {
         try {        
@@ -1447,6 +1447,8 @@ public final class akses {
                         akses.validasi_pengujian_sampel_lab_kesehatan_lingkungan=true;
                         akses.rekap_pelayanan_lab_kesehatan_lingkungan=true;
                         akses.pembayaran_pengujian_sampel_lab_kesehatan_lingkungan=true;
+                        akses.bpjs_potensi_prb=true;
+                        akses.bpjs_rekap_peserta_prb_apotek=true;
                     }else if(rs2.getRow()>=1){   
                         rs2.beforeFirst();
                         rs2.next();
@@ -2622,6 +2624,8 @@ public final class akses {
                         akses.validasi_pengujian_sampel_lab_kesehatan_lingkungan=rs2.getBoolean("validasi_pengujian_sampel_lab_kesehatan_lingkungan");
                         akses.rekap_pelayanan_lab_kesehatan_lingkungan=rs2.getBoolean("rekap_pelayanan_lab_kesehatan_lingkungan");
                         akses.pembayaran_pengujian_sampel_lab_kesehatan_lingkungan=rs2.getBoolean("pembayaran_pengujian_sampel_lab_kesehatan_lingkungan");
+                        akses.bpjs_potensi_prb=rs2.getBoolean("bpjs_potensi_prb");
+                        akses.bpjs_rekap_peserta_prb_apotek=rs2.getBoolean("bpjs_rekap_peserta_prb_apotek");
                     }else if((rs.getRow()==0)&&(rs2.getRow()==0)){
                         setLogOut();
                     }
@@ -3820,6 +3824,8 @@ public final class akses {
         akses.validasi_pengujian_sampel_lab_kesehatan_lingkungan=false;
         akses.rekap_pelayanan_lab_kesehatan_lingkungan=false;
         akses.pembayaran_pengujian_sampel_lab_kesehatan_lingkungan=false;
+        akses.bpjs_potensi_prb=false;
+        akses.bpjs_rekap_peserta_prb_apotek=false;
     }
     
     public static int getjml1() {return akses.jml1;}    
@@ -5032,4 +5038,6 @@ public final class akses {
     public static boolean getvalidasi_pengujian_sampel_lab_kesehatan_lingkungan(){return akses.validasi_pengujian_sampel_lab_kesehatan_lingkungan;}
     public static boolean getrekap_pelayanan_lab_kesehatan_lingkungan(){return akses.rekap_pelayanan_lab_kesehatan_lingkungan;}
     public static boolean getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan(){return akses.pembayaran_pengujian_sampel_lab_kesehatan_lingkungan;}
+    public static boolean getbpjs_potensi_prb(){return akses.bpjs_potensi_prb;}
+    public static boolean getbpjs_rekap_peserta_prb_apotek(){return akses.bpjs_rekap_peserta_prb_apotek;}
 }   

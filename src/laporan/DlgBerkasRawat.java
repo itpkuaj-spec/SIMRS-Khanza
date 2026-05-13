@@ -56,6 +56,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.multipdf.PDFMergerUtility;
+//tambahan
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import java.io.ByteArrayOutputStream;
+import java.io.ByteArrayInputStream;
+import java.net.URI;
+
 
 /**
  *
@@ -177,11 +186,56 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
                                         URL url;
                                         ps.setString(1,norawat);
                                         rs=ps.executeQuery();
-                                        while(rs.next()){
-                                            url = new URL("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/berkasrawat/"+rs.getString("lokasi_file"));
-                                            InputStream is = url.openStream();
-                                            ut.addSource(is);
+//                                        while(rs.next()){
+//                                            url = new URL("http://"+koneksiDB.HOSTHYBRIDWEB()+":"+koneksiDB.PORTWEB()+"/"+koneksiDB.HYBRIDWEB()+"/berkasrawat/"+rs.getString("lokasi_file"));
+//                                            InputStream is = url.openStream();
+//                                            ut.addSource(is);
+//                                        }
+                                        //ubahan while
+                                    while (rs.next()) {
+                                        String fileName = rs.getString("lokasi_file");
+
+                                        // Kita ganti nama variabelnya menjadi urlFile agar tidak duplikat
+                                        // Dan panggil package lengkapnya untuk menjamin tidak merah
+                                        java.net.URL urlFile = new java.net.URL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/" + fileName);
+
+                                        byte[] fileBytes;
+                                        try (InputStream is = urlFile.openStream(); 
+                                             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                                            byte[] buffer = new byte[16384];
+                                            int nRead;
+                                            while ((nRead = is.read(buffer, 0, buffer.length)) != -1) {
+                                                baos.write(buffer, 0, nRead);
+                                            }
+                                            fileBytes = baos.toByteArray();
+    
                                         }
+
+                                        if (fileName.toLowerCase().endsWith(".pdf")) {
+                                            ut.addSource(new ByteArrayInputStream(fileBytes));
+                                        } else if (fileName.toLowerCase().matches(".*\\.(jpg|jpeg|png)$")) {
+                                            try (PDDocument doc = new PDDocument()) {
+                                                PDImageXObject pdImage = PDImageXObject.createFromByteArray(doc, fileBytes, fileName);
+                                                PDPage page = new PDPage();
+                                                doc.addPage(page);
+
+                                                try (PDPageContentStream contents = new PDPageContentStream(doc, page)) {
+                                                    float pageWidth = page.getMediaBox().getWidth();
+                                                    float pageHeight = page.getMediaBox().getHeight();
+                                                    float imgWidth = pdImage.getWidth();
+                                                    float imgHeight = pdImage.getHeight();
+                                                    float scale = Math.min((pageWidth - 40) / imgWidth, (pageHeight - 40) / imgHeight);
+
+                                                    contents.drawImage(pdImage, 20, 20, imgWidth * scale, imgHeight * scale);
+                                                }
+
+                                                ByteArrayOutputStream outImg = new ByteArrayOutputStream();
+                                                doc.save(outImg);
+                                                ut.addSource(new ByteArrayInputStream(outImg.toByteArray()));
+                                            }
+                                        }
+                                    }
+                                            //sampe sini
                                         ut.setDestinationFileName("merge.pdf");
                                         ut.mergeDocuments(MemoryUsageSetting.setupMainMemoryOnly());
                                         JOptionPane.showMessageDialog(null,"Proses gabung file selesai..!");
@@ -194,8 +248,11 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
                                     } catch (SQLException e) {
                                         System.out.println("Notif : "+e);
                                     } catch (IOException e) {
-                                        System.out.println("Notif : "+e);
-                                        JOptionPane.showMessageDialog(null,"Gagal menggabungkan file, cek kembali file apakah sudah dalam bentuk PDF.\nAtau cek kembali hak akses file di server dokumen..!!");
+                                        //System.out.println("Notif : "+e);
+                                        //JOptionPane.showMessageDialog(null,"Gagal menggabungkan file, cek kembali file apakah sudah dalam bentuk PDF.\nAtau cek kembali hak akses file di server dokumen..!!");
+                                        System.out.println("Notif IO Detail: "+e);
+                                        e.printStackTrace(); // Agar error muncul lengkap di terminal Linux Mint Anda
+                                        JOptionPane.showMessageDialog(null,"Gagal menggabungkan file!\nDetail Error: "+e.getMessage());
                                     } finally{
                                         if(rs!=null){
                                             rs.close();

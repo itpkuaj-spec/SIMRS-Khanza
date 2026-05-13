@@ -19,6 +19,7 @@ import rekammedis.RMRiwayatPenunjang;
 import inventory.DlgTemplateResep;
 import rekammedis.DlgDataAlergiPasien;
 import tambahan_it.RMIntervensiPencegahanPasienJatuh;
+import tambahan_it.SBAR;
 //akhir
 import rekammedis.RMRiwayatPerawatan;
 import surat.SuratKontrol;
@@ -1142,12 +1143,14 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         BtnInputKonsul1 = new widget.Button();
         Btninputresep = new widget.Button();
         Btncprsp = new widget.Button();
-        BtnRiwayatFKTP = new widget.Button();
+        //BtnRiwayatFKTP = new widget.Button();
+        Btnsbar = new widget.Button();
         Btnbukarm = new widget.Button();
         BtnSurkonUmum = new widget.Button();
 //        lctpasien = new widget.Label();
 //        Tcatatan_pasien = new widget.TextBox();
         BtnAllergy = new javax.swing.JButton();
+        ntflamainap = new widget.Label();
         //akhir
         BagianRS = new javax.swing.JTextField();
         Bhp = new javax.swing.JTextField();
@@ -1749,7 +1752,12 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         panelGlass10.add(BtnCari);
 
         //tambahan
-        
+        ntflamainap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ntflamainap.setText("");
+        ntflamainap.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ntflamainap.setName("ntflamainap"); // NOI18N
+        panelGlass12.add(ntflamainap);
+        ntflamainap.setBounds(910, 10, 510, 23);
         
         BtnAllergy.setText("Input Allergy");
         BtnAllergy.setName("BtnAllergy"); // NOI18N
@@ -4792,6 +4800,22 @@ public final class DlgRawatInap extends javax.swing.JDialog {
 //
 //
 
+        Btnsbar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/1358372639_kmenuedit.png"))); // NOI18N
+        Btnsbar.setMnemonic('4');
+        Btnsbar.setText("SBAR & TBK");
+        Btnsbar.setToolTipText("");
+        Btnsbar.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        Btnsbar.setGlassColor(new java.awt.Color(0, 153, 255));
+        Btnsbar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        Btnsbar.setName("Btnsbar"); // NOI18N
+        Btnsbar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnsbarActionPerformed(evt);
+            }
+        });
+        panelGlass12.add(Btnsbar);
+        Btnsbar.setBounds(1070, 170, 120, 26);
+
         BtnIntervensiPasienJatuh.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
         BtnIntervensiPasienJatuh.setText("Lanjutan Intervensi Jatuh PKU");
         BtnIntervensiPasienJatuh.setToolTipText("");
@@ -4993,6 +5017,95 @@ public final class DlgRawatInap extends javax.swing.JDialog {
 
     //tambahan method
     
+    private void tampil_angka_billing() {
+//            try {
+//                // 1. Ambil input no_rawat dari komponen (pastikan .getText())
+//                String norawat = TNoRw.getText(); 
+//
+//                // 2. Query untuk mengambil 'lama' inap terlebih dahulu
+//                // Kita ambil lama inap yang paling besar/terakhir dari tabel kamar_inap
+//                String sqlLama = "SELECT IFNULL(MAX(lama), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "'";
+//                double lamaInap = Double.parseDouble(Sequel.cariIsi(sqlLama));
+//
+//                // 3. Logika pengecekan: Jika lama inap > 3
+//                if (lamaInap > 3) {
+//                    // Jalankan query total biaya
+//                    String sqlTotal = "SELECT (" +
+//                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_drpr WHERE no_rawat='" + norawat + "') + " +
+//                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_dr WHERE no_rawat='" + norawat + "') + " +
+//                        "(SELECT IFNULL(SUM(biaya), 0) FROM periksa_radiologi WHERE no_rawat='" + norawat + "') + " +
+//                        "(SELECT IFNULL(SUM(biaya), 0) FROM periksa_lab WHERE no_rawat='" + norawat + "') + " +
+//                        "(SELECT IFNULL(SUM(total), 0) FROM detail_pemberian_obat WHERE no_rawat='" + norawat + "') + " +
+//                        "(SELECT IFNULL(SUM(ttl_biaya), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "')" +
+//                        ")";
+//
+//                    String hasilTotal = Sequel.cariIsi(sqlTotal);
+//                    double total = Double.parseDouble(hasilTotal.isEmpty() ? "0" : hasilTotal);
+//
+//                    // 4. Update Tampilan Label (Warna Merah)
+//                    ntflamainap.setForeground(java.awt.Color.RED); // Set warna teks jadi merah
+//
+//                    // Menampilkan info: [Lama Hari] - [Total Biaya]
+//                    ntflamainap.setText(String.format(
+//                        "Lama Inap %.0f Hari, billing mencapai: Rp %,.0f", 
+//                        lamaInap, 
+//                        total
+//                    ));
+//
+//                } else {
+//                    // Jika lama inap masih <= 3, kosongkan label atau beri keterangan lain
+//                    ntflamainap.setText(""); 
+//                    // Atau jika ingin tetap muncul tapi warna standar (hitam/abu-abu):
+//                    // labelHasil.setForeground(java.awt.Color.BLACK);
+//                    // labelHasil.setText("Pasien belum mencapai 3 hari");
+//                }
+//
+//            } catch (Exception e) {
+//                System.out.println("Error Billing: " + e.getMessage());
+//                ntflamainap.setText("0");
+//            }
+            try {
+                String norawat = TNoRw.getText();
+
+                // 1. Ambil Batas Tarif dari pku_grouper_sementara
+                String sqlTarif = "SELECT IFNULL(tarif, 0) FROM pku_grouper_sementara WHERE no_rawat='" + norawat + "'";
+                double batasTarif = Double.parseDouble(Sequel.cariIsi(sqlTarif).isEmpty() ? "0" : Sequel.cariIsi(sqlTarif));
+
+                // 2. Hitung Total Biaya Riil (Tindakan + Kamar)
+                String sqlTotal = "SELECT (" +
+                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_drpr WHERE no_rawat='" + norawat + "') + " +
+                        "(SELECT IFNULL(SUM(ttl_biaya), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "')" +
+                        ")";
+                double totalBiaya = Double.parseDouble(Sequel.cariIsi(sqlTotal).isEmpty() ? "0" : Sequel.cariIsi(sqlTotal));
+
+                // 3. Ambil Lama Inap untuk keperluan informasi label
+                String sqlLama = "SELECT IFNULL(MAX(lama), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "'";
+                double lamaInap = Double.parseDouble(Sequel.cariIsi(sqlLama).isEmpty() ? "0" : Sequel.cariIsi(sqlLama));
+
+                // 4. Logika Perbandingan: Jika Total Biaya > Batas Tarif
+                if (totalBiaya > batasTarif && batasTarif > 0) {
+                    ntflamainap.setForeground(java.awt.Color.RED);
+
+                    // Format angka agar rapi (Tanpa desimal)
+                    String billingStr = String.format("%,.0f", totalBiaya);
+                    String tarifStr = String.format("%,.0f", batasTarif);
+                    String lamaStr = String.format("%.0f", lamaInap);
+
+                    // Set info sesuai permintaan
+                    ntflamainap.setText("Billing= Rp." + billingStr + 
+                                       " batas klaim= Rp." + tarifStr + 
+                                       " lama inap=" + lamaStr + " hari");
+                } else {
+                    // Jika belum melebihi tarif, label dikosongkan
+                    ntflamainap.setText("");
+                }
+
+            } catch (Exception e) {
+                System.out.println("Notifikasi : Gagal membandingkan billing dan tarif klaim (" + e.getMessage() + ")");
+                ntflamainap.setText("");
+            }
+    }
+    
     private void BtnIntervensiPasienJatuhActionPerformed(java.awt.event.ActionEvent evt) {                                                         
         // TODO add your handling code here:
         if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
@@ -5140,7 +5253,24 @@ public final class DlgRawatInap extends javax.swing.JDialog {
 //                }
 //        }                              
 
-
+//button sbar
+    private void BtnsbarActionPerformed(java.awt.event.ActionEvent evt) {                                               
+        if(TPasien.getText().trim().equals("")||TNoRw.getText().trim().equals("")){
+            JOptionPane.showMessageDialog(null,"Maaf, pasien masih kosong...!!!");
+            TCari.requestFocus();
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            SBAR form=new SBAR(null,false);
+            form.isCek();
+            form.emptTeks();
+            form.setNoRm(TNoRw.getText(),DTPCari2.getDate());
+            form.tampil();
+            form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }        // TODO add your handling code here:
+    }                      
     
 
     private void BtncprspActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -9509,12 +9639,14 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     private widget.Button BtnInputKonsul1;
     private widget.Button Btninputresep;
     private widget.Button Btncprsp;
-    private widget.Button BtnRiwayatFKTP;
+//    private widget.Button BtnRiwayatFKTP;
+    private widget.Button Btnsbar;
     private widget.Button Btnbukarm;
     private widget.Button BtnSurkonBpjs;
     private widget.Button BtnSurkonUmum;
     private widget.Button BtnPanggilPasien;
-    private javax.swing.JButton BtnAllergy;
+    private javax.swing.JButton BtnAllergy;    
+    private widget.Label ntflamainap;
 //    private widget.Label lctpasien;
 //    private widget.TextBox Tcatatan_pasien;
 
@@ -10194,6 +10326,9 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         ChkInput1.setSelected(true);
         isForm2(); 
         TabRawatMouseClicked(null);
+        //tambahan
+        tampil_angka_billing();
+        //akhir
     }
     
     public void setKamar(String kamar) {

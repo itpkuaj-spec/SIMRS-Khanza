@@ -143,6 +143,9 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
         LoadHTMLPembelian.setEditorKit(kit);
         LoadHTMLPiutang.setEditorKit(kit);
         LoadHTMLRetensi.setEditorKit(kit);
+        //tambahan
+        LoadHTMLSBAR.setEditorKit(kit);
+        //akhir
         StyleSheet styleSheet = kit.getStyleSheet();
         styleSheet.addRule(".isi td{border-right: 1px solid #e2e7dd;font: 8.5px tahoma;height:12px;border-bottom: 1px solid #e2e7dd;background: #ffffff;color:#323232;}.isi a{text-decoration:none;color:#8b9b95;padding:0 0 0 0px;font-family: Tahoma;font-size: 8.5px;border: white;}");
         Document doc = kit.createDefaultDocument();
@@ -197,6 +200,19 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
         LoadHTMLRetensi.setDocument(doc);
         LoadHTMLRetensi.setEditable(false);
         LoadHTMLRetensi.addHyperlinkListener(e -> {
+            if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
+                Desktop desktop = Desktop.getDesktop();
+                try {
+                   desktop.browse(e.getURL().toURI());
+                } catch (Exception ex) {
+                  ex.printStackTrace();
+                }
+            }
+        });
+        //tambahan
+        LoadHTMLSBAR.setDocument(doc);
+        LoadHTMLSBAR.setEditable(false);
+        LoadHTMLSBAR.addHyperlinkListener(e -> {
             if (HyperlinkEvent.EventType.ACTIVATED.equals(e.getEventType())) {
                 Desktop desktop = Desktop.getDesktop();
                 try {
@@ -479,6 +495,8 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
         LoadHTMLPiutang = new widget.editorpane();
         Scroll3 = new widget.ScrollPane();
         LoadHTMLRetensi = new widget.editorpane();
+        Scroll6 = new widget.ScrollPane();
+        LoadHTMLSBAR = new widget.editorpane();
         PanelInput = new javax.swing.JPanel();
         ChkInput = new widget.CekBox();
         FormInput = new widget.panelisi();
@@ -633,7 +651,7 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
         WindowPhrase.getContentPane().add(internalFrame8, java.awt.BorderLayout.CENTER);
 
         Tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "24-01-2026 09:24:28" }));
+        Tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-03-2026 12:11:44" }));
         Tanggal.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         Tanggal.setName("Tanggal"); // NOI18N
         Tanggal.setOpaque(false);
@@ -2642,6 +2660,16 @@ public final class RMRiwayatPerawatan extends javax.swing.JDialog {
 
         TabRawat.addTab("Retensi Berkas", Scroll3);
 
+        Scroll6.setBorder(null);
+        Scroll6.setName("Scroll6"); // NOI18N
+        Scroll6.setOpaque(true);
+
+        LoadHTMLSBAR.setBorder(null);
+        LoadHTMLSBAR.setName("LoadHTMLSBAR"); // NOI18N
+        Scroll6.setViewportView(LoadHTMLSBAR);
+
+        TabRawat.addTab("SBAR TBK", Scroll6);
+
         internalFrame1.add(TabRawat, java.awt.BorderLayout.CENTER);
 
         PanelInput.setBackground(new java.awt.Color(255, 255, 255));
@@ -2984,6 +3012,11 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 case 5:
                     panggilLaporan(LoadHTMLRetensi.getText()); 
                     break;
+                //tambahan
+                case 6:
+                    panggilLaporan(LoadHTMLSBAR.getText()); 
+                    break;
+                //akhir
                 default:
                     break;
             }
@@ -3085,6 +3118,23 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             @Override
                             protected Void doInBackground() throws Exception {
                                 tampilRetensi();
+                                return null;
+                            }
+
+                            @Override
+                            protected void done() {
+                                ceksukses = false;
+                            }
+                        }.execute();
+                    }
+                    break;
+                case 6:
+                    if(ceksukses==false){
+                        ceksukses=true;
+                        new SwingWorker<Void, Void>() {
+                            @Override
+                            protected Void doInBackground() throws Exception {
+                                tampilSbar();
                                 return null;
                             }
 
@@ -4506,6 +4556,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private widget.editorpane LoadHTMLPiutang;
     private widget.editorpane LoadHTMLRetensi;
     private widget.editorpane LoadHTMLRiwayatPerawatan;
+    private widget.editorpane LoadHTMLSBAR;
     private widget.editorpane LoadHTMLSOAPI;
     private javax.swing.JMenuItem MnGeneratePDF;
     private javax.swing.JMenuItem MnGeneratePDFESign;
@@ -4528,6 +4579,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
     private widget.ScrollPane Scroll3;
     private widget.ScrollPane Scroll4;
     private widget.ScrollPane Scroll5;
+    private widget.ScrollPane Scroll6;
     private widget.ScrollPane ScrollMenu;
     private widget.TextBox StatusNikah;
     private javax.swing.JTabbedPane TabRawat;
@@ -16624,6 +16676,120 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
         }
     }
 //tambahan
+    
+private synchronized void tampilSbar() {
+    try {
+            htmlContent = new StringBuilder();
+            // Header Luar (Data Registrasi)
+            htmlContent.append("<tr class='isi'>").
+                            append("<td valign='middle' bgcolor='#FFFAF8' align='center' width='5%'>Tgl.Reg</td>").
+                            append("<td valign='middle' bgcolor='#FFFAF8' align='center' width='8%'>No.Rawat</td>").
+                            append("<td valign='middle' bgcolor='#FFFAF8' align='center' width='87%'>SBAR (Situation, Background, Assessment, Recommendation)</td>").
+                        append("</tr>");     
+
+            // Logic pemilihan query berdasarkan radio button (R1, R2, R3, R4)
+            if(R1.isSelected()){
+                ps = koneksi.prepareStatement("select no_reg, no_rawat, tgl_registrasi, status_lanjut from reg_periksa where stts<>'Batal' and no_rkm_medis=? order by tgl_registrasi desc limit 5");
+            } else if(R2.isSelected()){
+                ps = koneksi.prepareStatement("select no_reg, no_rawat, tgl_registrasi, status_lanjut from reg_periksa where stts<>'Batal' and no_rkm_medis=? order by tgl_registrasi");
+            } else if(R3.isSelected()){
+                ps = koneksi.prepareStatement("select no_reg, no_rawat, tgl_registrasi, status_lanjut from reg_periksa where stts<>'Batal' and no_rkm_medis=? and tgl_registrasi between ? and ? order by tgl_registrasi");
+            } else {
+                ps = koneksi.prepareStatement("select no_reg, no_rawat, tgl_registrasi, status_lanjut from reg_periksa where stts<>'Batal' and no_rkm_medis=? and no_rawat=?");
+            }
+
+            ps.setString(1, NoRM.getText().trim());
+            if(R3.isSelected()){
+                ps.setString(2, Valid.SetTgl(Tgl1.getSelectedItem()+""));
+                ps.setString(3, Valid.SetTgl(Tgl2.getSelectedItem()+""));
+            } else if(R4.isSelected()){
+                ps.setString(2, NoRawat.getText().trim());
+            }
+
+            rs = ps.executeQuery();
+            while(rs.next()){
+                htmlContent.append("<tr class='isi'>").
+                                append("<td valign='top' align='center'>").append(rs.getString("tgl_registrasi")).append("</td>").
+                                append("<td valign='top' align='center'>").append(rs.getString("no_rawat")).append("</td>").
+                                append("<td valign='top' align='center'>").
+                                    append("<table width='100%' border='0' align='center' cellpadding='2px' cellspacing='0'>");
+
+                try {
+                    // Query SBAR Join dengan Validasi dan Pegawai
+                    String sqlSbar = "SELECT pemeriksaan_sbar.*, reg_periksa.status_lanjut, pegawai.nama AS nama_nakes, dokter.nm_dokter AS nama_dokter, " +
+                                     "validasi_pemeriksaan_sbar.tgl_validasi, validasi_pemeriksaan_sbar.jam_validasi, validasi_pemeriksaan_sbar.status_validasi, validasi_pemeriksaan_sbar.advice AS advice_dokter " +
+                                     "FROM pemeriksaan_sbar " +
+                                     "INNER JOIN pegawai ON pemeriksaan_sbar.nip = pegawai.nik " +
+                                     "INNER JOIN reg_periksa ON pemeriksaan_sbar.no_rawat = reg_periksa.no_rawat " +
+                                     "INNER JOIN dokter ON pemeriksaan_sbar.kd_dokter = dokter.kd_dokter " +
+                                     "LEFT JOIN validasi_pemeriksaan_sbar ON pemeriksaan_sbar.no_sbar = validasi_pemeriksaan_sbar.no_sbar " +
+                                     "WHERE pemeriksaan_sbar.no_rawat = '" + rs.getString("no_rawat") + "' " +
+                                     "ORDER BY pemeriksaan_sbar.tgl_perawatan DESC";
+
+                    rs2 = koneksi.prepareStatement(sqlSbar).executeQuery();
+
+                    if(rs2.next()){
+                        // Header Kolom SBAR (Sesuai Gambar)
+                        htmlContent.append("<tr class='isi'>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='4%'>Status</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='8%'>Tgl, Jam</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='12%'>Profesional Pemberi Asuhan</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='12%'>Situation (Situasi)</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='12%'>Background (Latar Belakang)</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='12%'>Assessment (Penilaian)</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='12%'>Recommendation (Rekomendasi)</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='10%'>Tulis Advice</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='8%'>Baca Ulang & Konfirmasi</td>").
+                                        append("<td valign='middle' bgcolor='#FFFFF8' align='center' width='10%'>Validasi</td>").
+                                    append("</tr>");
+
+                        do {
+                            // Logika Verifikasi (Tampilan QR/Status)
+                            String statusVerifikasi = "";
+                            if(rs2.getString("tgl_validasi") != null && rs2.getString("status_validasi").equals("Validasi")) {
+                                // Jika tgl_validasi ada dan statusnya adalah 'Validasi', tampilkan QR Code
+                                statusVerifikasi = "<font color='green'><b>Validasi</b></font><br>" + rs2.getString("tgl_validasi") + " " + rs2.getString("jam_validasi") + "<br>" +
+                                                  "<img width='65' height='65' src='http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/penggajian/temp/" + rs2.getString("kd_dokter") + ".png'/><br>" +
+                                                  "<b>" + rs2.getString("nama_dokter") + "</b>";
+                            } else if (rs2.getString("tgl_validasi") != null && rs2.getString("status_validasi").equals("Tidak Di Validasi")) {
+                                // Jika divalidasi tapi hasilnya ditolak/tidak divalidasi
+                                statusVerifikasi = "<font color='orange'><b>Tidak Di Validasi</b></font><br>" + rs2.getString("nama_dokter");
+                            } else {
+                                // Jika belum ada data di tabel validasi sama sekali
+                                statusVerifikasi = "<font color='red'>Belum Validasi</font>";
+                            }
+
+                            htmlContent.append("<tr class='isi'>").
+                                append("<td align='center' valign='top'>").append(rs2.getString("status_lanjut")).append("</td>").
+                                append("<td align='center' valign='top'>").append(rs2.getString("tgl_perawatan")).append("<br>").append(rs2.getString("jam_rawat")).append("</td>").
+                                append("<td align='left' valign='top'>").append(rs2.getString("nama_nakes")).append("<br>Kepada: ").append(rs2.getString("nama_dokter")).append("</td>").
+                                append("<td align='left' valign='top'>").append(rs2.getString("situation").replaceAll("\n","<br>")).append("</td>").
+                                append("<td align='left' valign='top'>").append(rs2.getString("background").replaceAll("\n","<br>")).append("</td>").
+                                append("<td align='left' valign='top'>").append(rs2.getString("assesment").replaceAll("\n","<br>")).append("</td>"). // Note: typo 'assesment' sesuai describe tabel Anda
+                                append("<td align='left' valign='top'>").append(rs2.getString("recommendation").replaceAll("\n","<br>")).append("</td>").
+                                append("<td align='left' valign='top'>").append(rs2.getString("advice").replaceAll("\n","<br>")).append("</td>").
+                                append("<td align='left' valign='top'>Baca: ").append(rs2.getString("baca")).append("<br>Konfirmasi: ").append(rs2.getString("konfirmasi")).append("</td>").
+                                append("<td align='center' valign='top'>").append(statusVerifikasi).append("</td>").
+                            append("</tr>");
+                        } while(rs2.next());
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error Detail SBAR: " + e);
+                } finally {
+                    if(rs2 != null) rs2.close();
+                }
+
+                htmlContent.append("</table></td></tr>");
+            }
+
+            // Output ke JEditorPane/LoadHTML
+            LoadHTMLSBAR.setText("<html><table width='100%' border='0' cellspacing='0' class='tbl_form'>" + htmlContent.toString() + "</table></html>");
+
+        } catch (Exception e) {
+            System.out.println("Notif Utama SBAR: " + e);
+        }
+    }
+    
     private void menampilkanintervensijatuhPKU(String norawat) {
         try {
             if(chkPKUintervensiJatuh.isSelected()==true){

@@ -46,7 +46,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import simrskhanza.DlgCariBangsal;
-
+//tambahan
+import tambahan_it.DlgInputGrouperSementara;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import java.util.Arrays;
+//akhir
 /**
  *
  * @author perpustakaan
@@ -289,6 +296,8 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         MnJadikanPerkiraan1 = new javax.swing.JMenuItem();
         jPopupMenu3 = new javax.swing.JPopupMenu();
         MnJadikanPerkiraan2 = new javax.swing.JMenuItem();
+        jPopupMenu4 = new javax.swing.JPopupMenu();
+        MnManualGrouper = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbBangsal = new widget.Table();
@@ -371,6 +380,24 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         });
         jPopupMenu3.add(MnJadikanPerkiraan2);
 
+        jPopupMenu4.setName("jPopupMenu4"); // NOI18N
+
+        MnManualGrouper.setBackground(new java.awt.Color(255, 255, 254));
+        MnManualGrouper.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnManualGrouper.setForeground(java.awt.Color.darkGray);
+        MnManualGrouper.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnManualGrouper.setText("Manual Grouper Sementara");
+        MnManualGrouper.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnManualGrouper.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnManualGrouper.setName("MnManualGrouper"); // NOI18N
+        MnManualGrouper.setPreferredSize(new java.awt.Dimension(250, 28));
+        MnManualGrouper.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnManualGrouperActionPerformed(evt);
+            }
+        });
+        jPopupMenu4.add(MnManualGrouper);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -382,6 +409,7 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         Scroll.setName("Scroll"); // NOI18N
         Scroll.setOpaque(true);
 
+        tbBangsal.setComponentPopupMenu(jPopupMenu4);
         tbBangsal.setName("tbBangsal"); // NOI18N
         tbBangsal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1076,6 +1104,24 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }//GEN-LAST:event_tbBangsalMouseClicked
 
+    private void MnManualGrouperActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnManualGrouperActionPerformed
+        // TODO add your handling code here:
+        if(tabMode.getRowCount()==0){
+
+            JOptionPane.showMessageDialog(null,"Silahkan Anda pilih dulu pasien yang mau dimasukkan perkiraannya ...!!");
+        }else{
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            DlgInputGrouperSementara grouper=new DlgInputGrouperSementara(null,true);
+            String noRawat = tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 0).toString();
+            String noRM    = tbBangsal.getValueAt(tbBangsal.getSelectedRow(), 1).toString();
+            grouper.setNoRm(noRM, noRawat);
+            grouper.setSize(920,330);
+            grouper.setLocationRelativeTo(internalFrame1);
+            grouper.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+        }
+    }//GEN-LAST:event_MnManualGrouperActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -1105,6 +1151,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JMenuItem MnJadikanPerkiraan;
     private javax.swing.JMenuItem MnJadikanPerkiraan1;
     private javax.swing.JMenuItem MnJadikanPerkiraan2;
+    private javax.swing.JMenuItem MnManualGrouper;
     private widget.TextBox NmBangsal;
     private widget.ScrollPane Scroll;
     private widget.ScrollPane Scroll1;
@@ -1116,6 +1163,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JPopupMenu jPopupMenu3;
+    private javax.swing.JPopupMenu jPopupMenu4;
     private widget.Label label10;
     private widget.Label label17;
     private widget.Label label9;
@@ -1301,12 +1349,14 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     perkiraantarif=0;
                     pros="Aman";
                     ps2=koneksi.prepareStatement(
-                        "select * from perkiraan_biaya_ranap where no_rawat=?");  
+//                        "select * from perkiraan_biaya_ranap where no_rawat=?");  
+                        "select * from pku_grouper_sementara where no_rawat=?"); //ubahanku
                     try{
                         ps2.setString(1,rs.getString("no_rawat"));
                         rs2=ps2.executeQuery();
                         if(rs2.next()){
-                            diag=rs2.getString("kd_penyakit");
+//                            diag=rs2.getString("kd_penyakit");
+                              diag=rs2.getString("kd_icd10"); //ubahanku
                             perkiraantarif=rs2.getDouble("tarif");
                             if(perkiraantarif<=Jumlah){
                                 pros="Tidak Aman";  
@@ -1333,12 +1383,30 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     });
                     all=all+Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang;
                 }
-                tabMode.addRow(new Object[]{
-                    ">> Total ",":","","","",Valid.SetAngka(ttlRegistrasi),Valid.SetAngka(ttlRanap_Dokter+ttlRanap_Paramedis+ttlRalan_Dokter+ttlRalan_Paramedis),
-                    Valid.SetAngka(ttlObat),Valid.SetAngka(ttlRetur_Obat),Valid.SetAngka(ttlResep_Pulang),Valid.SetAngka(ttlLaborat),Valid.SetAngka(ttlRadiologi),Valid.SetAngka(ttlPotongan),
-                    Valid.SetAngka(ttlTambahan),Valid.SetAngka(ttlKamar),Valid.SetAngka(ttlOperasi),Valid.SetAngka(ttlHarian),Valid.SetAngka(all),Valid.SetAngka(ttlDeposit),
-                    Valid.SetAngka(ttlDeposit-all),"","","",""
-                });
+                //ubahanku
+//                tabMode.addRow(new Object[]{
+//                    ">> Total ",":","","","",Valid.SetAngka(ttlRegistrasi),Valid.SetAngka(ttlRanap_Dokter+ttlRanap_Paramedis+ttlRalan_Dokter+ttlRalan_Paramedis),
+//                    Valid.SetAngka(ttlObat),Valid.SetAngka(ttlRetur_Obat),Valid.SetAngka(ttlResep_Pulang),Valid.SetAngka(ttlLaborat),Valid.SetAngka(ttlRadiologi),Valid.SetAngka(ttlPotongan),
+//                    Valid.SetAngka(ttlTambahan),Valid.SetAngka(ttlKamar),Valid.SetAngka(ttlOperasi),Valid.SetAngka(ttlHarian),Valid.SetAngka(all),Valid.SetAngka(ttlDeposit),
+//                    Valid.SetAngka(ttlDeposit-all),"","","",""
+//                });
+                //sampe sini tak disable totalnya
+                //tambahan
+                    TableRowSorter<TableModel> sorter = new TableRowSorter<>(tabMode);
+                    tbBangsal.setRowSorter(sorter);
+
+                    // ⬇️ INI YANG PENTING (biar dibaca sebagai angka)
+                    sorter.setComparator(17, (o1, o2) -> {
+                        double n1 = Double.parseDouble(o1.toString().replaceAll("[^\\d]", ""));
+                        double n2 = Double.parseDouble(o2.toString().replaceAll("[^\\d]", ""));
+                        return Double.compare(n1, n2);
+                    });
+
+                    // sorting DESC
+                    sorter.setSortKeys(Arrays.asList(
+                        new RowSorter.SortKey(17, SortOrder.DESCENDING)
+                    ));
+                //akhir
             } catch (Exception e) {
                 System.out.println("Notif 1 : "+e);
             } finally{
