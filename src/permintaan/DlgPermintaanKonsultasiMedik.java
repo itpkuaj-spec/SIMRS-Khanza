@@ -10,8 +10,8 @@ import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import static java.awt.image.ImageObserver.HEIGHT;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -22,8 +22,13 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -46,8 +51,10 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
     private ResultSet rs;
     private int i=0;
     private String finger="",sql="";
-    private DlgCariDokter dokter=new DlgCariDokter(null,false);
+    private DlgCariDokter dokter;
     private StringBuilder htmlContent;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
     
 
     /** Creates new form DlgPemberianInfus
@@ -117,57 +124,10 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         NoRw.setDocument(new batasInput((byte)17).getKata(NoRw));
         NoPermintaan.setDocument(new batasInput((byte)20).getKata(NoPermintaan));
         TCari.setDocument(new batasInput((int)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        } 
-        
-        dokter.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){
-                    if(i==1){
-                        KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                        BtnDokter.requestFocus();
-                    }else if(i==2){
-                        KdDokterDikonsuli.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        NmDokterDikonsuli.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                        BtnDokterDIkonsuli.requestFocus();
-                    }
-                }
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });
+        DiagnosaKerja.setDocument(new batasInput((int)200).getKata(DiagnosaKerja));
+        UraianKonsultasi.setDocument(new batasInput((int)800).getKata(UraianKonsultasi));
+        JawabanDiagnosaKerja.setDocument(new batasInput((int)200).getKata(JawabanDiagnosaKerja));
+        JawabanKonsultasi.setDocument(new batasInput((int)800).getKata(JawabanKonsultasi));
         
         WindowInput.setSize(735,245);
         WindowInput.setLocationRelativeTo(null);  
@@ -222,6 +182,8 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         JawabanDiagnosaKerja = new widget.TextBox();
         label3 = new widget.Label();
         LoadHTML = new widget.editorpane();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        MnGenerateSBAR = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbObat = new widget.Table();
@@ -367,7 +329,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         label1.setBounds(210, 20, 55, 23);
 
         TanggalJawab.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalJawab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-04-2025 04:09:58" }));
+        TanggalJawab.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-04-2026 23:08:21" }));
         TanggalJawab.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalJawab.setName("TanggalJawab"); // NOI18N
         TanggalJawab.setOpaque(false);
@@ -425,6 +387,22 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
 
         LoadHTML.setBorder(null);
         LoadHTML.setName("LoadHTML"); // NOI18N
+
+        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+
+        MnGenerateSBAR.setBackground(new java.awt.Color(255, 255, 254));
+        MnGenerateSBAR.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnGenerateSBAR.setForeground(new java.awt.Color(50, 50, 50));
+        MnGenerateSBAR.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnGenerateSBAR.setText("Gunakan Format SBAR");
+        MnGenerateSBAR.setName("MnGenerateSBAR"); // NOI18N
+        MnGenerateSBAR.setPreferredSize(new java.awt.Dimension(200, 26));
+        MnGenerateSBAR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnGenerateSBARActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnGenerateSBAR);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -667,7 +645,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         R2.setPreferredSize(new java.awt.Dimension(170, 23));
         panelCari.add(R2);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-04-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-04-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -685,7 +663,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         jLabel25.setPreferredSize(new java.awt.Dimension(30, 23));
         panelCari.add(jLabel25);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-04-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-04-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -779,7 +757,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         jLabel9.setBounds(415, 40, 90, 23);
 
         TanggalPermintaan.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalPermintaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-04-2025 04:09:57" }));
+        TanggalPermintaan.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-04-2026 23:08:21" }));
         TanggalPermintaan.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
         TanggalPermintaan.setName("TanggalPermintaan"); // NOI18N
         TanggalPermintaan.setOpaque(false);
@@ -841,11 +819,13 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
         jLabel30.setBounds(16, 150, 90, 23);
 
         scrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        scrollPane1.setComponentPopupMenu(jPopupMenu1);
         scrollPane1.setName("scrollPane1"); // NOI18N
 
         UraianKonsultasi.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         UraianKonsultasi.setColumns(20);
         UraianKonsultasi.setRows(5);
+        UraianKonsultasi.setComponentPopupMenu(jPopupMenu1);
         UraianKonsultasi.setName("UraianKonsultasi"); // NOI18N
         UraianKonsultasi.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -1088,7 +1068,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
                 Permintaan.getSelectedItem().toString(),KdDokter.getText(),KdDokterDikonsuli.getText(),DiagnosaKerja.getText(),UraianKonsultasi.getText()
             })==true){
                 R1.setSelected(true);
-                tampil();
+                runBackground(() ->tampil());
                 emptTeks();
             }
         }
@@ -1119,7 +1099,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
             if(Sequel.queryu2tf("delete from konsultasi_medik where no_permintaan=?",1,new String[]{
                     tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
             })==true){
-                tampil();
+                runBackground(() ->tampil());
                 emptTeks();
             }else{
                 JOptionPane.showMessageDialog(null,"Gagal menghapus..!!");
@@ -1139,14 +1119,12 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
         WindowInput.dispose();
-        dokter.dispose();
         dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
     private void BtnKeluarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnKeluarKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             WindowInput.dispose();
-            dokter.dispose();
             dispose();
         }else{Valid.pindah(evt,BtnPrint,TCari);}
 }//GEN-LAST:event_BtnKeluarKeyPressed
@@ -1273,7 +1251,7 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -1286,13 +1264,13 @@ public class DlgPermintaanKonsultasiMedik extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            tampil();
             TCari.setText("");
+            runBackground(() ->tampil());
         }else{
             Valid.pindah(evt, BtnCari, NmPasien);
         }
@@ -1345,7 +1323,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     if(!tbObat.getValueAt(tbObat.getSelectedRow(),18).toString().equals("")){
                         JOptionPane.showMessageDialog(null,"Sudah ada jawaban dokter yang dikonsuli, data tidak bisa diubah ..!!");
                     }else{
-                        ganti();
+                        if(tbObat.getValueAt(tbObat.getSelectedRow(),10).toString().equals(akses.getkode())){
+                            ganti();
+                        }else{
+                            JOptionPane.showMessageDialog(null,"Hanya bisa diganti oleh dokter yang bersangkutan..!!");
+                        }
                     }
                 }
             }else{
@@ -1361,10 +1343,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Valid.pindah(evt, BtnHapus, BtnKeluar);
         }
     }//GEN-LAST:event_BtnEditKeyPressed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        tampil();
-    }//GEN-LAST:event_formWindowOpened
 
     private void DTPCari2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_DTPCari2ItemStateChanged
         R2.setSelected(true);
@@ -1483,7 +1461,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_NoPermintaanKeyPressed
 
     private void BtnCloseInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCloseInActionPerformed
-        dokter.dispose();
         WindowInput.dispose();
     }//GEN-LAST:event_BtnCloseInActionPerformed
 
@@ -1521,12 +1498,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                     Valid.SetTgl(TanggalJawab.getSelectedItem()+"")+" "+TanggalJawab.getSelectedItem().toString().substring(11,19),JawabanDiagnosaKerja.getText(),JawabanKonsultasi.getText(),NoPermintaan.getText()
                 })==true){
                     R2.setSelected(true);
-                    tampil();
+                    runBackground(() ->tampil());
                     emptTeks();
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, gagal menyimpan atau mengedit jawaban konsultasi medik...!!!");
                 R1.setSelected(true);
-                tampil();
+                runBackground(() ->tampil());
                 emptTeks();
             }
         }
@@ -1557,11 +1534,33 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_JawabanKonsultasiKeyPressed
 
     private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterActionPerformed
-        i=1;
-        dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-        dokter.setLocationRelativeTo(internalFrame1);
-        dokter.setAlwaysOnTop(false);
+        if (dokter == null || !dokter.isDisplayable()) {
+            dokter=new DlgCariDokter(null,false);
+            dokter.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            dokter.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    if(dokter.getTable().getSelectedRow()!= -1){
+                        KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
+                        NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                        BtnDokter.requestFocus();
+                    }  
+                    dokter=null;
+                }
+            });
+            dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            dokter.setLocationRelativeTo(internalFrame1);
+        }
+            
+        if (dokter == null) return;
+        if (!dokter.isVisible()) {
+            dokter.isCek();    
+            dokter.emptTeks();
+        }  
+        if (dokter.isVisible()) {
+            dokter.toFront();
+            return;
+        }    
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokterActionPerformed
 
@@ -1574,11 +1573,33 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_BtnDokterKeyPressed
 
     private void BtnDokterDIkonsuliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnDokterDIkonsuliActionPerformed
-        i=2;
-        dokter.isCek();
-        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-        dokter.setLocationRelativeTo(internalFrame1);
-        dokter.setAlwaysOnTop(false);
+        if (dokter == null || !dokter.isDisplayable()) {
+            dokter=new DlgCariDokter(null,false);
+            dokter.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            dokter.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    if(dokter.getTable().getSelectedRow()!= -1){
+                        KdDokterDikonsuli.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
+                        NmDokterDikonsuli.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                        BtnDokterDIkonsuli.requestFocus();
+                    }  
+                    dokter=null;
+                }
+            });
+            dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            dokter.setLocationRelativeTo(internalFrame1);
+        }
+            
+        if (dokter == null) return;
+        if (!dokter.isVisible()) {
+            dokter.isCek();    
+            dokter.emptTeks();
+        }  
+        if (dokter.isVisible()) {
+            dokter.toFront();
+            return;
+        }    
         dokter.setVisible(true);
     }//GEN-LAST:event_BtnDokterDIkonsuliActionPerformed
 
@@ -1597,6 +1618,35 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private void JawabanDiagnosaKerjaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JawabanDiagnosaKerjaKeyPressed
         Valid.pindah(evt,TanggalJawab,JawabanKonsultasi);
     }//GEN-LAST:event_JawabanDiagnosaKerjaKeyPressed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+            });
+        } 
+    }//GEN-LAST:event_formWindowOpened
+
+    private void MnGenerateSBARActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnGenerateSBARActionPerformed
+        UraianKonsultasi.setText("Situation :\n\n\nBackground :\n\n\nAssessment :\n\n\nRecommendation :\n");
+    }//GEN-LAST:event_MnGenerateSBARActionPerformed
 
     /**
     * @param args the command line arguments
@@ -1644,6 +1694,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.TextBox KdDokterDikonsuli;
     private widget.Label LCount;
     private widget.editorpane LoadHTML;
+    private javax.swing.JMenuItem MnGenerateSBAR;
     private widget.TextBox NmDokter;
     private widget.TextBox NmDokterDikonsuli;
     private widget.TextBox NmPasien;
@@ -1681,6 +1732,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel8;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -1699,7 +1751,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
 
-    public void tampil() {     
+    private void tampil() {     
         Valid.tabelKosong(tabMode);
         try{ 
             sql="";
@@ -1797,6 +1849,10 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
         LCount.setText(""+tabMode.getRowCount());
     }
+    
+    public void tampil2() {
+        runBackground(() ->tampil());
+    }
 
 
     public void emptTeks() {
@@ -1869,7 +1925,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             KdDokter.setEditable(false);
             BtnDokter.setEnabled(false);
             KdDokter.setText(akses.getkode());
-            NmDokter.setText(dokter.tampil3(KdDokter.getText()));
+            NmDokter.setText(Sequel.CariDokter(KdDokter.getText()));
             if(NmDokter.getText().equals("")){
                 KdDokter.setText("");
                 JOptionPane.showMessageDialog(null,"User login bukan dokter...!!");
@@ -1906,4 +1962,35 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         }
     }
     
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
+
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
+    }
 }

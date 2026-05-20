@@ -2,7 +2,6 @@ package viabarcode;
 import fungsi.WarnaTable;
 import fungsi.batasInput;
 import fungsi.koneksiDB;
-import fungsi.sekuel;
 import fungsi.validasi;
 import fungsi.akses;
 import java.awt.Cursor;
@@ -18,8 +17,12 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -29,12 +32,15 @@ import javax.swing.text.html.StyleSheet;
 
 public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
     private final DefaultTableModel tabModeValidasi,tabModeDetailValidasi;
-    private sekuel Sequel=new sekuel();
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
     private PreparedStatement ps;
     private ResultSet rs;
     private int i=0;
+    private File file;
+    private FileWriter fileWriter;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
 
     /** Creates new form DlgProgramStudi
      * @param parent
@@ -44,7 +50,7 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
         initComponents();
 
         tabModeValidasi=new DefaultTableModel(null,new Object[]{
-                "Tgl.Validasi","No.Validasi","NIP PJ Validasi","Nama PJ Validasi","No.Permintaan","No.Pelanggan","Nama Pelanggan","Kode Sampel","Nama Sampel","Status Bayar","Catatan","NIP PJ Verifikasi","Nama PJ Verifikasi"
+                "Tgl.Validasi","No.Validasi","NIP PJ Validasi","Nama PJ Validasi","No.Permintaan","No.Pelanggan","Nama Pelanggan","Kode Sampel","Nama Sampel","Titik Sampel","Penerimaan Sampel","Status Bayar","Catatan","NIP PJ Verifikasi","Nama PJ Verifikasi"
             }){
                 @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -53,7 +59,7 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
         tbValidasi.setPreferredScrollableViewportSize(new Dimension(800,800));
         tbValidasi.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 13; i++) {
+        for (i = 0; i < 15; i++) {
             TableColumn column = tbValidasi.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(118);
@@ -74,12 +80,16 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
             }else if(i==8){
                 column.setPreferredWidth(130);
             }else if(i==9){
-                column.setPreferredWidth(78);
+                column.setPreferredWidth(150);
             }else if(i==10){
-                column.setPreferredWidth(200);
+                column.setPreferredWidth(118);
             }else if(i==11){
-                column.setPreferredWidth(90);
+                column.setPreferredWidth(75);
             }else if(i==12){
+                column.setPreferredWidth(200);
+            }else if(i==13){
+                column.setPreferredWidth(90);
+            }else if(i==14){
                 column.setPreferredWidth(150);
             }
         }
@@ -142,28 +152,6 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
 
         NoPermintaan.setDocument(new batasInput((byte)20).getKata(NoPermintaan));
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));          
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        }  
         
         HTMLEditorKit kit = new HTMLEditorKit();
         LoadHTML.setEditable(true);
@@ -252,6 +240,11 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Pembayaran Pengujian Sampel Laboratorium Kesehatan Lingkungan ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
@@ -340,11 +333,6 @@ public class LabKeslingPembayaranPengujianSampel extends javax.swing.JDialog {
         BtnRekapPembayaran.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BtnRekapPembayaranActionPerformed(evt);
-            }
-        });
-        BtnRekapPembayaran.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnRekapPembayaranKeyPressed(evt);
             }
         });
         panelisi1.add(BtnRekapPembayaran);
@@ -606,7 +594,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void TCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TCariKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            tampil();
+            runBackground(() ->tampil());
         }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_DOWN){
             BtnCari.requestFocus();
         }else if(evt.getKeyCode()==KeyEvent.VK_PAGE_UP){
@@ -617,7 +605,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -636,7 +624,7 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         KodePelanggan.setText("");
         NamaPelanggan.setText("");
         Status.setSelectedIndex(0);
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
@@ -687,6 +675,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pelanggan</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kode Sampel</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Sampel</b></td>").
+                                            append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Titik Sampel</b></td>").
+                                            append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Penerimaan Sampel</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Status Bayar</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Catatan</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>NIP PJ Verifikasi</b></td>").
@@ -707,6 +697,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,10).toString()).append("</td>").
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,11).toString()).append("</td>").
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,12).toString()).append("</td>").
+                                                append("<td valign='top'>").append(tbValidasi.getValueAt(i,13).toString()).append("</td>").
+                                                append("<td valign='top'>").append(tbValidasi.getValueAt(i,14).toString()).append("</td>").
                                             append("</tr>");
                             }
                             LoadHTML.setText(
@@ -747,6 +739,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Pelanggan</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Kode Sampel</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Nama Sampel</b></td>").
+                                            append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Titik Sampel</b></td>").
+                                            append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Penerimaan Sampel</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Status Bayar</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>Catatan</b></td>").
                                             append("<td valign='middle' bgcolor='#FFFAFA' align='center'><b>NIP PJ Verifikasi</b></td>").
@@ -767,6 +761,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,10).toString()).append("</td>").
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,11).toString()).append("</td>").
                                                 append("<td valign='top'>").append(tbValidasi.getValueAt(i,12).toString()).append("</td>").
+                                                append("<td valign='top'>").append(tbValidasi.getValueAt(i,13).toString()).append("</td>").
+                                                append("<td valign='top'>").append(tbValidasi.getValueAt(i,14).toString()).append("</td>").
                                             append("</tr>");
                             }
                             LoadHTML.setText(
@@ -798,10 +794,10 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                     case "Laporan 3 (CSV)":
                             htmlContent = new StringBuilder();
                             htmlContent.append(                             
-                                "\"Tgl.Validasi\";\"No.Validasi\";\"NIP PJ Validasi\";\"Nama PJ Validasi\";\"No.Permintaan\";\"No.Pelanggan\";\"Nama Pelanggan\";\"Kode Sampel\";\"Nama Sampel\";\"Status Bayar\";\"Catatan\";\"NIP PJ Verifikasi\";\"Nama PJ Verifikasi\"\n"
+                                "\"Tgl.Validasi\";\"No.Validasi\";\"NIP PJ Validasi\";\"Nama PJ Validasi\";\"No.Permintaan\";\"No.Pelanggan\";\"Nama Pelanggan\";\"Kode Sampel\";\"Nama Sampel\";\"Titik Sampel\";\"Penerimaan Sampel\";\"Status Bayar\";\"Catatan\";\"NIP PJ Verifikasi\";\"Nama PJ Verifikasi\"\n"
                             ); 
                             for (int i = 0; i < tabModeValidasi.getRowCount(); i++) {
-                                htmlContent.append("\"").append(tbValidasi.getValueAt(i,0).toString()).append("\";\"").append(tbValidasi.getValueAt(i,1).toString()).append("\";\"").append(tbValidasi.getValueAt(i,2).toString()).append("\";\"").append(tbValidasi.getValueAt(i,3).toString()).append("\";\"").append(tbValidasi.getValueAt(i,4).toString()).append("\";\"").append(tbValidasi.getValueAt(i,5).toString()).append("\";\"").append(tbValidasi.getValueAt(i,6).toString()).append("\";\"").append(tbValidasi.getValueAt(i,7).toString()).append("\";\"").append(tbValidasi.getValueAt(i,8).toString()).append("\";\"").append(tbValidasi.getValueAt(i,9).toString()).append("\";\"").append(tbValidasi.getValueAt(i,10).toString()).append("\";\"").append(tbValidasi.getValueAt(i,11).toString()).append("\";\"").append(tbValidasi.getValueAt(i,12).toString()).append("\"\n");
+                                htmlContent.append("\"").append(tbValidasi.getValueAt(i,0).toString()).append("\";\"").append(tbValidasi.getValueAt(i,1).toString()).append("\";\"").append(tbValidasi.getValueAt(i,2).toString()).append("\";\"").append(tbValidasi.getValueAt(i,3).toString()).append("\";\"").append(tbValidasi.getValueAt(i,4).toString()).append("\";\"").append(tbValidasi.getValueAt(i,5).toString()).append("\";\"").append(tbValidasi.getValueAt(i,6).toString()).append("\";\"").append(tbValidasi.getValueAt(i,7).toString()).append("\";\"").append(tbValidasi.getValueAt(i,8).toString()).append("\";\"").append(tbValidasi.getValueAt(i,9).toString()).append("\";\"").append(tbValidasi.getValueAt(i,10).toString()).append("\";\"").append(tbValidasi.getValueAt(i,11).toString()).append("\";\"").append(tbValidasi.getValueAt(i,12).toString()).append("\";\"").append(tbValidasi.getValueAt(i,13).toString()).append("\";\"").append(tbValidasi.getValueAt(i,14).toString()).append("\"\n");
                             }
                             f = new File("DataValidasiPengujianSampel.csv");            
                             bw = new BufferedWriter(new FileWriter(f));            
@@ -827,14 +823,67 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
 
     private void BtnBayarTagihanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBayarTagihanActionPerformed
         if(tbValidasi.getSelectedRow()!= -1){
-            if(Sequel.queryutf("delete from labkesling_permintaan_pengujian_sampel_tidak_dilayani where no_permintaan='"+tbValidasi.getValueAt(tbValidasi.getSelectedRow(),1).toString()+"'")==true){
-                Sequel.queryu("update labkesling_permintaan_pengujian_sampel set status='Permintaan Baru' where no_permintaan='"+tbValidasi.getValueAt(tbValidasi.getSelectedRow(),1).toString()+"'");
-                tabModeValidasi.removeRow(tbValidasi.getSelectedRow());
-                Valid.tabelKosong(tabModeDetailValidasi);
-                LTotal.setText(tabModeValidasi.getRowCount()+"");
+            if(ChkAccor.isSelected()==false){
+                JOptionPane.showMessageDialog(null,"Silahkan tampilkan data detail pemeriksaan terlebih dahulu...!!!");
+            }else{
+                if(tbValidasi.getValueAt(tbValidasi.getSelectedRow(),11).toString().equals("Belum Bayar")){
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));  
+                    try {
+                        file=new File("./cache/bayartagihansampellabkesling.iyem");
+                        file.createNewFile();
+                        fileWriter = new FileWriter(file);
+                        StringBuilder iyembuilder = new StringBuilder();
+
+                        for(i=0;i<tbDetailValidasi.getRowCount();i++){
+                            iyembuilder.append("{\"NamaParameter\":\"").append(tbDetailValidasi.getValueAt(i,1).toString()).append("\",\"Total\":\"").append(tbDetailValidasi.getValueAt(i,20).toString()).append("\"},");
+                        }
+
+                        if (iyembuilder.length() > 0) {
+                            iyembuilder.setLength(iyembuilder.length() - 1);
+                            fileWriter.write("{\"bayartagihansampellabkesling\":["+iyembuilder+"]}");
+                            fileWriter.flush();
+                        }
+
+                        fileWriter.close();
+                        iyembuilder=null;
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : "+e);
+                    }finally {
+                        if (fileWriter != null) try { fileWriter.close(); } catch (Exception e) {}
+                    }
+                    LabKeslingBayarTagihanPengujianSampel form=new LabKeslingBayarTagihanPengujianSampel(null,false);
+                    form.addWindowListener(new WindowListener() {
+                        @Override
+                        public void windowOpened(WindowEvent e) {}
+                        @Override
+                        public void windowClosing(WindowEvent e) {}
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            if(form.berhasil==true){
+                                tbValidasi.setValueAt("Sudah Bayar",tbValidasi.getSelectedRow(),9);
+                            }
+                        }
+                        @Override
+                        public void windowIconified(WindowEvent e) {}
+                        @Override
+                        public void windowDeiconified(WindowEvent e) {}
+                        @Override
+                        public void windowActivated(WindowEvent e) {}
+                        @Override
+                        public void windowDeactivated(WindowEvent e) {}
+                    });
+                    form.isCek();
+                    form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+                    form.setLocationRelativeTo(this);
+                    form.setData(tbValidasi.getValueAt(tbValidasi.getSelectedRow(),4).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),5).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),6).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),7).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),8).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),9).toString(),tbValidasi.getValueAt(tbValidasi.getSelectedRow(),10).toString());
+                    form.setVisible(true);
+                    this.setCursor(Cursor.getDefaultCursor());
+                }else{
+                    JOptionPane.showMessageDialog(null,"Sudah dibayar...!");
+                }
             }
         }else{
-            JOptionPane.showMessageDialog(null,"Silahkan pilih data tidak dapat dilayani...!!!");
+            JOptionPane.showMessageDialog(null,"Silahkan pilih data pemeriksaan...!!!");
         }
     }//GEN-LAST:event_BtnBayarTagihanActionPerformed
 
@@ -1001,16 +1050,41 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_NoPermintaanKeyPressed
 
     private void BtnRekapPembayaranActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRekapPembayaranActionPerformed
-        // TODO add your handling code here:
+        LabKeslingRekapPembayaran form=new LabKeslingRekapPembayaran(null,false);
+        form.isCek();
+        form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        form.setLocationRelativeTo(this);
+        form.setVisible(true);
     }//GEN-LAST:event_BtnRekapPembayaranActionPerformed
-
-    private void BtnRekapPembayaranKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnRekapPembayaranKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BtnRekapPembayaranKeyPressed
 
     private void tbValidasiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbValidasiMouseClicked
         ChkAccorActionPerformed(null);
     }//GEN-LAST:event_tbValidasiMouseClicked
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+            });
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
     * @param args the command line arguments
@@ -1074,20 +1148,21 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         Valid.tabelKosong(tabModeValidasi);
         try{  
             ps=koneksi.prepareStatement(
-                        "select labkesling_validasi_pengujian_sampel.tanggal,labkesling_validasi_pengujian_sampel.no_validasi,labkesling_validasi_pengujian_sampel.nip_pj,pjvalidasi.nama as pjvalidasi,labkesling_validasi_pengujian_sampel.no_permintaan,"+
-                        "labkesling_permintaan_pengujian_sampel.kode_pelanggan,labkesling_pelanggan.nama_pelanggan,labkesling_permintaan_pengujian_sampel.kode_sampel,labkesling_master_sampel.nama_sampel,labkesling_validasi_pengujian_sampel.status,"+
-                        "labkesling_validasi_pengujian_sampel.catatan,labkesling_validasi_pengujian_sampel.nip_verifikator,pjverifikasi.nama as pjverifikasi from labkesling_validasi_pengujian_sampel "+
-                        "inner join petugas as pjvalidasi on pjvalidasi.nip=labkesling_validasi_pengujian_sampel.nip_pj "+
-                        "inner join labkesling_permintaan_pengujian_sampel on labkesling_permintaan_pengujian_sampel.no_permintaan=labkesling_validasi_pengujian_sampel.no_permintaan "+
-                        "inner join labkesling_pelanggan on labkesling_pelanggan.kode_pelanggan=labkesling_permintaan_pengujian_sampel.kode_pelanggan "+
-                        "inner join labkesling_master_sampel on labkesling_master_sampel.kode_sampel=labkesling_permintaan_pengujian_sampel.kode_sampel "+
-                        "inner join petugas as pjverifikasi on pjverifikasi.nip=labkesling_validasi_pengujian_sampel.nip_verifikator "+
-                        "where labkesling_validasi_pengujian_sampel.tanggal between ? and ? "+(NoPermintaan.getText().trim().equals("")?"":" and labkesling_validasi_pengujian_sampel.no_permintaan='"+NoPermintaan.getText()+"' ")+
-                        (Status.getSelectedItem().toString().equals("Semua")?"":" and labkesling_validasi_pengujian_sampel.status='"+Status.getSelectedItem().toString()+"' ")+
-                        (NamaPelanggan.getText().trim().equals("")?"":" and labkesling_permintaan_pengujian_sampel.kode_pelanggan='"+KodePelanggan.getText()+"' ")+
-                        (NamaSampel.getText().trim().equals("")?"":" and labkesling_permintaan_pengujian_sampel.kode_sampel='"+KodeSampel.getText()+"' ")+
-                        (TCari.getText().trim().equals("")?"":" and (labkesling_validasi_pengujian_sampel.no_validasi like ? or labkesling_validasi_pengujian_sampel.catatan like ? or "+
-                        "pjvalidasi.nama like ?) ")+"order by labkesling_validasi_pengujian_sampel.tanggal,labkesling_validasi_pengujian_sampel.no_validasi,labkesling_validasi_pengujian_sampel.no_permintaan");
+                "select labkesling_validasi_pengujian_sampel.tanggal,labkesling_validasi_pengujian_sampel.no_validasi,labkesling_validasi_pengujian_sampel.nip_pj,pjvalidasi.nama as pjvalidasi,labkesling_validasi_pengujian_sampel.no_permintaan,"+
+                "labkesling_permintaan_pengujian_sampel.kode_pelanggan,labkesling_pelanggan.nama_pelanggan,labkesling_permintaan_pengujian_sampel.kode_sampel,labkesling_master_sampel.nama_sampel,labkesling_validasi_pengujian_sampel.status,"+
+                "labkesling_validasi_pengujian_sampel.catatan,labkesling_validasi_pengujian_sampel.nip_verifikator,pjverifikasi.nama as pjverifikasi,labkesling_permintaan_pengujian_sampel.lokasi_sampling,labkesling_permintaan_pengujian_sampel.waktu_diterima "+
+                "from labkesling_validasi_pengujian_sampel inner join petugas as pjvalidasi on pjvalidasi.nip=labkesling_validasi_pengujian_sampel.nip_pj "+
+                "inner join labkesling_permintaan_pengujian_sampel on labkesling_permintaan_pengujian_sampel.no_permintaan=labkesling_validasi_pengujian_sampel.no_permintaan "+
+                "inner join labkesling_pelanggan on labkesling_pelanggan.kode_pelanggan=labkesling_permintaan_pengujian_sampel.kode_pelanggan "+
+                "inner join labkesling_master_sampel on labkesling_master_sampel.kode_sampel=labkesling_permintaan_pengujian_sampel.kode_sampel "+
+                "inner join petugas as pjverifikasi on pjverifikasi.nip=labkesling_validasi_pengujian_sampel.nip_verifikator "+
+                "where labkesling_validasi_pengujian_sampel.tanggal between ? and ? "+(NoPermintaan.getText().trim().equals("")?"":" and labkesling_validasi_pengujian_sampel.no_permintaan='"+NoPermintaan.getText()+"' ")+
+                (Status.getSelectedItem().toString().equals("Semua")?"":" and labkesling_validasi_pengujian_sampel.status='"+Status.getSelectedItem().toString()+"' ")+
+                (NamaPelanggan.getText().trim().equals("")?"":" and labkesling_permintaan_pengujian_sampel.kode_pelanggan='"+KodePelanggan.getText()+"' ")+
+                (NamaSampel.getText().trim().equals("")?"":" and labkesling_permintaan_pengujian_sampel.kode_sampel='"+KodeSampel.getText()+"' ")+
+                (TCari.getText().trim().equals("")?"":" and (labkesling_validasi_pengujian_sampel.no_validasi like ? or labkesling_validasi_pengujian_sampel.catatan like ? or "+
+                "pjvalidasi.nama like ?) ")+"order by labkesling_validasi_pengujian_sampel.tanggal,labkesling_validasi_pengujian_sampel.no_validasi,labkesling_validasi_pengujian_sampel.no_permintaan"
+            );
                 
             try {
                 ps.setString(1,Valid.SetTgl(Tanggal1.getSelectedItem()+"")+" 00:00:00");
@@ -1102,7 +1177,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 while(rs.next()){
                     tabModeValidasi.addRow(new Object[]{
                         rs.getString("tanggal"),rs.getString("no_validasi"),rs.getString("nip_pj"),rs.getString("pjvalidasi"),rs.getString("no_permintaan"),rs.getString("kode_pelanggan"),rs.getString("nama_pelanggan"),
-                        rs.getString("kode_sampel"),rs.getString("nama_sampel"),rs.getString("status"),rs.getString("catatan"),rs.getString("nip_verifikator"),rs.getString("pjverifikasi")
+                        rs.getString("kode_sampel"),rs.getString("nama_sampel"),rs.getString("lokasi_sampling"),rs.getString("waktu_diterima"),rs.getString("status"),rs.getString("catatan"),rs.getString("nip_verifikator"),
+                        rs.getString("pjverifikasi")
                     }); 
                 }        
                 LTotal.setText(tabModeValidasi.getRowCount()+"");
@@ -1126,5 +1202,37 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
         BtnPrint.setEnabled(akses.getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan());
         BtnBayarTagihan.setEnabled(akses.getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan());
         BtnRekapPembayaran.setEnabled(akses.getpembayaran_pengujian_sampel_lab_kesehatan_lingkungan());
+    }
+    
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
+
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
     }
 }

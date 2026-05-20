@@ -22,8 +22,12 @@ import java.sql.ResultSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -50,6 +54,8 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
     private int i=0;
     private String pilihan="",finger="";
     private StringBuilder htmlContent;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
     
 
     /** Creates new form DlgPemberianInfus
@@ -106,29 +112,6 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
         tbObat.setDefaultRenderer(Object.class, new WarnaTable4());
 
         TCari.setDocument(new batasInput((int)100).getKata(TCari));
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        } 
-        
               
         ChkAccor.setSelected(false);
         isMenu();
@@ -855,7 +838,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -868,12 +851,12 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            tampil();
+            runBackground(() ->tampil());
             TCari.setText("");
         }else{
             Valid.pindah(evt, BtnCari, BtnLayani);
@@ -895,7 +878,29 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
 }//GEN-LAST:event_tbObatKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        tampil();
+        runBackground(() ->tampil());
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+            });
+        } 
     }//GEN-LAST:event_formWindowOpened
 
     private void DTPCari2ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_DTPCari2ItemStateChanged
@@ -954,7 +959,7 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
                 form.PermintaanTerapi.setText(tbObat.getValueAt(tbObat.getSelectedRow(),9).toString());
                 form.DTPCari1.setDate(Valid.SetTgl2(tbObat.getValueAt(tbObat.getSelectedRow(),7).toString()));
                 form.TCari.setText(tbObat.getValueAt(tbObat.getSelectedRow(),0).toString());
-                form.tampil();
+//                form.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),new Date());
                 this.setCursor(Cursor.getDefaultCursor());
             }else{
                 JOptionPane.showMessageDialog(null,"Maaf, Silahkan pilih data...!!!!");
@@ -987,13 +992,13 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
             if(tbObat.getSelectedRow()!= -1){
                 this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                 DlgRawatJalan dlgrwjl=new DlgRawatJalan(null,false);
-                dlgrwjl.isCek();
                 dlgrwjl.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
                 dlgrwjl.setLocationRelativeTo(internalFrame1); 
                 dlgrwjl.SetPj(tbObat.getValueAt(tbObat.getSelectedRow(),11).toString());
                 dlgrwjl.SetPoli(tbObat.getValueAt(tbObat.getSelectedRow(),12).toString());
                 dlgrwjl.emptTeks();
                 dlgrwjl.setNoRm(tbObat.getValueAt(tbObat.getSelectedRow(),1).toString(),DTPCari1.getDate(),DTPCari2.getDate());   
+                dlgrwjl.isCek();
                 dlgrwjl.setVisible(true);
                 this.setCursor(Cursor.getDefaultCursor());
             }else{
@@ -1223,15 +1228,15 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
     }//GEN-LAST:event_Tinggi400ActionPerformed
 
     private void R1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_R1ActionPerformed
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_R1ActionPerformed
 
     private void R2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_R2ActionPerformed
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_R2ActionPerformed
 
     private void R3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_R3ActionPerformed
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_R3ActionPerformed
 
     private void BtnasesmenkfrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnasesmenkfrActionPerformed
@@ -1480,5 +1485,37 @@ public class DlgCariPermintaanLayananProgramKFR extends javax.swing.JDialog {
             FormMenu.setVisible(false);    
             ChkAccor.setVisible(true);
         }
+    }
+    
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
+
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
     }
 }

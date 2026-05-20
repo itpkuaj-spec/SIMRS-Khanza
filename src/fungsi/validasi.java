@@ -51,6 +51,7 @@ import widget.ComboBox;
 import widget.Tanggal;
 import widget.TextArea;
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 import widget.TextBox;
 /**
  *
@@ -276,6 +277,20 @@ public final class validasi {
                     ps.close();
                 }
             }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : "+e);
+        }
+    }
+    
+    public void autoNomer7(String nomorterakhir,String strAwal,Integer pnj,javax.swing.JTextField teks){
+        try {
+            s=Integer.toString(Integer.parseInt(nomorterakhir)+1);
+            j=s.length();
+            s1="";
+            for(i = 1;i<=pnj-j;i++){
+                s1=s1+"0";
+            }
+            teks.setText(strAwal+s1+s);
         } catch (Exception e) {
             System.out.println("Notifikasi : "+e);
         }
@@ -1366,10 +1381,7 @@ public final class validasi {
     }
 
     public void tabelKosong(DefaultTableModel tabMode) {
-        j=tabMode.getRowCount();
-        for(i=0;i<j;i++){
-            tabMode.removeRow(0);
-        }
+        tabMode.setRowCount(0);
     }
 
     public void textKosong(JComboBox teks, String pesan) {
@@ -1504,6 +1516,13 @@ public final class validasi {
         file=new File(path);
         if (file.lastModified() < 1) return 0;
         return milliToDay(Calendar.getInstance().getTimeInMillis() - file.lastModified());
+    }
+    
+    public long minutesOld(String path) {
+        file = new File(path);
+        if (file.lastModified() < 1) return 0;
+        long diffMillis = Calendar.getInstance().getTimeInMillis() - file.lastModified();
+        return TimeUnit.MILLISECONDS.toMinutes(diffMillis);
     }
 
     /**

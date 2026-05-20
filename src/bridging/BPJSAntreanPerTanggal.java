@@ -21,8 +21,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import org.apache.commons.lang.StringUtils;
@@ -58,6 +61,8 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private  SimpleDateFormat tanggalFormat = new SimpleDateFormat("yyyy-MM-dd");
     private  Date parsedDate;
     private  Date date = new Date();  
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
 
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
@@ -481,7 +486,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         emptTeks();
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -1063,4 +1068,30 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         }
     }
     //sampe sini
+    
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        ceksukses = true;
+
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        executor.submit(() -> {
+            try {
+                task.run();
+            } finally {
+                ceksukses = false;
+                SwingUtilities.invokeLater(() -> {
+                    if (isDisplayable()) {
+                        setCursor(Cursor.getDefaultCursor());
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
+    }
 }

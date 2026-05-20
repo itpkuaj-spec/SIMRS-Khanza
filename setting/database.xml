@@ -7,7 +7,7 @@
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
     <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="CARICEPAT">nonaktif</entry>
+    <entry key="CARICEPAT">aktif</entry>
     <entry key="HOSTHYBRIDWEB">5k7+C7EnUw9nUv2Nix+DBA==</entry>
     <entry key="USERHYBRIDWEB">nmXqCKzrz9i8GTZlq7JruQ==</entry>
     <entry key="PASHYBRIDWEB">AsJ/0/gCnYnD+gK4fw9uKA==</entry>
@@ -20,6 +20,8 @@
     <entry key="RESEPRAJALKEPLAN">yes</entry>
     <entry key="FORMALARMAPOTEK">ralan + ranap</entry>
     <entry key="STOKKOSONGRESEP">no</entry>
+    <entry key="NOTIFMAKSIMALNOMINALRESEPRAJAL">yes</entry>
+    <entry key="MAKSIMALNOMINALRESEPRAJAL">100000</entry>
     <entry key="TAMPILKANCOPYRESEPDOKTERLAIN">no</entry>
     <entry key="HPPFARMASI">dasar</entry>
     <entry key="HPPTOKO">dasar</entry>
@@ -33,12 +35,12 @@
     <entry key="ALARMPERMINTAANRANAP">yes</entry>
     <entry key="MENUTRANSPARAN">yes</entry>
     <entry key="TANGGALMUNDUR">yes</entry>
-    <entry key="URLAPIBPJS">https://apijkn.bpjs-kesehatan.go.id/vclaim-rest</entry>
+    <entry key="URLAPIBPJS">https://tanyabpjs.go.id/vclaim-rest-dev</entry>
     <entry key="SECRETKEYAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="DIAGNOSARUJUKANMASUKAPIBPJS">no</entry>
-    <entry key="JADIKANBOOKINGSURATKONTROL">no</entry>
+    <entry key="JADIKANBOOKINGSURATKONTROL">yes</entry>
     <entry key="JADIKANBOOKINGSURATKONTROLAPIBPJS">no</entry>
     <entry key="URLAPIAPLICARE">https://new-api.bpjs-kesehatan.go.id/aplicaresws</entry>
     <entry key="SECRETKEYAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -48,12 +50,14 @@
     <entry key="SECRETKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>
-    <entry key="URLAPIAPOTEKBPJS">https://dev-soa.bpjs-kesehatan.go.id/apotek-rest</entry>
+    <entry key="ADDANTRIANAPIMOBILEJKN">no</entry>
+    <entry key="URLAPIAPOTEKBPJS">https://tanyabpjs.go.id/apotek-rest-dev</entry>
     <entry key="SECRETKEYAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="JADIKANPIUTANGAPOTEKBPJS">yes</entry>
+    <entry key="AKTIFKANRESEPITERDOKTER">yes</entry>
+    <entry key="KODEPPKAPOTEKBPJS">08/HhXNN0CXIF5S+HRdJHw==</entry>
     <entry key="URLAPIICARE">https://apijkn-dev.bpjs-kesehatan.go.id/ihs_dev/api/rs</entry>
     <entry key="SECRETKEYAPIICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -181,9 +185,9 @@
     <entry key="SFTPMANDIRIPORT">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIUSER">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLAPIESIGN">https://esign.jemberkab.go.id/api/sign/pdf</entry>
-    <entry key="USERNAMEAPIESIGN">6yTePH8GEKfAhUM7NDvztQ==</entry>
-    <entry key="PASSAPIESIGN">44oB160TXymkmgkKCmrabg==</entry>
+    <entry key="URLAPIESIGN">https://esign.konoha.go.id/api/sign/pdf</entry>
+    <entry key="USERNAMEAPIESIGN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
+    <entry key="PASSAPIESIGN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="URLAKSESFILEESIGN">http://localhost/esign/jadikanpdf</entry>
     <entry key="SFTPFILEESIGNHOST">CQ5Kfm5ILnLOu+e6AFp0cF/pXKrdgCX8xaM0HTMb1Fk=</entry>
     <entry key="SFTPFILEESIGNPORT">fvvu/wqeVHAys9jWVltWsA==</entry>

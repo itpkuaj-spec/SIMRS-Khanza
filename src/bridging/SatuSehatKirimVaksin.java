@@ -26,7 +26,11 @@ import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.Document;
 import javax.swing.text.html.HTMLEditorKit;
@@ -58,7 +62,9 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode response;
     private SatuSehatCekNIK cekViaSatuSehat=new SatuSehatCekNIK();   
-    private StringBuilder htmlContent;   
+    private StringBuilder htmlContent; 
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;  
     
     /** Creates new form DlgKamar
      * @param parent
@@ -170,29 +176,6 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
         
         TCari.setDocument(new batasInput((byte)100).getKata(TCari));
         
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        } 
-        
         try {
             link=koneksiDB.URLFHIRSATUSEHAT();
         } catch (Exception e) {
@@ -296,6 +279,11 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
         setIconImages(null);
         setUndecorated(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Pengiriman Data Imunisasi Satu Sehat ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -418,7 +406,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
         jLabel15.setPreferredSize(new java.awt.Dimension(85, 23));
         panelGlass9.add(jLabel15);
 
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-06-2023" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -431,7 +419,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
         jLabel17.setPreferredSize(new java.awt.Dimension(24, 23));
         panelGlass9.add(jLabel17);
 
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "14-06-2023" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -622,7 +610,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        tampil();
+        runBackground(() ->tampil());
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_BtnCariActionPerformed
 
@@ -755,97 +743,87 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                     try {
                         headers = new HttpHeaders();
                         headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("Authorization", "Bearer " + api.TokenSatuSehat());
-                        json = "{\n"
-                                + "    \"resourceType\": \"Immunization\",\n"
-                                + "    \"status\": \"completed\",\n"
-                                + "    \"vaccineCode\": {\n"
-                                + "        \"coding\": [\n"
-                                + "            {\n"
-                                + "                \"system\": \"http://sys-ids.kemkes.go.id/kfa\",\n"
-//                                + "                \"code\": \"" + codekfavaksin + "\",\n"
-//                                + "                \"display\": \"" + displaykfavaksin + "\"\n"
-                                + "                \"code\": \"93015718\",\n"
-                                + "                \"display\": \"Vaksin Meningococcal Polysaccharide 0,5 mL Larutan Injeksi(FORMENING)\"\n"
-                                + "            },\n"
-                                + "            {\n"
-                                + "                \"system\": \"" + tbObat.getValueAt(i, 10).toString() + "\",\n"
-                                + "                \"code\": \"" + tbObat.getValueAt(i, 9).toString() + "\",\n"
-                                + "                \"display\": \"" + tbObat.getValueAt(i, 12).toString() + "\"\n"
-                                + "            }\n"
-                                + "        ]\n"
-                                + "    },\n"
-                                + "    \"patient\": {\n"
-                                + "        \"reference\": \"Patient/" + idpasien + "\",\n"
-                                + "        \"display\": \"" + tbObat.getValueAt(i, 4).toString() + "\"\n"
-                                + "    },\n"
-                                + "    \"encounter\": {\n"
-                                + "        \"reference\": \"Encounter/" + tbObat.getValueAt(i, 8).toString() + "\"\n"
-                                + "    },\n"
-                                + "    \"occurrenceDateTime\": \"" + tbObat.getValueAt(i, 1).toString() + "\",\n"
-                                + "    \"recorded\": \"" + tbObat.getValueAt(i, 20).toString() + "\",\n"
-                                + "    \"primarySource\": true,\n"
-                                + "    \"location\": {\n"
-                                + "        \"reference\": \"Location/" + tbObat.getValueAt(i, 23).toString() + "\",\n"
-                                + "        \"display\": \"" + tbObat.getValueAt(i, 24).toString() + "\"\n"
-                                + "    },\n"
-                                + "    \"lotNumber\": \"" + tbObat.getValueAt(i, 19).toString() + "\",\n"
-                                + "    \"expirationDate\": \"" + tgl_batch + "\",\n"
-                                + "    \"route\": {\n"
-                                + "        \"coding\": [\n"
-                                + "            {\n"
-                                + "                \"system\": \"" + tbObat.getValueAt(i, 14).toString() + "\",\n"
-                                + "                \"code\": \"" + tbObat.getValueAt(i, 13).toString() + "\",\n"
-                                + "                \"display\": \"" + tbObat.getValueAt(i, 15).toString() + "\"\n"
-                                + "            }\n"
-                                + "        ]\n"
-                                + "    },\n"
-                                + "    \"doseQuantity\": {\n"
-                                + "        \"value\": " + tbObat.getValueAt(i, 21).toString() + ",\n"
-                                + "        \"unit\": \"" + tbObat.getValueAt(i, 18).toString() + "\",\n"
-                                + "        \"system\": \"" + tbObat.getValueAt(i, 17).toString() + "\",\n"
-                                + "        \"code\": \"" + tbObat.getValueAt(i, 16).toString() + "\"\n"
-                                + "    },\n"
-                                + "    \"performer\": [\n"
-                                + "        {\n"
-                                + "            \"function\": {\n"
-                                + "                \"coding\": [\n"
-                                + "                    {\n"
-                                + "                        \"system\": \"http://terminology.hl7.org/CodeSystem/v2-0443\",\n"
-                                + "                        \"code\": \"AP\",\n"
-                                + "                        \"display\": \"Administering Provider\"\n"
-                                + "                    }\n"
-                                + "                ]\n"
-                                + "            },\n"
-                                + "            \"actor\": {\n"
-                                + "                \"reference\": \"Practitioner/" + iddokter + "\"\n"
-                                + "            }\n"
-                                + "        }\n"
-                                + "    ],\n"
-                                + "    \"reasonCode\": [\n"
-                                + "        {\n"
-                                + "            \"coding\": [\n"
-                                + "                {\n"
-                                + "                    \"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\",\n"
-//                                + "                    \"code\": \"" + tbObat.getValueAt(i, 31).toString() + "\",\n"
-//                                + "                    \"display\" : \"" + tbObat.getValueAt(i, 32).toString() + "\"\n"
-                                + "                    \"code\": \"IM-HighRisk\",\n"
-                                + "                    \"display\" : \"Risiko Tinggi\"\n"
-                                + "                },\n"
-                                + "                {\n"
-                                + "                    \"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-routine-timing\",\n"
-                                + "                    \"code\": \"IM-Ideal\",\n"
-                                + "                    \"display\" : \"Imunisasi Ideal\"\n"
-                                + "                }\n"
-                                + "            ]\n"
-                                + "        }\n"
-                                + "    ]" + (tbObat.getValueAt(i, 21).toString().equals("") ? ",\n \"protocolApplied\" : [{ \"doseNumberPositiveInt\" : 1 }]" : ",\n \"protocolApplied\" : [{ \"doseNumberPositiveInt\" : " + tbObat.getValueAt(i, 21).toString() + " }]") + "\n"
-                                + "}";
-                        System.out.println("URL : " + link + "/Immunization");
-                        System.out.println("Request JSON : " + json);
-                        requestEntity = new HttpEntity(json, headers);
-                        json = api.getRest().exchange(link + "/Immunization", HttpMethod.POST, requestEntity, String.class).getBody();
-                        System.out.println("Result JSON : " + json);
+                        headers.add("Authorization", "Bearer "+api.TokenSatuSehat());
+                        json = "{" +
+                                    "\"resourceType\": \"Immunization\"," +
+                                    "\"status\": \"completed\"," +
+                                    "\"vaccineCode\": {" +
+                                        "\"coding\": [" +
+                                            "{" +
+                                                "\"system\": \""+tbObat.getValueAt(i,10).toString()+"\"," +
+                                                "\"code\": \""+tbObat.getValueAt(i,9).toString()+"\"," +
+                                                "\"display\": \""+tbObat.getValueAt(i,12).toString()+"\"" +
+                                            "}" +
+                                        "]" +
+                                    "}," +
+                                    "\"patient\": {" +
+                                        "\"reference\": \"Patient/"+idpasien+"\"" +
+                                    "}," +
+                                    "\"encounter\": {" +
+                                        "\"reference\": \"Encounter/"+tbObat.getValueAt(i,8).toString()+"\"" +
+                                    "}," +
+                                    "\"occurrenceDateTime\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
+                                    "\"expirationDate\": \""+Sequel.cariIsi("SELECT data_batch.tgl_kadaluarsa FROM data_batch WHERE data_batch.no_batch='"+tbObat.getValueAt(i,19).toString()+"' and data_batch.kode_brng='"+tbObat.getValueAt(i,11).toString()+"' and data_batch.no_faktur='"+tbObat.getValueAt(i,28).toString()+"'")+"\"," +
+                                    "\"recorded\": \""+tbObat.getValueAt(i,20).toString()+"\"," +
+                                    "\"primarySource\": true," +
+                                    "\"location\": {" +
+                                        "\"reference\": \"Location/"+tbObat.getValueAt(i,23).toString()+"\"," +
+                                        "\"display\": \""+tbObat.getValueAt(i,24).toString()+"\"" +
+                                    "}," +
+                                    "\"lotNumber\": \""+tbObat.getValueAt(i,19).toString()+"\"," +
+                                    "\"route\": {" +
+                                        "\"coding\": [" +
+                                            "{" +
+                                                "\"system\": \""+tbObat.getValueAt(i,14).toString()+"\"," +
+                                                "\"code\": \""+tbObat.getValueAt(i,13).toString()+"\"," +
+                                                "\"display\": \""+tbObat.getValueAt(i,15).toString()+"\"" +
+                                            "}" +
+                                        "]" +
+                                    "}," +
+                                    "\"doseQuantity\": {" +
+                                        "\"value\": "+tbObat.getValueAt(i,21).toString()+"," +
+                                        "\"unit\": \""+tbObat.getValueAt(i,18).toString()+"\"," +
+                                        "\"system\": \""+tbObat.getValueAt(i,17).toString()+"\"," +
+                                        "\"code\": \""+tbObat.getValueAt(i,16).toString()+"\"" +
+                                    "}," +
+                                    "\"performer\": [" +
+                                        "{" +
+                                            "\"function\": {" +
+                                                "\"coding\": [" +
+                                                    "{" +
+                                                        "\"system\": \"http://terminology.hl7.org/CodeSystem/v2-0443\"," +
+                                                        "\"code\": \"AP\"," +
+                                                        "\"display\": \"Administering Provider\"" +
+                                                    "}" +
+                                                "]" +
+                                            "},"+
+                                            "\"actor\": {" +
+                                                "\"reference\": \"Practitioner/"+iddokter+"\"" +
+                                            "}" +
+                                        "}" +
+                                    "],"+
+                                    "\"reasonCode\": [" +
+                                        "{" +
+                                            "\"coding\": [" +
+                                                "{" +
+                                                    "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+                                                    "\"code\": \"IM-Program\"," +
+                                                    "\"display\" : \"Imunisasi Program\"" +
+                                                "}" +
+                                            "]" +
+                                        "}" +
+                                    "]," +
+                                    "\"protocolApplied\" : ["+
+                                        "{"+
+                                            "\"doseNumberPositiveInt\" : "+tbObat.getValueAt(i,22).toString().replaceAll("[^0-9.]", "")+
+                                        "}"+
+                                    "]"+
+                                "}";
+                        System.out.println("URL : "+link+"/Immunization");
+                        System.out.println("Request JSON : "+json);
+                        requestEntity = new HttpEntity(json,headers);
+                        json=api.getRest().exchange(link+"/Immunization", HttpMethod.POST, requestEntity, String.class).getBody();
+                        System.out.println("Result JSON : "+json);
                         root = mapper.readTree(json);
                         response = root.path("id");
                         if (!response.asText().equals("")) {
@@ -966,7 +944,7 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
                                         "{" +
                                             "\"coding\": [" +
                                                 "{" +
-                                                    "\"system\": \"https://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
+                                                    "\"system\": \"http://terminology.kemkes.go.id/CodeSystem/immunization-reason\"," +
                                                     "\"code\": \"IM-Program\"," +
                                                     "\"display\" : \"Imunisasi Program\"" +
                                                 "}" +
@@ -997,17 +975,42 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();
+        runBackground(() ->tampil());
     }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
             TCari.setText("");
-            tampil();
+            runBackground(() ->tampil());
         }else{
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
     }//GEN-LAST:event_BtnAllKeyPressed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+            });
+        }
+    }//GEN-LAST:event_formWindowOpened
 
     /**
     * @param args the command line arguments
@@ -1184,5 +1187,37 @@ public final class SatuSehatKirimVaksin extends javax.swing.JDialog {
     
     public JTable getTable(){
         return tbObat;
+    }
+    
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
+
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
+    
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
     }
 }

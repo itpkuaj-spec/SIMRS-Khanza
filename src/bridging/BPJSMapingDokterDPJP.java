@@ -27,8 +27,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -46,6 +50,8 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;    
     private int i=0;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private volatile boolean ceksukses = false;
     
 
     /** Creates new form DlgJnsPerawatanRalan
@@ -81,30 +87,7 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
 
-        TCari.setDocument(new batasInput((byte)100).getKata(TCari));                  
-        
-        if(koneksiDB.CARICEPAT().equals("aktif")){
-            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    if(TCari.getText().length()>2){
-                        tampil();
-                    }
-                }
-            });
-        }  
+        TCari.setDocument(new batasInput((byte)100).getKata(TCari));  
     }
 
     /** This method is called from within the constructor to
@@ -493,7 +476,10 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
             if(Sequel.menyimpantf("maping_dokter_dpjpvclaim","?,?,?","Mapping Dokter",3,new String[]{
                 kdpoli.getText(),KdPoliPCare.getText(),NmPoliPCare.getText()
             })==true){
-                tampil();
+                tabMode.addRow(new Object[]{
+                    kdpoli.getText(),TPoli.getText(),KdPoliPCare.getText(),NmPoliPCare.getText()
+                });
+                LCount.setText(""+tabMode.getRowCount());
                 emptTeks();
             }                
         }
@@ -516,9 +502,10 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnBatalKeyPressed
 
     private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnHapusActionPerformed
-        Valid.hapusTable(tabMode,kdpoli,"maping_dokter_dpjpvclaim","kd_dokter");
-        tampil();
-        emptTeks();
+        if(Valid.hapusTabletf(tabMode,kdpoli,"maping_dokter_dpjpvclaim","kd_dokter")==true){
+            tabMode.removeRow(tbJnsPerawatan.getSelectedRow());
+            emptTeks();
+        }
 }//GEN-LAST:event_BtnHapusActionPerformed
 
     private void BtnHapusKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnHapusKeyPressed
@@ -539,8 +526,11 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
                 if(Sequel.mengedittf("maping_dokter_dpjpvclaim","kd_dokter=?","kd_dokter=?,kd_dokter_bpjs=?,nm_dokter_bpjs=?",4,new String[]{
                         kdpoli.getText(),KdPoliPCare.getText(),NmPoliPCare.getText(),tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString()
                     })==true){
+                    tabMode.setValueAt(kdpoli.getText(),tbJnsPerawatan.getSelectedRow(), 0);
+                    tabMode.setValueAt(TPoli.getText(),tbJnsPerawatan.getSelectedRow(), 1);
+                    tabMode.setValueAt(KdPoliPCare.getText(),tbJnsPerawatan.getSelectedRow(), 2);
+                    tabMode.setValueAt(NmPoliPCare.getText(),tbJnsPerawatan.getSelectedRow(), 3);
                     emptTeks();
-                    tampil();
                 }
             }                
         }
@@ -603,7 +593,7 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -616,13 +606,13 @@ public final class BPJSMapingDokterDPJP extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        tampil();
+        runBackground(() ->tampil());
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            tampil();
             TCari.setText("");
+            runBackground(() ->tampil());
         }else{
             Valid.pindah(evt, BtnPrint, BtnKeluar);
         }
@@ -692,8 +682,30 @@ private void btnPoliBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 }//GEN-LAST:event_btnPoliBPJSActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        tampil();
+        runBackground(() ->tampil());
         emptTeks();
+        if(koneksiDB.CARICEPAT().equals("aktif")){
+            TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    if(TCari.getText().length()>2){
+                        runBackground(() ->tampil());
+                    }
+                }
+            });
+        } 
     }//GEN-LAST:event_formWindowOpened
 
     /**
@@ -745,15 +757,20 @@ private void btnPoliBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private void tampil() {
         Valid.tabelKosong(tabMode);
         try{
-           ps=koneksi.prepareStatement(
-                   "select maping_dokter_dpjpvclaim.kd_dokter,dokter.nm_dokter,maping_dokter_dpjpvclaim.kd_dokter_bpjs,maping_dokter_dpjpvclaim.nm_dokter_bpjs "+
-                   "from maping_dokter_dpjpvclaim inner join dokter on maping_dokter_dpjpvclaim.kd_dokter=dokter.kd_dokter where "+
-                   "maping_dokter_dpjpvclaim.kd_dokter like ? or dokter.nm_dokter like ? or maping_dokter_dpjpvclaim.kd_dokter_bpjs like ? or maping_dokter_dpjpvclaim.nm_dokter_bpjs like ? order by dokter.nm_dokter");
+            ps=koneksi.prepareStatement(
+               "select maping_dokter_dpjpvclaim.kd_dokter,dokter.nm_dokter,maping_dokter_dpjpvclaim.kd_dokter_bpjs,maping_dokter_dpjpvclaim.nm_dokter_bpjs "+
+               "from maping_dokter_dpjpvclaim inner join dokter on maping_dokter_dpjpvclaim.kd_dokter=dokter.kd_dokter "+(TCari.getText().trim().equals("")?"":
+               "where maping_dokter_dpjpvclaim.kd_dokter like ? or dokter.nm_dokter like ? or maping_dokter_dpjpvclaim.kd_dokter_bpjs like ? or maping_dokter_dpjpvclaim.nm_dokter_bpjs like ? ")+
+               "order by dokter.nm_dokter"
+            );
             try {
-                ps.setString(1,"%"+TCari.getText()+"%");
-                ps.setString(2,"%"+TCari.getText()+"%");
-                ps.setString(3,"%"+TCari.getText()+"%");
-                ps.setString(4,"%"+TCari.getText()+"%");
+                if(!TCari.getText().trim().equals("")){
+                    ps.setString(1,"%"+TCari.getText()+"%");
+                    ps.setString(2,"%"+TCari.getText()+"%");
+                    ps.setString(3,"%"+TCari.getText()+"%");
+                    ps.setString(4,"%"+TCari.getText()+"%");
+                }
+                    
                 rs=ps.executeQuery();
                 while(rs.next()){
                     tabMode.addRow(new Object[]{
@@ -805,10 +822,35 @@ private void btnPoliBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         return tbJnsPerawatan;
     }    
 
-   
-    
-    
-    
+    private void runBackground(Runnable task) {
+        if (ceksukses) return;
+        if (executor.isShutdown() || executor.isTerminated()) return;
+        if (!isDisplayable()) return;
 
+        ceksukses = true;
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        try {
+            executor.submit(() -> {
+                try {
+                    task.run();
+                } finally {
+                    ceksukses = false;
+                    SwingUtilities.invokeLater(() -> {
+                        if (isDisplayable()) {
+                            setCursor(Cursor.getDefaultCursor());
+                        }
+                    });
+                }
+            });
+        } catch (RejectedExecutionException ex) {
+            ceksukses = false;
+        }
+    }
     
+    @Override
+    public void dispose() {
+        executor.shutdownNow();
+        super.dispose();
+    }
 }
