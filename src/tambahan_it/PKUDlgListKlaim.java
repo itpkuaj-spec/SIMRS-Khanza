@@ -1,5 +1,6 @@
-package integration_idrg;
+package tambahan_it;
 
+import integration_idrg.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.WarnaTable;
@@ -35,7 +36,7 @@ import org.springframework.http.MediaType;
  *
  * @author dosen
  */
-public final class DlgListKlaim extends javax.swing.JDialog {
+public final class PKUDlgListKlaim extends javax.swing.JDialog {
 
     private final DefaultTableModel TabModePasienRalan, TabModePasienRanap, TabModePoli;
     private validasi Valid = new validasi();
@@ -60,7 +61,7 @@ public final class DlgListKlaim extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public DlgListKlaim(java.awt.Frame parent, boolean modal) {
+    public PKUDlgListKlaim(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
@@ -873,7 +874,7 @@ public final class DlgListKlaim extends javax.swing.JDialog {
         panelisi6.add(jLabel7);
 
         DTPTglAwal.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06-10-2025" }));
+        DTPTglAwal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-05-2026" }));
         DTPTglAwal.setDisplayFormat("dd-MM-yyyy");
         DTPTglAwal.setName("DTPTglAwal"); // NOI18N
         DTPTglAwal.setOpaque(false);
@@ -892,7 +893,7 @@ public final class DlgListKlaim extends javax.swing.JDialog {
         panelisi6.add(jLabel8);
 
         DTPTglAkhir.setForeground(new java.awt.Color(50, 70, 50));
-        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "06-10-2025" }));
+        DTPTglAkhir.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "26-05-2026" }));
         DTPTglAkhir.setDisplayFormat("dd-MM-yyyy");
         DTPTglAkhir.setName("DTPTglAkhir"); // NOI18N
         DTPTglAkhir.setOpaque(false);
@@ -1412,7 +1413,7 @@ public final class DlgListKlaim extends javax.swing.JDialog {
      */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            DlgListKlaim dialog = new DlgListKlaim(new javax.swing.JFrame(), true);
+            PKUDlgListKlaim dialog = new PKUDlgListKlaim(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
