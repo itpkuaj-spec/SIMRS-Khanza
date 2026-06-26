@@ -489,6 +489,35 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 ((javax.swing.JMenuItem)item).setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
             }
         }
+
+        // --- Catatan Popup on Click ---
+        java.awt.event.MouseAdapter showCatatanHover = new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                widget.Table tb = (widget.Table) evt.getSource();
+                int row = tb.rowAtPoint(evt.getPoint());
+                int col = tb.columnAtPoint(evt.getPoint());
+                if (row != -1 && col == 3) {
+                    try {
+                        String no_rawat = tb.getValueAt(row, 1).toString().trim();
+                        String catatan = Sequel.cariIsi("select catatan from pku_list_klaim where no_rawat='" + no_rawat + "' and catatan != ''");
+                        if (catatan != null && !catatan.trim().isEmpty()) {
+                            javax.swing.JPopupMenu popInfo = new javax.swing.JPopupMenu();
+                            javax.swing.JLabel lbl = new javax.swing.JLabel(" Catatan: " + catatan + " ");
+                            lbl.setOpaque(true);
+                            lbl.setBackground(new java.awt.Color(255, 255, 153));
+                            lbl.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 11));
+                            popInfo.add(lbl);
+                            popInfo.show(evt.getComponent(), evt.getX(), evt.getY());
+                        }
+                    } catch (Exception e) {}
+                }
+            }
+        };
+        tbListPasienRajal.addMouseListener(showCatatanHover);
+        tbListPasienRanap.addMouseListener(showCatatanHover);
+        tbListPasienTidakKlaim.addMouseListener(showCatatanHover);
+        tbListPasienRanapTidakKlaim.addMouseListener(showCatatanHover);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -2630,7 +2659,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 + "LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat "
                 + "JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat "
                 + "where " + shortdokter2 + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' "
-                + "and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) "
                 + "and reg_periksa.stts<>'Batal' and pku_list_klaim.status_tidak_klaim='1' "
                 + "and reg_periksa.tgl_registrasi BETWEEN ? and ? "
                 + "and (reg_periksa.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?) ";
