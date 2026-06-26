@@ -2630,6 +2630,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 + "LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat "
                 + "JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat "
                 + "where " + shortdokter2 + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' "
+                + "and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) "
                 + "and reg_periksa.stts<>'Batal' and pku_list_klaim.status_tidak_klaim='1' "
                 + "and reg_periksa.tgl_registrasi BETWEEN ? and ? "
                 + "and (reg_periksa.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?) ";
