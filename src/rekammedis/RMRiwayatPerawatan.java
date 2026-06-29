@@ -11,6 +11,7 @@
 
 package rekammedis;
 
+import bridging.ApiEKlaim;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.WarnaTable;
@@ -3033,7 +3034,41 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     panggilLaporan(LoadHTMLSOAPI.getText()); 
                     break;
                 case 2:
-                    panggilLaporan(LoadHTMLRiwayatPerawatan.getText()); 
+                    String teksHTML = LoadHTMLRiwayatPerawatan.getText();
+                    if (R4.isSelected() && !NoRawat.getText().trim().equals("")) {
+                        String noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + NoRawat.getText().trim() + "'");
+                        if (noSep != null && !noSep.trim().equals("")) {
+                            try {
+                                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                bridging.ApiEKlaim api = new bridging.ApiEKlaim();
+                                String payload = "{\n" +
+                                                 "  \"metadata\": {\n" +
+                                                 "    \"method\": \"claim_print\"\n" +
+                                                 "  },\n" +
+                                                 "  \"data\": {\n" +
+                                                 "    \"nomor_sep\": \"" + noSep + "\"\n" +
+                                                 "  }\n" +
+                                                 "}";
+                                com.fasterxml.jackson.databind.JsonNode responseNode = api.postKlaim(payload);
+                                if (responseNode != null && responseNode.path("metadata").path("code").asText().equals("200")) {
+                                    String base64Pdf = responseNode.path("response").asText();
+                                    java.io.File tempPdf = new java.io.File("klaim_individual_" + noSep + ".pdf");
+                                    try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempPdf)) {
+                                        fos.write(java.util.Base64.getDecoder().decode(base64Pdf));
+                                    }
+                                    String fullPdfUrl = tempPdf.getAbsolutePath().replace("\\", "/");
+                                    String iframe = "<br><hr><br><center><h2>BERKAS INDIVIDUAL E-KLAIM INACBG</h2></center>" 
+                                                  + "<iframe src=\"file:///" + fullPdfUrl + "\" width=\"100%\" height=\"1000px\" style=\"border: none;\"></iframe>";
+                                    teksHTML = teksHTML.replace("</body>", iframe + "</body>");
+                                }
+                                this.setCursor(Cursor.getDefaultCursor());
+                            } catch (Exception e) {
+                                System.out.println("Gagal tarik Berkas Individual E-Klaim: " + e);
+                                this.setCursor(Cursor.getDefaultCursor());
+                            }
+                        }
+                    }
+                    panggilLaporan(teksHTML); 
                     break;
                 case 3:
                     panggilLaporan(LoadHTMLPembelian.getText()); 
@@ -3090,6 +3125,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 break;
             case 5:
                 runBackground(() -> tampilRetensi());
+                break;
+            case 6:
+                runBackground(() -> tampilSbar());
                 break;
             default:
                 break;
