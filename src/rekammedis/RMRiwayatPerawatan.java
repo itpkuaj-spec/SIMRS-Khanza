@@ -3060,7 +3060,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                         org.apache.pdfbox.pdmodel.PDDocument document = org.apache.pdfbox.pdmodel.PDDocument.load(pdfBytes);
                                         org.apache.pdfbox.rendering.PDFRenderer pdfRenderer = new org.apache.pdfbox.rendering.PDFRenderer(document);
                                         StringBuilder imagesHtml = new StringBuilder();
-                                        imagesHtml.append("<br><hr><br><center><h2>BERKAS INDIVIDUAL E-KLAIM INACBG</h2></center><center>");
+                                        imagesHtml.append("<br><hr><br><center>");
                                         for (int page = 0; page < document.getNumberOfPages(); ++page) {
                                             java.awt.image.BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 150, org.apache.pdfbox.rendering.ImageType.RGB);
                                             java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
