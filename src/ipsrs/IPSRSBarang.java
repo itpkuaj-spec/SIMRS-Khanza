@@ -883,6 +883,8 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 }//GEN-LAST:event_btnSatuanActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // [PKU-Custom] Load dinamis isi dropdown combo jenis dari database saat form dibuka
+        isiComboJenis();
         runBackground(() ->tampil());
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
@@ -1127,7 +1129,8 @@ private void btnSatuanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             Valid.tabelKosong(tabMode);
     try {
         String keyword = "%" + TCari.getText().trim() + "%";
-        String jenisTerpilih = cmbJenis.getSelectedItem().toString().trim();
+        // [PKU-Custom] Null-safe getter untuk mengantisipasi Exception saat items diremove/refresh
+        String jenisTerpilih = cmbJenis.getSelectedItem() != null ? cmbJenis.getSelectedItem().toString().trim() : "Semua";
         boolean filterJenis = !jenisTerpilih.equalsIgnoreCase("Semua");
 
         // SQL base

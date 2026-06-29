@@ -1890,15 +1890,15 @@ public class frmUtama extends javax.swing.JFrame {
 
         internalFrame2.setBorder(null);
         internalFrame2.setName("internalFrame2"); // NOI18N
-        internalFrame2.setWarnaAtas(new java.awt.Color(0, 168, 106));
-        internalFrame2.setWarnaBawah(new java.awt.Color(0, 158, 96));
+        internalFrame2.setWarnaAtas(new java.awt.Color(0, 115, 150));
+        internalFrame2.setWarnaBawah(new java.awt.Color(0, 93, 122));
         internalFrame2.setLayout(null);
 
         internalFrame3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(100, 125, 90), 1, true), ":: Silahkan Anda Login ::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame3.setName("internalFrame3"); // NOI18N
         internalFrame3.setRequestFocusEnabled(false);
-        internalFrame3.setWarnaAtas(new java.awt.Color(205, 240, 205));
-        internalFrame3.setWarnaBawah(new java.awt.Color(245, 255, 245));
+        internalFrame3.setWarnaAtas(new java.awt.Color(0, 61, 80));
+        internalFrame3.setWarnaBawah(new java.awt.Color(0, 115, 150));
         internalFrame3.setLayout(null);
 
         panelGlass1.setBackground(java.awt.Color.red);
@@ -2088,7 +2088,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         tanggal.setEditable(false);
         tanggal.setForeground(new java.awt.Color(50, 70, 50));
-        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11/03/2026" }));
+        tanggal.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "20/05/2026" }));
         tanggal.setDisplayFormat("dd/MM/yyyy");
         tanggal.setName("tanggal"); // NOI18N
         tanggal.setOpaque(false);
@@ -7169,8 +7169,8 @@ public class frmUtama extends javax.swing.JFrame {
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setPreferredSize(new java.awt.Dimension(40, 42));
         internalFrame1.setVerifyInputWhenFocusTarget(false);
-        internalFrame1.setWarnaAtas(new java.awt.Color(245, 255, 245));
-        internalFrame1.setWarnaBawah(new java.awt.Color(200, 235, 200));
+        internalFrame1.setWarnaAtas(new java.awt.Color(0, 115, 150));
+        internalFrame1.setWarnaBawah(new java.awt.Color(0, 93, 122));
         internalFrame1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 2));
 
         BtnMenu.setForeground(new java.awt.Color(255, 255, 255));
@@ -7372,10 +7372,11 @@ public class frmUtama extends javax.swing.JFrame {
         lbl_nm_login.setName("lbl_nm_login"); // NOI18N
         internalFrame1.add(lbl_nm_login);
 
-        jSeparator11.setBackground(new java.awt.Color(235, 41, 142));
-        jSeparator11.setForeground(new java.awt.Color(235, 41, 142));
+        jSeparator11.setBackground(new java.awt.Color(0, 158, 96));
+        jSeparator11.setForeground(new java.awt.Color(0, 158, 96));
         jSeparator11.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(217, 1, 122)));
+        jSeparator11.setToolTipText("");
+        jSeparator11.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 158, 96)));
         jSeparator11.setName("jSeparator11"); // NOI18N
         jSeparator11.setOpaque(true);
         jSeparator11.setPreferredSize(new java.awt.Dimension(1, 36));
@@ -7425,8 +7426,8 @@ public class frmUtama extends javax.swing.JFrame {
         internalFrame4.setBorder(null);
         internalFrame4.setName("internalFrame4"); // NOI18N
         internalFrame4.setPreferredSize(new java.awt.Dimension(330, 25));
-        internalFrame4.setWarnaAtas(new java.awt.Color(205, 240, 205));
-        internalFrame4.setWarnaBawah(new java.awt.Color(245, 255, 245));
+        internalFrame4.setWarnaAtas(new java.awt.Color(0, 93, 122));
+        internalFrame4.setWarnaBawah(new java.awt.Color(0, 115, 150));
         internalFrame4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 4, 1));
 
         lblStts.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
@@ -7512,10 +7513,10 @@ public class frmUtama extends javax.swing.JFrame {
         jLabel7.setPreferredSize(new java.awt.Dimension(287, 23));
         internalFrame4.add(jLabel7);
 
-        jSeparator8.setBackground(new java.awt.Color(225, 61, 142));
-        jSeparator8.setForeground(new java.awt.Color(225, 61, 142));
+        jSeparator8.setBackground(new java.awt.Color(0, 158, 96));
+        jSeparator8.setForeground(new java.awt.Color(0, 158, 96));
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
-        jSeparator8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(217, 1, 122)));
+        jSeparator8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 158, 96)));
         jSeparator8.setName("jSeparator8"); // NOI18N
         jSeparator8.setOpaque(true);
         jSeparator8.setPreferredSize(new java.awt.Dimension(1, 21));
@@ -7589,7 +7590,7 @@ public class frmUtama extends javax.swing.JFrame {
 
         getContentPane().add(PanelUtama, java.awt.BorderLayout.CENTER);
 
-        MenuBar.setBackground(new java.awt.Color(124, 42, 90));
+        MenuBar.setBackground(new java.awt.Color(0, 115, 150));
         MenuBar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         MenuBar.setForeground(new java.awt.Color(255, 255, 253));
         MenuBar.setToolTipText("");
@@ -17283,6 +17284,19 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         this.setCursor(Cursor.getDefaultCursor());
     }
     
+    // Tambahan IT - Awal PKU Manajemen Klaim
+    private void btnPKUManajemenKlaimActionPerformed(java.awt.event.ActionEvent evt) {
+        isTutup();
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        tambahan_it.PKUDlgListKlaim form = new tambahan_it.PKUDlgListKlaim(this, false);
+        form.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
+        form.setLocationRelativeTo(PanelUtama);
+        form.setVisible(true);
+        DlgHome.dispose();
+        this.setCursor(Cursor.getDefaultCursor());
+    }
+    // Tambahan IT - Akhir PKU Manajemen Klaim
+
     private void btnKlaimRawatJalanActionPerformed(java.awt.event.ActionEvent evt) {
         isTutup();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -24179,7 +24193,7 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             btnLamaPelayananPoli,btnHemodialisa,btnGrafikHemodialisaPerTanggal,btnGrafikHemodialisaPerBulan,btnGrafikHemodialisaPerTahun,
             btnGrafikMeninggalPerBulan,btnLaporanTahunanIRJ,btnPerbaikanInventaris,btnSuratCutiHamil,btnPermintaanStokObatPasien,btnPemeliharaanInventaris,
             btnKlasifikasiPasienRanap,btnBulananKlasifikasiPasienRanap,btnHarianKlasifikasiPasienRanap,btnKlasifikasiPasienPerRuang,btnSOAPPerawatan,
-            btnKlaimRawatJalan,btnSkriningGiziLanjut,btnLamaPenyiapanRM,btnDosisRadiologi,btnDemografiUmurKunjungan,btnJamDietPasien,btnRVPPiutangBPJS,
+            btnKlaimRawatJalan,btnPKUManajemenKlaim,btnSkriningGiziLanjut,btnLamaPenyiapanRM,btnDosisRadiologi,btnDemografiUmurKunjungan,btnJamDietPasien,btnRVPPiutangBPJS,
             btnVerifikasiPenerimaanFarmasi,btnVerifikasiPenerimaanLogistik,btnPermintaanLabPA,btnLamaPelayananLabPA,btnRingkasanPengajuanMedis,
             btnRingkasanPemesananMedis,btnRingkasanPembelianMedis,btnRingkasanPenerimaanMedis,btnRingkasanHibahMedis,btnRingkasanPenjualanMedis,
             btnRingkasanBeriObat,btnRingkasanPiutangObat,btnRingkasanStokKeluarObat,btnRingkasanReturSuplierObat,btnRingkasanReturJualObat,
@@ -26733,6 +26747,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
             
             if(akses.getklaim_rawat_jalan()==true){
                Panelmenu.add(btnKlaimRawatJalan); 
+               jmlmenu++;
+            }
+            // Tambahan IT - PKU Manajemen Klaim
+            if(akses.getklaim_rawat_jalan()==true){
+               Panelmenu.add(btnPKUManajemenKlaim); 
                jmlmenu++;
             }
 
@@ -32678,6 +32697,11 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         
         if(akses.getklaim_rawat_jalan()==true){
            Panelmenu.add(btnKlaimRawatJalan); 
+           jmlmenu++;
+        }
+        // Tambahan IT - PKU Manajemen Klaim
+        if(akses.getklaim_rawat_jalan()==true){
+           Panelmenu.add(btnPKUManajemenKlaim); 
            jmlmenu++;
         }
 
@@ -39542,6 +39566,13 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         if(akses.getklaim_rawat_jalan()==true){
             if(btnKlaimRawatJalan.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
                Panelmenu.add(btnKlaimRawatJalan); 
+               jmlmenu++; 
+            }               
+        }
+        // Tambahan IT - PKU Manajemen Klaim
+        if(akses.getklaim_rawat_jalan()==true){
+            if(btnPKUManajemenKlaim.getText().toLowerCase().trim().contains(TCari.getText().toLowerCase().trim())){
+               Panelmenu.add(btnPKUManajemenKlaim); 
                jmlmenu++; 
             }               
         }
@@ -50122,6 +50153,16 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
     }
     
     private void initKhanza2() {
+        // Tambahan IT - Awal PKU Manajemen Klaim
+        btnPKUManajemenKlaim = new widget.ButtonBig();
+        btnPKUManajemenKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/iconfinder_PriorityTasks-task-document-paper-descending_6071856.png"))); 
+        btnPKUManajemenKlaim.setText("PKU Manajemen Klaim");
+        btnPKUManajemenKlaim.setIconTextGap(0);
+        btnPKUManajemenKlaim.setName("btnPKUManajemenKlaim"); 
+        btnPKUManajemenKlaim.setPreferredSize(new java.awt.Dimension(200, 90));
+        btnPKUManajemenKlaim.addActionListener(this::btnPKUManajemenKlaimActionPerformed);
+        // Tambahan IT - Akhir PKU Manajemen Klaim
+
         btnHasilPemeriksaanECHOPediatrik = new widget.ButtonBig();
         btnHasilPemeriksaanECHOPediatrik.setIcon(new javax.swing.ImageIcon(getClass().getResource("/48x48/2104702_beat_health_healthcare_heart_heartbeat_icon.png")));
         btnHasilPemeriksaanECHOPediatrik.setText("Hasil Pemeriksaan ECHO Pediatrik");

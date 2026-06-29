@@ -56,6 +56,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.table.TableModel;
 import java.util.Arrays;
+import tambahan_it.PKUDlgListKlaim;
 //akhir
 /**
  *
@@ -91,7 +92,8 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         tabMode=new DefaultTableModel(null,new Object[]{
                 "No.Rawat","No.RM","Nama Pasien","Kamar/Bangsal","Perujuk","Registrasi","Tindakan","Obt+Emb+Tsl","Retur Obat",
                 "Resep Pulang","Laborat","Radiologi","Potongan","Tambahan","Kamar","Operasi","Harian","Total","Deposit","Kekurangan",
-                "Diagnosa Awal","ICD 10","Perkiraan Tarif","Limit"
+                "Diagnosa Awal","ICD 10","Perkiraan Tarif","Limit",
+                "Lama Inap" // Tambahan kolom Lama Inap
             }){
                 @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -100,7 +102,7 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         tbBangsal.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbBangsal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 24; i++) {
+        for (i = 0; i < 25; i++) { // Tambahan penyesuaian jumlah kolom menjadi 25
             TableColumn column = tbBangsal.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(105);
@@ -124,11 +126,29 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
                 column.setPreferredWidth(85);
             }else if(i==23){
                 column.setPreferredWidth(65);
+            }else if(i==24){
+                column.setPreferredWidth(65); // Tambahan lebar kolom Lama Inap
             }else{
                 column.setPreferredWidth(75);
             }
         }
-        tbBangsal.setDefaultRenderer(Object.class, new WarnaTable());
+        // tambahan renderer warna merah untuk lama inap > 3 hari
+        tbBangsal.setDefaultRenderer(Object.class, new WarnaTable() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                java.awt.Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (!isSelected) {
+                    try {
+                        int lamaInap = Integer.parseInt(table.getModel().getValueAt(table.convertRowIndexToModel(row), 24).toString());
+                        if (lamaInap > 3) {
+                            component.setBackground(new java.awt.Color(255, 180, 180));
+                        }
+                    } catch (Exception e) {
+                    }
+                }
+                return component;
+            }
+        });
         
         tabModeDiagnosa=new DefaultTableModel(null,new Object[]{
             "Kode","Nama Penyakit","Ciri-ciri Penyakit","Keterangan","Ktg.Penyakit","Ciri-ciri Umum"}){
@@ -246,6 +266,7 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         jPopupMenu4 = new javax.swing.JPopupMenu();
         MnManualGrouper = new javax.swing.JMenuItem();
         MnPerkiraanBiayaManual = new javax.swing.JMenuItem();
+        MnUpdateHari = new javax.swing.JMenuItem(); // tambahan untuk update hari perawatan
         WindowInput = new javax.swing.JDialog();
         internalFrame2 = new widget.InternalFrame();
         NilaiPerkiraanManual = new widget.TextBox();
@@ -274,6 +295,7 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
         label10 = new widget.Label();
         BtnPrint = new widget.Button();
         BtnKeluar = new widget.Button();
+        btnManajemenKlaim = new javax.swing.JButton();
         panelDiagnosa = new widget.PanelBiasa();
         jLabel13 = new widget.Label();
         Diagnosa = new widget.TextBox();
@@ -352,6 +374,7 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
             }
         });
         jPopupMenu4.add(MnManualGrouper);
+
         MnPerkiraanBiayaManual.setBackground(new java.awt.Color(255, 255, 254));
         MnPerkiraanBiayaManual.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         MnPerkiraanBiayaManual.setForeground(java.awt.Color.darkGray);
@@ -366,7 +389,24 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
                 MnPerkiraanBiayaManualActionPerformed(evt);
             }
         });
-        jPopupMenu3.add(MnPerkiraanBiayaManual);
+        jPopupMenu4.add(MnPerkiraanBiayaManual);
+
+        // tambahan untuk update hari perawatan
+        MnUpdateHari.setBackground(new java.awt.Color(255, 255, 254));
+        MnUpdateHari.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnUpdateHari.setForeground(java.awt.Color.darkGray);
+        MnUpdateHari.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnUpdateHari.setText("Update Hari Perawatan");
+        MnUpdateHari.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnUpdateHari.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnUpdateHari.setName("MnUpdateHari"); // NOI18N
+        MnUpdateHari.setPreferredSize(new java.awt.Dimension(250, 28));
+        MnUpdateHari.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnUpdateHariActionPerformed(evt);
+            }
+        });
+        jPopupMenu4.add(MnUpdateHari);
 
         WindowInput.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         WindowInput.setName("WindowInput"); // NOI18N
@@ -643,6 +683,15 @@ public final class DlgPerkiraanBiayaRanap extends javax.swing.JDialog {
             }
         });
         panelGlass5.add(BtnKeluar);
+
+        btnManajemenKlaim.setText("Manajemen Klaim");
+        btnManajemenKlaim.setName("btnManajemenKlaim"); // NOI18N
+        btnManajemenKlaim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnManajemenKlaimActionPerformed(evt);
+            }
+        });
+        panelGlass5.add(btnManajemenKlaim);
 
         FormCari.add(panelGlass5, java.awt.BorderLayout.PAGE_END);
 
@@ -1270,6 +1319,16 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
         }
     }//GEN-LAST:event_MnPerkiraanBiayaManualActionPerformed
 
+    // tambahan untuk update hari perawatan
+    private void MnUpdateHariActionPerformed(java.awt.event.ActionEvent evt) {
+        if(tbBangsal.getRowCount()==0){
+            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
+            TCari.requestFocus();
+        }else{
+            updateHari();
+        }
+    }
+
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
@@ -1292,8 +1351,21 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                     }
                 }
             });
+            updateHari();
         } 
     }//GEN-LAST:event_formWindowOpened
+
+    private void btnManajemenKlaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnManajemenKlaimActionPerformed
+
+            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            PKUDlgListKlaim form=new PKUDlgListKlaim(null,false);
+            form.emptTeks();
+            form.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+            form.setLocationRelativeTo(internalFrame1);
+            form.setVisible(true);
+            this.setCursor(Cursor.getDefaultCursor());
+
+    }//GEN-LAST:event_btnManajemenKlaimActionPerformed
 
     /**
     * @param args the command line arguments
@@ -1329,6 +1401,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private javax.swing.JMenuItem MnJadikanPerkiraan2;
     private javax.swing.JMenuItem MnManualGrouper;
     private javax.swing.JMenuItem MnPerkiraanBiayaManual;
+    private javax.swing.JMenuItem MnUpdateHari; // tambahan untuk update hari perawatan
     private widget.TextBox NilaiPerkiraanManual;
     private widget.TextBox NmBangsal;
     private widget.ScrollPane Scroll;
@@ -1337,6 +1410,7 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     private widget.ScrollPane Scroll4;
     private widget.TextBox TCari;
     private javax.swing.JDialog WindowInput;
+    private javax.swing.JButton btnManajemenKlaim;
     private widget.InternalFrame internalFrame1;
     private widget.InternalFrame internalFrame2;
     private widget.Label jLabel13;
@@ -1357,8 +1431,48 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
     public widget.Table tbNilaiRS;
     // End of variables declaration//GEN-END:variables
 
+    // tambahan untuk update hari perawatan
+    private void updateHari() {
+        fungsi.pengaturankamarinap.SetKamarInap();
+        if (akses.getstatus() == false) {
+            for (i = 0; i < tbBangsal.getRowCount(); i++) {
+                String noRawat = tbBangsal.getValueAt(i, 0).toString();
+                try {
+                    PreparedStatement psActive = koneksi.prepareStatement(
+                        "select kd_kamar, tgl_masuk, jam_masuk from kamar_inap where no_rawat=? and stts_pulang='-'"
+                    );
+                    ResultSet rsActive = null;
+                    try {
+                        psActive.setString(1, noRawat);
+                        rsActive = psActive.executeQuery();
+                        while (rsActive.next()) {
+                            if (fungsi.pengaturankamarinap.getHitungHariAwal().equals("Yes")) {
+                                Sequel.mengedit(" kamar_inap ", " no_rawat='" + noRawat + "' and kd_kamar='" + rsActive.getString("kd_kamar") + "' and tgl_masuk='" + rsActive.getString("tgl_masuk") + "' and jam_masuk='" + rsActive.getString("jam_masuk") + "'",
+                                    " lama=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*" + fungsi.pengaturankamarinap.getJamMinimalKamar() + "),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1," +
+                                    " ttl_biaya=(if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*" + fungsi.pengaturankamarinap.getJamMinimalKamar() + "),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))+1)*trf_kamar");
+                            } else {
+                                Sequel.mengedit(" kamar_inap ", " no_rawat='" + noRawat + "' and kd_kamar='" + rsActive.getString("kd_kamar") + "' and tgl_masuk='" + rsActive.getString("tgl_masuk") + "' and jam_masuk='" + rsActive.getString("jam_masuk") + "'",
+                                    " lama=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*" + fungsi.pengaturankamarinap.getJamMinimalKamar() + "),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))," +
+                                    " ttl_biaya=if(to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk))=0,if(time_to_sec(NOW())-time_to_sec(concat(tgl_masuk,' ',jam_masuk))>(3600*" + fungsi.pengaturankamarinap.getJamMinimalKamar() + "),1,0),to_days(NOW())-to_days(concat(tgl_masuk,' ',jam_masuk)))*trf_kamar");
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Notifikasi : " + e);
+                    } finally {
+                        if (rsActive != null) rsActive.close();
+                        if (psActive != null) psActive.close();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Notifikasi : " + e);
+                }
+            }
+        }
+        tampil();
+    }
+
     private void tampil(){
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR)); 
+        tbBangsal.setRowSorter(null); // tambahan untuk mencegah NullPointerException saat reload data
         Valid.tabelKosong(tabMode);
         try{      
             ps= koneksi.prepareStatement(
@@ -1566,7 +1680,9 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
                         Valid.SetAngka(Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis),
                         Valid.SetAngka(Obat),Valid.SetAngka(Retur_Obat),Valid.SetAngka(Resep_Pulang),Valid.SetAngka(Laborat),Valid.SetAngka(Radiologi),Valid.SetAngka(Potongan),
                         Valid.SetAngka(Tambahan),Valid.SetAngka(Kamar),Valid.SetAngka(Operasi),Valid.SetAngka(Harian),Valid.SetAngka(Jumlah),
-                        Valid.SetAngka(Deposit),Valid.SetAngka(Deposit-Jumlah),rs.getString("diagnosa_awal"),diag,Valid.SetAngka(perkiraantarif),pros
+                        Valid.SetAngka(Deposit),Valid.SetAngka(Deposit-Jumlah),rs.getString("diagnosa_awal"),diag,Valid.SetAngka(perkiraantarif),pros,
+                        // Tambahan data Lama Inap dari database
+                        Sequel.cariIsi("select ifnull(sum(lama), 0) from kamar_inap where no_rawat=?",rs.getString("no_rawat"))
                     });
                     all=all+Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Potongan+Kamar+Registrasi+Harian+Retur_Obat+Resep_Pulang;
                 }
@@ -1584,6 +1700,13 @@ private void BtnCari1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_
 
                     // ⬇️ INI YANG PENTING (biar dibaca sebagai angka)
                     sorter.setComparator(17, (o1, o2) -> {
+                        double n1 = Double.parseDouble(o1.toString().replaceAll("[^\\d]", ""));
+                        double n2 = Double.parseDouble(o2.toString().replaceAll("[^\\d]", ""));
+                        return Double.compare(n1, n2);
+                    });
+                    
+                    // Tambahan komparator numerik untuk kolom Lama Inap
+                    sorter.setComparator(24, (o1, o2) -> {
                         double n1 = Double.parseDouble(o1.toString().replaceAll("[^\\d]", ""));
                         double n2 = Double.parseDouble(o2.toString().replaceAll("[^\\d]", ""));
                         return Double.compare(n1, n2);

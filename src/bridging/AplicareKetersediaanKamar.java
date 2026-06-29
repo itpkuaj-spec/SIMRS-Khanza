@@ -1110,8 +1110,14 @@ private void btnKamarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_tbJnsPerawatanKeyReleased
 
     private void btnspgdtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnspgdtActionPerformed
-        // TODO add your handling code here:
-
+        if (spgdtkamar == null || !spgdtkamar.isDisplayable()) {
+            spgdtkamar = new SPGDTKetersediaanKamar(null, false);
+            spgdtkamar.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        }
+        if (spgdtkamar.isVisible()) {
+            spgdtkamar.toFront();
+            return;
+        }
         spgdtkamar.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
         spgdtkamar.setLocationRelativeTo(internalFrame1);
         spgdtkamar.setVisible(true);

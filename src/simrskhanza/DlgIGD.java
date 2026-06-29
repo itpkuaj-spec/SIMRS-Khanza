@@ -5039,6 +5039,10 @@ public final class DlgIGD extends javax.swing.JDialog {
                  "where kamar_inap.stts_pulang='-' and pasien.no_rkm_medis=?",TNoRM.getText())>0){
             JOptionPane.showMessageDialog(null,"Pasien sedang dalam masa perawatan di kamar inap..!!");
             TNoRM.requestFocus();
+        // [PKU-Custom] Validasi pencegahan double input pendaftaran IGD hari ini dengan status Belum Bayar
+        }else if(Sequel.cariInteger("select count(no_rkm_medis) from reg_periksa where no_rkm_medis=? and tgl_registrasi=? and status_bayar='Belum Bayar' and kd_poli='IGDK'", TNoRM.getText(), Valid.SetTgl(DTPReg.getSelectedItem()+""))>0){
+            JOptionPane.showMessageDialog(null,"Maaf pasien tersebut sudah di daftarkan hari ini dengan status Belum Bayar..!!");
+            TNoRM.requestFocus();
         }else{
             ceksukses=false;
             switch (TStatus.getText()) {

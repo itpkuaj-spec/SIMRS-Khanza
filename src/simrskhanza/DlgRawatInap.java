@@ -217,7 +217,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
             HPP_BHP_Tindakan_Ranap="",Persediaan_BHP_Tindakan_Ranap="",kode_poli="",kamar="",jenisbayar="",TANGGALMUNDUR="yes",kd_pj="";//tambahan kd_pj
         //tambahan
     private DlgDataAlergiPasien alergipasien=new DlgDataAlergiPasien(null,false);
-
+    private boolean alertSudahMuncul = false;
     /** Creates new form DlgRawatInap
      * @param parent
      * @param modal */
@@ -1405,13 +1405,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         });
         panelGlass10.add(BtnCari);
 
-        //tambahan
-        ntflamainap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ntflamainap.setText("");
-        ntflamainap.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        ntflamainap.setName("ntflamainap"); // NOI18N
-        panelGlass12.add(ntflamainap);
-        ntflamainap.setBounds(910, 10, 510, 23);
+
         
         BtnAllergy.setText("Input Allergy");
         BtnAllergy.setName("BtnAllergy"); // NOI18N
@@ -3065,6 +3059,14 @@ public final class DlgRawatInap extends javax.swing.JDialog {
         FormInput.add(ChkJln);
         ChkJln.setBounds(906, 10, 23, 23);
 
+        // [PKU-Custom] tambahan penempatan ntflamainap disamping ChkJln
+        ntflamainap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ntflamainap.setText("");
+        ntflamainap.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ntflamainap.setName("ntflamainap"); // NOI18N
+        FormInput.add(ntflamainap);
+        ntflamainap.setBounds(934, 10, 450, 23);
+
         internalFrame1.add(FormInput, java.awt.BorderLayout.PAGE_START);
 
         PanelAccor.setBackground(new java.awt.Color(255, 255, 255));
@@ -4671,94 +4673,7 @@ public final class DlgRawatInap extends javax.swing.JDialog {
 
     //tambahan method
     
-    private void tampil_angka_billing() {
-//            try {
-//                // 1. Ambil input no_rawat dari komponen (pastikan .getText())
-//                String norawat = TNoRw.getText(); 
-//
-//                // 2. Query untuk mengambil 'lama' inap terlebih dahulu
-//                // Kita ambil lama inap yang paling besar/terakhir dari tabel kamar_inap
-//                String sqlLama = "SELECT IFNULL(MAX(lama), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "'";
-//                double lamaInap = Double.parseDouble(Sequel.cariIsi(sqlLama));
-//
-//                // 3. Logika pengecekan: Jika lama inap > 3
-//                if (lamaInap > 3) {
-//                    // Jalankan query total biaya
-//                    String sqlTotal = "SELECT (" +
-//                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_drpr WHERE no_rawat='" + norawat + "') + " +
-//                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_dr WHERE no_rawat='" + norawat + "') + " +
-//                        "(SELECT IFNULL(SUM(biaya), 0) FROM periksa_radiologi WHERE no_rawat='" + norawat + "') + " +
-//                        "(SELECT IFNULL(SUM(biaya), 0) FROM periksa_lab WHERE no_rawat='" + norawat + "') + " +
-//                        "(SELECT IFNULL(SUM(total), 0) FROM detail_pemberian_obat WHERE no_rawat='" + norawat + "') + " +
-//                        "(SELECT IFNULL(SUM(ttl_biaya), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "')" +
-//                        ")";
-//
-//                    String hasilTotal = Sequel.cariIsi(sqlTotal);
-//                    double total = Double.parseDouble(hasilTotal.isEmpty() ? "0" : hasilTotal);
-//
-//                    // 4. Update Tampilan Label (Warna Merah)
-//                    ntflamainap.setForeground(java.awt.Color.RED); // Set warna teks jadi merah
-//
-//                    // Menampilkan info: [Lama Hari] - [Total Biaya]
-//                    ntflamainap.setText(String.format(
-//                        "Lama Inap %.0f Hari, billing mencapai: Rp %,.0f", 
-//                        lamaInap, 
-//                        total
-//                    ));
-//
-//                } else {
-//                    // Jika lama inap masih <= 3, kosongkan label atau beri keterangan lain
-//                    ntflamainap.setText(""); 
-//                    // Atau jika ingin tetap muncul tapi warna standar (hitam/abu-abu):
-//                    // labelHasil.setForeground(java.awt.Color.BLACK);
-//                    // labelHasil.setText("Pasien belum mencapai 3 hari");
-//                }
-//
-//            } catch (Exception e) {
-//                System.out.println("Error Billing: " + e.getMessage());
-//                ntflamainap.setText("0");
-//            }
-            try {
-                String norawat = TNoRw.getText();
 
-                // 1. Ambil Batas Tarif dari pku_grouper_sementara
-                String sqlTarif = "SELECT IFNULL(tarif, 0) FROM pku_grouper_sementara WHERE no_rawat='" + norawat + "'";
-                double batasTarif = Double.parseDouble(Sequel.cariIsi(sqlTarif).isEmpty() ? "0" : Sequel.cariIsi(sqlTarif));
-
-                // 2. Hitung Total Biaya Riil (Tindakan + Kamar)
-                String sqlTotal = "SELECT (" +
-                        "(SELECT IFNULL(SUM(biaya_rawat), 0) FROM rawat_inap_drpr WHERE no_rawat='" + norawat + "') + " +
-                        "(SELECT IFNULL(SUM(ttl_biaya), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "')" +
-                        ")";
-                double totalBiaya = Double.parseDouble(Sequel.cariIsi(sqlTotal).isEmpty() ? "0" : Sequel.cariIsi(sqlTotal));
-
-                // 3. Ambil Lama Inap untuk keperluan informasi label
-                String sqlLama = "SELECT IFNULL(MAX(lama), 0) FROM kamar_inap WHERE no_rawat='" + norawat + "'";
-                double lamaInap = Double.parseDouble(Sequel.cariIsi(sqlLama).isEmpty() ? "0" : Sequel.cariIsi(sqlLama));
-
-                // 4. Logika Perbandingan: Jika Total Biaya > Batas Tarif
-                if (totalBiaya > batasTarif && batasTarif > 0) {
-                    ntflamainap.setForeground(java.awt.Color.RED);
-
-                    // Format angka agar rapi (Tanpa desimal)
-                    String billingStr = String.format("%,.0f", totalBiaya);
-                    String tarifStr = String.format("%,.0f", batasTarif);
-                    String lamaStr = String.format("%.0f", lamaInap);
-
-                    // Set info sesuai permintaan
-                    ntflamainap.setText("Billing= Rp." + billingStr + 
-                                       " batas klaim= Rp." + tarifStr + 
-                                       " lama inap=" + lamaStr + " hari");
-                } else {
-                    // Jika belum melebihi tarif, label dikosongkan
-                    ntflamainap.setText("");
-                }
-
-            } catch (Exception e) {
-                System.out.println("Notifikasi : Gagal membandingkan billing dan tarif klaim (" + e.getMessage() + ")");
-                ntflamainap.setText("");
-            }
-    }
     
     private void BtnIntervensiPasienJatuhActionPerformed(java.awt.event.ActionEvent evt) {                                                         
         // TODO add your handling code here:
@@ -10320,6 +10235,9 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                 Sequel.cariIsi("select jns_perawatan_inap.total_byrdrpr from jns_perawatan_inap where jns_perawatan_inap.kd_jenis_prw=? ",TTnd,TKdPrwDokterPetugas.getText());
             }
         }
+        
+        // [PKU-Custom] Update label total biaya setiap kali record berubah/dipilih
+        hitungTotalBiaya(TNoRw.getText());
     }    
     
     private void isRawat(){
@@ -10356,6 +10274,86 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         } catch (Exception e) {
             System.out.println("Notif : "+e);
         }
+        
+        // [PKU-Custom] Update label total biaya setelah memuat detail rawat
+        hitungTotalBiaya(TNoRw.getText());
+    }
+    
+    private javax.swing.Timer timerHitungBiaya;
+    
+    // [PKU-Custom] Fungsi untuk menghitung total biaya secara realtime seperti pada DlgPerkiraanBiayaRanap
+    private void hitungTotalBiaya(final String noRawat) {
+        if(noRawat.equals("")) return;
+        
+        if (timerHitungBiaya != null && timerHitungBiaya.isRunning()) {
+            timerHitungBiaya.stop();
+        }
+        
+        // Tambahan IT: Timer 5 detik (5000ms) untuk menunda query belasan tabel 
+        // yang sangat berat agar tidak membuat UI freeze saat dibuka/diklik
+        timerHitungBiaya = new javax.swing.Timer(5000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                double Registrasi=0, Laborat=0, Radiologi=0, Operasi=0, Obat=0, Ranap_Dokter=0, 
+                       Ranap_Paramedis=0, Ranap_Dokter_Paramedis=0, Ralan_Dokter=0, Ralan_Paramedis=0, 
+                       Ralan_Dokter_Paramedis=0, Tambahan=0, Potongan=0, Kamar=0, Harian=0, 
+                       Retur_Obat=0, Resep_Pulang=0, Jumlah=0;
+
+                Registrasi=Sequel.cariIsiAngka("select biaya_reg from reg_periksa where no_rawat=?",noRawat);
+                Laborat=Sequel.cariIsiAngka("select sum(periksa_lab.biaya) from periksa_lab where periksa_lab.no_rawat=?",noRawat)+
+                        Sequel.cariIsiAngka("select sum(detail_periksa_lab.biaya_item) from detail_periksa_lab where detail_periksa_lab.no_rawat=?",noRawat);
+                Radiologi=Sequel.cariIsiAngka("select sum(periksa_radiologi.biaya) from periksa_radiologi where periksa_radiologi.no_rawat=?",noRawat);
+                Operasi=Sequel.cariIsiAngka("select sum(operasi.biayaoperator1+operasi.biayaoperator2+operasi.biayaoperator3+operasi.biayaasisten_operator1+operasi.biayaasisten_operator2+operasi.biayaasisten_operator3+operasi.biayainstrumen+operasi.biayadokter_anak+operasi.biayaperawaat_resusitas+operasi.biayadokter_anestesi+operasi.biayaasisten_anestesi+operasi.biayaasisten_anestesi2+operasi.biayabidan+operasi.biayabidan2+operasi.biayabidan3+operasi.biayaperawat_luar+operasi.biayaalat+operasi.biayasewaok+operasi.akomodasi+operasi.bagian_rs+operasi.biaya_omloop+operasi.biaya_omloop2+operasi.biaya_omloop3+operasi.biaya_omloop4+operasi.biaya_omloop5+operasi.biayasarpras+operasi.biaya_dokter_pjanak+operasi.biaya_dokter_umum) from operasi where operasi.no_rawat=?",noRawat);
+                Obat=Sequel.cariIsiAngka("select sum(detail_pemberian_obat.total) from detail_pemberian_obat where detail_pemberian_obat.no_rawat=?",noRawat)+
+                     Sequel.cariIsiAngka("select sum(tagihan_obat_langsung.besar_tagihan) from tagihan_obat_langsung where tagihan_obat_langsung.no_rawat=?",noRawat)+
+                     Sequel.cariIsiAngka("select sum(beri_obat_operasi.hargasatuan*beri_obat_operasi.jumlah) from beri_obat_operasi where beri_obat_operasi.no_rawat=?",noRawat);
+                Ranap_Dokter=Sequel.cariIsiAngka("select sum(rawat_inap_dr.biaya_rawat) from rawat_inap_dr where rawat_inap_dr.no_rawat=?",noRawat);
+                Ranap_Dokter_Paramedis=Sequel.cariIsiAngka("select sum(rawat_inap_drpr.biaya_rawat) from rawat_inap_drpr where rawat_inap_drpr.no_rawat=?",noRawat);
+                Ranap_Paramedis=Sequel.cariIsiAngka("select sum(rawat_inap_pr.biaya_rawat) from rawat_inap_pr where rawat_inap_pr.no_rawat=?",noRawat);
+                Ralan_Dokter=Sequel.cariIsiAngka("select sum(rawat_jl_dr.biaya_rawat) from rawat_jl_dr where rawat_jl_dr.no_rawat=?",noRawat);
+                Ralan_Dokter_Paramedis=Sequel.cariIsiAngka("select sum(rawat_jl_drpr.biaya_rawat) from rawat_jl_drpr where rawat_jl_drpr.no_rawat=?",noRawat);
+                Ralan_Paramedis=Sequel.cariIsiAngka("select sum(rawat_jl_pr.biaya_rawat) from rawat_jl_pr where rawat_jl_pr.no_rawat=?",noRawat);
+                Tambahan=Sequel.cariIsiAngka("select sum(tambahan_biaya.besar_biaya) from tambahan_biaya where tambahan_biaya.no_rawat=?",noRawat);
+                Potongan=Sequel.cariIsiAngka("select sum(pengurangan_biaya.besar_pengurangan) from pengurangan_biaya where pengurangan_biaya.no_rawat=?",noRawat);
+                Kamar=Sequel.cariIsiAngka("select sum(kamar_inap.ttl_biaya) from kamar_inap where kamar_inap.no_rawat=?",noRawat)+
+                      Sequel.cariIsiAngka("select sum(biaya_sekali.besar_biaya) from biaya_sekali inner join kamar_inap on kamar_inap.kd_kamar=biaya_sekali.kd_kamar where kamar_inap.no_rawat=?",noRawat);
+                Harian=Sequel.cariIsiAngka("select sum(biaya_harian.jml*biaya_harian.besar_biaya*kamar_inap.lama) from kamar_inap inner join biaya_harian on kamar_inap.kd_kamar=biaya_harian.kd_kamar where kamar_inap.no_rawat=?",noRawat);
+                Retur_Obat=(-1)*Sequel.cariIsiAngka("select sum(detreturjual.subtotal) from detreturjual where detreturjual.no_retur_jual like ? ","%"+noRawat+"%");
+                Resep_Pulang=Sequel.cariIsiAngka("select sum(resep_pulang.harga*resep_pulang.jml_barang) from resep_pulang where resep_pulang.no_rawat=?",noRawat);
+                
+                Jumlah = Laborat+Radiologi+Operasi+Obat+Ranap_Dokter+Ranap_Dokter_Paramedis+Ranap_Paramedis+
+                         Ralan_Dokter+Ralan_Dokter_Paramedis+Ralan_Paramedis+Tambahan+Kamar+Registrasi+Harian+Resep_Pulang-Potongan-Retur_Obat;
+
+                // [PKU-Custom] Validasi limit tarif BPJS vs Total Biaya RS
+                double tarifGrouper = Sequel.cariIsiAngka("select tarif from pku_grouper_sementara where no_rawat=?", noRawat);
+                // Ambil Lama Inap 
+                double lamainap = Sequel.cariIsiAngka("SELECT lama FROM kamar_inap WHERE no_rawat=?", noRawat);
+                
+                if (tarifGrouper > 0 && Jumlah > tarifGrouper) {
+                    ntflamainap.setVisible(true);
+                    ntflamainap.setForeground(java.awt.Color.RED);
+                    ntflamainap.setText("Tarif = Rp " + Valid.SetAngka(Jumlah) + " || Klaim = Rp " + Valid.SetAngka(tarifGrouper) + " || Lama = " + Valid.SetAngka(lamainap)+ " Hari");
+                        // Alert popup
+                        if (!alertSudahMuncul) {
+                            javax.swing.JOptionPane.showMessageDialog(
+                                null,
+                                "Total biaya melebihi tarif klaim BPJS!\n\n" +
+                                "Total Tarif RS : Rp " + Valid.SetAngka(Jumlah) + "\n" +
+                                "Tarif Klaim    : Rp " + Valid.SetAngka(tarifGrouper) + "\n" +
+                                "Lama Inap      : " + Valid.SetAngka(lamainap) + " Hari",
+                                "Peringatan Klaim BPJS",
+                                javax.swing.JOptionPane.WARNING_MESSAGE
+                            );
+                            alertSudahMuncul = true;
+                        }
+                } else {
+                    ntflamainap.setVisible(false);
+                    alertSudahMuncul = false;
+                }
+            }
+        });
+        timerHitungBiaya.setRepeats(false);
+        timerHitungBiaya.start();
     }
     
     public void setNoRm(String norwt,Date awal,Date akhir) {
@@ -10377,9 +10375,18 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         isForm();
         ChkInput1.setSelected(true);
         isForm2(); 
-        TabRawatMouseClicked(null);
+        // Tambahan IT: Menggunakan Timer 300ms untuk menunda query tabel (tampil data)
+        // agar form Tindakan Rawat Inap bisa langsung muncul di layar tanpa lag/freeze
+        javax.swing.Timer timerTampil = new javax.swing.Timer(300, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                TabRawatMouseClicked(null);
+            }
+        });
+        timerTampil.setRepeats(false);
+        timerTampil.start();
         //tambahan
-        tampil_angka_billing();
+        
         //akhir
     }
     

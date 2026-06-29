@@ -1060,10 +1060,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
                 ps.setString(1,"%"+nmjns.getText().trim()+"%");
                 ps.setString(2,"%"+nmkategori.getText().trim()+"%");
                 ps.setString(3,"%"+nmgolongan.getText().trim()+"%");
-                if(!TCari.getText().trim().equals("")){
                     ps.setString(4,"%"+TCari.getText().trim()+"%");
                     ps.setString(5,"%"+TCari.getText().trim()+"%");
-                }
                 rs=ps.executeQuery();   
                 
                 if(aktifkanbatch.equals("yes")){

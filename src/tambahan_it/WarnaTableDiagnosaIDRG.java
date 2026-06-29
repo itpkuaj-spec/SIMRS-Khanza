@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package integration_idrg;
+package tambahan_it;
 
+import integration_idrg.*;
 import fungsi.*;
 import java.awt.Color;
 import java.awt.Component;

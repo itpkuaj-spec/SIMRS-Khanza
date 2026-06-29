@@ -106,8 +106,35 @@ public class DlgBerkasRawat extends javax.swing.JDialog {
         
         panel.add(jfxPanel, BorderLayout.CENTER);
         
+        widget.panelisi panelGlass = new widget.panelisi();
+        panelGlass.setPreferredSize(new Dimension(55, 55));
+        panelGlass.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
+
+        widget.Button btnKeluar = new widget.Button();
+        btnKeluar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
+        btnKeluar.setMnemonic('K');
+        btnKeluar.setText("Keluar");
+        btnKeluar.setToolTipText("Alt+K");
+        btnKeluar.setName("btnKeluar");
+        btnKeluar.setPreferredSize(new Dimension(100, 30));
+        btnKeluar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dispose();
+            }
+        });
+        btnKeluar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if (evt.getKeyCode() == java.awt.event.KeyEvent.VK_SPACE) {
+                    dispose();
+                }
+            }
+        });
+        
+        panelGlass.add(btnKeluar);
+        
         internalFrame1.setLayout(new BorderLayout());
-        internalFrame1.add(panel);        
+        internalFrame1.add(panel, BorderLayout.CENTER);        
+        internalFrame1.add(panelGlass, BorderLayout.SOUTH);
     }
     
      private void createScene() {        

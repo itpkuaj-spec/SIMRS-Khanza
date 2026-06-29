@@ -58,6 +58,8 @@ public final class AplicareCekReferensiKamar extends javax.swing.JDialog {
     private JsonNode root;
     private JsonNode nameNode;
     private JsonNode response;
+    private widget.Button BtnSPGDT;
+    private SPGDTKetersediaanKamar spgdtForm;
 
     /** Creates new form DlgKamar
      * @param parent
@@ -96,7 +98,21 @@ public final class AplicareCekReferensiKamar extends javax.swing.JDialog {
             URL = koneksiDB.URLAPIAPLICARE()+"/rest/ref/kelas";
         } catch (Exception e) {
             System.out.println("E : "+e);
-        }     
+        }
+        
+        // Tambah tombol BtnSPGDT secara programatik
+        BtnSPGDT = new widget.Button();
+        BtnSPGDT.setName("BtnSPGDT");
+        BtnSPGDT.setText("SPGDT Kamar");
+        BtnSPGDT.setToolTipText("Buka Data Ketersediaan Kamar SPGDT");
+        try {
+            BtnSPGDT.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/190.png")));
+        } catch (Exception e) { /* icon opsional */ }
+        BtnSPGDT.setPreferredSize(new java.awt.Dimension(130, 30));
+        BtnSPGDT.addActionListener((java.awt.event.ActionEvent evt) -> {
+            btnSPGDTActionPerformed();
+        });
+        panelGlass6.add(BtnSPGDT, panelGlass6.getComponentCount() - 1); // tambahkan sebelum BtnKeluar
     }
     
     
@@ -341,6 +357,19 @@ public final class AplicareCekReferensiKamar extends javax.swing.JDialog {
     private widget.panelisi panelGlass6;
     private widget.Table tbKamar;
     // End of variables declaration//GEN-END:variables
+
+    private void btnSPGDTActionPerformed() {
+        if (spgdtForm == null || !spgdtForm.isDisplayable()) {
+            spgdtForm = new SPGDTKetersediaanKamar(null, false);
+            spgdtForm.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        }
+        if (spgdtForm.isVisible()) {
+            spgdtForm.toFront();
+            return;
+        }
+        spgdtForm.setLocationRelativeTo(this);
+        spgdtForm.setVisible(true);
+    }
 
     public void tampil() {        
         try {

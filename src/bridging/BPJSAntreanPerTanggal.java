@@ -25,9 +25,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -144,6 +146,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         MnCekKodeBooking = new javax.swing.JMenuItem();
         MnKirimUlangMJKN = new javax.swing.JMenuItem();
         MnKirimUlangJKN = new javax.swing.JMenuItem();
+        MnKirimBatalBPJS = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbJnsPerawatan = new widget.Table();
@@ -230,6 +233,22 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         });
         jPopupMenu1.add(MnKirimUlangJKN);
 
+        MnKirimBatalBPJS.setBackground(new java.awt.Color(255, 255, 254));
+        MnKirimBatalBPJS.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnKirimBatalBPJS.setForeground(new java.awt.Color(50, 50, 50));
+        MnKirimBatalBPJS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnKirimBatalBPJS.setText("Kirim Servis Batal");
+        MnKirimBatalBPJS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnKirimBatalBPJS.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnKirimBatalBPJS.setName("MnKirimBatalBPJS"); // NOI18N
+        MnKirimBatalBPJS.setPreferredSize(new java.awt.Dimension(160, 26));
+        MnKirimBatalBPJS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnKirimBatalBPJSActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnKirimBatalBPJS);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -296,7 +315,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-11-2025" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-05-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -310,7 +329,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-11-2025" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "30-05-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -522,13 +541,18 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
 
     private void MnKirimUlangMJKNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimUlangMJKNActionPerformed
         // TODO add your handling code here:
-        KirimUlangMJKN();
+        KirimUlangJKN();
     }//GEN-LAST:event_MnKirimUlangMJKNActionPerformed
 
     private void MnKirimUlangJKNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimUlangJKNActionPerformed
         // TODO add your handling code here:
-        KirimUlangJKN();
+        KirimUlangMJKN();
     }//GEN-LAST:event_MnKirimUlangJKNActionPerformed
+
+    private void MnKirimBatalBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimBatalBPJSActionPerformed
+        // TODO add your handling code here:
+        BtnBatalActionPerformed(evt);
+    }//GEN-LAST:event_MnKirimBatalBPJSActionPerformed
 
     /**
     * @param args the command line arguments
@@ -585,6 +609,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private widget.Label MJknCapaian;
     private widget.Label MJknSelesai;
     private javax.swing.JMenuItem MnCekKodeBooking;
+    private javax.swing.JMenuItem MnKirimBatalBPJS;
     private javax.swing.JMenuItem MnKirimUlangJKN;
     private javax.swing.JMenuItem MnKirimUlangMJKN;
     private widget.Label NonJKNBelum;
@@ -731,7 +756,125 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         }
     }
     //tambahan
-        private void KirimUlangJKN() {                                             
+    
+    private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            // Konfirmasi pembatalan
+            int pilihan = JOptionPane.showConfirmDialog(null,
+                "Apakah Anda yakin ingin membatalkan antrean ini?",
+                "Konfirmasi Pembatalan",
+                JOptionPane.YES_NO_OPTION);
+            if (pilihan == JOptionPane.YES_OPTION) {
+                // Ambil kode booking dari tabel
+                String kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
+                // Updated to get sumber data from column index 13 (shifted due to new No Rawat and No SEP columns)
+                String sumberData = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString();
+
+                // Input keterangan pembatalan
+                String keterangan = JOptionPane.showInputDialog(null,
+                    "Masukkan keterangan pembatalan:",
+                    "Keterangan Pembatalan",
+                    JOptionPane.QUESTION_MESSAGE);
+
+                if (keterangan != null && !keterangan.trim().isEmpty()) {
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    try {
+                        // Setup headers
+                        headers = new HttpHeaders();
+                        headers.setContentType(MediaType.APPLICATION_JSON);
+                        headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                        headers.add("x-timestamp", utc);
+                        headers.add("x-signature", api.getHmac(utc));
+                        headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+
+                        // Tentukan kode booking yang akan digunakan
+                        // kodebooking di kolom 0 = nilai nobooking di tabel referensi_mobilejkn_bpjs
+                        String kodeBookingRequest = kodebooking;
+                        if (sumberData.equals("Bridging Antrean")) {
+                            // Verifikasi nobooking ada di database lokal
+                            String nobooking = Sequel.cariIsi(
+                                "select nobooking from referensi_mobilejkn_bpjs where nobooking=?", kodebooking);
+                            if (!nobooking.isEmpty()) {
+                                kodeBookingRequest = nobooking;
+                            } else {
+                                // Fallback: coba cari berdasarkan no_rawat (No. Ref dari kolom 10)
+                                String noRef = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString();
+                                if (!noRef.isEmpty()) {
+                                    String nbk = Sequel.cariIsi(
+                                        "select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", noRef);
+                                    if (!nbk.isEmpty()) {
+                                        kodeBookingRequest = nbk;
+                                    }
+                                }
+                                System.out.println("Info: menggunakan kodeBookingRequest=" + kodeBookingRequest);
+                            }
+                        }
+
+                        // Buat request JSON
+                        requestJson = "{"
+                            + "\"kodebooking\": \"" + kodeBookingRequest + "\","
+                            + "\"keterangan\": \"" + keterangan.trim() + "\""
+                            + "}";
+
+                        requestEntity = new HttpEntity(requestJson, headers);
+                        URL = link + "/antrean/batal";
+                        System.out.println("URL Batal: " + URL);
+                        System.out.println("Request: " + requestJson);
+
+                        // Kirim request ke server BPJS
+                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                        nameNode = root.path("metadata");
+
+                        if (nameNode.path("code").asText().equals("200")) {
+                            JOptionPane.showMessageDialog(null, "Antrean berhasil dibatalkan!\n" + nameNode.path("message").asText());
+
+                            // Update status ke database lokal
+                            try {
+                                if (sumberData.equals("Bridging Antrean")) {
+                                    Sequel.queryu2(
+                                        "update referensi_mobilejkn_bpjs set status='Batal' where nobooking='" + kodeBookingRequest + "'");
+                                    System.out.println("Update status Batal untuk nobooking: " + kodeBookingRequest);
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Error update database lokal: " + e);
+                            }
+
+                            // Refresh tampilan
+                            tampil();
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                "Gagal membatalkan antrean!\n"
+                                + "Kode: " + nameNode.path("code").asText() + "\n"
+                                + "Pesan: " + nameNode.path("message").asText(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } catch (Exception ex) {
+                        System.out.println("Error membatalkan antrean: " + ex);
+                        String errorMessage = "Gagal membatalkan antrean: " + ex.getMessage();
+                        if (ex.toString().contains("UnknownHostException")) {
+                            errorMessage = "Koneksi ke server BPJS terputus!";
+                        } else if (ex.toString().contains("SocketTimeoutException")) {
+                            errorMessage = "Timeout koneksi ke server BPJS!";
+                        }
+
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    } finally {
+                        this.setCursor(Cursor.getDefaultCursor());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Keterangan pembatalan tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Silahkan pilih data antrean yang akan dibatalkan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            tbJnsPerawatan.requestFocus();
+        }
+    }
+    
+    private void KirimUlangJKN() {                                             
         // TODO add your handling code here: JKN
         kodebooking = Sequel.cariIsi("select no_rawat from referensi_mobilejkn_bpjs where nobooking='"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0)+"'");
         data = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
@@ -863,6 +1006,13 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if(datajam.equals("")){
                 datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 5)) second) AS task5 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
             }
+            // Fallback terakhir task 5: gunakan waktu registrasi + random 20-30 menit
+            if(datajam.equals("")){
+                datajam = Sequel.cariIsi(
+                "SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 10)) second) AS task5 " +
+                "from reg_periksa where reg_periksa.no_rawat=?", kodebooking
+                );
+            }
             if(!datajam.equals("")){
                 try {     
                     parsedDate = dateFormat.parse(datajam);
@@ -895,7 +1045,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     System.out.println("Notifikasi Bridging : "+ex);
                 }
             }else{
-                System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP "+kodebooking);
+                System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP, SKIP KIRIM "+kodebooking);
             }         
     }                                            
 
@@ -1030,6 +1180,13 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if(datajam.equals("")){
                 datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 5)) second) AS task5 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
             }
+            // Fallback terakhir task 5: gunakan waktu registrasi + random 20-30 menit
+            if(datajam.equals("")){
+                datajam = Sequel.cariIsi(
+                "SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 10)) second) AS task5 " +
+                "from reg_periksa where reg_periksa.no_rawat=?", kodebooking
+                );
+            }
             if(!datajam.equals("")){
                 parsedDate = dateFormat.parse(datajam);
                 try {     
@@ -1062,7 +1219,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     System.out.println("Notifikasi Bridging : "+ex);
                 }
             }else{
-                System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP "+kodebooking);
+                System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP, SKIP KIRIM "+kodebooking);
             }
         } catch (Exception e) {
         }

@@ -1919,6 +1919,13 @@ private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             System.out.println("Notif : "+e); 
         }
         
+        // tambahan untuk menampilkan persentase ppn obat ralan saat form dibuka
+        if(tampilkan_ppnobat_ralan.equals("Yes")){
+            PersenppnObat.setText("11");
+        }else{
+            PersenppnObat.setText("0");
+        }
+        
         try {
             ps=koneksi.prepareStatement(
                     "select set_akun.Penjualan_Obat,set_akun.HPP_Obat_Jual_Bebas,set_akun.Persediaan_Obat_Jual_Bebas,set_akun.PPN_Keluaran from set_akun");
@@ -2614,6 +2621,7 @@ private void BtnGudangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
                 " from databarang inner join jenis on databarang.kdjns=jenis.kdjns "+
                 " inner join gudangbarang on databarang.kode_brng=gudangbarang.kode_brng "+
                 " where gudangbarang.no_batch='' and gudangbarang.no_faktur='' and gudangbarang.stok>0 and gudangbarang.kd_bangsal=? and databarang.status='1' "+
+                "  AND databarang.kode_golongan <> 'G07' " +  // <-- filter tambahan
                 (TCari.getText().trim().equals("")?"":"and (databarang.kode_brng like ? or databarang.nama_brng like ? or jenis.nama like ?)")+
                 " order by databarang.nama_brng");
             try {

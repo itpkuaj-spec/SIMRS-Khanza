@@ -687,6 +687,15 @@
                     <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BtnKeluarKeyPressed"/>
                   </Events>
                 </Component>
+                <Component class="javax.swing.JButton" name="btnManajemenKlaim">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Manajemen Klaim"/>
+                    <Property name="name" type="java.lang.String" value="btnManajemenKlaim" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnManajemenKlaimActionPerformed"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="widget.PanelBiasa" name="panelDiagnosa">

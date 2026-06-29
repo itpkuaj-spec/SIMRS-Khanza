@@ -111,7 +111,8 @@ public class DlgSirkulasiNonMedis2 extends javax.swing.JDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
+        jLabel1 = new javax.swing.JLabel();
+        cmbJenis = new widget.ComboBox();
         Kd2 = new widget.TextBox();
         internalFrame1 = new widget.InternalFrame();
         scrollPane1 = new widget.ScrollPane();
@@ -263,9 +264,30 @@ public class DlgSirkulasiNonMedis2 extends javax.swing.JDialog {
         });
         panelisi1.add(BtnCari);
 
+        jLabel1.setText("Jns/UNIT :");
+        jLabel1.setName("jLabel1"); // NOI18N
+        panelisi1.add(jLabel1);
+
+        cmbJenis.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Semua" }));
+        cmbJenis.setName("cmbJenis"); // NOI18N
+        cmbJenis.setPreferredSize(new java.awt.Dimension(120, 23));
+        cmbJenis.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runBackground(() ->prosesCari());
+            }
+        });
+        cmbJenis.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+                    runBackground(() ->prosesCari());
+                }
+            }
+        });
+        panelisi1.add(cmbJenis);
+
         label9.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         label9.setName("label9"); // NOI18N
-        label9.setPreferredSize(new java.awt.Dimension(79, 30));
+        label9.setPreferredSize(new java.awt.Dimension(30, 30));
         panelisi1.add(label9);
 
         BtnAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/Search-16x16.png"))); // NOI18N
@@ -492,6 +514,8 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     }//GEN-LAST:event_BtnAllKeyPressed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // [PKU-Custom] Load dinamis isi dropdown combo jenis dari database saat form dibuka
+        isiComboJenis();
         if(koneksiDB.CARICEPAT().equals("aktif")){
             TCari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener(){
                 @Override
@@ -554,25 +578,62 @@ private void KdKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TKdKey
     private widget.panelisi panelisi4;
     private widget.ScrollPane scrollPane1;
     private widget.Table tbDokter;
+    private javax.swing.JLabel jLabel1;
+    private widget.ComboBox cmbJenis;
     // End of variables declaration//GEN-END:variables
+
+    // [PKU-Custom] Method load data jenis barang
+    private void isiComboJenis() {
+        cmbJenis.removeAllItems();
+        cmbJenis.addItem("Semua");
+        try {
+            PreparedStatement psJenis = koneksi.prepareStatement(
+                "SELECT nm_jenis FROM ipsrsjenisbarang ORDER BY nm_jenis"
+            );
+            ResultSet rsJenis = psJenis.executeQuery();
+            while (rsJenis.next()) {
+                cmbJenis.addItem(rsJenis.getString("nm_jenis"));
+            }
+            rsJenis.close();
+            psJenis.close();
+        } catch (Exception e) {
+            System.out.println("Gagal memuat jenis barang: " + e);
+        }
+    }
 
     private void prosesCari() {
        Valid.tabelKosong(tabMode);      
        try{   
-            ps=koneksi.prepareStatement("select ipsrsbarang.kode_brng,CONCAT(ipsrsbarang.nama_brng,' (',ipsrsjenisbarang.nm_jenis,')') AS nama_jenis, "+
+            // [PKU-Custom] Filter dinamis by cmbJenis (menambahkan pengecekan null-safe)
+            String jenisTerpilih = cmbJenis.getSelectedItem() != null ? cmbJenis.getSelectedItem().toString().trim() : "Semua";
+            boolean filterJenis = !jenisTerpilih.equalsIgnoreCase("Semua");
+            
+            String sql = "select ipsrsbarang.kode_brng,CONCAT(ipsrsbarang.nama_brng,' (',ipsrsjenisbarang.nm_jenis,')') AS nama_jenis, "+
                         "kodesatuan.satuan,ipsrsbarang.stok,(ipsrsbarang.stok*ipsrsbarang.harga) as aset "+
                         "from ipsrsbarang inner join kodesatuan on ipsrsbarang.kode_sat=kodesatuan.kode_sat "+
                         "inner join ipsrsjenisbarang on ipsrsbarang.jenis = ipsrsjenisbarang.kd_jenis " +
-                        "where ipsrsbarang.nama_brng like ? and ipsrsbarang.kode_brng like ? or "+
-                        "ipsrsbarang.nama_brng like ? and ipsrsbarang.nama_brng like ? or "+
-                        "ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ? "
-                        );
+                        "where ";
+            if(filterJenis) {
+                sql += "ipsrsjenisbarang.nm_jenis = ? and (";
+            } else {
+                sql += "(";
+            }
+            sql += "(ipsrsbarang.nama_brng like ? and ipsrsbarang.kode_brng like ?) or "+
+                   "(ipsrsbarang.nama_brng like ? and ipsrsbarang.nama_brng like ?) or "+
+                   "(ipsrsbarang.nama_brng like ? and ipsrsjenisbarang.nm_jenis like ?))";
+            ps=koneksi.prepareStatement(sql);
             try {
                 ttltotalbeli=0;ttltotalpesan=0;ttltotalkeluar=0;ttltotalstokawal=0;ttltotalstokakhir=0;ttltotalutd=0;ttltotalhibah=0;
-                ps.setString(1,"%"+nmbar.getText()+"%");
-                ps.setString(2,"%"+TCari.getText().trim()+"%");
-                ps.setString(3,"%"+TCari.getText().trim()+"%");
-                ps.setString(4,"%"+TCari.getText().trim()+"%");
+                int p = 1;
+                if(filterJenis) {
+                    ps.setString(p++, jenisTerpilih);
+                }
+                ps.setString(p++, "%"+nmbar.getText()+"%");
+                ps.setString(p++, "%"+TCari.getText().trim()+"%");
+                ps.setString(p++, "%"+nmbar.getText()+"%");
+                ps.setString(p++, "%"+TCari.getText().trim()+"%");
+                ps.setString(p++, "%"+nmbar.getText()+"%");
+                ps.setString(p++, "%"+TCari.getText().trim()+"%");
                 rs=ps.executeQuery();            
                 while(rs.next()){
                     totalbeli=0;jumlahbeli=0;totalpesan=0;jumlahpesan=0;jumlahkeluar=0;totalkeluar=0;stok=0;totalstok=0;

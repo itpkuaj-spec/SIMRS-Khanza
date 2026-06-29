@@ -2,27 +2,28 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>KhanzaHMS</comment> 
-    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
+<!--    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>-->
+    <entry key="HOST">qMXbTjtVyEQ5aj3+iqZgrA==</entry>
     <entry key="DATABASE">AZHNccBwSmSho84f+X8GyQ==</entry>
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
-    <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
-    <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
+<!--    <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
+    <entry key="PAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>-->
+    <entry key="USER">x0iKmwH84s222PT62Pzu0w==</entry>
+    <entry key="PAS">J43RunN8YkTpvXC5FEGaNw==</entry>
     <entry key="CARICEPAT">aktif</entry>
     <entry key="HOSTHYBRIDWEB">5k7+C7EnUw9nUv2Nix+DBA==</entry>
     <entry key="USERHYBRIDWEB">nmXqCKzrz9i8GTZlq7JruQ==</entry>
     <entry key="PASHYBRIDWEB">AsJ/0/gCnYnD+gK4fw9uKA==</entry>
     <entry key="HYBRIDWEB">webapps</entry>
     <entry key="PORTWEB">80</entry>
-    <entry key="AKTIFKANWARNARALAN">no</entry>
+    <entry key="AKTIFKANWARNARALAN">yes</entry>
     <entry key="ANTRIAN">player</entry>
     <entry key="LOKETANTRIAN">1</entry>
     <entry key="ALARMAPOTEK">yes</entry>
     <entry key="RESEPRAJALKEPLAN">yes</entry>
     <entry key="FORMALARMAPOTEK">ralan + ranap</entry>
     <entry key="STOKKOSONGRESEP">no</entry>
-    <entry key="NOTIFMAKSIMALNOMINALRESEPRAJAL">yes</entry>
-    <entry key="MAKSIMALNOMINALRESEPRAJAL">100000</entry>
-    <entry key="TAMPILKANCOPYRESEPDOKTERLAIN">no</entry>
+    <entry key="AKTIFKANRESEPITERDOKTER">yes</entry>
     <entry key="HPPFARMASI">dasar</entry>
     <entry key="HPPTOKO">dasar</entry>
     <entry key="ALARMLAB">yes</entry>
@@ -33,31 +34,28 @@
     <entry key="ALARMBOOKINGPERIKSA">yes</entry>
     <entry key="ALARMPENGADUANPASIEN">yes</entry>
     <entry key="ALARMPERMINTAANRANAP">yes</entry>
-    <entry key="MENUTRANSPARAN">yes</entry>
+    <entry key="MENUTRANSPARAN">no</entry>
     <entry key="TANGGALMUNDUR">yes</entry>
-    <entry key="URLAPIBPJS">https://tanyabpjs.go.id/vclaim-rest-dev</entry>
+    <entry key="URLAPIBPJS">https://apijkn.bpjs-kesehatan.go.id/vclaim-rest</entry>
     <entry key="SECRETKEYAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="DIAGNOSARUJUKANMASUKAPIBPJS">no</entry>
-    <entry key="JADIKANBOOKINGSURATKONTROL">yes</entry>
     <entry key="JADIKANBOOKINGSURATKONTROLAPIBPJS">no</entry>
     <entry key="URLAPIAPLICARE">https://new-api.bpjs-kesehatan.go.id/aplicaresws</entry>
     <entry key="SECRETKEYAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLAPIMOBILEJKN">https://apijkn-dev.bpjs-kesehatan.go.id/antreanrs_dev</entry>
+    <entry key="URLAPIMOBILEJKN">https://apijkn.bpjs-kesehatan.go.id/antreanrs</entry>
     <entry key="SECRETKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="ADDANTRIANAPIMOBILEJKN">no</entry>
-    <entry key="URLAPIAPOTEKBPJS">https://tanyabpjs.go.id/apotek-rest-dev</entry>
+    <entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>
+    <entry key="URLAPIAPOTEKBPJS">https://dev-soa.bpjs-kesehatan.go.id/apotek-rest</entry>
     <entry key="SECRETKEYAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIAPOTEKBPJS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="JADIKANPIUTANGAPOTEKBPJS">yes</entry>
-    <entry key="AKTIFKANRESEPITERDOKTER">yes</entry>
-    <entry key="KODEPPKAPOTEKBPJS">08/HhXNN0CXIF5S+HRdJHw==</entry>
     <entry key="URLAPIICARE">https://apijkn-dev.bpjs-kesehatan.go.id/ihs_dev/api/rs</entry>
     <entry key="SECRETKEYAPIICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -111,7 +109,7 @@
     <entry key="BASENOREG">booking</entry>
     <entry key="URUTNOREG">dokter + poli</entry>
     <entry key="JADWALDOKTERDIREGISTRASI">nonaktif</entry>    
-    <entry key="KUNCIDOKTERRANAP">cj8o6eBdSn+TiUrBgGoElQ==</entry>    
+    <entry key="KUNCIDOKTERRANAP">88tE0ZUstuza/UrtfBYkFA==</entry>    
     <entry key="IPPRINTERTRACER">10.50.150.57/label2</entry>
     <entry key="URLAPIINHEALTH">http://development.inhealth.co.id/pelkesws2</entry>
     <entry key="TOKENINHEALTH">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -172,10 +170,10 @@
     <entry key="PORTSLIMS">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USERSLIMS">kMR3WfAwUK6MbhCyydxa0g==</entry>
     <entry key="PASSLIMS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLORTHANC">http://192.168.100.61</entry>
-    <entry key="PORTORTHANC">gie5pRePkRsFe+dOh84P4A==</entry>
-    <entry key="USERORTHANC">YX9AA54DRJuifeww+BNvyQ==</entry>
-    <entry key="PASSORTHANC">M1F7vyMZ6Nn0vcv47WLHoA==</entry>
+    <entry key="URLORTHANC">http://localhost</entry>
+    <entry key="PORTORTHANC">4xOkFa6gxM9Bc/dkpEtJ+A==</entry>
+    <entry key="USERORTHANC">V9bi0P2HgAq8Nn8lUyS6/A==</entry>
+    <entry key="PASSORTHANC">V9bi0P2HgAq8Nn8lUyS6/A==</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANPIHAKKETIGA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANPAJAK">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPATHPEMBAYARANVIRTUALACCOUNT">l4nh5eVYrLAER/I2A4b3Tw==</entry>
@@ -185,44 +183,27 @@
     <entry key="SFTPMANDIRIPORT">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIUSER">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="SFTPMANDIRIPAS">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLAPIESIGN">https://esign.konoha.go.id/api/sign/pdf</entry>
-    <entry key="USERNAMEAPIESIGN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="PASSAPIESIGN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLAKSESFILEESIGN">http://localhost/esign/jadikanpdf</entry>
-    <entry key="SFTPFILEESIGNHOST">CQ5Kfm5ILnLOu+e6AFp0cF/pXKrdgCX8xaM0HTMb1Fk=</entry>
-    <entry key="SFTPFILEESIGNPORT">fvvu/wqeVHAys9jWVltWsA==</entry>
-    <entry key="SFTPFILEESIGNUSER">bAXbb94guPz+B30Ics1QDw==</entry>
-    <entry key="SFTPFILEESIGNPAS">5/E2gzGZ+SOG9tal860JJ3/7uyy7V7L3Q8zIw6oL25w=</entry>
-    <entry key="SFTPFILEESIGNFOLDER">bsX283RtohX0NO9hyh+GAIKiafyYwSe7hhw/HWdydQQ=</entry>
-    <entry key="URLAPISERTISIGN">https://api-stag.sertisign.id/v2/poa/signing-qr</entry>
-    <entry key="APIKEYSERTISIGN">Qvbk11KTaeMu98WE5RITeYdqppEJrrfzN7HisMpfOheYGYPFOLs1CW4idp8VpXV1</entry>
-    <entry key="URLDOKUMENSERTISIGN">https://sertisign.com/webhook</entry>
-    <entry key="HOSTDUTAPARKING">5k7+C7EnUw9nUv2Nix+DBA==</entry>
-    <entry key="DATABASEDUTAPARKING">PvMIHTTN+Nnyzfbt2jiUvg==</entry>
-    <entry key="PORTDUTAPARKING">nioxtijcpDaKSUiUiP5FAg==</entry>
-    <entry key="USERDUTAPARKING">kMR3WfAwUK6MbhCyydxa0g==</entry>
-    <entry key="PASDUTAPARKING">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     
-        <!-- WA GATEWAY -->
+    <!-- E-KLAIM INA-CBG -->
+    <entry key="URLEKLAIM">http://192.168.100.20/E-Klaim/ws.php</entry>
+    <entry key="KEYEKLAIM">ff1b0fc759b1a236cc840d5822ca54e07a37ff47bb620749d7dee74ebff37db1</entry>
+    <entry key="KODERSEKLAIM">DS</entry>
+    
+    <!-- WA GATEWAY -->
     <entry key="WAGATEWAY">maskofa</entry>  <!--fonnte,maskofa-->
-    <entry key="HOSTWA">p/0/a4TiRunNPuN2jJ1PMw==</entry>
+    <entry key="HOSTWA">CULQlTLsM2u4TmC+l9iYOQ==</entry>
     <entry key="DATABASEWA">SW53AdUnTeEBuUEb5iCY0Q==</entry>
     <entry key="PORTWA">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USERWA">g+Vh8jiK3rNds9uXplREow==</entry>
     <entry key="PASWA">ISJQltyg+yNjstNka/nlQA==</entry>
     <entry key="FOLDERFILEWA">WA_GATEWAY/media</entry>
     <entry key="NOTIFWA">yes</entry>
-    <entry key="NOTIFWALAB">no</entry>
-    <entry key="NOTIFWARAD">no</entry>
-    <entry key="NOTIFWAADMISI">no</entry>
-    <entry key="NOTIFWAPENGAJUAN">yes</entry>
-    <entry key="NOTIFWARESEPPETU">yes</entry>
-    <entry key="IDGROUPWA">6285702295281@g.us</entry>
-    <entry key="IDGROUPWAADMISI">6285702295281-6285702295281@g.us</entry>
+    <entry key="NOTIFWAPASIEN">yes</entry>
+    <entry key="NOTIFWALAB">yes</entry>
+    <entry key="NOTIFWARAD">yes</entry>
+    <entry key="NOTIFWAADMISI">yes</entry>
+    <entry key="IDGROUPWA">120363390345236466@g.us</entry>
+<!--    <entry key="IDGROUPWAADMISI">6285702295281-6285702295281@g.us</entry>-->
     <entry key="IDGROUPWALAB">120363390345236466@g.us</entry>    
     <entry key="IDGROUPWARAD">120363406305026539@g.us</entry>
-    <entry key="IDGROUPWAPENGAJUAN">120363408748178718@g.us</entry>
-    <entry key="NOTIFWAPASIEN">yes</entry>
-    <entry key="IDGROUPWARESEPPETU">120363420784276000@g.us</entry>
-    <entry key="TOKENFONTE">mu1WNcfNaMzKigfZajVU</entry>
 </properties>

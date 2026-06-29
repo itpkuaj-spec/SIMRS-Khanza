@@ -291,6 +291,7 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
         ChkJln.setSelected(true);
         jam();        
         
+        dokter=new DlgCariDokter(null,false);
         dokter.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {}
@@ -1557,7 +1558,9 @@ public final class DlgPermintaanLaboratorium extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnPrintKeyPressed
 
     private void BtnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnKeluarActionPerformed
-        dokter.dispose();
+        if (dokter != null) {
+            dokter.dispose();
+        }
         dispose();
 }//GEN-LAST:event_BtnKeluarActionPerformed
 
@@ -1643,25 +1646,13 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_KodePerujukKeyPressed
 
     private void btnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDokterActionPerformed
-        if (dokter == null || !dokter.isDisplayable()) {
+        if (dokter == null) {
             dokter=new DlgCariDokter(null,false);
             dokter.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-            dokter.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    if(dokter.getTable().getSelectedRow()!= -1){
-                        KodePerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),0).toString());
-                        NmPerujuk.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                        KodePerujuk.requestFocus();
-                    }  
-                    dokter=null;
-                }
-            });
-            dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
-            dokter.setLocationRelativeTo(internalFrame1);
         }
+        dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
+        dokter.setLocationRelativeTo(internalFrame1);
             
-        if (dokter == null) return;
         if (!dokter.isVisible()) {
             dokter.isCek();    
             dokter.emptTeks();
@@ -2188,6 +2179,12 @@ private void BtnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         } catch (Exception e) {
             System.out.println("Error Detail : "+e);
         }
+        // Auto-centang semua baris di tbDetailPK setelah semua data selesai dimuat
+        SwingUtilities.invokeLater(() -> {
+            for (int r = 0; r < tbDetailPK.getRowCount(); r++) {
+                tbDetailPK.setValueAt(true, r, 0);
+            }
+        });
     }
     
     private void tampildetailmb() { 

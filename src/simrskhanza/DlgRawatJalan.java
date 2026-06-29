@@ -11834,10 +11834,28 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         isForm3(); 
         ChkInput3.setSelected(true);
         isForm4();
-        TabRawatMouseClicked(null);
-        //tambahan
-        icare_otomatis();
-        tampil_notif_rujukan();
+        // Tambahan IT: Menggunakan Timer 300ms untuk menunda query tabel (tampil data)
+        // agar form Tindakan Rawat Jalan bisa langsung muncul di layar tanpa lag/freeze
+        javax.swing.Timer timerTampil = new javax.swing.Timer(300, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                TabRawatMouseClicked(null);
+            }
+        });
+        timerTampil.setRepeats(false);
+        timerTampil.start();
+        
+        // Tambahan IT: Timer 5 detik untuk memberi waktu form terender sempurna 
+        // sebelum menjalankan pengecekan I-Care BPJS dan Notif Rujukan di latar belakang
+        javax.swing.Timer timerDelay = new javax.swing.Timer(5000, new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent e) {
+                icare_otomatis();
+                tampil_notif_rujukan();
+            }
+        });
+        timerDelay.setRepeats(false);
+        timerDelay.start();
         //akhir
     }
     
@@ -15220,7 +15238,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         private void icare_otomatis(){
         //tambahan
         // === Tambahan buka form ICareRiwayatPerawatan jika dokter sudah di-mapping BPJS ===
-                javax.swing.Timer timer = new javax.swing.Timer(2000, e -> {
+                javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
                
                 // === Cek apakah jenis bayar adalah BPJS ===
                    String jenisBayar = Sequel.cariIsi(
@@ -15268,49 +15286,6 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         timer.start();           // baru kemudian dijalankan
     }
      
-   
-//    private String ambilTglRujukan(String nomorKartu) {
-//        String tanggal = ""; 
-//        try {
-//            // 1. Bersihkan URL
-//            String baseUrl = koneksiDB.URLAPIBPJS().trim();
-//            if (baseUrl.endsWith("/")) {
-//                baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-//            }
-//            String alamatLengkap = baseUrl + "/Rujukan/Peserta/" + nomorKartu.trim();
-//
-//            // 2. Siapkan Header dengan teliti
-//            headers = new HttpHeaders();
-//            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON)); // Tambahkan ini
-//            headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//            headers.add("X-Cons-ID", koneksiDB.CONSIDAPIBPJS());
-//            String utcData = String.valueOf(api.GetUTCdatetimeAsString());
-//            headers.add("X-Timestamp", utcData);
-//            headers.add("X-Signature", api.getHmac(utcData));
-//            headers.add("user_key", koneksiDB.USERKEYAPIBPJS());
-//
-//            // 3. Eksekusi
-//            requestEntity = new HttpEntity(headers);
-//            ResponseEntity <String> responseEntity = api.getRest().exchange(alamatLengkap, HttpMethod.GET, requestEntity, String.class);
-//
-//            // Cek jika response body adalah JSON
-//            if (responseEntity.getBody().trim().startsWith("{")) {
-//                root = mapper.readTree(responseEntity.getBody());
-//                if (root.path("metaData").path("code").asText().equals("200")) {
-//                    response = mapper.readTree(api.Decrypt(root.path("response").asText(), utcData)).path("rujukan");
-//                    tanggal = response.path("tglKunjungan").asText();
-//                } else {
-//                    System.out.println("BPJS Code: " + root.path("metaData").path("message").asText());
-//                }
-//            } else {
-//                System.out.println("Bukan JSON! Response: " + responseEntity.getBody());
-//            }
-//        } catch (Exception ex) {
-//            System.out.println("Error Detail: " + ex.getMessage());
-//        }
-//        return tanggal;
-//    }
     private String cekStatusRujukan(String nomorKartu) {
         String pesanBPJS = ""; 
         try {
@@ -15348,54 +15323,6 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }
     
     private void tampil_notif_rujukan(){
-        
-        // 1. Ambil Nomor Kartu Pasien berdasarkan No RM yang sedang dibuka
-//    String nomorkartu = Sequel.cariIsi("select no_peserta from pasien where no_rkm_medis = '" + TNoRM.getText() + "'");
-//        if (!nomorkartu.isEmpty()) {
-//            // 2. Panggil fungsi API tadi
-//String tglRujukan = ambilTglRujukan(nomorkartu);
-//
-//            if (!tglRujukan.equals("")) {
-//                try {
-//                    // 1. Format tanggal BPJS adalah yyyy-MM-dd
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//                    LocalDate tanggalKunjungan = LocalDate.parse(tglRujukan, formatter);
-//                    LocalDate tanggalSekarang = LocalDate.now();
-//
-//                    // 2. Hitung selisih hari
-//                    long selisihHari = ChronoUnit.DAYS.between(tanggalKunjungan, tanggalSekarang);
-//
-//                    // 3. Tentukan tanggal kadaluwarsa (Tgl Kunjungan + 90 hari)
-//                    LocalDate tglKadaluwarsa = tanggalKunjungan.plusDays(90);
-//                    String tglHabisStr = tglKadaluwarsa.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-//
-//                    // 4. Logika Notifikasi
-//                    if (selisihHari >= 90) {
-//                        JOptionPane.showMessageDialog(null, 
-//                            "<html><p style='width: 250px; color: red;'><b>PERINGATAN: RUJUKAN HABIS!</b><br>" +
-//                            "Rujukan sudah melewati masa berlaku 90 hari.<br>" +
-//                            "Habis pada tanggal: <b>" + tglHabisStr + "</b></p></html>", 
-//                            "Masa Berlaku Rujukan", 
-//                            JOptionPane.ERROR_MESSAGE);
-//                    } else if (selisihHari >= 80) {
-//                        // Notifikasi tambahan jika hampir habis (H-10)
-//                        JOptionPane.showMessageDialog(null, 
-//                            "<html><p style='width: 250px; color: orange;'><b>PERINGATAN: RUJUKAN SEGERA HABIS</b><br>" +
-//                            "Masa berlaku tinggal " + (90 - selisihHari) + " hari lagi.<br>" +
-//                            "Akan habis pada: <b>" + tglHabisStr + "</b></p></html>", 
-//                            "Informasi Rujukan", 
-//                            JOptionPane.WARNING_MESSAGE);
-//                    } else {
-//                        // Jika masih jauh dari 90 hari, tampilkan info normal
-//                        JOptionPane.showMessageDialog(null, 
-//                            "Rujukan Valid. Masa berlaku sampai: " + tglHabisStr);
-//                    }
-//
-//                } catch (Exception e) {
-//                    System.out.println("Error hitung selisih tanggal: " + e.getMessage());
-//                }
-//            }
-//        }
 
         // 1. Ambil kode user yang sedang login
         String kodeLogin = akses.getkode();

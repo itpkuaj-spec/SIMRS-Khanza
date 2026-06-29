@@ -3051,7 +3051,10 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                                  "}";
                                 com.fasterxml.jackson.databind.JsonNode responseNode = api.postKlaim(payload);
                                 if (responseNode != null && responseNode.path("metadata").path("code").asText().equals("200")) {
-                                    String base64Pdf = responseNode.path("response").asText();
+                                    String base64Pdf = responseNode.path("data").asText();
+                                    if (base64Pdf.trim().isEmpty()) {
+                                        base64Pdf = responseNode.path("response").asText(); // fallback
+                                    }
                                     java.io.File tempPdf = new java.io.File("klaim_individual_" + noSep + ".pdf");
                                     try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempPdf)) {
                                         fos.write(java.util.Base64.getDecoder().decode(base64Pdf));

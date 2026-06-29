@@ -7813,6 +7813,11 @@ private void MnDataRalanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                             @Override
                             public void windowClosed(WindowEvent e) {
                                 formrawatjalan=null;
+                                if(TabRawat.getSelectedIndex()==0){
+                                    tampilkasir();
+                                }else if(TabRawat.getSelectedIndex()==1){
+                                    tampilkasir2();
+                                }
                             }
                         });
 
@@ -9438,6 +9443,11 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
                             @Override
                             public void windowClosed(WindowEvent e) {
                                 formrawatjalan=null;
+                                if(TabRawat.getSelectedIndex()==0){
+                                    tampilkasir();
+                                }else if(TabRawat.getSelectedIndex()==1){
+                                    tampilkasir2();
+                                }
                             }
                         });
 
