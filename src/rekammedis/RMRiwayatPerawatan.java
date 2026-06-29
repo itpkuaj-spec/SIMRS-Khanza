@@ -3055,14 +3055,26 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                     if (base64Pdf.trim().isEmpty()) {
                                         base64Pdf = responseNode.path("response").asText(); // fallback
                                     }
-                                    java.io.File tempPdf = new java.io.File("klaim_individual_" + noSep + ".pdf");
-                                    try (java.io.FileOutputStream fos = new java.io.FileOutputStream(tempPdf)) {
-                                        fos.write(java.util.Base64.getDecoder().decode(base64Pdf));
+                                    try {
+                                        byte[] pdfBytes = java.util.Base64.getDecoder().decode(base64Pdf);
+                                        org.apache.pdfbox.pdmodel.PDDocument document = org.apache.pdfbox.pdmodel.PDDocument.load(pdfBytes);
+                                        org.apache.pdfbox.rendering.PDFRenderer pdfRenderer = new org.apache.pdfbox.rendering.PDFRenderer(document);
+                                        StringBuilder imagesHtml = new StringBuilder();
+                                        imagesHtml.append("<br><hr><br><center><h2>BERKAS INDIVIDUAL E-KLAIM INACBG</h2></center><center>");
+                                        for (int page = 0; page < document.getNumberOfPages(); ++page) {
+                                            java.awt.image.BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 150, org.apache.pdfbox.rendering.ImageType.RGB);
+                                            java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                                            javax.imageio.ImageIO.write(bim, "png", baos);
+                                            String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
+                                            imagesHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
+                                                      .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
+                                        }
+                                        imagesHtml.append("</center>");
+                                        document.close();
+                                        teksHTML = teksHTML.replace("</body>", imagesHtml.toString() + "</body>");
+                                    } catch (Exception e) {
+                                        System.out.println("Gagal konversi PDF E-Klaim ke Image: " + e);
                                     }
-                                    String fullPdfUrl = tempPdf.getAbsolutePath().replace("\\", "/");
-                                    String iframe = "<br><hr><br><center><h2>BERKAS INDIVIDUAL E-KLAIM INACBG</h2></center>" 
-                                                  + "<iframe src=\"file:///" + fullPdfUrl + "\" width=\"100%\" height=\"1000px\" style=\"border: none;\"></iframe>";
-                                    teksHTML = teksHTML.replace("</body>", iframe + "</body>");
                                 }
                                 this.setCursor(Cursor.getDefaultCursor());
                             } catch (Exception e) {
