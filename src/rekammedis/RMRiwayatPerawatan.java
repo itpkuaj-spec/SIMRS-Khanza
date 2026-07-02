@@ -3169,6 +3169,63 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             } catch (Exception e) {
                                 System.out.println("Gagal render SPRI ke Image: " + e);
                             }
+                            
+                            try {
+                                String queryPersetujuan = "select surat_persetujuan_rawat_inap.no_surat, surat_persetujuan_rawat_inap.nip, petugas.nama, surat_persetujuan_rawat_inap.tanggal " +
+                                                          "from surat_persetujuan_rawat_inap inner join petugas on surat_persetujuan_rawat_inap.nip=petugas.nip " +
+                                                          "where surat_persetujuan_rawat_inap.no_rawat='" + NoRawat.getText().trim() + "'";
+                                java.sql.PreparedStatement psPersetujuan = koneksi.prepareStatement(queryPersetujuan);
+                                java.sql.ResultSet rsPersetujuan = psPersetujuan.executeQuery();
+                                while (rsPersetujuan.next()) {
+                                    String noSuratPersetujuan = rsPersetujuan.getString("no_surat");
+                                    String lokasifile = Sequel.cariIsi("select photo from surat_persetujuan_rawat_inap_pembuat_pernyataan where no_surat=?", noSuratPersetujuan);
+                                    if (lokasifile != null && !lokasifile.equals("")) {
+                                        java.util.Map<String, Object> paramPersetujuan = new java.util.HashMap<>();
+                                        paramPersetujuan.put("namars", fungsi.akses.getnamars());
+                                        paramPersetujuan.put("alamatrs", fungsi.akses.getalamatrs());
+                                        paramPersetujuan.put("kotars", fungsi.akses.getkabupatenrs());
+                                        paramPersetujuan.put("propinsirs", fungsi.akses.getpropinsirs());
+                                        paramPersetujuan.put("kontakrs", fungsi.akses.getkontakrs());
+                                        paramPersetujuan.put("emailrs", fungsi.akses.getemailrs());
+                                        paramPersetujuan.put("logo", Sequel.cariGambar("select setting.logo from setting"));
+                                        paramPersetujuan.put("photo", "http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/persetujuanrawatinap/" + lokasifile);
+                                        String nipPersetujuan = rsPersetujuan.getString("nip");
+                                        String namaPetugasPersetujuan = rsPersetujuan.getString("nama");
+                                        String fingerPersetujuan = Sequel.cariIsi("select sha1(sidikjari.sidikjari) from sidikjari inner join pegawai on pegawai.id=sidikjari.id where pegawai.nik=?", nipPersetujuan);
+                                        String tgl = rsPersetujuan.getString("tanggal");
+                                        if (tgl.length() > 10) tgl = tgl.substring(0, 10);
+                                        paramPersetujuan.put("finger", "Dikeluarkan di " + fungsi.akses.getnamars() + ", Kabupaten/Kota " + fungsi.akses.getkabupatenrs() + "\nDitandatangani secara elektronik oleh " + namaPetugasPersetujuan + "\nID " + (fingerPersetujuan.equals("") ? nipPersetujuan : fingerPersetujuan) + "\n" + Valid.SetTgl3(tgl));
+
+                                        String qryDetailPersetujuan = "select reg_periksa.no_rawat,pasien.no_rkm_medis,pasien.nm_pasien,pasien.jk,pasien.tgl_lahir,pasien.pekerjaan,reg_periksa.umurdaftar,reg_periksa.tgl_registrasi,reg_periksa.jam_reg,reg_periksa.sttsumur,pasien.tmp_lahir,concat(pasien.alamat,', ',kelurahan.nm_kel,', ',kecamatan.nm_kec,', ',kabupaten.nm_kab,', ',propinsi.nm_prop) as alamat_pasien,"+
+                                            "surat_persetujuan_rawat_inap.tanggal,surat_persetujuan_rawat_inap.nama_pj,surat_persetujuan_rawat_inap.no_ktppj,surat_persetujuan_rawat_inap.pendidikan_pj,surat_persetujuan_rawat_inap.alamatpj,surat_persetujuan_rawat_inap.no_telppj,surat_persetujuan_rawat_inap.ruang,surat_persetujuan_rawat_inap.kelas,surat_persetujuan_rawat_inap.hubungan,surat_persetujuan_rawat_inap.hak_kelas,"+
+                                            "surat_persetujuan_rawat_inap.nama_alamat_keluarga_terdekat,surat_persetujuan_rawat_inap.bayar_secara,surat_persetujuan_rawat_inap.nip,petugas.nama,surat_persetujuan_rawat_inap.no_surat from surat_persetujuan_rawat_inap inner join reg_periksa on surat_persetujuan_rawat_inap.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                                            "inner join petugas on surat_persetujuan_rawat_inap.nip=petugas.nip inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join propinsi on pasien.kd_prop=propinsi.kd_prop "+
+                                            "where surat_persetujuan_rawat_inap.no_surat='"+noSuratPersetujuan+"'";
+                                        
+                                        java.sql.PreparedStatement psDetailPersetujuan = koneksi.prepareStatement(qryDetailPersetujuan);
+                                        java.sql.ResultSet rsDetailPersetujuan = psDetailPersetujuan.executeQuery();
+                                        net.sf.jasperreports.engine.JRResultSetDataSource rsDsPersetujuan = new net.sf.jasperreports.engine.JRResultSetDataSource(rsDetailPersetujuan);
+                                        java.io.InputStream reportStreamPersetujuan = this.getClass().getClassLoader().getResourceAsStream("report/rptSuratPersetujuanPasienRawatInap.jasper");
+                                        if (reportStreamPersetujuan != null) {
+                                            net.sf.jasperreports.engine.JasperPrint jpPersetujuan = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportStreamPersetujuan, paramPersetujuan, rsDsPersetujuan);
+                                            for (int pageIdx = 0; pageIdx < jpPersetujuan.getPages().size(); pageIdx++) {
+                                                java.awt.image.BufferedImage bim = (java.awt.image.BufferedImage) net.sf.jasperreports.engine.JasperPrintManager.printPageToImage(jpPersetujuan, pageIdx, 1.5f);
+                                                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                                                javax.imageio.ImageIO.write(bim, "png", baos);
+                                                String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
+                                                extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
+                                                          .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
+                                            }
+                                        }
+                                        if (psDetailPersetujuan != null) { psDetailPersetujuan.close(); }
+                                        if (rsDetailPersetujuan != null) { rsDetailPersetujuan.close(); }
+                                    }
+                                }
+                                if (rsPersetujuan != null) { rsPersetujuan.close(); }
+                                if (psPersetujuan != null) { psPersetujuan.close(); }
+                            } catch (Exception e) {
+                                System.out.println("Gagal render Surat Persetujuan Rawat Inap ke Image: " + e);
+                            }
 
                             if (extraHtml.length() > 0) {
                                 teksHTML = teksHTML.replaceFirst("<html>", "<html>" + extraHtml.toString());
