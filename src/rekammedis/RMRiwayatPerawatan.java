@@ -3060,7 +3060,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                         org.apache.pdfbox.pdmodel.PDDocument document = org.apache.pdfbox.pdmodel.PDDocument.load(pdfBytes);
                                         org.apache.pdfbox.rendering.PDFRenderer pdfRenderer = new org.apache.pdfbox.rendering.PDFRenderer(document);
                                         StringBuilder imagesHtml = new StringBuilder();
-                                        imagesHtml.append("<br><hr><br><center>");
+                                        imagesHtml.append("<center>");
                                         for (int page = 0; page < document.getNumberOfPages(); ++page) {
                                             java.awt.image.BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 150, org.apache.pdfbox.rendering.ImageType.RGB);
                                             java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
@@ -3069,9 +3069,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                             imagesHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
                                                       .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
                                         }
-                                        imagesHtml.append("</center>");
+                                        imagesHtml.append("</center><br><hr><br>");
                                         document.close();
-                                        teksHTML = teksHTML.replace("</body>", imagesHtml.toString() + "</body>");
+                                        teksHTML = teksHTML.replace("<html>", "<html>" + imagesHtml.toString());
                                     } catch (Exception e) {
                                         System.out.println("Gagal konversi PDF E-Klaim ke Image: " + e);
                                     }
