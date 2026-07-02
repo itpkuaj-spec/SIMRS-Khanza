@@ -3095,8 +3095,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                 param.put("parameter", noSep);
                                 
                                 String rptName = "Ralan".equals(statusLanjut) ? "rptBridgingSEP5.jasper" : "rptBridgingSEP6.jasper";
-                                java.sql.Connection connect = fungsi.koneksi.DBC.koneksi();
-                                net.sf.jasperreports.engine.JasperPrint jasperPrint = net.sf.jasperreports.engine.JasperFillManager.fillReport("./report/" + rptName, param, connect);
+                                net.sf.jasperreports.engine.JasperPrint jasperPrint = net.sf.jasperreports.engine.JasperFillManager.fillReport("./report/" + rptName, param, koneksi);
                                 
                                 extraHtml.append("<center>");
                                 for (int page = 0; page < jasperPrint.getPages().size(); ++page) {
