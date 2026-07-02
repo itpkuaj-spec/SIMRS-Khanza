@@ -3117,7 +3117,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             }
 
                             try {
-                                String querySpri = "select bridging_surat_pri_bpjs.no_surat, bridging_surat_pri_bpjs.tgl_rencana, bridging_surat_pri_bpjs.kd_dokter_bpjs, bridging_surat_pri_bpjs.nm_dokter_bpjs from bridging_surat_pri_bpjs where no_rawat='" + NoRawat.getText().trim() + "'";
+                                String querySpri = "select bridging_surat_pri_bpjs.no_surat, bridging_surat_pri_bpjs.tgl_rencana, bridging_surat_pri_bpjs.kd_dokter_bpjs, bridging_surat_pri_bpjs.nm_dokter_bpjs from bridging_surat_pri_bpjs where no_rawat='" + norawat + "'";
                                 java.sql.PreparedStatement psSpri = koneksi.prepareStatement(querySpri);
                                 java.sql.ResultSet rsSpri = psSpri.executeQuery();
                                 while (rsSpri.next()) {
@@ -3173,7 +3173,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             try {
                                 String queryPersetujuan = "select surat_persetujuan_rawat_inap.no_surat, surat_persetujuan_rawat_inap.nip, petugas.nama, surat_persetujuan_rawat_inap.tanggal " +
                                                           "from surat_persetujuan_rawat_inap inner join petugas on surat_persetujuan_rawat_inap.nip=petugas.nip " +
-                                                          "where surat_persetujuan_rawat_inap.no_rawat='" + NoRawat.getText().trim() + "'";
+                                                          "where surat_persetujuan_rawat_inap.no_rawat='" + norawat + "'";
                                 java.sql.PreparedStatement psPersetujuan = koneksi.prepareStatement(queryPersetujuan);
                                 java.sql.ResultSet rsPersetujuan = psPersetujuan.executeQuery();
                                 while (rsPersetujuan.next()) {
