@@ -3130,7 +3130,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                     paramSpri.put("kontakrs", fungsi.akses.getkontakrs());
                                     paramSpri.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar")); 
                                     paramSpri.put("parameter", noSurat);
-                                    String finger = "Dikeluarkan di "+fungsi.akses.getnamars()+", Kabupaten/Kota "+fungsi.akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rsSpri.getString("nm_dokter_bpjs")+"\nID "+rsSpri.getString("kd_dokter_bpjs")+"\n"+fungsi.Valid.SetTgl3(rsSpri.getString("tgl_rencana"));
+                                    String finger = "Dikeluarkan di "+fungsi.akses.getnamars()+", Kabupaten/Kota "+fungsi.akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rsSpri.getString("nm_dokter_bpjs")+"\nID "+rsSpri.getString("kd_dokter_bpjs")+"\n"+Valid.SetTgl3(rsSpri.getString("tgl_rencana"));
                                     paramSpri.put("finger", finger);
                                     
                                     String qryDetailSpri = "select bridging_surat_pri_bpjs.no_rawat,bridging_surat_pri_bpjs.no_kartu,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,"+
