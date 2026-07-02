@@ -3116,6 +3116,60 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                 System.out.println("Gagal render SEP ke Image: " + e);
                             }
 
+                            try {
+                                String querySpri = "select bridging_surat_pri_bpjs.no_surat, bridging_surat_pri_bpjs.tgl_rencana, bridging_surat_pri_bpjs.kd_dokter_bpjs, bridging_surat_pri_bpjs.nm_dokter_bpjs from bridging_surat_pri_bpjs where no_rawat='" + NoRawat.getText().trim() + "'";
+                                java.sql.PreparedStatement psSpri = koneksi.prepareStatement(querySpri);
+                                java.sql.ResultSet rsSpri = psSpri.executeQuery();
+                                while (rsSpri.next()) {
+                                    String noSurat = rsSpri.getString("no_surat");
+                                    java.util.Map<String, Object> paramSpri = new java.util.HashMap<>();
+                                    paramSpri.put("namars", fungsi.akses.getnamars());
+                                    paramSpri.put("alamatrs", fungsi.akses.getalamatrs());
+                                    paramSpri.put("kotars", fungsi.akses.getkabupatenrs());
+                                    paramSpri.put("propinsirs", fungsi.akses.getpropinsirs());
+                                    paramSpri.put("kontakrs", fungsi.akses.getkontakrs());
+                                    paramSpri.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar")); 
+                                    paramSpri.put("parameter", noSurat);
+                                    String finger = "Dikeluarkan di "+fungsi.akses.getnamars()+", Kabupaten/Kota "+fungsi.akses.getkabupatenrs()+"\nDitandatangani secara elektronik oleh "+rsSpri.getString("nm_dokter_bpjs")+"\nID "+rsSpri.getString("kd_dokter_bpjs")+"\n"+fungsi.Valid.SetTgl3(rsSpri.getString("tgl_rencana"));
+                                    paramSpri.put("finger", finger);
+                                    
+                                    String qryDetailSpri = "select bridging_surat_pri_bpjs.no_rawat,bridging_surat_pri_bpjs.no_kartu,reg_periksa.no_rkm_medis,pasien.nm_pasien,pasien.tgl_lahir,"+
+                                                      "pasien.jk,bridging_surat_pri_bpjs.diagnosa,bridging_surat_pri_bpjs.tgl_surat,bridging_surat_pri_bpjs.no_surat,"+
+                                                      "bridging_surat_pri_bpjs.tgl_rencana,bridging_surat_pri_bpjs.kd_dokter_bpjs,bridging_surat_pri_bpjs.nm_dokter_bpjs,"+
+                                                      "bridging_surat_pri_bpjs.kd_poli_bpjs,bridging_surat_pri_bpjs.nm_poli_bpjs from reg_periksa inner join bridging_surat_pri_bpjs "+
+                                                      "on bridging_surat_pri_bpjs.no_rawat=reg_periksa.no_rawat inner join pasien on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
+                                                      "where bridging_surat_pri_bpjs.no_surat='"+noSurat+"'";
+                                    java.sql.PreparedStatement psDetail = koneksi.prepareStatement(qryDetailSpri);
+                                    java.sql.ResultSet rsDetail = psDetail.executeQuery();
+                                    net.sf.jasperreports.engine.JRResultSetDataSource rsdtSpri = new net.sf.jasperreports.engine.JRResultSetDataSource(rsDetail);
+                                    
+                                    net.sf.jasperreports.engine.JasperPrint jpSpri = net.sf.jasperreports.engine.JasperFillManager.fillReport("./report/rptBridgingSuratPRI2.jasper", paramSpri, rsdtSpri);
+                                    
+                                    extraHtml.append("<center>");
+                                    for (int page = 0; page < jpSpri.getPages().size(); ++page) {
+                                        java.awt.Image image = net.sf.jasperreports.engine.JasperPrintManager.printPageToImage(jpSpri, page, 1.5f);
+                                        java.awt.image.BufferedImage bim = new java.awt.image.BufferedImage(image.getWidth(null), image.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                                        java.awt.Graphics2D g2 = bim.createGraphics();
+                                        g2.drawImage(image, 0, 0, java.awt.Color.WHITE, null);
+                                        g2.dispose();
+                                        
+                                        java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                                        javax.imageio.ImageIO.write(bim, "png", baos);
+                                        String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
+                                        extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
+                                                  .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
+                                    }
+                                    extraHtml.append("</center><br><hr><br><br><br><br>");
+                                    
+                                    if (rsDetail != null) { rsDetail.close(); }
+                                    if (psDetail != null) { psDetail.close(); }
+                                }
+                                if (rsSpri != null) { rsSpri.close(); }
+                                if (psSpri != null) { psSpri.close(); }
+                            } catch (Exception e) {
+                                System.out.println("Gagal render SPRI ke Image: " + e);
+                            }
+
                             if (extraHtml.length() > 0) {
                                 teksHTML = teksHTML.replaceFirst("<html>", "<html>" + extraHtml.toString());
                             }
