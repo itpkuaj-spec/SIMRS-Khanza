@@ -3038,8 +3038,10 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                     if (R4.isSelected() && !NoRawat.getText().trim().equals("")) {
                         String noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + NoRawat.getText().trim() + "'");
                         if (noSep != null && !noSep.trim().equals("")) {
+                            StringBuilder extraHtml = new StringBuilder();
+                            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                            
                             try {
-                                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
                                 bridging.ApiEKlaim api = new bridging.ApiEKlaim();
                                 String payload = "{\n" +
                                                  "  \"metadata\": {\n" +
@@ -3059,28 +3061,66 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                         byte[] pdfBytes = java.util.Base64.getDecoder().decode(base64Pdf);
                                         org.apache.pdfbox.pdmodel.PDDocument document = org.apache.pdfbox.pdmodel.PDDocument.load(pdfBytes);
                                         org.apache.pdfbox.rendering.PDFRenderer pdfRenderer = new org.apache.pdfbox.rendering.PDFRenderer(document);
-                                        StringBuilder imagesHtml = new StringBuilder();
-                                        imagesHtml.append("<center>");
+                                        extraHtml.append("<center>");
                                         for (int page = 0; page < document.getNumberOfPages(); ++page) {
                                             java.awt.image.BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 150, org.apache.pdfbox.rendering.ImageType.RGB);
                                             java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
                                             javax.imageio.ImageIO.write(bim, "png", baos);
                                             String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
-                                            imagesHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
+                                            extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
                                                       .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
                                         }
-                                        imagesHtml.append("</center><br><hr><br>");
+                                        extraHtml.append("</center><br><hr><br><br><br><br>");
                                         document.close();
-                                        teksHTML = teksHTML.replace("<html>", "<html>" + imagesHtml.toString());
                                     } catch (Exception e) {
                                         System.out.println("Gagal konversi PDF E-Klaim ke Image: " + e);
                                     }
                                 }
-                                this.setCursor(Cursor.getDefaultCursor());
                             } catch (Exception e) {
                                 System.out.println("Gagal tarik Berkas Individual E-Klaim: " + e);
-                                this.setCursor(Cursor.getDefaultCursor());
                             }
+
+                            try {
+                                String statusLanjut = Sequel.cariIsi("select status_lanjut from reg_periksa where no_rawat='" + NoRawat.getText().trim() + "'");
+                                java.util.Map<String, Object> param = new java.util.HashMap<>();
+                                param.put("namars", fungsi.akses.getnamars());
+                                param.put("alamatrs", fungsi.akses.getalamatrs());
+                                param.put("kotars", fungsi.akses.getkabupatenrs());
+                                param.put("propinsirs", fungsi.akses.getpropinsirs());
+                                param.put("kontakrs", fungsi.akses.getkontakrs());
+                                param.put("norawat", NoRawat.getText().trim());
+                                param.put("prb", Sequel.cariIsi("select bpjs_prb.prb from bpjs_prb where bpjs_prb.no_sep='" + noSep + "'"));
+                                param.put("noreg", Sequel.cariIsi("select no_reg from reg_periksa where no_rawat='" + NoRawat.getText().trim() + "'"));
+                                param.put("logo", Sequel.cariGambar("select gambar.bpjs from gambar")); 
+                                param.put("parameter", noSep);
+                                
+                                String rptName = "Ralan".equals(statusLanjut) ? "rptBridgingSEP5.jasper" : "rptBridgingSEP6.jasper";
+                                java.sql.Connection connect = fungsi.koneksi.DBC.koneksi();
+                                net.sf.jasperreports.engine.JasperPrint jasperPrint = net.sf.jasperreports.engine.JasperFillManager.fillReport("./report/" + rptName, param, connect);
+                                
+                                extraHtml.append("<center>");
+                                for (int page = 0; page < jasperPrint.getPages().size(); ++page) {
+                                    java.awt.Image image = net.sf.jasperreports.engine.JasperPrintManager.printPageToImage(jasperPrint, page, 1.5f);
+                                    java.awt.image.BufferedImage bim = new java.awt.image.BufferedImage(image.getWidth(null), image.getHeight(null), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                                    java.awt.Graphics2D g2 = bim.createGraphics();
+                                    g2.drawImage(image, 0, 0, java.awt.Color.WHITE, null);
+                                    g2.dispose();
+                                    
+                                    java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
+                                    javax.imageio.ImageIO.write(bim, "png", baos);
+                                    String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
+                                    extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
+                                              .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
+                                }
+                                extraHtml.append("</center><br><hr><br><br><br><br>");
+                            } catch (Exception e) {
+                                System.out.println("Gagal render SEP ke Image: " + e);
+                            }
+
+                            if (extraHtml.length() > 0) {
+                                teksHTML = teksHTML.replaceFirst("<html>", "<html>" + extraHtml.toString());
+                            }
+                            this.setCursor(Cursor.getDefaultCursor());
                         }
                     }
                     panggilLaporan(teksHTML); 
