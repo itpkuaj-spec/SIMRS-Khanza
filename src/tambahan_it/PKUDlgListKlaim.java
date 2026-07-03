@@ -2075,8 +2075,9 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
             System.out.println("Notifikasi : " + ex);
         }
 
-        berkas.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
-        berkas.setLocationRelativeTo(internalFrame1);        
+        berkas.setSize(internalFrame1.getWidth() - 600, internalFrame1.getHeight() - 55);
+        berkas.setLocationRelativeTo(internalFrame1);
+        berkas.setLocation(berkas.getX(), berkas.getY() - 20);
         berkas.setVisible(true);        
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_mnBerkasDigitalActionPerformed
