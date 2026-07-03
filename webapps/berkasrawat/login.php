@@ -11,7 +11,7 @@
             session_start();
             $_SESSION['ses_admin_berkas_rawat']="admin";
             if ($keyword != NULL) {
-                $url = "index.php?act=List&iyem=".encrypt_decrypt("{\"keyword\":\"".$keyword."\"}","e");
+                $url = "index.php?act=List&iyem=".encrypt_decrypt("{\"tahunawal\":\"\",\"keyword\":\"".$keyword."\"}","e");
             } else {
                 $url = "index.php?act=List";			
             }
