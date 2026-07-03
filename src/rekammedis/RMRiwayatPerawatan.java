@@ -3115,9 +3115,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             } catch (Exception e) {
                                 System.out.println("Gagal render SEP ke Image: " + e);
                             }
-
+                            // -- Mulai: Tambahan IT untuk menampilkan laporan SPRI dan Surat Persetujuan Rawat Inap --
                             try {
-                                String querySpri = "select bridging_surat_pri_bpjs.no_surat, bridging_surat_pri_bpjs.tgl_rencana, bridging_surat_pri_bpjs.kd_dokter_bpjs, bridging_surat_pri_bpjs.nm_dokter_bpjs from bridging_surat_pri_bpjs where no_rawat='" + norawat + "'";
+                                String querySpri = "select bridging_surat_pri_bpjs.no_surat, bridging_surat_pri_bpjs.tgl_rencana, bridging_surat_pri_bpjs.kd_dokter_bpjs, bridging_surat_pri_bpjs.nm_dokter_bpjs from bridging_surat_pri_bpjs where no_rawat='" + NoRawat.getText().trim() + "'";
                                 java.sql.PreparedStatement psSpri = koneksi.prepareStatement(querySpri);
                                 java.sql.ResultSet rsSpri = psSpri.executeQuery();
                                 while (rsSpri.next()) {
@@ -3173,7 +3173,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                             try {
                                 String queryPersetujuan = "select surat_persetujuan_rawat_inap.no_surat, surat_persetujuan_rawat_inap.nip, petugas.nama, surat_persetujuan_rawat_inap.tanggal " +
                                                           "from surat_persetujuan_rawat_inap inner join petugas on surat_persetujuan_rawat_inap.nip=petugas.nip " +
-                                                          "where surat_persetujuan_rawat_inap.no_rawat='" + norawat + "'";
+                                                          "where surat_persetujuan_rawat_inap.no_rawat='" + NoRawat.getText().trim() + "'";
                                 java.sql.PreparedStatement psPersetujuan = koneksi.prepareStatement(queryPersetujuan);
                                 java.sql.ResultSet rsPersetujuan = psPersetujuan.executeQuery();
                                 while (rsPersetujuan.next()) {
@@ -3205,17 +3205,26 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                         java.sql.PreparedStatement psDetailPersetujuan = koneksi.prepareStatement(qryDetailPersetujuan);
                                         java.sql.ResultSet rsDetailPersetujuan = psDetailPersetujuan.executeQuery();
                                         net.sf.jasperreports.engine.JRResultSetDataSource rsDsPersetujuan = new net.sf.jasperreports.engine.JRResultSetDataSource(rsDetailPersetujuan);
-                                        java.io.InputStream reportStreamPersetujuan = this.getClass().getClassLoader().getResourceAsStream("report/rptSuratPersetujuanPasienRawatInap.jasper");
-                                        if (reportStreamPersetujuan != null) {
-                                            net.sf.jasperreports.engine.JasperPrint jpPersetujuan = net.sf.jasperreports.engine.JasperFillManager.fillReport(reportStreamPersetujuan, paramPersetujuan, rsDsPersetujuan);
+                                        java.io.File fileReport = new java.io.File("./report/rptSuratPersetujuanPasienRawatInap.jasper");
+                                        if (fileReport.exists()) {
+                                            net.sf.jasperreports.engine.JasperPrint jpPersetujuan = net.sf.jasperreports.engine.JasperFillManager.fillReport("./report/rptSuratPersetujuanPasienRawatInap.jasper", paramPersetujuan, rsDsPersetujuan);
+                                            extraHtml.append("<center>");
                                             for (int pageIdx = 0; pageIdx < jpPersetujuan.getPages().size(); pageIdx++) {
                                                 java.awt.image.BufferedImage bim = (java.awt.image.BufferedImage) net.sf.jasperreports.engine.JasperPrintManager.printPageToImage(jpPersetujuan, pageIdx, 1.5f);
+                                                java.awt.image.BufferedImage rgbBim = new java.awt.image.BufferedImage(bim.getWidth(), bim.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB);
+                                                java.awt.Graphics2D g2 = rgbBim.createGraphics();
+                                                g2.drawImage(bim, 0, 0, java.awt.Color.WHITE, null);
+                                                g2.dispose();
+                                                
                                                 java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
-                                                javax.imageio.ImageIO.write(bim, "png", baos);
+                                                javax.imageio.ImageIO.write(rgbBim, "png", baos);
                                                 String imgBase64 = java.util.Base64.getEncoder().encodeToString(baos.toByteArray());
                                                 extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
                                                           .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
                                             }
+                                            extraHtml.append("</center><br><hr><br><br><br><br>");
+                                        } else {
+                                            System.out.println("File jasper Persetujuan Rawat Inap tidak ditemukan.");
                                         }
                                         if (psDetailPersetujuan != null) { psDetailPersetujuan.close(); }
                                         if (rsDetailPersetujuan != null) { rsDetailPersetujuan.close(); }
