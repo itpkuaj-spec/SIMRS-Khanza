@@ -2067,21 +2067,24 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         berkas.setJudul("::[ Berkas Digital Perawatan ]::", "berkasrawat/pages");
         
         String noRawat = "";
+        String tglRegistrasi = "";
         if (TabRawat.getSelectedIndex() == 0) {
             if (tbListPasienRajal.getSelectedRow() != -1) {
                 noRawat = tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_");
+                tglRegistrasi = tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 8).toString();
             }
         } else if (TabRawat.getSelectedIndex() == 1) {
             if (tbListPasienRanap.getSelectedRow() != -1) {
                 noRawat = tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_");
+                tglRegistrasi = tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 8).toString();
             }
         }
         
         try {
             if(akses.gethapus_berkas_digital_perawatan()==true){
-                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&keyword=" + noRawat);   
+                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&keyword=" + noRawat + "&tgl_registrasi=" + tglRegistrasi);   
             } else {
-                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/loginnonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&keyword=" + noRawat);  
+                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/loginnonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&keyword=" + noRawat + "&tgl_registrasi=" + tglRegistrasi);  
             }                  
         } catch (Exception ex) {
             System.out.println("Notifikasi : " + ex);
