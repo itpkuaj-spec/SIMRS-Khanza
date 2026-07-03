@@ -4,11 +4,17 @@
     
     $usere      = trim(isset($_GET['usere']))?trim($_GET['usere']):NULL;
     $passwordte = trim(isset($_GET['passwordte']))?trim($_GET['passwordte']):NULL;
+    $keyword    = trim(isset($_GET['keyword']))?trim($_GET['keyword']):NULL;
+    
     if ($_GET['act']=="login"){
         if((USERHYBRIDWEB==$usere)&&(PASHYBRIDWEB==$passwordte)){
             session_start();
             $_SESSION['ses_admin_berkas_rawat']="admin";
-            $url = "index.php?act=List";			
+            if ($keyword != NULL) {
+                $url = "index.php?act=List&iyem=".encrypt_decrypt("{\"keyword\":\"".$keyword."\"}","e");
+            } else {
+                $url = "index.php?act=List";			
+            }
         }else{
             session_start();
             session_destroy();
