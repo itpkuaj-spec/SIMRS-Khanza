@@ -2062,48 +2062,23 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
     }//GEN-LAST:event_ppUsgActionPerformed
 
     private void mnBerkasDigitalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnBerkasDigitalActionPerformed
-        // Tambahan IT - Menampilkan form Berkas Digital
-        if (TabRawat.getSelectedIndex() == 0) {
-            if (tbListPasienRajal.getSelectedRow() != -1) {
-                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
-                berkas.setJudul("::[ Berkas Digital Perawatan Pasien ]::", tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString());
-                try {
-                    if(akses.gethapus_berkas_digital_perawatan()==true){
-                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
-                    } else {
-                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
-                    }
-                } catch (Exception ex) {
-                    System.out.println("Notifikasi : " + ex);
-                }
-                berkas.setSize(internalFrame1.getWidth() - 600, internalFrame1.getHeight() - 55);
-                berkas.setLocationRelativeTo(internalFrame1);
-                berkas.setLocation(berkas.getX(), berkas.getY() - 20);
-                berkas.setVisible(true);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
+        berkas.setJudul("::[ Berkas Digital Perawatan ]::", "berkasrawat/pages");
+        try {
+            if(akses.gethapus_berkas_digital_perawatan()==true){
+                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");   
             } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data pasien terlebih dahulu...!!!!");
-            }
-        } else if (TabRawat.getSelectedIndex() == 1) {
-            if (tbListPasienRanap.getSelectedRow() != -1) {
-                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
-                berkas.setJudul("::[ Berkas Digital Perawatan Pasien ]::", tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString());
-                try {
-                    if(akses.gethapus_berkas_digital_perawatan()==true){
-                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
-                    } else {
-                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
-                    }
-                } catch (Exception ex) {
-                    System.out.println("Notifikasi : " + ex);
-                }
-                berkas.setSize(internalFrame1.getWidth() - 600, internalFrame1.getHeight() - 55);
-                berkas.setLocationRelativeTo(internalFrame1);
-                berkas.setLocation(berkas.getX(), berkas.getY() - 20);
-                berkas.setVisible(true);
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data pasien terlebih dahulu...!!!!");
-            }
+                berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/loginnonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "");  
+            }                  
+        } catch (Exception ex) {
+            System.out.println("Notifikasi : " + ex);
         }
+
+        berkas.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
+        berkas.setLocationRelativeTo(internalFrame1);        
+        berkas.setVisible(true);        
+        this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_mnBerkasDigitalActionPerformed
 
     private void mnJadikanTidakKlaimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnJadikanTidakKlaimActionPerformed
