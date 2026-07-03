@@ -438,6 +438,21 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         ppUsgRanap.addActionListener(evt -> ppUsgActionPerformed(evt));
         MnLihatRanap.add(ppUsgRanap);
 
+        javax.swing.JMenuItem ppLaporanOperasiRanap = new javax.swing.JMenuItem("Laporan Operasi");
+        ppLaporanOperasiRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        ppLaporanOperasiRanap.addActionListener(evt -> ppLaporanOperasiRanapActionPerformed(evt));
+        MnLihatRanap.add(ppLaporanOperasiRanap);
+
+        javax.swing.JMenuItem ppLaporanTindakanMedisRanap = new javax.swing.JMenuItem("Laporan Tindakan Medis");
+        ppLaporanTindakanMedisRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        ppLaporanTindakanMedisRanap.addActionListener(evt -> ppLaporanTindakanMedisRanapActionPerformed(evt));
+        MnLihatRanap.add(ppLaporanTindakanMedisRanap);
+
+        javax.swing.JMenuItem ppMonitoringTransfusiRanap = new javax.swing.JMenuItem("Monitoring Reaksi Transfusi");
+        ppMonitoringTransfusiRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        ppMonitoringTransfusiRanap.addActionListener(evt -> ppMonitoringTransfusiRanapActionPerformed(evt));
+        MnLihatRanap.add(ppMonitoringTransfusiRanap);
+
         PopupRanap.add(MnLihatRanap);
 
         javax.swing.JMenuItem mnRiwayatRanap = new javax.swing.JMenuItem("Riwayat Perawatan");
@@ -479,7 +494,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         // --- Apply Standard Styling ---
         javax.swing.JComponent[] newItems = {
             mnInputCatatan, mnInputResumeRanap, mnInputDiagnosaRanap, 
-            MnLihatRanap, ppLabRadRanap, ppBillingRanap, ppUsgRanap,
+            MnLihatRanap, ppLabRadRanap, ppBillingRanap, ppUsgRanap, ppLaporanOperasiRanap, ppLaporanTindakanMedisRanap, ppMonitoringTransfusiRanap,
             mnRiwayatRanap, mnBerkasDigitalRanap, mnJadikanTidakKlaimRanap, 
             mnInputCatatanRanap, mnInputCatatanTk, mnKembalikanKlaimTk
         };
@@ -1864,6 +1879,49 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_ppLabRadActionPerformed
 
+    private void ppLaporanOperasiRanapActionPerformed(java.awt.event.ActionEvent evt) {
+        if (TabRawat.getSelectedIndex() == 1) {
+            if (tbListPasienRanap.getSelectedRow() != -1) {
+                simrskhanza.DlgCariTagihanOperasi tagihan = new simrskhanza.DlgCariTagihanOperasi(null, true);
+                tagihan.setPasien(tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString());
+                tagihan.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+                tagihan.setLocationRelativeTo(internalFrame1);
+                tagihan.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data pasien terlebih dahulu...!!!!");
+            }
+        }
+    }
+
+    private void ppLaporanTindakanMedisRanapActionPerformed(java.awt.event.ActionEvent evt) {
+        if (TabRawat.getSelectedIndex() == 1) {
+            if (tbListPasienRanap.getSelectedRow() != -1) {
+                rekammedis.RMLaporanTindakan lap = new rekammedis.RMLaporanTindakan(null, true);
+                lap.setNoRm(tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString(), new java.util.Date());
+                lap.setTampil();
+                lap.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+                lap.setLocationRelativeTo(internalFrame1);
+                lap.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data pasien terlebih dahulu...!!!!");
+            }
+        }
+    }
+
+    private void ppMonitoringTransfusiRanapActionPerformed(java.awt.event.ActionEvent evt) {
+        if (TabRawat.getSelectedIndex() == 1) {
+            if (tbListPasienRanap.getSelectedRow() != -1) {
+                rekammedis.RMDataMonitoringReaksiTranfusi lap = new rekammedis.RMDataMonitoringReaksiTranfusi(null, true);
+                lap.setNoRm(tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString(), new java.util.Date());
+                lap.setSize(internalFrame1.getWidth() - 40, internalFrame1.getHeight() - 40);
+                lap.setLocationRelativeTo(internalFrame1);
+                lap.setVisible(true);
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(null, "Maaf, silahkan pilih data pasien terlebih dahulu...!!!!");
+            }
+        }
+    }
+
     private void mnRiwayatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnRiwayatActionPerformed
         if (TabRawat.getSelectedIndex() == 0) {
             if (tbListPasienRajal.getSelectedRow() != -1) {
@@ -2329,7 +2387,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
             } else {
                 shortdokter = " reg_periksa.kd_dokter='" + kdDokterView.getText() + "' and ";
             }
-            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') and reg_periksa.tgl_registrasi BETWEEN ? and ? and (reg_periksa.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ";
+            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat INNER JOIN kamar_inap ON reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.stts_pulang<>'Pindah Kamar' where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') and kamar_inap.tgl_keluar BETWEEN ? and ? and (kamar_inap.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ";
             ps = koneksi.prepareStatement(sql);
             try {
                 ps.setString(1, Valid.SetTgl(DTPTglAwal.getSelectedItem() + ""));
