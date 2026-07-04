@@ -7171,7 +7171,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
 
             // 5 Import Diagnosa
             if (responseDiagnosa.path("expanded").isArray()) {
-                Sequel.queryu("delete from tb_inacbg_diagnose where no_rawat=?", new String[]{norawat});
+                Sequel.queryu("delete from tb_inacbg_diagnose where no_rawat=?", norawat);
                 int i = 1;
                 for (JsonNode list : responseDiagnosa.path("expanded")) {
                     Sequel.menyimpan("tb_inacbg_diagnose", "?,?,?,?,?,?,?", "Penyakit", 7, new String[]{
@@ -7191,7 +7191,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
 
             // 6 Import Prosedur (dengan multiply)
             if (responseProcedure.path("expanded").isArray()) {
-                Sequel.queryu("delete from tb_inacbg_prosedure where no_rawat=?", new String[]{norawat});
+                Sequel.queryu("delete from tb_inacbg_prosedure where no_rawat=?", norawat);
                 int i = 1;
                 for (JsonNode listProcedure : responseProcedure.path("expanded")) {
                     // Ambil multiply dari JSON, default 1
