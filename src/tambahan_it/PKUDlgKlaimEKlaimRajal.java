@@ -4281,7 +4281,10 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     }//GEN-LAST:event_BtnCloseInpindah3KeyPressed
 
     private void btnImportToINACBGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportToINACBGActionPerformed
-        importCoding();
+        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin import diagnosa iDRG ke INACBG", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            importCoding();
+        }
     }//GEN-LAST:event_btnImportToINACBGActionPerformed
 
     private void BtnCloseInpindah5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCloseInpindah5ActionPerformed
@@ -6557,6 +6560,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     });
 //                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final iDRG");
                     cekStatusKlaim();
+                    importCoding();
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
 //                                Sequel.menyimpantf2("inacbg_data_terkirim2", "?,?", "No.Rawat", 2,
@@ -6709,10 +6713,6 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //    }
     
     private void importCoding() {
-    int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin import diagnosa iDRG ke INACBG", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-    if (reply != JOptionPane.YES_OPTION) {
-        return;
-    }
 
     try {
         // 1 Siapkan header dan JSON request
@@ -6738,61 +6738,45 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 
             // 5 Import Diagnosa
             if (responseDiagnosa.path("expanded").isArray()) {
+                Sequel.queryu("delete from tb_inacbg_diagnose where no_rawat=?", new String[]{norawat});
                 int i = 1;
                 for (JsonNode list : responseDiagnosa.path("expanded")) {
-                    int countExist = Sequel.cariInteger(
-                            "select count(tb_inacbg_diagnose.code) from tb_inacbg_diagnose "
-                                    + "inner join reg_periksa inner join pasien on "
-                                    + "tb_inacbg_diagnose.no_rawat=reg_periksa.no_rawat and "
-                                    + "reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                                    + "where tb_inacbg_diagnose.no_rawat='" + norawat
-                                    + "' and tb_inacbg_diagnose.code='" + list.path("code").asText() + "'"
-                    );
-
-                    String statusData = (countExist > 0) ? "Lama" : "Baru";
-
                     Sequel.menyimpan("tb_inacbg_diagnose", "?,?,?,?,?,?,?", "Penyakit", 7, new String[]{
                             norawat,
                             list.path("code").asText(),
                             status,
-                            Sequel.cariIsi("select ifnull(MAX(prioritas)+1,1) from tb_inacbg_diagnose where no_rawat=? and status='" + status + "'", norawat),
-                            statusData,
+                            String.valueOf(i),
+                            "Baru",
                             list.path("validcode").asText(),
                             list.path("metadata").path("message").asText()
                     });
                     i++;
                 }
-                JOptionPane.showMessageDialog(rootPane, "Berhasil Import Data Diagnosa");
+//                JOptionPane.showMessageDialog(rootPane, "Berhasil Import Data Diagnosa");
                 tampilDiagnosaINACBG();
             }
 
             // 6 Import Prosedur (dengan multiply)
             if (responseProcedure.path("expanded").isArray()) {
+                Sequel.queryu("delete from tb_inacbg_prosedure where no_rawat=?", new String[]{norawat});
                 int i = 1;
                 for (JsonNode listProcedure : responseProcedure.path("expanded")) {
                     // Ambil multiply dari JSON, default 1
                     int multiplyValue = listProcedure.path("multiply").asInt(1); // <-- ambil int, default 1
                     System.out.println("Procedure " + listProcedure.path("code").asText() + " multiply = " + multiplyValue);
 
-                    int countExist = Sequel.cariInteger(
-                            "select count(kode) from tb_inacbg_prosedure where no_rawat='" + norawat
-                                    + "' and status='" + status + "' and kode='" + listProcedure.path("code").asText() + "'"
-                    );
-
-                    if (countExist == 0) {
-                        Sequel.menyimpan("tb_inacbg_prosedure", "?,?,?,?,?,?,?", "ICD 9", 7, new String[]{
-                                norawat,
-                                listProcedure.path("code").asText(),
-                                status,
-                                listProcedure.path("no").asText(),
-                                String.valueOf(multiplyValue),  // <-- multiply dari JSON response
-                                listProcedure.path("validcode").asText(),
-                                listProcedure.path("metadata").path("message").asText()
-                        });
-                    }
+                    Sequel.menyimpan("tb_inacbg_prosedure", "?,?,?,?,?,?,?", "ICD 9", 7, new String[]{
+                            norawat,
+                            listProcedure.path("code").asText(),
+                            status,
+                            listProcedure.path("no").asText(),
+                            String.valueOf(multiplyValue),  // <-- multiply dari JSON response
+                            listProcedure.path("validcode").asText(),
+                            listProcedure.path("metadata").path("message").asText()
+                    });
                     i++;
                 }
-                JOptionPane.showMessageDialog(rootPane, "Berhasil Import Data Prosedur");
+//                JOptionPane.showMessageDialog(rootPane, "Berhasil Import Data Prosedur");
                 tampilProsedureINACBG();
             }
 
