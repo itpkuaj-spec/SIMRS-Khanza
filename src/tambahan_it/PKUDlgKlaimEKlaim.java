@@ -5402,7 +5402,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
     private void btnDiagnosaLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiagnosaLocalActionPerformed
         // TODO add your handling code here:
         akses.setform("RMDataResumePasienRanap");
-        diagnosa.setSize(internalFrame1.getWidth()-1000,internalFrame1.getHeight()-200);
+        diagnosa.setSize(internalFrame1.getWidth()-600,internalFrame1.getHeight()-200);
         diagnosa.setLocationRelativeTo(internalFrame1);
         diagnosa.isCek();
                                         try{
@@ -6953,6 +6953,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
 
             JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping iDRG");
             cekStatusKlaim();
+            finalDRG();
         }
 
     } catch (Exception ex) {

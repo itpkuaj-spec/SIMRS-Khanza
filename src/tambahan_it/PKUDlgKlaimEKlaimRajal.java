@@ -5100,7 +5100,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     private void btnDiagnosaLocalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDiagnosaLocalActionPerformed
         // TODO add your handling code here:
         akses.setform("RMDataResumePasienRanap");
-        diagnosa.setSize(internalFrame1.getWidth()-900,internalFrame1.getHeight()-200);
+        diagnosa.setSize(internalFrame1.getWidth()-600,internalFrame1.getHeight()-200);
         diagnosa.setLocationRelativeTo(internalFrame1);
         diagnosa.isCek();
                                         try{
@@ -6439,10 +6439,10 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     
     private void setDRG() {
     String listDiagnosa = "", listProsedur = "";
-    int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-    if (reply != JOptionPane.YES_OPTION) {
-        return;
-    }
+//    int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//    if (reply != JOptionPane.YES_OPTION) {
+//        return;
+//    }
 
     try {
         // 1 Ambil daftar diagnosa
@@ -6518,8 +6518,9 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                                 response.path("script_version").asText(), response.path("logic_version").asText(), dateSave.format(new Date())});
             }
 
-            JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping iDRG");
+//            JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping iDRG");
             cekStatusKlaim();
+            finalDRG();
         }
 
     } catch (Exception ex) {
@@ -6532,8 +6533,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 
 
     private void finalDRG() {
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+//        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
             try {
                 // headers removed
                 // requestEntity removed
@@ -6554,7 +6555,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     Sequel.mengedit("tb_idrg_grouping_result", "no_rawat=? and no_sep=?", "status=?", 3, new String[]{
                         "Final", norawat, noSep
                     });
-                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final iDRG");
+//                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final iDRG");
                     cekStatusKlaim();
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
@@ -6588,7 +6589,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //        } else {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
-        }
+//        }
     }
 
     private void editDRG() {
