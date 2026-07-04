@@ -6486,8 +6486,10 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             if (response.path("data").isArray()) {
                 i = 1;
                 for (JsonNode list : response.path("data")) {
+                    String kode = list.has("kode") ? list.path("kode").asText() : (list.has("code") ? list.path("code").asText() : list.path(0).asText());
+                    String deskripsi = list.has("nama") ? list.path("nama").asText() : (list.has("description") ? list.path("description").asText() : list.path(1).asText());
                     tabModeDiagnosa.addRow(new Object[]{
-                        false, list.path("kode").asText(), list.path("description").asText(), list.path("validcode").asText(), list.path("accpdx").asText(), list.path("code_asterisk").asText(), list.path("asterisk").asText(), list.path("im").asText()
+                        false, kode, deskripsi, list.path("validcode").asText(), list.path("accpdx").asText(), list.path("code_asterisk").asText(), list.path("asterisk").asText(), list.path("im").asText()
                     });
                     i++;
                 }
@@ -6523,8 +6525,10 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             if (response.path("data").isArray()) {
                 i = 1;
                 for (JsonNode list : response.path("data")) {
+                    String kode = list.has("kode") ? list.path("kode").asText() : (list.has("code") ? list.path("code").asText() : list.path(0).asText());
+                    String deskripsi = list.has("nama") ? list.path("nama").asText() : (list.has("description") ? list.path("description").asText() : list.path(1).asText());
                     tabModeDiagnosa.addRow(new Object[]{
-                        false, list.path("code").asText(), list.path("description").asText(), list.path("validcode").asText(), list.path("accpdx").asText(), list.path("code_asterisk").asText(), list.path("asterisk").asText(), list.path("im").asText()
+                        false, kode, deskripsi, list.path("validcode").asText(), list.path("accpdx").asText(), list.path("code_asterisk").asText(), list.path("asterisk").asText(), list.path("im").asText()
                     });
                     i++;
                 }
@@ -6595,8 +6599,10 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             if (response.path("data").isArray()) {
                 i = 1;
                 for (JsonNode list : response.path("data")) {
+                    String kode = list.has("kode") ? list.path("kode").asText() : (list.has("code") ? list.path("code").asText() : list.path(0).asText());
+                    String deskripsi = list.has("nama") ? list.path("nama").asText() : (list.has("description") ? list.path("description").asText() : list.path(1).asText());
                     tabModeProsedure.addRow(new Object[]{
-                        false, list.path("kode").asText(), list.path("description").asText(), "", ""
+                        false, kode, deskripsi, "", ""
                     });
                     i++;
                 }
@@ -6631,8 +6637,10 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             if (response.path("data").isArray()) {
                 i = 1;
                 for (JsonNode list : response.path("data")) {
+                    String kode = list.has("kode") ? list.path("kode").asText() : (list.has("code") ? list.path("code").asText() : list.path(0).asText());
+                    String deskripsi = list.has("nama") ? list.path("nama").asText() : (list.has("description") ? list.path("description").asText() : list.path(1).asText());
                     tabModeProsedure.addRow(new Object[]{
-                        false, list.path("code").asText(), list.path("description").asText(), list.path("validcode").asText(), list.path("im").asText()
+                        false, kode, deskripsi, list.path("validcode").asText(), list.path("im").asText()
                     });
                     i++;
                 }
