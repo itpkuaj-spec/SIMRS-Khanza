@@ -691,9 +691,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         TNoRw = new widget.TextBox();
         PopupRanap = new javax.swing.JPopupMenu();
         ppDetailKlaimRanap = new javax.swing.JMenuItem();
-        MnPilihCeklisRanap = new javax.swing.JMenu();
-        ppPilihSemua2 = new javax.swing.JMenuItem();
-        ppBersihkan2 = new javax.swing.JMenuItem();
         Popup1 = new javax.swing.JPopupMenu();
         ppKodingBerkas1 = new javax.swing.JMenuItem();
         ppUpdateDataPasienEklaim1 = new javax.swing.JMenuItem();
@@ -1063,7 +1060,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         ppDetailKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
         ppDetailKlaim.setForeground(new java.awt.Color(50, 50, 50));
         ppDetailKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
-        ppDetailKlaim.setText("Kirim E-Klaim");
+        ppDetailKlaim.setText("Detail Klaim");
         ppDetailKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ppDetailKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         ppDetailKlaim.setName("ppDetailKlaim"); // NOI18N
@@ -1204,51 +1201,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
             }
         });
         PopupRanap.add(ppDetailKlaimRanap);
-
-        MnPilihCeklisRanap.setBackground(new java.awt.Color(250, 255, 245));
-        MnPilihCeklisRanap.setForeground(new java.awt.Color(70, 70, 70));
-        MnPilihCeklisRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnPilihCeklisRanap.setText("Pilihan Ceklis");
-        MnPilihCeklisRanap.setToolTipText("");
-        MnPilihCeklisRanap.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnPilihCeklisRanap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MnPilihCeklisRanap.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        MnPilihCeklisRanap.setName("MnPilihCeklisRanap"); // NOI18N
-        MnPilihCeklisRanap.setPreferredSize(new java.awt.Dimension(310, 26));
-
-        ppPilihSemua2.setBackground(new java.awt.Color(255, 255, 254));
-        ppPilihSemua2.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppPilihSemua2.setForeground(new java.awt.Color(50, 50, 50));
-        ppPilihSemua2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
-        ppPilihSemua2.setText("Centang Semua");
-        ppPilihSemua2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppPilihSemua2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppPilihSemua2.setName("ppPilihSemua2"); // NOI18N
-        ppPilihSemua2.setPreferredSize(new java.awt.Dimension(250, 25));
-        ppPilihSemua2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppPilihSemua2ActionPerformed(evt);
-            }
-        });
-        MnPilihCeklisRanap.add(ppPilihSemua2);
-
-        ppBersihkan2.setBackground(new java.awt.Color(255, 255, 254));
-        ppBersihkan2.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppBersihkan2.setForeground(new java.awt.Color(50, 50, 50));
-        ppBersihkan2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png"))); // NOI18N
-        ppBersihkan2.setText("Hilangkan Centang/Tindakan Terpilih");
-        ppBersihkan2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppBersihkan2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppBersihkan2.setName("ppBersihkan2"); // NOI18N
-        ppBersihkan2.setPreferredSize(new java.awt.Dimension(250, 25));
-        ppBersihkan2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppBersihkan2ActionPerformed(evt);
-            }
-        });
-        MnPilihCeklisRanap.add(ppBersihkan2);
-
-        PopupRanap.add(MnPilihCeklisRanap);
 
         Popup1.setName("Popup1"); // NOI18N
 
@@ -1943,14 +1895,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         this.setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_ppDetailKlaimRanapActionPerformed
 
-    private void ppPilihSemua2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppPilihSemua2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ppPilihSemua2ActionPerformed
-
-    private void ppBersihkan2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppBersihkan2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_ppBersihkan2ActionPerformed
-
     private void ppLabRadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppLabRadActionPerformed
         if (TabRawat.getSelectedIndex() == 0) {
             if (tbListPasienRajal.getSelectedRow() != -1) {
@@ -2233,18 +2177,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
             simpanCatatan();
         }
     }
-
-    private void BtnKetWarnaActionPerformed(java.awt.event.ActionEvent evt) {
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        KeteranganWarna.setSize(800, 400);
-        KeteranganWarna.setLocationRelativeTo(internalFrame1);
-        KeteranganWarna.setVisible(true);
-        this.setCursor(Cursor.getDefaultCursor());
-    }
-
-    private void BtnKetWarnaKeyPressed(java.awt.event.KeyEvent evt) {
-        // TODO add your handling code here:
-    }
     private widget.Button BtnSeekDokter;
     private widget.Label jLabelDokter;
 
@@ -2258,7 +2190,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private widget.Button BtnSimpanCatatan;
-    private widget.Button BtnKetWarna;
     private widget.ComboBox cmbHlm;
     private widget.Label jLabel11;
     private widget.ScrollPane Scroll3;
@@ -2282,7 +2213,6 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
     private widget.Label LCount;
     private javax.swing.JMenu MnLihat;
     private javax.swing.JMenu MnPilihCeklis1;
-    private javax.swing.JMenu MnPilihCeklisRanap;
     private javax.swing.JPopupMenu Popup1;
     private javax.swing.JPopupMenu PopupRalan;
     private javax.swing.JPopupMenu PopupRanap;
@@ -2334,14 +2264,12 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
     private widget.panelisi panelisi5;
     private widget.panelisi panelisi6;
     private javax.swing.JMenuItem ppBersihkan1;
-    private javax.swing.JMenuItem ppBersihkan2;
     private javax.swing.JMenuItem ppBilling;
     private javax.swing.JMenuItem ppDetailKlaim;
     private javax.swing.JMenuItem ppDetailKlaimRanap;
     private javax.swing.JMenuItem ppKodingBerkas1;
     private javax.swing.JMenuItem ppLabRad;
     private javax.swing.JMenuItem ppPilihSemua1;
-    private javax.swing.JMenuItem ppPilihSemua2;
     private javax.swing.JMenuItem ppUpdateDataPasienEklaim1;
     private javax.swing.JMenuItem ppUsg;
     private widget.ScrollPane scrollPane4;
