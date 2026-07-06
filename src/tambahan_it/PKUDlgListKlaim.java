@@ -178,7 +178,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         Object[] columns = new String[]{
             "P", "No Rawat[1]", "No RM[2]", "Nama Pasien[3]", "Unit[4]", "Nama Dokter[5]", "No SEP[6]",
             "Tgl SEP[7]", "Tgl. Regis[8]", "Tgl Pulang[9]", "Resume[10]", "Koding[11]", "Lab[12]", "Rad[13]",
-            "USG[14]", "Ttp Billing[15]", "Kirim Eklaim[16]", "Final Eklaim[17]", "Kirim Online[18]"};
+            "USG[14]", "Ttp Billing[15]", "Kirim Eklaim[16]", "Final Eklaim[17]", "Kirim Online[18]", "Selesai Klaim[19]"};
         // Tambahan IT - Akhir kolom Kirim Eklaim, Final Eklaim, Kirim Online
         TabModePasienRalan = new DefaultTableModel(null, columns) {
             @Override
@@ -195,7 +195,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
                 java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class,
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class,
-                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
 
             @Override
@@ -207,8 +207,8 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         tbListPasienRajal.setModel(TabModePasienRalan);
         tbListPasienRajal.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbListPasienRajal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        // Tambahan IT - Loop diubah dari 16 ke 19 (tambah 3 kolom baru)
-        for (int i = 0; i < 19; i++) {
+        // Tambahan IT - Loop disesuaikan dengan jumlah kolom (20)
+        for (int i = 0; i < 20; i++) {
             TableColumn column = tbListPasienRajal.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(20);
@@ -230,13 +230,33 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 column.setPreferredWidth(60);
             }
         }
-        tbListPasienRajal.setDefaultRenderer(Object.class, new WarnaTable());
+        tbListPasienRajal.setDefaultRenderer(Object.class, new WarnaTable() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                java.awt.Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                try {
+                    Object objSelesaiKlaim = table.getValueAt(row, 19);
+                    Object objKirimOnline = table.getValueAt(row, 18);
+                    Object objResume = table.getValueAt(row, 10);
+                    
+                    if (objSelesaiKlaim != null && (Boolean) objSelesaiKlaim) {
+                        component.setBackground(java.awt.Color.GREEN);
+                    } else if (objKirimOnline != null && (Boolean) objKirimOnline) {
+                        component.setBackground(java.awt.Color.ORANGE);
+                    } else if (objResume != null && (Boolean) objResume) {
+                        component.setBackground(new java.awt.Color(204, 153, 255));
+                    }
+                } catch (Exception e) {
+                }
+                return component;
+            }
+        });
 
         Object[] columnsRanap = new String[]{
             "P", "No Rawat[1]", "No RM[2]", "Nama Pasien[3]", "Unit[4]", "DPJP[5]", "No SEP[6]",
             "Tgl SEP[7]", "Tgl. Regis[8]", "Tgl Pulang[9]", "Resume[10]", "Koding[11]", "Lab[12]", "Rad[13]",
             "USG[14]", "Ttp Billing[15]", "Kirim Eklaim[16]", "Final Eklaim[17]", "Kirim Online[18]",
-            "S. Emergency[19]", "SPRI[20]", "S. Persetujuan Inap[21]"
+            "Selesai Klaim[19]", "S. Emergency[20]", "SPRI[21]", "S. Persetujuan Inap[22]"
         };
         TabModePasienRanap = new DefaultTableModel(null, columnsRanap) {
             @Override
@@ -253,7 +273,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Boolean.class,
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class,
                 java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class,
-                java.lang.Boolean.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
 
             @Override
@@ -265,7 +285,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         tbListPasienRanap.setModel(TabModePasienRanap);
         tbListPasienRanap.setPreferredScrollableViewportSize(new Dimension(500, 500));
         tbListPasienRanap.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        for (int i = 0; i < 22; i++) {
+        for (int i = 0; i < 23; i++) {
             TableColumn column = tbListPasienRanap.getColumnModel().getColumn(i);
             if (i == 0) {
                 column.setPreferredWidth(20);
@@ -283,16 +303,36 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 column.setPreferredWidth(125);
             } else if (i == 7 || i == 8 || i == 9) {
                 column.setPreferredWidth(80);
-            } else if (i == 19 || i == 20) {
+            } else if (i == 19 || i == 20 || i == 21) {
                 column.setPreferredWidth(100);
-            } else if (i == 21) {
+            } else if (i == 22) {
                 column.setPreferredWidth(130);
             } else {
                 column.setPreferredWidth(60);
             }
         }
 
-        tbListPasienRanap.setDefaultRenderer(Object.class, new WarnaTable());
+        tbListPasienRanap.setDefaultRenderer(Object.class, new WarnaTable() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                java.awt.Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                try {
+                    Object objSelesaiKlaim = table.getValueAt(row, 19);
+                    Object objKirimOnline = table.getValueAt(row, 18);
+                    Object objResume = table.getValueAt(row, 10);
+                    
+                    if (objSelesaiKlaim != null && (Boolean) objSelesaiKlaim) {
+                        component.setBackground(java.awt.Color.GREEN);
+                    } else if (objKirimOnline != null && (Boolean) objKirimOnline) {
+                        component.setBackground(java.awt.Color.ORANGE);
+                    } else if (objResume != null && (Boolean) objResume) {
+                        component.setBackground(new java.awt.Color(204, 153, 255));
+                    }
+                } catch (Exception e) {
+                }
+                return component;
+            }
+        });
 
         Object[] columnsTidakKlaimRalan = new String[]{
             "P", "No Rawat", "No RM", "Nama Pasien", "Unit", "Nama Dokter", "No SEP",
@@ -491,12 +531,70 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         tbListPasienTidakKlaim.setComponentPopupMenu(PopupTidakKlaim);
         tbListPasienRanapTidakKlaim.setComponentPopupMenu(PopupTidakKlaim);
 
+        // Tambahan IT - Menu Selesai Klaim Rajal
+        javax.swing.JMenuItem mnSelesaiKlaimRajal = new javax.swing.JMenuItem("Selesai Klaim");
+        mnSelesaiKlaimRajal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png")));
+        mnSelesaiKlaimRajal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (tbListPasienRajal.getSelectedRow() != -1) {
+                    String noRawat = tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString();
+                    if(Sequel.mengedittf("tt_status_eklaim", "no_rawat=?", "selesai_klaim=?", 2, new String[]{"true", noRawat})) {
+                        tampilRalan();
+                    }
+                }
+            }
+        });
+        PopupRalan.add(mnSelesaiKlaimRajal);
+
+        javax.swing.JMenuItem mnBatalSelesaiKlaimRajal = new javax.swing.JMenuItem("Batal Selesai Klaim");
+        mnBatalSelesaiKlaimRajal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png")));
+        mnBatalSelesaiKlaimRajal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (tbListPasienRajal.getSelectedRow() != -1) {
+                    String noRawat = tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString();
+                    if(Sequel.mengedittf("tt_status_eklaim", "no_rawat=?", "selesai_klaim=?", 2, new String[]{"false", noRawat})) {
+                        tampilRalan();
+                    }
+                }
+            }
+        });
+        PopupRalan.add(mnBatalSelesaiKlaimRajal);
+
+        // Tambahan IT - Menu Selesai Klaim Ranap
+        javax.swing.JMenuItem mnSelesaiKlaimRanap = new javax.swing.JMenuItem("Selesai Klaim");
+        mnSelesaiKlaimRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png")));
+        mnSelesaiKlaimRanap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (tbListPasienRanap.getSelectedRow() != -1) {
+                    String noRawat = tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString();
+                    if(Sequel.mengedittf("tt_status_eklaim", "no_rawat=?", "selesai_klaim=?", 2, new String[]{"true", noRawat})) {
+                        tampilRanap();
+                    }
+                }
+            }
+        });
+        PopupRanap.add(mnSelesaiKlaimRanap);
+
+        javax.swing.JMenuItem mnBatalSelesaiKlaimRanap = new javax.swing.JMenuItem("Batal Selesai Klaim");
+        mnBatalSelesaiKlaimRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png")));
+        mnBatalSelesaiKlaimRanap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                if (tbListPasienRanap.getSelectedRow() != -1) {
+                    String noRawat = tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString();
+                    if(Sequel.mengedittf("tt_status_eklaim", "no_rawat=?", "selesai_klaim=?", 2, new String[]{"false", noRawat})) {
+                        tampilRanap();
+                    }
+                }
+            }
+        });
+        PopupRanap.add(mnBatalSelesaiKlaimRanap);
+
         // --- Apply Standard Styling ---
         javax.swing.JComponent[] newItems = {
             mnInputCatatan, mnInputResumeRanap, mnInputDiagnosaRanap, 
             MnLihatRanap, ppLabRadRanap, ppBillingRanap, ppUsgRanap, ppLaporanOperasiRanap, ppLaporanTindakanMedisRanap, ppMonitoringTransfusiRanap,
             mnRiwayatRanap, mnBerkasDigitalRanap, mnJadikanTidakKlaimRanap, 
-            mnInputCatatanRanap, mnInputCatatanTk, mnKembalikanKlaimTk
+            mnInputCatatanRanap, mnInputCatatanTk, mnKembalikanKlaimTk, mnSelesaiKlaimRajal, mnSelesaiKlaimRanap, mnBatalSelesaiKlaimRajal, mnBatalSelesaiKlaimRanap
         };
         java.awt.Font stdFont = new java.awt.Font("Tahoma", 0, 11);
         java.awt.Color stdFg = new java.awt.Color(50, 50, 50);
@@ -2339,14 +2437,16 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                     String cekSetDataKlaim = Sequel.cariIsi("select set_data_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     String cekFinalKlaim = Sequel.cariIsi("select final_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     String cekKirimOnline = Sequel.cariIsi("select kirim_online from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
+                    String cekSelesaiKlaim = Sequel.cariIsi("select selesai_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     ckKirimEklaim = "true".equals(cekSetDataKlaim);
                     ckFinalEklaim = "true".equals(cekFinalKlaim);
                     ckKirimOnline = "true".equals(cekKirimOnline);
+                    boolean ckSelesaiKlaimBool = "true".equals(cekSelesaiKlaim);
                     // Tambahan IT - Akhir cek status Eklaim
 
                     TabModePasienRalan.addRow(new Object[]{
                         false, rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), rs.getString("nm_poli"), rs.getString("nm_dokter"), rs.getString("no_sep"), rs.getString("tglsep"), rs.getString("tgl_registrasi"), (rs.getString("tgl_pulang") == null ? "-" : rs.getString("tgl_pulang")),
-                        ckResume, ckKoding, ckLaboratorium, ckRadiologi, ckusg, ckBilling, ckKirimEklaim, ckFinalEklaim, ckKirimOnline
+                        ckResume, ckKoding, ckLaboratorium, ckRadiologi, ckusg, ckBilling, ckKirimEklaim, ckFinalEklaim, ckKirimOnline, ckSelesaiKlaimBool
                     });
                 }
             } catch (Exception e) {
@@ -2468,9 +2568,11 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                     String cekSetDataKlaim = Sequel.cariIsi("select set_data_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     String cekFinalKlaim = Sequel.cariIsi("select final_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     String cekKirimOnline = Sequel.cariIsi("select kirim_online from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
+                    String cekSelesaiKlaim = Sequel.cariIsi("select selesai_klaim from tt_status_eklaim where no_rawat='" + rs.getString("no_rawat") + "'");
                     ckKirimEklaim = "true".equals(cekSetDataKlaim);
                     ckFinalEklaim = "true".equals(cekFinalKlaim);
                     ckKirimOnline = "true".equals(cekKirimOnline);
+                    boolean ckSelesaiKlaimBool = "true".equals(cekSelesaiKlaim);
                     // Tambahan IT - Akhir cek status Eklaim
                     boolean ckSEmergency = false, ckSpri = false, ckPersetujuanInap = false;
                     int berkasSpri = Sequel.cariInteger("select count(no_rawat) as total from bridging_surat_pri_bpjs where no_rawat='" + rs.getString("no_rawat") + "'");
@@ -2483,7 +2585,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                     tglCheckout = Sequel.cariIsi("select tgl_keluar from kamar_inap where no_rawat='" + rs.getString("no_rawat") + "' and ( stts_pulang!='-' or stts_pulang!='Pindah Kamar')  ORDER BY tgl_keluar desc limit 1 ");
                     TabModePasienRanap.addRow(new Object[]{
                         false, rs.getString("no_rawat"), rs.getString("no_rkm_medis"), rs.getString("nm_pasien"), kamar, dpjp, rs.getString("no_sep"), rs.getString("tglsep"), rs.getString("tgl_registrasi"), (tglCheckout == null || tglCheckout == "" ? "-" : tglCheckout),
-                        ckResume, ckKoding, ckLaboratorium, ckRadiologi, ckusg, ckBilling, ckKirimEklaim, ckFinalEklaim, ckKirimOnline, ckSEmergency, ckSpri, ckPersetujuanInap
+                        ckResume, ckKoding, ckLaboratorium, ckRadiologi, ckusg, ckBilling, ckKirimEklaim, ckFinalEklaim, ckKirimOnline, ckSelesaiKlaimBool, ckSEmergency, ckSpri, ckPersetujuanInap
                     });
                 }
             } catch (Exception e) {
