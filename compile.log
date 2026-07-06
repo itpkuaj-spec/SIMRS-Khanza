@@ -1,0 +1,768 @@
+src\tambahan_it\PKUDlgListKlaim.java:4: error: package com.fasterxml.jackson.databind does not exist
+import com.fasterxml.jackson.databind.JsonNode;
+                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:5: error: package com.fasterxml.jackson.databind does not exist
+import com.fasterxml.jackson.databind.ObjectMapper;
+                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:6: error: package fungsi does not exist
+import fungsi.WarnaTable;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:7: error: package fungsi does not exist
+import fungsi.batasInput;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:8: error: package fungsi does not exist
+import fungsi.koneksiDB;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:13: error: package fungsi does not exist
+import fungsi.sekuel;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:14: error: package fungsi does not exist
+import fungsi.validasi;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:15: error: package fungsi does not exist
+import fungsi.akses;
+             ^
+src\tambahan_it\PKUDlgListKlaim.java:30: error: package org.springframework.http does not exist
+import org.springframework.http.HttpEntity;
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:31: error: package org.springframework.http does not exist
+import org.springframework.http.HttpHeaders;
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:32: error: package org.springframework.http does not exist
+import org.springframework.http.HttpMethod;
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:33: error: package org.springframework.http does not exist
+import org.springframework.http.MediaType;
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:45: error: cannot find symbol
+    private validasi Valid = new validasi();
+            ^
+  symbol:   class validasi
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:46: error: cannot find symbol
+    private sekuel Sequel = new sekuel();
+            ^
+  symbol:   class sekuel
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:52: error: cannot find symbol
+    private ApiIntegrationIDRG api = new ApiIntegrationIDRG();
+            ^
+  symbol:   class ApiIntegrationIDRG
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:53: error: cannot find symbol
+    private HttpHeaders headers;
+            ^
+  symbol:   class HttpHeaders
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:54: error: cannot find symbol
+    private HttpEntity requestEntity;
+            ^
+  symbol:   class HttpEntity
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:55: error: cannot find symbol
+    private ObjectMapper mapper = new ObjectMapper();
+            ^
+  symbol:   class ObjectMapper
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:56: error: cannot find symbol
+    private JsonNode root, root2, root3;
+            ^
+  symbol:   class JsonNode
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:57: error: cannot find symbol
+    private JsonNode nameNode;
+            ^
+  symbol:   class JsonNode
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:58: error: cannot find symbol
+    private JsonNode response, responsename, response3;
+            ^
+  symbol:   class JsonNode
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:2013: error: package widget does not exist
+    private widget.Button BtnAll;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2014: error: package widget does not exist
+    private widget.Button BtnCariPasien;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2015: error: package widget does not exist
+    private widget.Button BtnCloseInpindah2;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2016: error: package widget does not exist
+    private widget.Button BtnCloseInpindah3;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2017: error: package widget does not exist
+    private widget.Button BtnCloseInpindah4;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2018: error: package widget does not exist
+    private widget.Button BtnKeluar1;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2019: error: package widget does not exist
+    private widget.Button BtnSeek4;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2020: error: package widget does not exist
+    private widget.Tanggal DTPTglAkhir;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2021: error: package widget does not exist
+    private widget.Tanggal DTPTglAwal;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2023: error: package widget does not exist
+    private widget.PanelBiasa FormInput1;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2024: error: package widget does not exist
+    private widget.PanelBiasa FormInput2;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2025: error: package widget does not exist
+    private widget.PanelBiasa FormInput3;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2027: error: package widget does not exist
+    private widget.Label LCount;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2034: error: package widget does not exist
+    private widget.ScrollPane Scroll;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2035: error: package widget does not exist
+    private widget.ScrollPane Scroll1;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2036: error: package widget does not exist
+    private widget.ScrollPane Scroll2;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2037: error: package widget does not exist
+    private widget.Label SepTerbit;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2038: error: package widget does not exist
+    private widget.TextBox TCariKunjungan;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2039: error: package widget does not exist
+    private widget.TextBox TNoRw;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2042: error: package widget does not exist
+    private widget.TextArea catatanPerbaikan1;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2043: error: package widget does not exist
+    private widget.CekBox chkAutoRefresh;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2044: error: package widget does not exist
+    private widget.InternalFrame internalFrame1;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2045: error: package widget does not exist
+    private widget.InternalFrame internalFrame13;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2046: error: package widget does not exist
+    private widget.InternalFrame internalFrame14;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2047: error: package widget does not exist
+    private widget.InternalFrame internalFrame15;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2048: error: package widget does not exist
+    private widget.Label jLabel16;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2049: error: package widget does not exist
+    private widget.Label jLabel3;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2050: error: package widget does not exist
+    private widget.Label jLabel44;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2051: error: package widget does not exist
+    private widget.Label jLabel46;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2052: error: package widget does not exist
+    private widget.Label jLabel49;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2053: error: package widget does not exist
+    private widget.Label jLabel50;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2054: error: package widget does not exist
+    private widget.Label jLabel67;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2055: error: package widget does not exist
+    private widget.Label jLabel7;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2056: error: package widget does not exist
+    private widget.Label jLabel8;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2063: error: package widget does not exist
+    private widget.TextBox kdPoliView;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2064: error: package widget does not exist
+    private widget.TextBox kdDokterView;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2065: error: package widget does not exist
+    private widget.TextBox nmDokterView;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2066: error: package widget does not exist
+    private widget.Button BtnSeekDokter;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2067: error: package widget does not exist
+    private widget.Label jLabelDokter;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2069: error: package widget does not exist
+    private widget.Table tbDokterLayanan;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2070: error: package widget does not exist
+    private widget.Label label10;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2071: error: package widget does not exist
+    private widget.Label label11;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2072: error: package widget does not exist
+    private widget.Label label21;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2073: error: package widget does not exist
+    private widget.Label label9;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2079: error: package widget does not exist
+    private widget.TextBox nmPoliView;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2080: error: package widget does not exist
+    private widget.PanelBiasa panelBiasa10;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2081: error: package widget does not exist
+    private widget.PanelBiasa panelBiasa8;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2082: error: package widget does not exist
+    private widget.PanelBiasa panelBiasa9;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2083: error: package widget does not exist
+    private widget.panelisi panelisi3;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2084: error: package widget does not exist
+    private widget.panelisi panelisi4;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2085: error: package widget does not exist
+    private widget.panelisi panelisi5;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2086: error: package widget does not exist
+    private widget.panelisi panelisi6;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2098: error: package widget does not exist
+    private widget.ScrollPane scrollPane4;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2099: error: package widget does not exist
+    private widget.Table tbListPasienRajal;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2100: error: package widget does not exist
+    private widget.Table tbListPasienRanap;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2101: error: package widget does not exist
+    private widget.Table tbUnitLayanan;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2102: error: package widget does not exist
+    private widget.Label timeslaps;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2108: error: package widget does not exist
+    private widget.Button btnSimpanCatatan;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2109: error: package widget does not exist
+    private widget.ScrollPane Scroll3;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2110: error: package widget does not exist
+    private widget.ScrollPane Scroll4;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2111: error: package widget does not exist
+    private widget.Table tbListPasienRanapTidakKlaim;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:2113: error: package widget does not exist
+    private widget.Table tbListPasienTidakKlaim;
+                  ^
+src\tambahan_it\PKUDlgListKlaim.java:3: error: package integration_idrg does not exist
+import integration_idrg.*;
+^
+src\tambahan_it\PKUDlgListKlaim.java:45: error: cannot find symbol
+    private validasi Valid = new validasi();
+                                 ^
+  symbol:   class validasi
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:46: error: cannot find symbol
+    private sekuel Sequel = new sekuel();
+                                ^
+  symbol:   class sekuel
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:47: error: cannot find symbol
+    private Connection koneksi = koneksiDB.condb();
+                                 ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:52: error: cannot find symbol
+    private ApiIntegrationIDRG api = new ApiIntegrationIDRG();
+                                         ^
+  symbol:   class ApiIntegrationIDRG
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:55: error: cannot find symbol
+    private ObjectMapper mapper = new ObjectMapper();
+                                      ^
+  symbol:   class ObjectMapper
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:95: error: cannot find symbol
+        tbUnitLayanan.setDefaultRenderer(Object.class, new WarnaTable());
+                                                           ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:113: error: package widget does not exist
+        widget.InternalFrame internalFrameDokter = new widget.InternalFrame();
+              ^
+src\tambahan_it\PKUDlgListKlaim.java:113: error: package widget does not exist
+        widget.InternalFrame internalFrameDokter = new widget.InternalFrame();
+                                                             ^
+src\tambahan_it\PKUDlgListKlaim.java:117: error: package widget does not exist
+        tbDokterLayanan = new widget.Table();
+                                    ^
+src\tambahan_it\PKUDlgListKlaim.java:130: error: cannot find symbol
+        tbDokterLayanan.setDefaultRenderer(Object.class, new WarnaTable());
+                                                             ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:132: error: package widget does not exist
+        widget.ScrollPane ScrollDokter = new widget.ScrollPane();
+              ^
+src\tambahan_it\PKUDlgListKlaim.java:132: error: package widget does not exist
+        widget.ScrollPane ScrollDokter = new widget.ScrollPane();
+                                                   ^
+src\tambahan_it\PKUDlgListKlaim.java:136: error: package widget does not exist
+        widget.PanelBiasa panelBiasaDokter = new widget.PanelBiasa();
+              ^
+src\tambahan_it\PKUDlgListKlaim.java:136: error: package widget does not exist
+        widget.PanelBiasa panelBiasaDokter = new widget.PanelBiasa();
+                                                       ^
+src\tambahan_it\PKUDlgListKlaim.java:138: error: package widget does not exist
+        widget.Button btnCloseDokter = new widget.Button();
+              ^
+src\tambahan_it\PKUDlgListKlaim.java:138: error: package widget does not exist
+        widget.Button btnCloseDokter = new widget.Button();
+                                                 ^
+src\tambahan_it\PKUDlgListKlaim.java:228: error: cannot find symbol
+        tbListPasienRajal.setDefaultRenderer(Object.class, new WarnaTable());
+                                                               ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:284: error: cannot find symbol
+        tbListPasienRanap.setDefaultRenderer(Object.class, new WarnaTable());
+                                                               ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:297: error: package widget does not exist
+        internalFrame13 = new widget.InternalFrame();
+                                    ^
+src\tambahan_it\PKUDlgListKlaim.java:298: error: package widget does not exist
+        panelBiasa8 = new widget.PanelBiasa();
+                                ^
+src\tambahan_it\PKUDlgListKlaim.java:299: error: package widget does not exist
+        BtnCloseInpindah2 = new widget.Button();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:300: error: package widget does not exist
+        FormInput1 = new widget.PanelBiasa();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:302: error: package widget does not exist
+        jLabel67 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:305: error: package widget does not exist
+        jLabel44 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:307: error: package widget does not exist
+        jLabel46 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:309: error: package widget does not exist
+        jLabel49 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:311: error: package widget does not exist
+        jLabel50 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:313: error: package widget does not exist
+        internalFrame14 = new widget.InternalFrame();
+                                    ^
+src\tambahan_it\PKUDlgListKlaim.java:314: error: package widget does not exist
+        panelBiasa9 = new widget.PanelBiasa();
+                                ^
+src\tambahan_it\PKUDlgListKlaim.java:315: error: package widget does not exist
+        BtnCloseInpindah3 = new widget.Button();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:316: error: package widget does not exist
+        FormInput2 = new widget.PanelBiasa();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:317: error: package widget does not exist
+        Scroll = new widget.ScrollPane();
+                           ^
+src\tambahan_it\PKUDlgListKlaim.java:318: error: package widget does not exist
+        tbUnitLayanan = new widget.Table();
+                                  ^
+src\tambahan_it\PKUDlgListKlaim.java:320: error: package widget does not exist
+        internalFrame15 = new widget.InternalFrame();
+                                    ^
+src\tambahan_it\PKUDlgListKlaim.java:321: error: package widget does not exist
+        panelBiasa10 = new widget.PanelBiasa();
+                                 ^
+src\tambahan_it\PKUDlgListKlaim.java:322: error: package widget does not exist
+        BtnCloseInpindah4 = new widget.Button();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:323: error: package widget does not exist
+        FormInput3 = new widget.PanelBiasa();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:324: error: package widget does not exist
+        scrollPane4 = new widget.ScrollPane();
+                                ^
+src\tambahan_it\PKUDlgListKlaim.java:325: error: package widget does not exist
+        catatanPerbaikan1 = new widget.TextArea();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:341: error: package widget does not exist
+        btnSimpanCatatan = new widget.Button();
+                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:342: error: package widget does not exist
+        Scroll3 = new widget.ScrollPane();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:343: error: package widget does not exist
+        tbListPasienTidakKlaim = new widget.Table();
+                                           ^
+src\tambahan_it\PKUDlgListKlaim.java:344: error: package widget does not exist
+        TNoRw = new widget.TextBox();
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:356: error: package widget does not exist
+        internalFrame1 = new widget.InternalFrame();
+                                   ^
+src\tambahan_it\PKUDlgListKlaim.java:358: error: package widget does not exist
+        Scroll2 = new widget.ScrollPane();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:359: error: package widget does not exist
+        tbListPasienRajal = new widget.Table();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:360: error: package widget does not exist
+        Scroll1 = new widget.ScrollPane();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:361: error: package widget does not exist
+        tbListPasienRanap = new widget.Table();
+                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:362: error: package widget does not exist
+        panelisi3 = new widget.panelisi();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:363: error: package widget does not exist
+        panelisi6 = new widget.panelisi();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:364: error: package widget does not exist
+        jLabel7 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:365: error: package widget does not exist
+        DTPTglAwal = new widget.Tanggal();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:366: error: package widget does not exist
+        jLabel8 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:367: error: package widget does not exist
+        DTPTglAkhir = new widget.Tanggal();
+                                ^
+src\tambahan_it\PKUDlgListKlaim.java:368: error: package widget does not exist
+        chkAutoRefresh = new widget.CekBox();
+                                   ^
+src\tambahan_it\PKUDlgListKlaim.java:369: error: package widget does not exist
+        jLabel3 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:370: error: package widget does not exist
+        label9 = new widget.Label();
+                           ^
+src\tambahan_it\PKUDlgListKlaim.java:371: error: package widget does not exist
+        TCariKunjungan = new widget.TextBox();
+                                   ^
+src\tambahan_it\PKUDlgListKlaim.java:372: error: package widget does not exist
+        BtnCariPasien = new widget.Button();
+                                  ^
+src\tambahan_it\PKUDlgListKlaim.java:373: error: package widget does not exist
+        jLabel16 = new widget.Label();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:374: error: package widget does not exist
+        kdPoliView = new widget.TextBox();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:375: error: package widget does not exist
+        nmPoliView = new widget.TextBox();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:376: error: package widget does not exist
+        BtnSeek4 = new widget.Button();
+                             ^
+src\tambahan_it\PKUDlgListKlaim.java:377: error: package widget does not exist
+        panelisi4 = new widget.panelisi();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:378: error: package widget does not exist
+        label11 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:379: error: package widget does not exist
+        SepTerbit = new widget.Label();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:380: error: package widget does not exist
+        label10 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:381: error: package widget does not exist
+        LCount = new widget.Label();
+                           ^
+src\tambahan_it\PKUDlgListKlaim.java:382: error: package widget does not exist
+        label21 = new widget.Label();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:383: error: package widget does not exist
+        timeslaps = new widget.Label();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:384: error: package widget does not exist
+        BtnAll = new widget.Button();
+                           ^
+src\tambahan_it\PKUDlgListKlaim.java:385: error: package widget does not exist
+        panelisi5 = new widget.panelisi();
+                              ^
+src\tambahan_it\PKUDlgListKlaim.java:386: error: package widget does not exist
+        BtnKeluar1 = new widget.Button();
+                               ^
+src\tambahan_it\PKUDlgListKlaim.java:844: error: package widget does not exist
+                widget.Table tb = TabRawat.getSelectedIndex() == 1 ? tbListPasienRanap : tbListPasienRajal;
+                      ^
+src\tambahan_it\PKUDlgListKlaim.java:1083: error: package widget does not exist
+        Scroll3 = new widget.ScrollPane();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:1105: error: package widget does not exist
+        tbListPasienTidakKlaim = new widget.Table();
+                                           ^
+src\tambahan_it\PKUDlgListKlaim.java:1123: error: cannot find symbol
+        tbListPasienTidakKlaim.setDefaultRenderer(Object.class, new WarnaTable());
+                                                                    ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1136: error: package widget does not exist
+                widget.Table tb = TabRawat.getSelectedIndex() == 3 ? tbListPasienRanapTidakKlaim : tbListPasienTidakKlaim;
+                      ^
+src\tambahan_it\PKUDlgListKlaim.java:1171: error: package widget does not exist
+                widget.Table tb = TabRawat.getSelectedIndex() == 3 ? tbListPasienRanapTidakKlaim : tbListPasienTidakKlaim;
+                      ^
+src\tambahan_it\PKUDlgListKlaim.java:1190: error: package widget does not exist
+        Scroll4 = new widget.ScrollPane();
+                            ^
+src\tambahan_it\PKUDlgListKlaim.java:1213: error: package widget does not exist
+        tbListPasienRanapTidakKlaim = new widget.Table();
+                                                ^
+src\tambahan_it\PKUDlgListKlaim.java:1231: error: cannot find symbol
+        tbListPasienRanapTidakKlaim.setDefaultRenderer(Object.class, new WarnaTable());
+                                                                         ^
+  symbol:   class WarnaTable
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1367: error: package widget does not exist
+        jLabelDokter = new widget.Label();
+                                 ^
+src\tambahan_it\PKUDlgListKlaim.java:1373: error: package widget does not exist
+        kdDokterView = new widget.TextBox();
+                                 ^
+src\tambahan_it\PKUDlgListKlaim.java:1378: error: package widget does not exist
+        nmDokterView = new widget.TextBox();
+                                 ^
+src\tambahan_it\PKUDlgListKlaim.java:1384: error: package widget does not exist
+        BtnSeekDokter = new widget.Button();
+                                  ^
+src\tambahan_it\PKUDlgListKlaim.java:1674: error: package integration_idrg does not exist
+        integration_idrg.DlgDetailKlaimrajal form = new integration_idrg.DlgDetailKlaimrajal(null, false);
+                        ^
+src\tambahan_it\PKUDlgListKlaim.java:1674: error: package integration_idrg does not exist
+        integration_idrg.DlgDetailKlaimrajal form = new integration_idrg.DlgDetailKlaimrajal(null, false);
+                                                                        ^
+src\tambahan_it\PKUDlgListKlaim.java:1734: error: cannot find symbol
+        DlgDetailKlaim3 form = new DlgDetailKlaim3(null, false);
+        ^
+  symbol:   class DlgDetailKlaim3
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1734: error: cannot find symbol
+        DlgDetailKlaim3 form = new DlgDetailKlaim3(null, false);
+                                   ^
+  symbol:   class DlgDetailKlaim3
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1787: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPenunjang resume = new rekammedis.RMRiwayatPenunjang(null, true);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1787: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPenunjang resume = new rekammedis.RMRiwayatPenunjang(null, true);
+                                                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:1798: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPenunjang resume = new rekammedis.RMRiwayatPenunjang(null, true);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1798: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPenunjang resume = new rekammedis.RMRiwayatPenunjang(null, true);
+                                                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:1813: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPerawatan riwayat = new rekammedis.RMRiwayatPerawatan(null, true);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1813: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPerawatan riwayat = new rekammedis.RMRiwayatPerawatan(null, true);
+                                                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:1824: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPerawatan riwayat = new rekammedis.RMRiwayatPerawatan(null, true);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1824: error: package rekammedis does not exist
+                rekammedis.RMRiwayatPerawatan riwayat = new rekammedis.RMRiwayatPerawatan(null, true);
+                                                                      ^
+src\tambahan_it\PKUDlgListKlaim.java:1839: error: package keuangan does not exist
+                keuangan.DlgBilingRalan billing = new keuangan.DlgBilingRalan(null, false);
+                        ^
+src\tambahan_it\PKUDlgListKlaim.java:1839: error: package keuangan does not exist
+                keuangan.DlgBilingRalan billing = new keuangan.DlgBilingRalan(null, false);
+                                                              ^
+src\tambahan_it\PKUDlgListKlaim.java:1858: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasien resume = new rekammedis.RMDataResumePasien(null, false);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1858: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasien resume = new rekammedis.RMDataResumePasien(null, false);
+                                                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:1871: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasienRanap resume = new rekammedis.RMDataResumePasienRanap(null, false);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1871: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasienRanap resume = new rekammedis.RMDataResumePasienRanap(null, false);
+                                                                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1888: error: package laporan does not exist
+                laporan.DlgDiagnosaPenyakit diagnosa = new laporan.DlgDiagnosaPenyakit(null, false);
+                       ^
+src\tambahan_it\PKUDlgListKlaim.java:1888: error: package laporan does not exist
+                laporan.DlgDiagnosaPenyakit diagnosa = new laporan.DlgDiagnosaPenyakit(null, false);
+                                                                  ^
+src\tambahan_it\PKUDlgListKlaim.java:1899: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasienRanap resume = new rekammedis.RMDataResumePasienRanap(null, false);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1899: error: package rekammedis does not exist
+                rekammedis.RMDataResumePasienRanap resume = new rekammedis.RMDataResumePasienRanap(null, false);
+                                                                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1915: error: package rekammedis does not exist
+                rekammedis.RMHasilPemeriksaanUSG usg = new rekammedis.RMHasilPemeriksaanUSG(null, false);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1915: error: package rekammedis does not exist
+                rekammedis.RMHasilPemeriksaanUSG usg = new rekammedis.RMHasilPemeriksaanUSG(null, false);
+                                                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:1926: error: package rekammedis does not exist
+                rekammedis.RMHasilPemeriksaanUSG usg = new rekammedis.RMHasilPemeriksaanUSG(null, false);
+                          ^
+src\tambahan_it\PKUDlgListKlaim.java:1926: error: package rekammedis does not exist
+                rekammedis.RMHasilPemeriksaanUSG usg = new rekammedis.RMHasilPemeriksaanUSG(null, false);
+                                                                     ^
+src\tambahan_it\PKUDlgListKlaim.java:1942: error: package laporan does not exist
+                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
+                       ^
+src\tambahan_it\PKUDlgListKlaim.java:1942: error: package laporan does not exist
+                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
+                                                           ^
+src\tambahan_it\PKUDlgListKlaim.java:1945: error: cannot find symbol
+                    if(akses.gethapus_berkas_digital_perawatan()==true){
+                       ^
+  symbol:   variable akses
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1946: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1946: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                     ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1946: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                 ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1946: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                      ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1946: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1948: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1948: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                     ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1948: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                 ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1948: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                              ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1948: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRajal.getValueAt(tbListPasienRajal.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                                                                           ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1962: error: package laporan does not exist
+                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
+                       ^
+src\tambahan_it\PKUDlgListKlaim.java:1962: error: package laporan does not exist
+                laporan.DlgBerkasRawat berkas = new laporan.DlgBerkasRawat(null, false);
+                                                           ^
+src\tambahan_it\PKUDlgListKlaim.java:1965: error: cannot find symbol
+                    if(akses.gethapus_berkas_digital_perawatan()==true){
+                       ^
+  symbol:   variable akses
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1966: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1966: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                     ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1966: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                 ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1966: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                      ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1966: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1968: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                   ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1968: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                     ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1968: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                 ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1968: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                              ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1968: error: cannot find symbol
+                        berkas.loadURL("http://" + koneksiDB.HOSTHYBRIDWEB() + ":" + koneksiDB.PORTWEB() + "/" + koneksiDB.HYBRIDWEB() + "/berkasrawat/login2nonhapus.php?act=login&usere=" + koneksiDB.USERHYBRIDWEB() + "&passwordte=" + koneksiDB.PASHYBRIDWEB() + "&no_rawat=" + tbListPasienRanap.getValueAt(tbListPasienRanap.getSelectedRow(), 1).toString().replaceAll(" ", "_"));
+                                                                                                                                                                                                                                           ^
+  symbol:   variable koneksiDB
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:1984: error: package widget does not exist
+        widget.Table tb = TabRawat.getSelectedIndex() == 1 ? tbListPasienRanap : tbListPasienRajal;
+              ^
+src\tambahan_it\PKUDlgListKlaim.java:2427: error: cannot find symbol
+                    ps.setString(2, akses.getnamauser());
+                                    ^
+  symbol:   variable akses
+  location: class PKUDlgListKlaim
+src\tambahan_it\PKUDlgListKlaim.java:2440: error: cannot find symbol
+                    ps.setString(3, akses.getnamauser());
+                                    ^
+  symbol:   variable akses
+  location: class PKUDlgListKlaim
+225 errors

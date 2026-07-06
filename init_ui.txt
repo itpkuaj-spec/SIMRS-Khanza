@@ -1,0 +1,116 @@
+    private void initTidakKlaimGUI() {
+        Object[] columns = new String[]{
+            "P", "No Rawat", "No RM", "Nama Pasien", "Unit/Poli", "Nama Dokter", "No SEP",
+            "Tgl SEP", "Tgl Registrasi", "Catatan", "Tgl Input", "User Input"
+        };
+        TabModePasienTidakKlaim = new DefaultTableModel(null, columns) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return colIndex == 0;
+            }
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+        };
+
+        tbListPasienTidakKlaim = new widget.Table();
+        tbListPasienTidakKlaim.setModel(TabModePasienTidakKlaim);
+        tbListPasienTidakKlaim.setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbListPasienTidakKlaim.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        for (int i = 0; i < 12; i++) {
+            TableColumn column = tbListPasienTidakKlaim.getColumnModel().getColumn(i);
+            if (i == 0) column.setPreferredWidth(20);
+            else if (i == 1) column.setPreferredWidth(110);
+            else if (i == 2) column.setPreferredWidth(60);
+            else if (i == 3) column.setPreferredWidth(300);
+            else if (i == 4) column.setPreferredWidth(150);
+            else if (i == 5) column.setPreferredWidth(200);
+            else if (i == 6) column.setPreferredWidth(125);
+            else column.setPreferredWidth(90);
+        }
+        tbListPasienTidakKlaim.setDefaultRenderer(Object.class, new WarnaTable());
+
+        Scroll3 = new widget.ScrollPane();
+        Scroll3.setViewportView(tbListPasienTidakKlaim);
+        TabRawat.addTab("Rawat Jalan (Tidak Klaim)", Scroll3);
+
+        Object[] columnsRanap = new String[]{
+            "P", "No Rawat", "No RM", "Nama Pasien", "Kamar", "DPJP", "No SEP",
+            "Tgl SEP", "Tgl Registrasi", "Tgl Checkout", "Catatan", "Tgl Input", "User Input"
+        };
+        TabModePasienRanapTidakKlaim = new DefaultTableModel(null, columnsRanap) {
+            @Override
+            public boolean isCellEditable(int rowIndex, int colIndex) {
+                return colIndex == 0;
+            }
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
+                java.lang.Object.class
+            };
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+        };
+
+        tbListPasienRanapTidakKlaim = new widget.Table();
+        tbListPasienRanapTidakKlaim.setModel(TabModePasienRanapTidakKlaim);
+        tbListPasienRanapTidakKlaim.setPreferredScrollableViewportSize(new Dimension(500, 500));
+        tbListPasienRanapTidakKlaim.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        for (int i = 0; i < 13; i++) {
+            TableColumn column = tbListPasienRanapTidakKlaim.getColumnModel().getColumn(i);
+            if (i == 0) column.setPreferredWidth(20);
+            else if (i == 1) column.setPreferredWidth(110);
+            else if (i == 2) column.setPreferredWidth(60);
+            else if (i == 3) column.setPreferredWidth(300);
+            else if (i == 4) column.setPreferredWidth(150);
+            else if (i == 5) column.setPreferredWidth(200);
+            else if (i == 6) column.setPreferredWidth(125);
+            else column.setPreferredWidth(90);
+        }
+        tbListPasienRanapTidakKlaim.setDefaultRenderer(Object.class, new WarnaTable());
+
+        Scroll4 = new widget.ScrollPane();
+        Scroll4.setViewportView(tbListPasienRanapTidakKlaim);
+        TabRawat.addTab("Rawat Inap (Tidak Klaim)", Scroll4);
+
+        mnJadikanTidakKlaim = new javax.swing.JMenuItem();
+        mnJadikanTidakKlaim.setBackground(new java.awt.Color(255, 255, 254));
+        mnJadikanTidakKlaim.setFont(new java.awt.Font("Tahoma", 0, 11));
+        mnJadikanTidakKlaim.setForeground(new java.awt.Color(50, 50, 50));
+        mnJadikanTidakKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        mnJadikanTidakKlaim.setText("Jadikan tidak ikut Klaim");
+        mnJadikanTidakKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        mnJadikanTidakKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        mnJadikanTidakKlaim.setPreferredSize(new java.awt.Dimension(250, 25));
+        mnJadikanTidakKlaim.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnJadikanTidakKlaimActionPerformed(evt);
+            }
+        });
+        PopupRalan.add(mnJadikanTidakKlaim);
+        
+        mnJadikanTidakKlaimRanap = new javax.swing.JMenuItem();
+        mnJadikanTidakKlaimRanap.setBackground(new java.awt.Color(255, 255, 254));
+        mnJadikanTidakKlaimRanap.setFont(new java.awt.Font("Tahoma", 0, 11));
+        mnJadikanTidakKlaimRanap.setForeground(new java.awt.Color(50, 50, 50));
+        mnJadikanTidakKlaimRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        mnJadikanTidakKlaimRanap.setText("Jadikan tidak ikut Klaim");
+        mnJadikanTidakKlaimRanap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        mnJadikanTidakKlaimRanap.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        mnJadikanTidakKlaimRanap.setPreferredSize(new java.awt.Dimension(250, 25));
+        mnJadikanTidakKlaimRanap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnJadikanTidakKlaimActionPerformed(evt);
+            }
+        });
+        PopupRanap.add(mnJadikanTidakKlaimRanap);
+    }

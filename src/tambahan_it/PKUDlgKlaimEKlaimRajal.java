@@ -6523,7 +6523,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 
 //            JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping iDRG");
             cekStatusKlaim();
-            finalDRG();
+            finalDRG();//otomatis final idrg
         }
 
     } catch (Exception ex) {
@@ -6560,7 +6560,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     });
 //                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final iDRG");
                     cekStatusKlaim();
-                    importCoding();
+                    importCoding();//otomatis import koding
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
 //                                Sequel.menyimpantf2("inacbg_data_terkirim2", "?,?", "No.Rawat", 2,
@@ -6796,8 +6796,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     private void setINACBG() {
 //        JOptionPane.showMessageDialog(rootPane, "Diagnosa dengan status IM TIDAK BERLAKU akan dihapus saat kirim ke eklaim,\n Silahkan ganti diagnosa tersebut dengan diagnosa yang berlaku pada INACBG jika ingin digunakan.");
         String listDiagnosa = "", listProsedur = "";
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+//        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
             try {
                 for (i = 0; i < tbDiagnosaIINACBG.getRowCount(); i++) {
 //                    if (tbDiagnosaIINACBG.getValueAt(i, 3).toString().equals("1")) {
@@ -6884,8 +6884,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     tampilDiagnosaINACBG();
                     tampilProsedureINACBG();
                     getDataKlaim();
-                    JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping INACBG");
-                    cekStatusKlaim();
+//                    JOptionPane.showMessageDialog(rootPane, "Berhasil Grouping INACBG");
+                    cekStatusKlaim();                 
                                                 // === LOGIKA PENGECEKAN BARU DIMULAI DI SINI ===
                             if (Sequel.cariInteger("SELECT count(no_rawat) FROM tb_inacbg_grouping_result WHERE no_rawat='" + norawat + "' AND (cbg_description LIKE '%ERROR%' OR cbg_description LIKE '%GAGAL%')") > 0) {
                                 // KONDISI 1: ADA ERROR/GAGAL
@@ -6898,6 +6898,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                                 groupHasilINACBG.setForeground(Color.BLACK); // Atur kembali ke warna NORMAL (misalnya, HITAM)
                             }
                             // === LOGIKA PENGECEKAN BARU SELESAI ===
+                    finalINACBG();//otomatis final inacbg
                 }
             } catch (Exception ex) {
                 System.out.println("Notifikasi : " + ex);
@@ -6922,7 +6923,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //        } else {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
-        }
+//        }
     }
 
     private void getDataKlaim() {
@@ -7010,8 +7011,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     }
 
     private void finalINACBG() {
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+//        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
             try {
                 // headers removed
                 // requestEntity removed
@@ -7029,8 +7030,9 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     Sequel.mengedit("tt_status_eklaim", "no_rawat=? and no_sep=?", "final_inacbg=?", 3, new String[]{
                         "true", norawat, noSep
                     });
-                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final INACBG");
+//                    JOptionPane.showMessageDialog(rootPane, "Berhasil Final INACBG");
                     cekStatusKlaim();
+                    finalKlaim();//otomatis final klaim
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
 //                                Sequel.menyimpantf2("inacbg_data_terkirim2", "?,?", "No.Rawat", 2,
@@ -7063,7 +7065,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //        } else {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
-        }
+//        }
     }
 
     private void editINACBG() {
@@ -7107,8 +7109,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     }
 
     private void finalKlaim() {
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di Finalisasi ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+//        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di Finalisasi ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
             try {
                 // headers removed
                 // requestEntity removed
@@ -7130,8 +7132,9 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                         "berkasdigital/data_individual/individual_"+noSep+".pdf", norawat, noSep
                     });
                     getDataKlaim();
-                    JOptionPane.showMessageDialog(rootPane, "Berhasil Finalisasi Klaim");
+//                    JOptionPane.showMessageDialog(rootPane, "Berhasil Finalisasi Klaim");
                     cekStatusKlaim();
+                    KirimOnlineKlaim();//otomatis kirim online
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
 //                                Sequel.menyimpantf2("inacbg_data_terkirim2", "?,?", "No.Rawat", 2,
@@ -7147,7 +7150,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(rootPane, "Koneksi ke server E-klaim terputus...!");
                 }
             }
-        }
+//        }
     }
 
     private void editKlaim() {
@@ -7253,8 +7256,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
             }
     }
      private void KirimOnlineKlaim() {
-        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di kirim ke DC Kemkes ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (reply == JOptionPane.YES_OPTION) {
+//        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di kirim ke DC Kemkes ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+//        if (reply == JOptionPane.YES_OPTION) {
             try {
                 // headers removed
                 // requestEntity removed
@@ -7272,15 +7275,10 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     
                     Sequel.mengedit("tt_status_eklaim", "no_rawat=? and no_sep=?", "kirim_online=?", 3, new String[]{
                         "true", norawat, noSep
-                    });
-                    
-                    System.out.println("===> Panggil getDataKlaim()");
-                    getDataKlaim();
-                    System.out.println("===> Selesai getDataKlaim()");
-                    JOptionPane.showMessageDialog(rootPane, "Berhasil Kirim Online");
-                    System.out.println("===> Panggil cekStatusKlaim()");
-                    cekStatusKlaim();
-                    System.out.println("===> Selesai cekStatusKlaim()");
+                    });                                        
+                    getDataKlaim();                    
+                    JOptionPane.showMessageDialog(rootPane, "Berhasil Kirim Online");                    
+                    cekStatusKlaim();                    
                 }
 //                            if (root.path("metadata").path("code").asText().equals("200")) {
 //                                Sequel.menyimpantf2("inacbg_data_terkirim2", "?,?", "No.Rawat", 2,
@@ -7296,7 +7294,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(rootPane, "Koneksi ke server E-klaim terputus...!");
                 }
             }
-        }
+//        }
     }
 
     private void tampilProsedurPilih() {

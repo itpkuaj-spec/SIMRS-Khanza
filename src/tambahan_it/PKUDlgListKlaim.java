@@ -461,7 +461,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         PopupRanap.add(mnInputDiagnosaRanap);
 
         javax.swing.JMenu MnLihatRanap = new javax.swing.JMenu("Lihat");
-        MnLihatRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));
+        MnLihatRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png")));
 
         javax.swing.JMenuItem ppLabRadRanap = new javax.swing.JMenuItem("Lab & Rad");
         ppLabRadRanap.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/item.png")));

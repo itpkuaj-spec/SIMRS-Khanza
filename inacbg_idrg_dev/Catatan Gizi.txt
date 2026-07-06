@@ -1,0 +1,15 @@
+Diet Pasien
+ - Hapus diet Pasien
+
+ Riwayat Pasien
+ - lengkap asuhan gizi
+ - Monitoring asuhan Gizi
+
+ Asuhan gizi
+ - tampilan inputan label
+ Intrvensi asuhan Gizi
+ - tampilan inputan label
+ tambahkan tombol inputan diet label
+ DPJP untuk Rajal
+
+ pemberian diet rekap sama dengan keterangan

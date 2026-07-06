@@ -1,0 +1,1 @@
+import org.apache.pdfbox.multipdf.PDFMergerUtility; public class TestMerger { public static void main(String[] args) { PDFMergerUtility merger = new PDFMergerUtility(); System.out.println(\"Success\"); } }
