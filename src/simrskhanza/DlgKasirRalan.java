@@ -885,7 +885,6 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         //tambahan
         lcatatanpasien = new widget.Label();
         catatanpasien = new widget.TextBox();
-        MnBerkasKlaim = new javax.swing.JMenuItem();
         //akhir
 
         jPopupMenu1.setForeground(new java.awt.Color(50, 50, 50));
@@ -4994,21 +4993,21 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
 
         //tamabahan
         
-        MnBerkasKlaim.setBackground(new java.awt.Color(255, 255, 254));
-        MnBerkasKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        MnBerkasKlaim.setForeground(new java.awt.Color(50, 50, 50));
-        MnBerkasKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        MnBerkasKlaim.setText("Kirim E-Klaim");
-        MnBerkasKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MnBerkasKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        MnBerkasKlaim.setName("MnBerkasKlaim"); // NOI18N
-        MnBerkasKlaim.setPreferredSize(new java.awt.Dimension(210, 26));
-        MnBerkasKlaim.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                MnBerkasKlaimBtnPrintActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(MnBerkasKlaim);
+//        MnBerkasKlaim.setBackground(new java.awt.Color(255, 255, 254));
+//        MnBerkasKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+//        MnBerkasKlaim.setForeground(new java.awt.Color(50, 50, 50));
+//        MnBerkasKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+//        MnBerkasKlaim.setText("Kirim E-Klaim");
+//        MnBerkasKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+//        MnBerkasKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+//        MnBerkasKlaim.setName("MnBerkasKlaim"); // NOI18N
+//        MnBerkasKlaim.setPreferredSize(new java.awt.Dimension(210, 26));
+//        MnBerkasKlaim.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                MnBerkasKlaimBtnPrintActionPerformed(evt);
+//            }
+//        });
+//        jPopupMenu1.add(MnBerkasKlaim);
         
         //akhir
 
@@ -16225,7 +16224,6 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     private widget.TextBox catatanpasien;
     private widget.Label jLabel23,antrianpasien,digit;
     private widget.Button BtnReviewSEP;
-    private javax.swing.JMenuItem MnBerkasKlaim;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JMenuItem MnPenilaianPreInduksi,MnHasilPemeriksaanUSG,MnHasilPemeriksaanUSGUrologi,MnHasilPemeriksaanUSGGynecologi,MnHasilPemeriksaanEKG,MnSudahTerbitSEP,MnPenatalaksanaanTerapiOkupasi,MnHasilPemeriksaanUSGNeonatus,
                                   MnHasilEndoskopiFaringLaring,MnHasilEndoskopiHidung,MnHasilEndoskopiTelinga,MnPenilaianPasienImunitasRendah,MnCatatanKeseimbanganCairan,MnCatatanObservasiCHBP,MnCatatanObservasiInduksiPersalinan,
@@ -18675,60 +18673,46 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
 }
     }
     
-    private void MnBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                      
-//        if(tabModekasir.getRowCount()==0){
-//            JOptionPane.showMessageDialog(null,"Maaf, table masih kosong...!!!!");
-//            TCari.requestFocus();
-//        }else{
-//            if(tbKasirRalan.getSelectedRow()!= -1){
-//                this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//                RMGenerateKlaim resume=new RMGenerateKlaim(null,true);
-//                resume.setNoRm(TNoRMCari.getText(),TPasienCari.getText());
-//                resume.setNoRawat(TNoRw.getText());
-//                resume.setSize(internalFrame1.getWidth(),internalFrame1.getHeight());
-//                resume.setLocationRelativeTo(internalFrame1);
-//                resume.setVisible(true);
-//                this.setCursor(Cursor.getDefaultCursor());
+//    private void MnBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                      
+//
+//        if (tabModekasir.getRowCount() == 0) {
+//        JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+//        TCari.requestFocus();
+//    } else {
+//            // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
+//                    if (TNoRwCari.getText().trim().isEmpty()) {
+//                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
+//                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
+//                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
+//                        return; // ⛔ Hentikan eksekusi
+//                    }
+//
+//        int row = tbKasirRalan.getSelectedRow();
+//        if (row > -1) {
+//            // ✅ Cek apakah kolom ke-6 berisi "UMUM"
+//            String jenisPembiayaan = tbKasirRalan.getValueAt(row, 9).toString().trim();
+//            if (jenisPembiayaan.equalsIgnoreCase("UMUM")) {
+//                JOptionPane.showMessageDialog(null, 
+//                    "Pasien dengan status 'UMUM' bukan peserta BPJS.\nTidak dapat membuat berkas klaim INACBG.",
+//                    "Informasi", JOptionPane.WARNING_MESSAGE);
+//                return; // ⛔ Hentikan eksekusi, jangan buka form klaim
 //            }
+//
+//            // ✅ Jika bukan UMUM, lanjutkan proses klaim
+//            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//
+//            DlgDetailKlaimrajal form = new DlgDetailKlaimrajal(null, true);
+//            form.setSize(this.getWidth(), this.getHeight() - 2);
+//            form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ralan");
+//            form.setLocationRelativeTo(this);
+//            form.setVisible(true);
+//
+//            this.setCursor(Cursor.getDefaultCursor());
+//        } else {
+//            JOptionPane.showMessageDialog(null, "Silakan pilih data pasien terlebih dahulu!");
 //        }
-        if (tabModekasir.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
-        TCari.requestFocus();
-    } else {
-            // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
-                    if (TNoRwCari.getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
-                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
-                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
-                        return; // ⛔ Hentikan eksekusi
-                    }
-
-        int row = tbKasirRalan.getSelectedRow();
-        if (row > -1) {
-            // ✅ Cek apakah kolom ke-6 berisi "UMUM"
-            String jenisPembiayaan = tbKasirRalan.getValueAt(row, 9).toString().trim();
-            if (jenisPembiayaan.equalsIgnoreCase("UMUM")) {
-                JOptionPane.showMessageDialog(null, 
-                    "Pasien dengan status 'UMUM' bukan peserta BPJS.\nTidak dapat membuat berkas klaim INACBG.",
-                    "Informasi", JOptionPane.WARNING_MESSAGE);
-                return; // ⛔ Hentikan eksekusi, jangan buka form klaim
-            }
-
-            // ✅ Jika bukan UMUM, lanjutkan proses klaim
-            this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-            DlgDetailKlaimrajal form = new DlgDetailKlaimrajal(null, true);
-            form.setSize(this.getWidth(), this.getHeight() - 2);
-            form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ralan");
-            form.setLocationRelativeTo(this);
-            form.setVisible(true);
-
-            this.setCursor(Cursor.getDefaultCursor());
-        } else {
-            JOptionPane.showMessageDialog(null, "Silakan pilih data pasien terlebih dahulu!");
-        }
-        }
-        
-    }                                       
+//        }
+//        
+//    }                                       
    //akhir
 }

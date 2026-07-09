@@ -783,7 +783,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
         //tambahan
         Tnik = new widget.TextBox();
         Lnik = new widget.Label();
-        ppGenerateBerkasKlaim = new javax.swing.JMenuItem();
         //akhir
 
         WindowInputKamar.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -5395,22 +5394,22 @@ public class DlgKamarInap extends javax.swing.JDialog {
         
         
         
-        ppGenerateBerkasKlaim.setBackground(new java.awt.Color(255, 255, 254));
-        ppGenerateBerkasKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
-        ppGenerateBerkasKlaim.setForeground(new java.awt.Color(50, 50, 50));
-        ppGenerateBerkasKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
-        ppGenerateBerkasKlaim.setText("Kirim E-Klaim");
-        ppGenerateBerkasKlaim.setToolTipText("");
-        ppGenerateBerkasKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        ppGenerateBerkasKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        ppGenerateBerkasKlaim.setName("ppGenerateBerkasKlaim"); // NOI18N
-        ppGenerateBerkasKlaim.setPreferredSize(new java.awt.Dimension(200, 26));
-        ppGenerateBerkasKlaim.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ppGenerateBerkasKlaimBtnPrintActionPerformed(evt);
-            }
-        });
-        jPopupMenu1.add(ppGenerateBerkasKlaim);//taruh dibawah jPopupMenu1.add(MnUrut);      
+//        ppGenerateBerkasKlaim.setBackground(new java.awt.Color(255, 255, 254));
+//        ppGenerateBerkasKlaim.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+//        ppGenerateBerkasKlaim.setForeground(new java.awt.Color(50, 50, 50));
+//        ppGenerateBerkasKlaim.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+//        ppGenerateBerkasKlaim.setText("Kirim E-Klaim");
+//        ppGenerateBerkasKlaim.setToolTipText("");
+//        ppGenerateBerkasKlaim.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+//        ppGenerateBerkasKlaim.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+//        ppGenerateBerkasKlaim.setName("ppGenerateBerkasKlaim"); // NOI18N
+//        ppGenerateBerkasKlaim.setPreferredSize(new java.awt.Dimension(200, 26));
+//        ppGenerateBerkasKlaim.addActionListener(new java.awt.event.ActionListener() {
+//            public void actionPerformed(java.awt.event.ActionEvent evt) {
+//                ppGenerateBerkasKlaimBtnPrintActionPerformed(evt);
+//            }
+//        });
+//        jPopupMenu1.add(ppGenerateBerkasKlaim);//taruh dibawah jPopupMenu1.add(MnUrut);      
         
         //akhir
 
@@ -9144,45 +9143,45 @@ public class DlgKamarInap extends javax.swing.JDialog {
 
     //tambahan
     
-    private void ppGenerateBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                              
-            if (tabMode.getRowCount() == 0) {
-                    JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
-                    TCari.requestFocus();
-                } else {
-                    // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
-                    if (TNoRwCari.getText().trim().isEmpty()) {
-                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
-                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
-                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
-                        return; // ⛔ Hentikan eksekusi
-                    }
-
-                    int row = tbKamIn.getSelectedRow();
-                    if (row > -1) {
-                        // ✅ Cek apakah kolom ke-6 berisi "UMUM"
-                        String jenisPembiayaan = tbKamIn.getValueAt(row, 6).toString().trim();
-                        if (jenisPembiayaan.equalsIgnoreCase("UMUM")) {
-                            JOptionPane.showMessageDialog(null, 
-                                "Pasien dengan status 'UMUM' bukan peserta BPJS.\nTidak dapat membuat berkas klaim INACBG.",
-                                "Informasi", JOptionPane.WARNING_MESSAGE);
-                            return; // ⛔ Hentikan eksekusi, jangan buka form klaim
-                        }
-
-                        // ✅ Jika bukan UMUM, lanjutkan proses klaim
-                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-                        DlgDetailKlaim form = new DlgDetailKlaim(null, true);
-                        form.setSize(this.getWidth(), this.getHeight() - 2);
-                        form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ranap");
-                        form.setLocationRelativeTo(this);
-                        form.setVisible(true);
-
-                        this.setCursor(Cursor.getDefaultCursor());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Silakan pilih data pasien terlebih dahulu!");
-                    }
-                }
-    }
+//    private void ppGenerateBerkasKlaimBtnPrintActionPerformed(java.awt.event.ActionEvent evt) {                                                              
+//            if (tabMode.getRowCount() == 0) {
+//                    JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
+//                    TCari.requestFocus();
+//                } else {
+//                    // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
+//                    if (TNoRwCari.getText().trim().isEmpty()) {
+//                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
+//                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
+//                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
+//                        return; // ⛔ Hentikan eksekusi
+//                    }
+//
+//                    int row = tbKamIn.getSelectedRow();
+//                    if (row > -1) {
+//                        // ✅ Cek apakah kolom ke-6 berisi "UMUM"
+//                        String jenisPembiayaan = tbKamIn.getValueAt(row, 6).toString().trim();
+//                        if (jenisPembiayaan.equalsIgnoreCase("UMUM")) {
+//                            JOptionPane.showMessageDialog(null, 
+//                                "Pasien dengan status 'UMUM' bukan peserta BPJS.\nTidak dapat membuat berkas klaim INACBG.",
+//                                "Informasi", JOptionPane.WARNING_MESSAGE);
+//                            return; // ⛔ Hentikan eksekusi, jangan buka form klaim
+//                        }
+//
+//                        // ✅ Jika bukan UMUM, lanjutkan proses klaim
+//                        this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+//
+//                        DlgDetailKlaim form = new DlgDetailKlaim(null, true);
+//                        form.setSize(this.getWidth(), this.getHeight() - 2);
+//                        form.setDataPasien(TNoRwCari.getText(), TNoRMCari.getText(), TPasienCari.getText(), "Ranap");
+//                        form.setLocationRelativeTo(this);
+//                        form.setVisible(true);
+//
+//                        this.setCursor(Cursor.getDefaultCursor());
+//                    } else {
+//                        JOptionPane.showMessageDialog(null, "Silakan pilih data pasien terlebih dahulu!");
+//                    }
+//                }
+//    }
     
     //akhir
     
@@ -19108,7 +19107,6 @@ public class DlgKamarInap extends javax.swing.JDialog {
    //tambahan
     private widget.TextBox Tnik;
     private widget.Label Lnik;
-    private javax.swing.JMenuItem ppGenerateBerkasKlaim;
     //akhir
     private widget.TextBox BangsalCari;
     private widget.Button BtnAll;

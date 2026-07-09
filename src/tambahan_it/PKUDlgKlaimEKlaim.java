@@ -5432,7 +5432,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             RMRiwayatPerawatan resume=new RMRiwayatPerawatan(null,true);
             resume.setNoRm(txtNoRm.getText(),txtNamaPasien.getText());
-            resume.setSize(internalFrame1.getWidth()-700,internalFrame1.getHeight()-100);
+            resume.setSize(internalFrame1.getWidth()-600,internalFrame1.getHeight()-110);
             resume.setLocationRelativeTo(internalFrame1);
             resume.setVisible(true);
             this.setCursor(Cursor.getDefaultCursor());
@@ -5931,6 +5931,47 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
             kdDokter.setText(kodedokter_rnp);
             nmDokter.setText(dokter_rnp);
             
+            // Logika Otomatis Naik Kelas
+            try {
+                String kelasKamar = Sequel.cariIsi("select kamar.kelas from kamar_inap inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar where kamar_inap.no_rawat='" + noRawat + "' order by kamar_inap.tgl_masuk desc limit 1");
+                if (hakKelas != null && kelasKamar != null && !hakKelas.trim().isEmpty() && !kelasKamar.trim().isEmpty()) {
+                    int intHakKelas = 1;
+                    if (hakKelas.contains("3")) intHakKelas = 3;
+                    else if (hakKelas.contains("2")) intHakKelas = 2;
+                    else if (hakKelas.contains("1")) intHakKelas = 1;
+                    
+                    int intKelasKamar = 3;
+                    if (kelasKamar.toLowerCase().contains("kelas 3")) intKelasKamar = 3;
+                    else if (kelasKamar.toLowerCase().contains("kelas 2")) intKelasKamar = 2;
+                    else if (kelasKamar.toLowerCase().contains("kelas 1")) intKelasKamar = 1;
+                    else if (kelasKamar.toLowerCase().contains("vip") || kelasKamar.toLowerCase().contains("vvip") || kelasKamar.toLowerCase().contains("eksekutif")) intKelasKamar = 0;
+                    
+                    if (intKelasKamar < intHakKelas) {
+                        chkNaikKelas.setSelected(true);
+                        if (intKelasKamar == 3) {
+                            R1.setSelected(true);
+                        } else if (intKelasKamar == 2) {
+                            R2.setSelected(true);
+                        } else if (intKelasKamar == 1) {
+                            R3.setSelected(true);
+                        } else if (intKelasKamar == 0) {
+                            R4.setSelected(true);
+                        }
+                        
+                        String lamaKamar = Sequel.cariIsi("select kamar_inap.lama from kamar_inap inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar where kamar_inap.no_rawat='" + noRawat + "' order by kamar_inap.tgl_masuk desc limit 1");
+                        if (lamaKamar != null && !lamaKamar.trim().isEmpty()) {
+                            tarifPoliEksekutif2.setText(lamaKamar);
+                        }
+                    } else {
+                        chkNaikKelas.setSelected(false);
+                        buttonGroupNaikKelas.clearSelection();
+                        tarifPoliEksekutif2.setText("");
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error Cek Naik Kelas Otomatis: " + e);
+            }
+            
         }
 
 //        caraPulang=Sequel.cariIsi("select nm_dokter from reg_periksa JOIN dokter ON reg_periksa.kd_dokter=dokter.kd_dokter where no_rawat='" + noRawat + "'");
@@ -6192,8 +6233,8 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
                 System.out.println("Response : " + root);
                 if (root.path("metadata").path("code").asText().equals("200")) {
                     Sequel.mengedit("tt_status_eklaim", "no_rawat=? and no_sep=?", "set_data_klaim=?", 3, new String[]{"true", norawat, noSep});
-                    Sequel.menyimpantf2("tt_status_eklaim", "?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 11,
-                            new String[]{norawat, noSep, "true", "false", "false","false", "false", "false", "false", "false", "false"});
+                    Sequel.menyimpantf2("tt_status_eklaim", "?,?,?,?,?,?,?,?,?,?,?,?", "No.Rawat", 12,
+                            new String[]{norawat, noSep, "true", "false", "false","false", "false", "false", "false", "false", "false", "false"});
                     JOptionPane.showMessageDialog(rootPane, "Set Data Klaim Berhasil");
                     cekStatusKlaim();
                 }
@@ -6412,8 +6453,8 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
                 String _actionName = "validateSITB"; // URL mapping
                 // requestEntity removed
                 requestJson = "{"
-                        + "\"no_sep\": \"" + noSep + "\","
-                        + "\"no_reg_sitb\": \"" + idTB + "\""
+                        + "\"nomor_sep\": \"" + noSep + "\","
+                        + "\"nomor_register_sitb\": \"" + idTB.trim() + "\""
                         + "}";
                 System.out.println("JSON : " + requestJson);
                 // requestEntity removed

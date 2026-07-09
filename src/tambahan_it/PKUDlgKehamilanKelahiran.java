@@ -410,6 +410,9 @@ public class PKUDlgKehamilanKelahiran extends JDialog {
             return;
         }
         try {
+            // Otomatis simpan data ibu (kehamilan) dulu agar tidak kena Foreign Key constraint fail
+            simpanKehamilanLokal();
+            
             java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String waktu = sdf.format(tglWaktuLahir.getDate());
             String waktuSHK = sdf.format(tglSHKWaktu.getDate());
@@ -435,6 +438,7 @@ public class PKUDlgKehamilanKelahiran extends JDialog {
             tampilData();
         } catch (Exception e) {
             System.out.println("Notif Tambah Bayi : " + e);
+            JOptionPane.showMessageDialog(null, "Gagal menambahkan data bayi:\n" + e.getMessage());
         }
     }
     
@@ -452,34 +456,38 @@ public class PKUDlgKehamilanKelahiran extends JDialog {
                 tampilData();
             } catch (Exception e) {
                 System.out.println("Notif Hapus Bayi : " + e);
+                JOptionPane.showMessageDialog(null, "Gagal menghapus data bayi:\n" + e.getMessage());
             }
         } else {
             JOptionPane.showMessageDialog(null, "Pilih data bayi di tabel terlebih dahulu!");
         }
     }
     
+    private void simpanKehamilanLokal() throws Exception {
+        if (no_sep.isEmpty()) return;
+        
+        ps = koneksi.prepareStatement("INSERT INTO pku_eklaim_kehamilan (no_sep, usia_kehamilan, gravida, partus, abortus, onset_kontraksi) VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE usia_kehamilan=VALUES(usia_kehamilan), gravida=VALUES(gravida), partus=VALUES(partus), abortus=VALUES(abortus), onset_kontraksi=VALUES(onset_kontraksi)");
+        try {
+            ps.setString(1, no_sep);
+            ps.setInt(2, Integer.parseInt(tfUsiaKehamilan.getText().trim().isEmpty() ? "0" : tfUsiaKehamilan.getText().trim()));
+            ps.setInt(3, Integer.parseInt(tfGravida.getText().trim().isEmpty() ? "0" : tfGravida.getText().trim()));
+            ps.setInt(4, Integer.parseInt(tfPartus.getText().trim().isEmpty() ? "0" : tfPartus.getText().trim()));
+            ps.setInt(5, Integer.parseInt(tfAbortus.getText().trim().isEmpty() ? "0" : tfAbortus.getText().trim()));
+            ps.setInt(6, cbOnset.getSelectedIndex() + 1);
+            ps.executeUpdate();
+        } finally {
+            if (ps != null) ps.close();
+        }
+    }
+    
     private void simpanData() {
         if (no_sep.isEmpty()) return;
         try {
-            ps = koneksi.prepareStatement("DELETE FROM pku_eklaim_kehamilan WHERE no_sep=?");
-            try { ps.setString(1, no_sep); ps.executeUpdate(); } finally { if(ps!=null) ps.close(); }
-            
-            ps = koneksi.prepareStatement("INSERT INTO pku_eklaim_kehamilan (no_sep, usia_kehamilan, gravida, partus, abortus, onset_kontraksi) VALUES (?,?,?,?,?,?)");
-            try {
-                ps.setString(1, no_sep);
-                ps.setInt(2, Integer.parseInt(tfUsiaKehamilan.getText().trim().isEmpty() ? "0" : tfUsiaKehamilan.getText().trim()));
-                ps.setInt(3, Integer.parseInt(tfGravida.getText().trim().isEmpty() ? "0" : tfGravida.getText().trim()));
-                ps.setInt(4, Integer.parseInt(tfPartus.getText().trim().isEmpty() ? "0" : tfPartus.getText().trim()));
-                ps.setInt(5, Integer.parseInt(tfAbortus.getText().trim().isEmpty() ? "0" : tfAbortus.getText().trim()));
-                ps.setInt(6, cbOnset.getSelectedIndex() + 1);
-                ps.executeUpdate();
-            } finally {
-                if (ps != null) ps.close();
-            }
+            simpanKehamilanLokal();
             JOptionPane.showMessageDialog(null, "Data Kehamilan Berhasil Disimpan Lokal!");
-            dispose();
         } catch (Exception e) {
             System.out.println("Notif Simpan Kehamilan : " + e);
+            JOptionPane.showMessageDialog(null, "Gagal menyimpan data kehamilan:\n" + e.getMessage());
         }
     }
 }

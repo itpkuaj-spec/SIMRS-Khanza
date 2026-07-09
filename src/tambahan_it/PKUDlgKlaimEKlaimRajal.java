@@ -61,6 +61,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     public PKUDlgKlaimEKlaimRajal(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        initResumePasienUI();
         btnEditIDRG.setVisible(false);
         btnUpdateDataKlaim.setVisible(false);
         txtIDSITB.setVisible(false);
@@ -5534,6 +5535,57 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     private widget.TextBox txtSubAcuteCost;
     private widget.TextBox txtTotalKlaim;
     private widget.TextBox txtjnsRawat;
+        private javax.swing.JLabel jLabel211;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel209;
+    private javax.swing.JTextArea Tpemeriksaanfisik;
+    private javax.swing.JLabel jLabel208;
+    private javax.swing.JTextField TProsedur1;
+    private javax.swing.JTextField Tdiagnosa1;
+    private javax.swing.JTextField Tdiagnosa4;
+    private javax.swing.JTextField TProsedurutama;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextField Tdilanjutkan;
+    private javax.swing.JTextField TProsedur4;
+    private javax.swing.JTextField TdiagnosaUtama;
+    private javax.swing.JLabel jLabel110;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTextArea Tpemeriksaanlab;
+    private javax.swing.JLabel jLabel113;
+    private javax.swing.JLabel jLabel216;
+    private javax.swing.JTextArea Tjalannyapenyakit;
+    private javax.swing.JLabel jLabel116;
+    private javax.swing.JLabel jLabel99;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JLabel jLabel210;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTextField Tkeadaanpulang;
+    private javax.swing.JLabel jLabel109;
+    private javax.swing.JLabel jLabel115;
+    private javax.swing.JLabel jLabel212;
+    private javax.swing.JTextField Tdiagnosa3;
+    private javax.swing.JTextArea Tpemeriksaanrad;
+    private javax.swing.JTextField Tcarakeluar;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTextArea Ttindakanoperasi;
+    private javax.swing.JTextField Ttanggalkontrol;
+    private javax.swing.JLabel jLabel111;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel jLabel108;
+    private javax.swing.JTextField TProsedur2;
+    private javax.swing.JTextField TProsedur3;
+    private javax.swing.JLabel jLabel114;
+    private javax.swing.JLabel jLabel213;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel215;
+    private javax.swing.JTextArea TkeluhanU;
+    private javax.swing.JLabel jLabel112;
+    private javax.swing.JLabel jLabel117;
+    private javax.swing.JTextField Tdiagnosa2;
+    private javax.swing.JTextArea Tobat;
+    private javax.swing.JLabel jLabel214;
+
     // End of variables declaration//GEN-END:variables
  public void setDataPasien(String noRawat, String noRkmMedis, String nmPasien, String statusKunjungan) {
         this.norawat = noRawat;
@@ -5552,6 +5604,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
         this.tensi = Sequel.cariIsi("select tensi from pemeriksaan_ranap  where no_rawat='" + noRawat + "' order by tgl_perawatan desc,jam_rawat desc  limit 1");
         txtNoSep.setText(noSep);
         txtNoRawat.setText(norawat);
+        tampilresume();
         txtNoRm.setText(norkmMedis);
         txtNamaPasien.setText(namaPasien);
         if (statusKunjungan.equals("Ralan")) {
@@ -5979,8 +6032,8 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                 String _actionName = "validateSITB"; // URL mapping
                 // requestEntity removed
                 requestJson = "{"
-                        + "\"no_sep\": \"" + noSep + "\","
-                        + "\"no_reg_sitb\": \"" + idTB + "\""
+                        + "\"nomor_sep\": \"" + noSep + "\","
+                        + "\"nomor_register_sitb\": \"" + idTB.trim() + "\""
                         + "}";
                 System.out.println("JSON : " + requestJson);
                 // requestEntity removed
@@ -8375,4 +8428,283 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //        }
 //    }
     
+
+    private void initResumePasienUI() {
+        jLabel211 = new javax.swing.JLabel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel209 = new javax.swing.JLabel();
+        Tpemeriksaanfisik = new javax.swing.JTextArea();
+        jLabel208 = new javax.swing.JLabel();
+        TProsedur1 = new javax.swing.JTextField();
+        Tdiagnosa1 = new javax.swing.JTextField();
+        Tdiagnosa4 = new javax.swing.JTextField();
+        TProsedurutama = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        Tdilanjutkan = new javax.swing.JTextField();
+        TProsedur4 = new javax.swing.JTextField();
+        TdiagnosaUtama = new javax.swing.JTextField();
+        jLabel110 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        Tpemeriksaanlab = new javax.swing.JTextArea();
+        jLabel113 = new javax.swing.JLabel();
+        jLabel216 = new javax.swing.JLabel();
+        Tjalannyapenyakit = new javax.swing.JTextArea();
+        jLabel116 = new javax.swing.JLabel();
+        jLabel99 = new javax.swing.JLabel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jLabel210 = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        Tkeadaanpulang = new javax.swing.JTextField();
+        jLabel109 = new javax.swing.JLabel();
+        jLabel115 = new javax.swing.JLabel();
+        jLabel212 = new javax.swing.JLabel();
+        Tdiagnosa3 = new javax.swing.JTextField();
+        Tpemeriksaanrad = new javax.swing.JTextArea();
+        Tcarakeluar = new javax.swing.JTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        Ttindakanoperasi = new javax.swing.JTextArea();
+        Ttanggalkontrol = new javax.swing.JTextField();
+        jLabel111 = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jLabel108 = new javax.swing.JLabel();
+        TProsedur2 = new javax.swing.JTextField();
+        TProsedur3 = new javax.swing.JTextField();
+        jLabel114 = new javax.swing.JLabel();
+        jLabel213 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel215 = new javax.swing.JLabel();
+        TkeluhanU = new javax.swing.JTextArea();
+        jLabel112 = new javax.swing.JLabel();
+        jLabel117 = new javax.swing.JLabel();
+        Tdiagnosa2 = new javax.swing.JTextField();
+        Tobat = new javax.swing.JTextArea();
+        jLabel214 = new javax.swing.JLabel();
+        Ttanggalkontrol.setName("Ttanggalkontrol"); // NOI18N
+        internalFrame4.add(Ttanggalkontrol);
+        Ttanggalkontrol.setBounds(1700, 890, 180, 22);
+        Tcarakeluar.setName("Tcarakeluar"); // NOI18N
+        internalFrame4.add(Tcarakeluar);
+        Tcarakeluar.setBounds(1690, 860, 190, 22);
+        jLabel215.setText("Cara Keluar");
+        jLabel215.setName("jLabel215"); // NOI18N
+        internalFrame4.add(jLabel215);
+        jLabel215.setBounds(1600, 860, 70, 16);
+        Tkeadaanpulang.setName("Tkeadaanpulang"); // NOI18N
+        internalFrame4.add(Tkeadaanpulang);
+        Tkeadaanpulang.setBounds(1420, 860, 170, 22);
+        jLabel213.setText("Keadaan Pulang");
+        jLabel213.setName("jLabel213"); // NOI18N
+        internalFrame4.add(jLabel213);
+        jLabel213.setBounds(1320, 860, 140, 16);
+        jLabel214.setText("Dilanjutkan");
+        jLabel214.setName("jLabel214"); // NOI18N
+        internalFrame4.add(jLabel214);
+        jLabel214.setBounds(1320, 890, 80, 16);
+        Tdilanjutkan.setName("Tdilanjutkan"); // NOI18N
+        internalFrame4.add(Tdilanjutkan);
+        Tdilanjutkan.setBounds(1420, 890, 170, 22);
+        jLabel216.setText("Tanggal Kontrol");
+        jLabel216.setName("jLabel216"); // NOI18N
+        internalFrame4.add(jLabel216);
+        jLabel216.setBounds(1600, 890, 100, 16);
+        jScrollPane8.setName("jScrollPane8"); // NOI18N
+        Tobat.setColumns(20);
+        Tobat.setRows(5);
+        Tobat.setName("Tobat"); // NOI18N
+        jScrollPane8.setViewportView(Tobat);
+        internalFrame4.add(jScrollPane8);
+        jScrollPane8.setBounds(1320, 480, 560, 70);
+        jLabel111.setText("Obat- obatan");
+        jLabel111.setName("jLabel111"); // NOI18N
+        internalFrame4.add(jLabel111);
+        jLabel111.setBounds(1330, 460, 130, 16);
+        jScrollPane7.setName("jScrollPane7"); // NOI18N
+        Ttindakanoperasi.setColumns(20);
+        Ttindakanoperasi.setRows(5);
+        Ttindakanoperasi.setName("Ttindakanoperasi"); // NOI18N
+        jScrollPane7.setViewportView(Ttindakanoperasi);
+        internalFrame4.add(jScrollPane7);
+        jScrollPane7.setBounds(1320, 400, 560, 60);
+        jLabel110.setText("Tindakan Operasi");
+        jLabel110.setName("jLabel110"); // NOI18N
+        internalFrame4.add(jLabel110);
+        jLabel110.setBounds(1330, 380, 130, 16);
+        jScrollPane6.setName("jScrollPane6"); // NOI18N
+        Tpemeriksaanlab.setColumns(20);
+        Tpemeriksaanlab.setRows(5);
+        Tpemeriksaanlab.setName("Tpemeriksaanlab"); // NOI18N
+        jScrollPane6.setViewportView(Tpemeriksaanlab);
+        internalFrame4.add(jScrollPane6);
+        jScrollPane6.setBounds(1320, 320, 560, 60);
+        jLabel109.setText("Pemeriksaan LAB");
+        jLabel109.setName("jLabel109"); // NOI18N
+        internalFrame4.add(jLabel109);
+        jLabel109.setBounds(1330, 300, 130, 16);
+        jScrollPane5.setName("jScrollPane5"); // NOI18N
+        Tpemeriksaanrad.setColumns(20);
+        Tpemeriksaanrad.setRows(5);
+        Tpemeriksaanrad.setName("Tpemeriksaanrad"); // NOI18N
+        jScrollPane5.setViewportView(Tpemeriksaanrad);
+        internalFrame4.add(jScrollPane5);
+        jScrollPane5.setBounds(1320, 240, 560, 60);
+        jLabel108.setText("Permeriksaan RAD");
+        jLabel108.setName("jLabel108"); // NOI18N
+        internalFrame4.add(jLabel108);
+        jLabel108.setBounds(1330, 220, 130, 16);
+        jLabel208.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel208.setText("Prosedur Utama");
+        jLabel208.setName("jLabel208"); // NOI18N
+        internalFrame4.add(jLabel208);
+        jLabel208.setBounds(1320, 710, 140, 16);
+        TProsedurutama.setName("TProsedurutama"); // NOI18N
+        internalFrame4.add(TProsedurutama);
+        TProsedurutama.setBounds(1470, 710, 410, 22);
+        jLabel209.setText("Prosedur Sekunder 1");
+        jLabel209.setName("jLabel209"); // NOI18N
+        internalFrame4.add(jLabel209);
+        jLabel209.setBounds(1320, 740, 140, 16);
+        TProsedur1.setName("TProsedur1"); // NOI18N
+        internalFrame4.add(TProsedur1);
+        TProsedur1.setBounds(1470, 740, 410, 22);
+        jLabel210.setText("Prosedur Sekunder 2");
+        jLabel210.setName("jLabel210"); // NOI18N
+        internalFrame4.add(jLabel210);
+        jLabel210.setBounds(1320, 770, 140, 16);
+        TProsedur2.setName("TProsedur2"); // NOI18N
+        internalFrame4.add(TProsedur2);
+        TProsedur2.setBounds(1470, 770, 410, 22);
+        jLabel211.setText("Prosedur Sekunder 3");
+        jLabel211.setName("jLabel211"); // NOI18N
+        internalFrame4.add(jLabel211);
+        jLabel211.setBounds(1320, 800, 140, 16);
+        TProsedur3.setName("TProsedur3"); // NOI18N
+        internalFrame4.add(TProsedur3);
+        TProsedur3.setBounds(1470, 800, 410, 22);
+        jLabel212.setText("Prosedur Sekunder 4");
+        jLabel212.setName("jLabel212"); // NOI18N
+        internalFrame4.add(jLabel212);
+        jLabel212.setBounds(1320, 830, 140, 16);
+        TProsedur4.setName("TProsedur4"); // NOI18N
+        internalFrame4.add(TProsedur4);
+        TProsedur4.setBounds(1470, 830, 410, 22);
+        jScrollPane4.setName("jScrollPane4"); // NOI18N
+        Tjalannyapenyakit.setColumns(20);
+        Tjalannyapenyakit.setRows(5);
+        Tjalannyapenyakit.setName("Tjalannyapenyakit"); // NOI18N
+        jScrollPane4.setViewportView(Tjalannyapenyakit);
+        internalFrame4.add(jScrollPane4);
+        jScrollPane4.setBounds(1320, 180, 560, 40);
+        jLabel1.setText("Jalannya Penyakit");
+        jLabel1.setName("jLabel1"); // NOI18N
+        internalFrame4.add(jLabel1);
+        jLabel1.setBounds(1330, 160, 390, 16);
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+        Tpemeriksaanfisik.setColumns(20);
+        Tpemeriksaanfisik.setRows(5);
+        Tpemeriksaanfisik.setName("Tpemeriksaanfisik"); // NOI18N
+        jScrollPane3.setViewportView(Tpemeriksaanfisik);
+        internalFrame4.add(jScrollPane3);
+        jScrollPane3.setBounds(1320, 110, 560, 50);
+        jLabel99.setText("Pemeriksaan Fisik");
+        jLabel99.setName("jLabel99"); // NOI18N
+        internalFrame4.add(jLabel99);
+        jLabel99.setBounds(1330, 90, 390, 16);
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+        TkeluhanU.setColumns(20);
+        TkeluhanU.setRows(5);
+        TkeluhanU.setName("TkeluhanU"); // NOI18N
+        jScrollPane2.setViewportView(TkeluhanU);
+        internalFrame4.add(jScrollPane2);
+        jScrollPane2.setBounds(1320, 40, 560, 50);
+        jLabel112.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel112.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel112.setText("RESUME PASIEN");
+        jLabel112.setName("jLabel112"); // NOI18N
+        internalFrame4.add(jLabel112);
+        jLabel112.setBounds(1540, 0, 190, 30);
+        jLabel2.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel2.setText("Diagnosa Utama");
+        jLabel2.setName("jLabel2"); // NOI18N
+        internalFrame4.add(jLabel2);
+        jLabel2.setBounds(1320, 560, 120, 16);
+        TdiagnosaUtama.setName("TdiagnosaUtama"); // NOI18N
+        internalFrame4.add(TdiagnosaUtama);
+        TdiagnosaUtama.setBounds(1470, 560, 410, 22);
+        jLabel113.setText("Diagnosa Sekunder 1");
+        jLabel113.setName("jLabel113"); // NOI18N
+        internalFrame4.add(jLabel113);
+        jLabel113.setBounds(1320, 590, 140, 16);
+        Tdiagnosa1.setName("Tdiagnosa1"); // NOI18N
+        internalFrame4.add(Tdiagnosa1);
+        Tdiagnosa1.setBounds(1470, 590, 410, 22);
+        jLabel114.setText("Diagnosa Sekunder 2");
+        jLabel114.setName("jLabel114"); // NOI18N
+        internalFrame4.add(jLabel114);
+        jLabel114.setBounds(1320, 620, 140, 16);
+        Tdiagnosa2.setName("Tdiagnosa2"); // NOI18N
+        internalFrame4.add(Tdiagnosa2);
+        Tdiagnosa2.setBounds(1470, 620, 410, 22);
+        jLabel115.setText("Diagnosa Sekunder 3");
+        jLabel115.setName("jLabel115"); // NOI18N
+        internalFrame4.add(jLabel115);
+        jLabel115.setBounds(1320, 650, 140, 16);
+        Tdiagnosa3.setName("Tdiagnosa3"); // NOI18N
+        internalFrame4.add(Tdiagnosa3);
+        Tdiagnosa3.setBounds(1470, 650, 410, 22);
+        jLabel116.setText("Diagnosa Sekunder 4");
+        jLabel116.setName("jLabel116"); // NOI18N
+        internalFrame4.add(jLabel116);
+        jLabel116.setBounds(1320, 680, 140, 16);
+        Tdiagnosa4.setName("Tdiagnosa4"); // NOI18N
+        internalFrame4.add(Tdiagnosa4);
+        Tdiagnosa4.setBounds(1470, 680, 410, 22);
+        jLabel117.setText("Keluhan Utama");
+        jLabel117.setName("jLabel117"); // NOI18N
+        internalFrame4.add(jLabel117);
+        jLabel117.setBounds(1330, 20, 90, 16);
+    }
+
+
+    private void tampilresume() {
+        try {
+            java.sql.PreparedStatement ps = koneksi.prepareStatement(
+                "SELECT * FROM resume_pasien WHERE no_rawat=?");
+            try {
+                ps.setString(1, txtNoRawat.getText());
+                java.sql.ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    TkeluhanU.setText(rs.getString("keluhan_utama"));
+                    Tpemeriksaanfisik.setText(rs.getString("pemeriksaan_fisik"));
+                    Tjalannyapenyakit.setText(rs.getString("jalannya_penyakit"));
+                    Tpemeriksaanrad.setText(rs.getString("pemeriksaan_penunjang"));
+                    Tpemeriksaanlab.setText(rs.getString("hasil_laborat"));
+                    Ttindakanoperasi.setText(rs.getString("tindakan_dan_operasi"));
+                    Tobat.setText(rs.getString("obat_di_rs"));
+                    
+                    TdiagnosaUtama.setText(rs.getString("diagnosa_utama"));
+                    Tdiagnosa1.setText(rs.getString("diagnosa_sekunder"));
+                    Tdiagnosa2.setText(rs.getString("diagnosa_sekunder2"));
+                    Tdiagnosa3.setText(rs.getString("diagnosa_sekunder3"));
+                    Tdiagnosa4.setText(rs.getString("diagnosa_sekunder4"));
+                    
+                    TProsedurutama.setText(rs.getString("prosedur_utama"));
+                    TProsedur1.setText(rs.getString("prosedur_sekunder"));
+                    TProsedur2.setText(rs.getString("prosedur_sekunder2"));
+                    TProsedur3.setText(rs.getString("prosedur_sekunder3"));
+                    TProsedur4.setText(rs.getString("prosedur_sekunder3"));
+                    
+                    Tkeadaanpulang.setText(rs.getString("keadaan"));
+                    Tdilanjutkan.setText(rs.getString("dilanjutkan"));
+                    Tcarakeluar.setText(rs.getString("cara_keluar"));
+                    Ttanggalkontrol.setText(rs.getString("kontrol"));
+                }
+            } finally {
+                ps.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi: " + e);
+        }
+    }
+
 }

@@ -73,6 +73,38 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
 
+        panelisi5.add(new javax.swing.JLabel("     ")); // Spacing from Keluar button
+
+        widget.Label LblWarnaResume = new widget.Label();
+        LblWarnaResume.setOpaque(true);
+        LblWarnaResume.setBackground(new java.awt.Color(204, 153, 255));
+        LblWarnaResume.setPreferredSize(new java.awt.Dimension(20, 15));
+        panelisi5.add(LblWarnaResume);
+        
+        widget.Label LblKetResume = new widget.Label();
+        LblKetResume.setText(" = Selesai Resume   ");
+        panelisi5.add(LblKetResume);
+
+        widget.Label LblWarnaKirim = new widget.Label();
+        LblWarnaKirim.setOpaque(true);
+        LblWarnaKirim.setBackground(java.awt.Color.ORANGE);
+        LblWarnaKirim.setPreferredSize(new java.awt.Dimension(20, 15));
+        panelisi5.add(LblWarnaKirim);
+        
+        widget.Label LblKetKirim = new widget.Label();
+        LblKetKirim.setText(" = Selesai Kirim Online   ");
+        panelisi5.add(LblKetKirim);
+
+        widget.Label LblWarnaKlaim = new widget.Label();
+        LblWarnaKlaim.setOpaque(true);
+        LblWarnaKlaim.setBackground(java.awt.Color.GREEN);
+        LblWarnaKlaim.setPreferredSize(new java.awt.Dimension(20, 15));
+        panelisi5.add(LblWarnaKlaim);
+        
+        widget.Label LblKetKlaim = new widget.Label();
+        LblKetKlaim.setText(" = Klaim Selesai");
+        panelisi5.add(LblKetKlaim);
+
         this.setLocation(10, 2);
         setSize(1328, 674);
         TabModePoli = new DefaultTableModel(null, new Object[]{
@@ -2299,7 +2331,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 shortdokter = " reg_periksa.kd_dokter='" + kdDokterView.getText() + "' and ";
             }
             Valid.tabelKosong(TabModePasienRalan);
-            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat join dokter ON reg_periksa.kd_dokter=dokter.kd_dokter LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat where " + shortpoli + shortdokter + " status_lanjut='Ralan' and reg_periksa.kd_pj='BPJ' and reg_periksa.stts<>'Batal' and reg_periksa.kd_pj<>'IGDK' and reg_periksa.kd_poli<>'IGDK' and (pku_list_klaim.no_rawat IS NULL OR pku_list_klaim.status_tidak_klaim='0') and reg_periksa.tgl_registrasi BETWEEN ? and ? and (reg_periksa.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ? or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ";
+            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat join dokter ON reg_periksa.kd_dokter=dokter.kd_dokter LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat where " + shortpoli + shortdokter + " status_lanjut='Ralan' and reg_periksa.kd_pj='BPJ' and reg_periksa.stts<>'Batal' and reg_periksa.kd_pj<>'IGDK' and reg_periksa.kd_poli<>'IGDK' and (pku_list_klaim.no_rawat IS NULL OR pku_list_klaim.status_tidak_klaim='0') and reg_periksa.tgl_registrasi BETWEEN ? and ? and (reg_periksa.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ? or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ORDER BY bridging_sep.no_sep ASC";
             ps = koneksi.prepareStatement(sql);
 
             try {
@@ -2406,7 +2438,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
             } else {
                 shortdokter = " reg_periksa.kd_dokter='" + kdDokterView.getText() + "' and ";
             }
-            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat INNER JOIN kamar_inap ON reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.stts_pulang<>'Pindah Kamar' where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') and kamar_inap.tgl_keluar BETWEEN ? and ? and (kamar_inap.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ";
+            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat INNER JOIN kamar_inap ON reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.stts_pulang<>'Pindah Kamar' where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') and kamar_inap.tgl_keluar BETWEEN ? and ? and (kamar_inap.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) ORDER BY bridging_sep.no_sep ASC";
             ps = koneksi.prepareStatement(sql);
             try {
                 ps.setString(1, Valid.SetTgl(DTPTglAwal.getSelectedItem() + ""));
