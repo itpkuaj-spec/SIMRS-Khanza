@@ -402,6 +402,30 @@ public final class ICareRiwayatPerawatan extends javax.swing.JDialog {
                         if (newState == State.SUCCEEDED) {
                             try {
                                 System.out.println("URL : "+engine.getLocation());
+                                
+                                // --- TAMBAHAN IT ---
+                                // Auto-click tombol "Setuju" pada modal persetujuan kerahasiaan ICare BPJS
+                                // Karena halaman ICare mungkin memuat modal menggunakan Javascript/Vue (SPA),
+                                // kita gunakan interval untuk mencari tombol "Setuju" secara berkala (tiap 500ms)
+                                // selama maksimal 5 detik (10 x 500ms).
+                                String script = 
+                                    "var attempt = 0;" +
+                                    "var interval = setInterval(function() {" +
+                                    "    var buttons = document.querySelectorAll('button');" + // Cari semua elemen tombol
+                                    "    for (var i = 0; i < buttons.length; i++) {" +
+                                    "        var txt = buttons[i].textContent || buttons[i].innerText;" + 
+                                    "        if (txt && txt.trim() === 'Setuju') {" +          // Jika teksnya persis 'Setuju'
+                                    "            buttons[i].click();" +                        // Lakukan auto-klik
+                                    "            clearInterval(interval);" +                   // Hentikan interval loop
+                                    "            return;" +
+                                    "        }" +
+                                    "    }" +
+                                    "    attempt++;" +
+                                    "    if(attempt > 10) clearInterval(interval);" +          // Berhenti mencari setelah 5 detik agar tidak membebani memori
+                                    "}, 500);";
+                                engine.executeScript(script);
+                                // -------------------
+                                
                             } catch (Exception ex) {
                                 System.out.println("Notifikasi : "+ex);
                             }

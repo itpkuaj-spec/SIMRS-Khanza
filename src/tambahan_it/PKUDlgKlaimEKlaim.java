@@ -5903,7 +5903,10 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
         this.kodedokter = Sequel.cariIsi("select kd_dokter from reg_periksa  where no_rawat='" + noRawat + "'");
         this.dokter_rnp = Sequel.cariIsi("select nm_dokter from dpjp_ranap JOIN dokter ON dpjp_ranap.kd_dokter=dokter.kd_dokter where no_rawat='" + noRawat + "'");
         this.kodedokter_rnp = Sequel.cariIsi("select kd_dokter from dpjp_ranap  where no_rawat='" + noRawat + "'");
-        this.tglAwal = Sequel.cariIsi("select concat(tgl_registrasi, ' ',jam_reg) as tglawal from reg_periksa  where no_rawat='" + noRawat + "'");
+        this.tglAwal = Sequel.cariIsi("select concat(bridging_sep.tglsep, ' ', reg_periksa.jam_reg) as tglawal " +
+                                    "from bridging_sep inner join reg_periksa " +
+                                    "on bridging_sep.no_rawat = reg_periksa.no_rawat " +
+                                    "where bridging_sep.no_rawat='" + noRawat + "'");
         this.tglAkhir = Sequel.cariIsi("select SUBSTRING(tglpulang, 1, 19) AS tglpulang from bridging_sep  where no_rawat='" + noRawat + "'");
         this.jnsKlaim = Sequel.cariIsi("select jnspelayanan from bridging_sep where no_rawat='" + noRawat + "'");
         this.hakKelas = (Sequel.cariIsi("select klsrawat from bridging_sep where no_rawat='" + noRawat + "'"));

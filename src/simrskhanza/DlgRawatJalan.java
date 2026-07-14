@@ -15235,56 +15235,61 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
     }
     
     //tambahan
-        private void icare_otomatis(){
-        //tambahan
-        // === Tambahan buka form ICareRiwayatPerawatan jika dokter sudah di-mapping BPJS ===
-                javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
-               
-                // === Cek apakah jenis bayar adalah BPJS ===
-                   String jenisBayar = Sequel.cariIsi(
-                       "select penjab.png_jawab from reg_periksa inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where reg_periksa.no_rawat=?",
-                       TNoRw.getText()
-                   );
-                   
+    private void icare_otomatis(){
+        // === Tambahan buka form ICareRiwayatPerawatan secara "Siluman" (Background) ===
+        javax.swing.Timer timer = new javax.swing.Timer(1000, e -> {
+            
+            // === Cek apakah jenis bayar adalah BPJS ===
+            String jenisBayar = Sequel.cariIsi(
+                "select penjab.png_jawab from reg_periksa inner join penjab on reg_periksa.kd_pj=penjab.kd_pj where reg_periksa.no_rawat=?",
+                TNoRw.getText()
+            );
 
-                   // === Cek apakah jenis bayar adalah BPJS dan dokter mengandung D000 ===
-               if ("BPJS".equalsIgnoreCase(jenisBayar) && KdPeg.getText().contains("D000")) {
-                        String variabel = Sequel.cariIsi(
-                            "select maping_dokter_dpjpvclaim.kd_dokter_bpjs from maping_dokter_dpjpvclaim where maping_dokter_dpjpvclaim.kd_dokter=?",
-                            KdPeg.getText()
-                        );
+            // === Cek apakah jenis bayar adalah BPJS dan dokter mengandung D000 ===
+            if ("BPJS".equalsIgnoreCase(jenisBayar) && KdPeg.getText().contains("D000")) {
+                String variabel = Sequel.cariIsi(
+                    "select maping_dokter_dpjpvclaim.kd_dokter_bpjs from maping_dokter_dpjpvclaim where maping_dokter_dpjpvclaim.kd_dokter=?",
+                    KdPeg.getText()
+                );
 
-                        if (!variabel.equals("")) {
-                            String namaDokter = Sequel.cariIsi("select pegawai.nama from pegawai where pegawai.nik=?", KdPeg.getText());
-
-                            int pilihan = JOptionPane.showConfirmDialog(null,
-                                "Apakah " + TPegawai.getText() + " bersedia membuka I-Care BPJS sejenak?",
-                                
-                                "Konfirmasi",
-                                JOptionPane.YES_NO_OPTION
-                            );
-
-                            if (pilihan == JOptionPane.YES_OPTION) {
-                                akses.setform("DlgRawatJalan");
-                                ICareRiwayatPerawatan dlgki = new ICareRiwayatPerawatan(null, false);
-                                dlgki.setSize(internalFrame1.getWidth() - 100, internalFrame1.getHeight() - 20);
-                                dlgki.setLocationRelativeTo(internalFrame1);
-                                dlgki.setPasien(
-                                    Sequel.cariIsi("select pasien.no_peserta from pasien where pasien.no_rkm_medis=?", TNoRM.getText()),
-                                    variabel
-                                );
-                                dlgki.setVisible(true);
-                            }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Maaf, Dokter tidak terdaftar di mapping dokter BPJS...!!!");
-                        }
-                    }
-
-
+                if (!variabel.equals("")) {
+                    // 1. Popup Konfirmasi Dihilangkan. Langsung eksekusi I-Care.
+                    akses.setform("DlgRawatJalan");
+                    ICareRiwayatPerawatan dlgki = new ICareRiwayatPerawatan(null, false);
+                    
+                    // --- TRIK BACKGROUND / SILUMAN ---
+                    // 2. Jadikan ukurannya 0x0
+                    dlgki.setSize(0, 0); 
+                    // 3. Lempar lokasinya jauh ke luar layar agar tidak terlihat sama sekali oleh dokter
+                    dlgki.setLocation(-10000, -10000); 
+                    // 4. Pastikan tidak mengambil fokus ketikan (cursor) dari form Rawat Jalan
+                    dlgki.setFocusableWindowState(false); 
+                    
+                    // 5. Eksekusi pengiriman parameter untuk memulai proses tarik data API
+                    dlgki.setPasien(
+                        Sequel.cariIsi("select pasien.no_peserta from pasien where pasien.no_rkm_medis=?", TNoRM.getText()),
+                        variabel
+                    );
+                    
+                    // 6. Set visible(true) SANGAT PENTING agar JavaFX merender URL BPJS dan script Auto-Click berjalan
+                    dlgki.setVisible(true); 
+                    
+                    // --- AUTO-CLOSE MEMORY CLEAR ---
+                    // Agar form I-Care yang berjalan di luar layar tidak menumpuk memenuhi RAM tiap klik pasien,
+                    // kita set Timer untuk menghancurkan form siluman ini setelah 15 Detik.
+                    // (15 Detik sudah sangat cukup bagi BPJS untuk mencatat 'Hit Capaian' I-Care)
+                    javax.swing.Timer closeTimer = new javax.swing.Timer(15000, eClose -> {
+                        dlgki.dispose();
+                    });
+                    closeTimer.setRepeats(false);
+                    closeTimer.start();
+                }
+            }
         });
-        timer.setRepeats(false); // hanya sekali eksekusi
-        timer.start();           // baru kemudian dijalankan
+        timer.setRepeats(false); 
+        timer.start();           
     }
+
      
     private String cekStatusRujukan(String nomorKartu) {
         String pesanBPJS = ""; 
