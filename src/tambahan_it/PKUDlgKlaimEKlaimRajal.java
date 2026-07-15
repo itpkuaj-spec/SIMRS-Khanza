@@ -6497,6 +6497,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //    }
     
     private void setDRG() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
     String listDiagnosa = "", listProsedur = "";
 //    int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 //    if (reply != JOptionPane.YES_OPTION) {
@@ -6588,10 +6589,12 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(rootPane, "Koneksi ke server E-klaim terputus...!");
         }
     }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
 }
 
 
     private void finalDRG() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
 //        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi iDRG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {
             try {
@@ -6650,6 +6653,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
 //        }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
     private void editDRG() {
@@ -6850,6 +6854,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 
 
     private void setINACBG() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
 //        JOptionPane.showMessageDialog(rootPane, "Diagnosa dengan status IM TIDAK BERLAKU akan dihapus saat kirim ke eklaim,\n Silahkan ganti diagnosa tersebut dengan diagnosa yang berlaku pada INACBG jika ingin digunakan.");
         String listDiagnosa = "", listProsedur = "";
 //        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
@@ -6980,6 +6985,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
 //        }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
     private void getDataKlaim() {
@@ -7067,6 +7073,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     }
 
     private void finalINACBG() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
 //        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin finalisasi grouping INACBG ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {
             try {
@@ -7122,6 +7129,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
 //            autoReload();
 //            CatatanVerifikasi.dispose();
 //        }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
     private void editINACBG() {
@@ -7165,6 +7173,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
     }
 
     private void finalKlaim() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
 //        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di Finalisasi ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {
             try {
@@ -7207,6 +7216,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                 }
             }
 //        }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
     private void editKlaim() {
@@ -7312,6 +7322,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
             }
     }
      private void KirimOnlineKlaim() {
+        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
 //        int reply = JOptionPane.showConfirmDialog(rootPane, "Apakah anda yakin klaim di kirim ke DC Kemkes ?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
 //        if (reply == JOptionPane.YES_OPTION) {
             try {
@@ -7351,6 +7362,7 @@ public final class PKUDlgKlaimEKlaimRajal extends javax.swing.JDialog {
                 }
             }
 //        }
+        this.setCursor(java.awt.Cursor.getDefaultCursor());
     }
 
     private void tampilProsedurPilih() {

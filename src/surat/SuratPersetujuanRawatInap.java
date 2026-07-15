@@ -1750,6 +1750,18 @@ public final class SuratPersetujuanRawatInap extends javax.swing.JDialog {
         runBackground(() ->tampil());
     }
     
+    // Tambahan IT
+    public void setNoRmAndTgl(String norwt,Date tgl1) {
+        TNoRw.setText(norwt);
+        TCari.setText(norwt);
+        DTPCari1.setDate(tgl1);
+        DTPCari2.setDate(tgl1);
+        isRawat();
+        ChkInput.setSelected(true);
+        isForm();
+        runBackground(() ->tampil());
+    }
+    
     private void isForm(){
         if(ChkInput.isSelected()==true){
             ChkInput.setVisible(false);

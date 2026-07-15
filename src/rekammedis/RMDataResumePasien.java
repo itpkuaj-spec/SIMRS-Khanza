@@ -2802,6 +2802,11 @@ public final class RMDataResumePasien extends javax.swing.JDialog {
         if(akses.getjml2()>=1){
             KdDokter.setEditable(false);
             BtnDokter.setEnabled(false);
+            //tambahan IT
+            if(akses.getkode().equals("D0000045")){
+                BtnDokter.setEnabled(true);
+            }
+            //sampai sini, untuk pengecualian dokter elfrida
             KdDokter.setText(akses.getkode());
             NmDokter.setText(Sequel.CariDokter(KdDokter.getText()));
             if(NmDokter.getText().equals("")){
