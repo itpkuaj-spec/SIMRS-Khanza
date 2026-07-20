@@ -3159,7 +3159,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                         extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
                                                   .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
                                     }
-                                    extraHtml.append("</center><br><hr><br>");
+                                    extraHtml.append("</center><br><hr>");
                                     
                                     if (rsDetail != null) { rsDetail.close(); }
                                     if (psDetail != null) { psDetail.close(); }
@@ -3222,7 +3222,7 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                                                 extraHtml.append("<img src=\"data:image/png;base64,").append(imgBase64)
                                                           .append("\" style=\"max-width:100%; margin-bottom:20px; border:1px solid #ccc;\"><br/>");
                                             }
-                                            extraHtml.append("</center><br><hr><br>");
+                                            extraHtml.append("</center><br><hr>");
                                         } else {
                                             System.out.println("File jasper Persetujuan Rawat Inap tidak ditemukan.");
                                         }

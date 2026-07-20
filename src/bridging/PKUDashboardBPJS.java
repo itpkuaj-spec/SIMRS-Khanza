@@ -40,7 +40,7 @@ import org.springframework.http.MediaType;
  *
  * @author dosen
  */
-public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
+public final class PKUDashboardBPJS extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
@@ -69,15 +69,23 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
      * @param modal */
-    public BPJSAntreanPerTanggal(java.awt.Frame parent, boolean modal) {
+    public PKUDashboardBPJS(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
-        this.setLocation(8,1);
+        
+        waktuBox = new javax.swing.JComboBox<>(new String[]{"rs", "server"});
+        waktuBox.setPreferredSize(new java.awt.Dimension(80, 23));
+        panelGlass9.add(new javax.swing.JLabel(" Waktu: "));
+        panelGlass9.add(waktuBox);
+this.setLocation(8,1);
         setSize(628,674);
 
         tabMode=new DefaultTableModel(null,new Object[]{
-                "Kode Booking","Tanggal","Kode Poli","Kode Dokter","Jam Praktek","NIK","Noka","No. HP","RM","Jenis Kunjungan","No. Ref","Sumber Data","Peserta","No. Antrean","Estimasi Dilayani","Created Time","Status"
+                "Kode PPK", "Nama PPK", "Kode Poli", "Nama Poli", "Jml Antrean",
+                "Task 1", "Task 2", "Task 3", "Task 4", "Task 5", "Task 6",
+                "Avg Task 1", "Avg Task 2", "Avg Task 3", "Avg Task 4", "Avg Task 5", "Avg Task 6",
+                "Tanggal", "Insert Date"
             }){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -86,43 +94,9 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 17; i++) {
+        for (i = 0; i < 19; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
-            if(i==0){
-                column.setPreferredWidth(110);
-            }else if(i==1){
-                column.setPreferredWidth(70);
-            }else if(i==2){
-                column.setPreferredWidth(70);
-            }else if(i==3){
-                column.setPreferredWidth(83);
-            }else if(i==4){
-                column.setPreferredWidth(90);
-            }else if(i==5){
-                column.setPreferredWidth(120);
-            }else if(i==6){
-                column.setPreferredWidth(100);
-            }else if(i==7){
-                column.setPreferredWidth(100);
-            }else if(i==8){
-                column.setPreferredWidth(60);
-            }else if(i==9){
-                column.setPreferredWidth(100);
-            }else if(i==10){
-                column.setPreferredWidth(140);
-            }else if(i==11){
-                column.setPreferredWidth(100);
-            }else if(i==12){
-                column.setPreferredWidth(70);
-            }else if(i==13){
-                column.setPreferredWidth(70);
-            }else if(i==14){
-                column.setPreferredWidth(120);
-            }else if(i==15){
-                column.setPreferredWidth(120);
-            }else if(i==15){
-                column.setPreferredWidth(90);
-            }
+            column.setPreferredWidth(90);
         }
         tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
         
@@ -164,7 +138,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         BtnCari = new widget.Button();
         jLabel7 = new widget.Label();
         LCount = new widget.Label();
-        dashboardbpjs = new javax.swing.JButton();
         BtnKeluar1 = new widget.Button();
         panelGlass8 = new widget.panelisi();
         jLabel8 = new widget.Label();
@@ -365,17 +338,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         LCount.setPreferredSize(new java.awt.Dimension(75, 23));
         panelGlass9.add(LCount);
 
-        dashboardbpjs.setText("dashboard");
-        dashboardbpjs.setName("dashboardbpjs"); // NOI18N
-        dashboardbpjs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dashboardbpjsActionPerformed(evt);
-            }
-        });
-        panelGlass9.add(dashboardbpjs);
-
-
-
         BtnKeluar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar1.setMnemonic('K');
         BtnKeluar1.setText("Keluar");
@@ -553,33 +515,18 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
 
     private void MnKirimUlangMJKNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimUlangMJKNActionPerformed
         // TODO add your handling code here:
-        KirimUlangMJKN();
+        KirimUlangJKN();
     }//GEN-LAST:event_MnKirimUlangMJKNActionPerformed
 
     private void MnKirimUlangJKNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimUlangJKNActionPerformed
         // TODO add your handling code here:
-        KirimUlangJKN();
+        KirimUlangMJKN();
     }//GEN-LAST:event_MnKirimUlangJKNActionPerformed
 
     private void MnKirimBatalBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimBatalBPJSActionPerformed
         // TODO add your handling code here:
-        BtnBatalMJKNActionPerformed(evt);
+        BtnBatalActionPerformed(evt);
     }//GEN-LAST:event_MnKirimBatalBPJSActionPerformed
-
-    private void dashboardbpjsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardbpjsActionPerformed
-        // TODO add your handling code here:
-        
-    
-        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
-        bridging.PKUDashboardBPJS aplikasi = new bridging.PKUDashboardBPJS(null, false);
-        aplikasi.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
-        aplikasi.setLocationRelativeTo(internalFrame1);
-        aplikasi.setVisible(true);
-        this.setCursor(java.awt.Cursor.getDefaultCursor());
-}//GEN-LAST:event_dashboardbpjsActionPerformed
-
-
-
 
     /**
     * @param args the command line arguments
@@ -645,7 +592,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private widget.ScrollPane Scroll;
     private widget.Label TotBelum;
     private widget.Label TotSelesai;
-    private javax.swing.JButton dashboardbpjs;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
     private widget.Label jLabel11;
@@ -665,127 +611,95 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private widget.panelisi panelGlass9;
     private widget.Table tbJnsPerawatan;
     private widget.Label totalantrol;
+    private javax.swing.JComboBox<String> waktuBox;
     // End of variables declaration//GEN-END:variables
+
+    
+    private String formatWaktu(String secStr) {
+        if (secStr == null || secStr.trim().isEmpty() || secStr.equals("0") || secStr.equals("0.0")) return "0";
+        try {
+            double totalSecs = Double.parseDouble(secStr);
+            long totalSeconds = Math.round(totalSecs);
+            long hours = totalSeconds / 3600;
+            long minutes = (totalSeconds % 3600) / 60;
+            long seconds = totalSeconds % 60;
+            
+            return String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        } catch (Exception e) {
+            return secStr;
+        }
+    }
+    
+    private String formatTimestamp(String msStr) {
+        if (msStr == null || msStr.trim().isEmpty() || msStr.equals("0")) return "";
+        try {
+            long ms = Long.parseLong(msStr);
+            return new java.text.SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new java.util.Date(ms));
+        } catch (Exception e) {
+            return msStr;
+        }
+    }
 
     private void tampil() {
         Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "SELECT reg_periksa.tgl_registrasi FROM reg_periksa WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? group by reg_periksa.tgl_registrasi");
-            try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    try {
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestEntity = new HttpEntity(headers);
-                        URL = link+"/antrean/pendaftaran/tanggal/"+rs.getString("tgl_registrasi");	
-                        System.out.println("URL : "+URL);
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(nameNode.path("code").asText().equals("200")){
-                            response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                            if(response.isArray()){
-                                for(JsonNode list:response){
-                                    tabMode.addRow(new Object[]{
-                                        list.path("kodebooking").asText(),list.path("tanggal").asText(),list.path("kodepoli").asText(),
-                                        list.path("kodedokter").asText(),list.path("jampraktek").asText(),list.path("nik").asText(),list.path("nokapst").asText(),list.path("nohp").asText(),list.path("norekammedis").asText(),list.path("jeniskunjungan").asText(),list.path("nomorreferensi").asText(),list.path("sumberdata").asText(),list.path("ispeserta").asText().equals("true")?"Ya":"Tidak",list.path("noantrean").asText(),list.path("estimasidilayani").asText(),list.path("createdtime").asText(),list.path("status").asText()
-                                    });
-                                    if (list.path("status").asText().equals("Belum dilayani")) {
-                                        tot_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani")) {
-                                        tot_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("sumberdata").asText().equals("Bridging Antrean") && list.path("ispeserta").asText().equals("true")) {
-                                        jkn_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("sumberdata").asText().equals("Bridging Antrean") && list.path("ispeserta").asText().equals("true")) {
-                                        jkn_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("sumberdata").asText().equals("Mobile JKN")) {
-                                        mjkn_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("sumberdata").asText().equals("Mobile JKN")) {
-                                        mjkn_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("ispeserta").asText().equals("false")) {
-                                        umum_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("ispeserta").asText().equals("false")) {
-                                        umum_selesai += 1;
-                                    }
-                                }
-                            }
-                        }else {
-                            System.out.println("Notif : "+nameNode.path("message").asText());               
-                        }   
-                    } catch (Exception ex) {
-                        System.out.println("Notifikasi : "+ex);
-                        if(ex.toString().contains("UnknownHostException")){
-                            JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
-                        }
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("x-timestamp", utc);
+            headers.add("x-signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+            
+            String tgl = Valid.SetTgl(DTPCari1.getSelectedItem() + "");
+            String tahun = tgl.substring(0, 4);
+            String bulan = tgl.substring(5, 7);
+            URL = link + "/dashboard/waktutunggu/bulan/" + bulan + "/tahun/" + tahun + "/waktu/" + waktuBox.getSelectedItem().toString();
+            requestEntity = new HttpEntity(headers);
+            System.out.println("URL Dashboard: "+URL);
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
+            nameNode = root.path("metadata");
+            if (nameNode.path("code").asText().equals("200")) {
+                response = root.path("response").path("list");
+                if (response.isArray()) {
+                    for (JsonNode list : response) {
+                        tabMode.addRow(new Object[]{
+                            
+                            list.path("kdppk").asText(),
+                            list.path("nmppk").asText(),
+                            list.path("kodepoli").asText(),
+                            list.path("namapoli").asText(),
+                            list.path("jumlah_antrean").asText(),
+                            formatWaktu(list.path("waktu_task1").asText()),
+                            formatWaktu(list.path("waktu_task2").asText()),
+                            formatWaktu(list.path("waktu_task3").asText()),
+                            formatWaktu(list.path("waktu_task4").asText()),
+                            formatWaktu(list.path("waktu_task5").asText()),
+                            formatWaktu(list.path("waktu_task6").asText()),
+                            formatWaktu(list.path("avg_waktu_task1").asText()),
+                            formatWaktu(list.path("avg_waktu_task2").asText()),
+                            formatWaktu(list.path("avg_waktu_task3").asText()),
+                            formatWaktu(list.path("avg_waktu_task4").asText()),
+                            formatWaktu(list.path("avg_waktu_task5").asText()),
+                            formatWaktu(list.path("avg_waktu_task6").asText()),
+                            list.path("tanggal").asText(),
+                            formatTimestamp(list.path("insertdate").asText())
+                        });
                     }
                 }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
-                }
+            } else {
+                System.out.println("Notif : " + nameNode.path("message").asText());
+                javax.swing.JOptionPane.showMessageDialog(rootPane, nameNode.path("message").asText());
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
-        }
-        
-
-        sep = Sequel.cariInteger("select count(bridging_sep.no_rawat) from bridging_sep where bridging_sep.tglsep between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' and bridging_sep.jnspelayanan = '2' and bridging_sep.kdpolitujuan <> 'IGD'")+
-                Sequel.cariInteger("select count(bridging_sep_internal.no_rawat) from bridging_sep_internal where bridging_sep_internal.tglsep between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' and bridging_sep_internal.jnspelayanan = '2' and bridging_sep_internal.kdpolitujuan <> 'IGD'");
-//        jkn_capaian = (jkn_selesai/sep)*100;
-//        mjkn_capaian = (mjkn_selesai/sep)*100;
-        jkn_capaian = (sep == 0) ? 0 : ((double) jkn_selesai / sep) * 100;//ubahan
-        mjkn_capaian = (sep == 0) ? 0 : ((double) mjkn_selesai / sep) * 100;//ubahan
-        // Penambahan total capaian:
-        double total_capaian = jkn_capaian + mjkn_capaian;//tambahan
-        jkn_capaian_angka = (int)jkn_capaian;
-        mjkn_capaian_angka = (int)mjkn_capaian;
-        LCount.setText(""+tabMode.getRowCount());
-        SEPTerbit.setText(""+sep);
-        TotBelum.setText(""+tot_belum);
-        TotSelesai.setText(""+tot_selesai);
-        JknBelum.setText(""+jkn_belum);
-        JknSelesai.setText(""+jkn_selesai);
-        JknCapaian.setText("("+jkn_capaian_angka+"%)");
-        MJknBelum.setText(""+mjkn_belum);
-        MJknSelesai.setText(""+mjkn_selesai);
-        MJknCapaian.setText("("+mjkn_capaian_angka+"%)");
-        NonJKNBelum.setText(""+umum_belum);
-        NonJKNSelesai.setText(""+umum_selesai);
-        // Tampilkan ke label:
-        totalantrol.setText("Total Antrol: " + Valid.SetAngka(total_capaian) + " %");//tamabahan
-
-        // Ubah warna label sesuai capaian:
-        if(total_capaian < 75){
-            totalantrol.setForeground(Color.RED);
-        } else if(total_capaian <= 95){
-            totalantrol.setForeground(Color.ORANGE);
-        } else {
-            totalantrol.setForeground(new Color(0, 128, 0)); // Hijau tua
+        } catch (Exception ex) {
+            System.out.println("Notifikasi : " + ex);
+            if (ex.toString().contains("UnknownHostException")) {
+                javax.swing.JOptionPane.showMessageDialog(rootPane, "Koneksi ke server BPJS terputus...!");
+            }
         }
     }
-    //tambahan
-    
-    private void BtnBatalMJKNActionPerformed(java.awt.event.ActionEvent evt) {
+
+    private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {
         if (tbJnsPerawatan.getSelectedRow() != -1) {
             // Konfirmasi pembatalan
             int pilihan = JOptionPane.showConfirmDialog(null,
@@ -902,13 +816,13 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         }
     }
     
-    private void KirimUlangMJKN() {                                             
+    private void KirimUlangJKN() {                                             
         // TODO add your handling code here: JKN
-        kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
+        kodebooking = Sequel.cariIsi("select no_rawat from referensi_mobilejkn_bpjs where nobooking='"+tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0)+"'");
         data = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
         
             datajam=Sequel.cariIsi("select now() from reg_periksa where reg_periksa.stts='Batal' and reg_periksa.no_rawat=?",kodebooking);
-            if(datajam != null && !datajam.equals("")){
+            if(!datajam.equals("")){
                 try {     
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid batal pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -940,8 +854,17 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
             
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (300 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat - interval (720 + (rand() * 60 * 7)) second) AS task3 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan - interval (720 + (rand() * 60 * 7)) second) AS task3 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select DATE_ADD(mutasi_berkas.diterima, interval -(600 + (rand() * 60 * 3)) second) AS task3 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg) AS task3 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            if(!datajam.equals("")){
                 try {     
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -973,8 +896,17 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
             
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (600 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat - interval (60 + (rand() * 60 * 4)) second) AS task4 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan - interval (60 + (rand() * 60 * 4)) second) AS task4 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select mutasi_berkas.diterima AS task4 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (900 + (rand() * 60 * 5)) second) AS task4 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            if(!datajam.equals("")){
                 try {     
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid mulai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -1006,8 +938,24 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
             
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (900 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) AS task5 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan) AS task5 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select DATE_ADD(mutasi_berkas.diterima, interval (120 + (rand() * 60 * 3)) second) AS task5 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 5)) second) AS task5 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            // Fallback terakhir task 5: gunakan waktu registrasi + random 20-30 menit
+            if(datajam.equals("")){
+                datajam = Sequel.cariIsi(
+                "SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 10)) second) AS task5 " +
+                "from reg_periksa where reg_periksa.no_rawat=?", kodebooking
+                );
+            }
+            if(!datajam.equals("")){
                 try {     
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid selesai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -1040,86 +988,17 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }else{
                 System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP, SKIP KIRIM "+kodebooking);
-            }
-            String cari_norawat = Sequel.cariIsi("SELECT no_rawat from referensi_mobilejkn_bpjs WHERE nobooking=?",kodebooking);
-            if(Sequel.cariInteger("select count(no_rawat) from resep_obat where no_rawat='"+cari_norawat+"'")>0) {
-                // INJECT TASK 6
-                datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (1200 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-                if(datajam != null && !datajam.equals("")){
-                    try { 
-                        parsedDate = dateFormat.parse(datajam);     
-                        System.out.println("Menjalankan WS taskid racik obat Mobile JKN\n");
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestJson ="{" +
-                                         "\"kodebooking\": \""+kodebooking+"\"," +
-                                         "\"taskid\": \"6\"," +
-                                         "\"waktu\": \""+parsedDate.getTime()+"\"" +
-                                      "}";
-                        requestEntity = new HttpEntity(requestJson,headers);
-                        URL = link+"/antrean/updatewaktu";	
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(!nameNode.path("code").asText().equals("200")){
-                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='"+kodebooking+"'");
-                        }  
-                    System.out.println("JSON : "+requestJson+"\n");
-                    System.out.println("URL : "+URL);
-                    System.out.println("respon WS BPJS : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
-}catch (Exception ex) {
-                    }
-                }
-    
-                // INJECT TASK 7
-                datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (1500 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-                if(datajam != null && !datajam.equals("")){
-                    try { 
-                        parsedDate = dateFormat.parse(datajam);     
-                        System.out.println("Menjalankan WS taskid selesai obat Mobile JKN\n");
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestJson ="{" +
-                                         "\"kodebooking\": \""+kodebooking+"\"," +
-                                         "\"taskid\": \"7\"," +
-                                         "\"waktu\": \""+parsedDate.getTime()+"\"" +
-                                      "}";
-                        requestEntity = new HttpEntity(requestJson,headers);
-                        URL = link+"/antrean/updatewaktu";	
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(!nameNode.path("code").asText().equals("200")){
-                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='"+kodebooking+"'");
-                        }  
-                    System.out.println("JSON : "+requestJson+"\n");
-                    System.out.println("URL : "+URL);
-                    System.out.println("respon WS BPJS : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
-}catch (Exception ex) {
-                    }
-                }
-            } else {
-                System.out.println("TIDAK ADA RESEP OBAT, SKIP TASK 6 DAN 7 UNTUK "+kodebooking);
-            }
-         
+            }         
     }                                            
 
-    private void KirimUlangJKN() {                                              
+    private void KirimUlangMJKN() {                                              
         // TODO add your handling code here: MJKN
         kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
         try {
             datajam=Sequel.cariIsi("select now() from reg_periksa where reg_periksa.stts='Batal' and reg_periksa.no_rawat=?",kodebooking);
-            if(datajam != null && !datajam.equals("")){
+            if(!datajam.equals("")){
+                parsedDate = dateFormat.parse(datajam);
                 try {     
-                    parsedDate = dateFormat.parse(datajam);     
                     System.out.println("Menjalankan WS taskid batal pelayanan poli Mobile JKN Pasien BPJS\n");
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1149,10 +1028,19 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
 
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (300 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat - interval (720 + (rand() * 60 * 7)) second) AS task3 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan - interval (720 + (rand() * 60 * 7)) second) AS task3 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select DATE_ADD(mutasi_berkas.diterima, interval -(600 + (rand() * 60 * 3)) second) AS task3 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg) AS task3 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            if(!datajam.equals("")){
+                parsedDate = dateFormat.parse(datajam);
                 try {     
-                    parsedDate = dateFormat.parse(datajam);     
                     System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1182,10 +1070,19 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
 
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (600 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat - interval (60 + (rand() * 60 * 4)) second) AS task4 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan - interval (60 + (rand() * 60 * 4)) second) AS task4 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select mutasi_berkas.diterima AS task4 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (900 + (rand() * 60 * 5)) second) AS task4 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            if(!datajam.equals("")){
+                parsedDate = dateFormat.parse(datajam);
                 try {     
-                    parsedDate = dateFormat.parse(datajam);     
                     System.out.println("Menjalankan WS taskid mulai pelayanan poli Mobile JKN Pasien BPJS\n");
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1215,10 +1112,26 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
 
-            datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (900 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-            if(datajam != null && !datajam.equals("")){
+            datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) AS task5 from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat=?",kodebooking);
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select concat(resep_obat.tgl_peresepan,' ',resep_obat.jam_peresepan) AS task5 from resep_obat where resep_obat.status='ralan' and resep_obat.no_rawat=?",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("select DATE_ADD(mutasi_berkas.diterima, interval (120 + (rand() * 60 * 3)) second) AS task5 from mutasi_berkas where mutasi_berkas.no_rawat=? and mutasi_berkas.diterima<>'0000-00-00 00:00:00'",kodebooking);
+            }
+            if(datajam.equals("")){
+                datajam=Sequel.cariIsi("SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 5)) second) AS task5 from reg_periksa where reg_periksa.no_rawat=?",kodebooking);
+            }
+            // Fallback terakhir task 5: gunakan waktu registrasi + random 20-30 menit
+            if(datajam.equals("")){
+                datajam = Sequel.cariIsi(
+                "SELECT concat(tgl_registrasi,' ',jam_reg + interval (1200 + (rand() * 60 * 10)) second) AS task5 " +
+                "from reg_periksa where reg_periksa.no_rawat=?", kodebooking
+                );
+            }
+            if(!datajam.equals("")){
+                parsedDate = dateFormat.parse(datajam);
                 try {     
-                    parsedDate = dateFormat.parse(datajam);     
                     System.out.println("Menjalankan WS taskid selesai pelayanan poli Mobile JKN Pasien BPJS\n");
                     headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -1250,74 +1163,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             }else{
                 System.out.println("WAKTU TASK ID 5 JKN = BELUM MENGISI SOAP, SKIP KIRIM "+kodebooking);
             }
-            if(Sequel.cariInteger("select count(no_rawat) from resep_obat where no_rawat='"+kodebooking+"'")>0) {
-                // INJECT TASK 6
-                datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (1200 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-                if(datajam != null && !datajam.equals("")){
-                    try { 
-                        parsedDate = dateFormat.parse(datajam);     
-                        System.out.println("Menjalankan WS taskid racik obat Mobile JKN\n");
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestJson ="{" +
-                                         "\"kodebooking\": \""+kodebooking+"\"," +
-                                         "\"taskid\": \"6\"," +
-                                         "\"waktu\": \""+parsedDate.getTime()+"\"" +
-                                      "}";
-                        requestEntity = new HttpEntity(requestJson,headers);
-                        URL = link+"/antrean/updatewaktu";	
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(!nameNode.path("code").asText().equals("200")){
-                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='"+kodebooking+"'");
-                        }  
-                    System.out.println("JSON : "+requestJson+"\n");
-                    System.out.println("URL : "+URL);
-                    System.out.println("respon WS BPJS : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
-}catch (Exception ex) {
-                    }
-                }
-    
-                // INJECT TASK 7
-                datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (1500 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-                if(datajam != null && !datajam.equals("")){
-                    try { 
-                        parsedDate = dateFormat.parse(datajam);     
-                        System.out.println("Menjalankan WS taskid selesai obat Mobile JKN\n");
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestJson ="{" +
-                                         "\"kodebooking\": \""+kodebooking+"\"," +
-                                         "\"taskid\": \"7\"," +
-                                         "\"waktu\": \""+parsedDate.getTime()+"\"" +
-                                      "}";
-                        requestEntity = new HttpEntity(requestJson,headers);
-                        URL = link+"/antrean/updatewaktu";	
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(!nameNode.path("code").asText().equals("200")){
-                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='"+kodebooking+"'");
-                        }  
-                    System.out.println("JSON : "+requestJson+"\n");
-                    System.out.println("URL : "+URL);
-                    System.out.println("respon WS BPJS : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
-}catch (Exception ex) {
-                    }
-                }
-            } else {
-                System.out.println("TIDAK ADA RESEP OBAT, SKIP TASK 6 DAN 7 UNTUK "+kodebooking);
-            }
-
         } catch (Exception e) {
         }
     }

@@ -5481,14 +5481,8 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
                 Thread.sleep(500); // Jeda 500ms
 
                 // Eksekusi query ketiga
-//                Sequel.menyimpan("mutasi_berkas", "'" + TNoRw.getText() + "','Sudah Diterima',now(),now(),'0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00'",
-//                                 "status='Sudah Diterima',diterima=now()", "no_rawat='" + TNoRw.getText() + "'");
-//                Thread.sleep(500); // Jeda 500ms
-
-                
-
-                // Eksekusi query kelima
-                Sequel.queryu("insert into antri_masuk_poli values('"+KdDok2.getText()+"','"+poli+"','"+TNoRw.getText()+"',now())");
+                Sequel.queryu("insert into antri_masuk_poli values('"+KdDok2.getText()+"','"+poli+"','"+TNoRw.getText()+"',now(),'0000-00-00 00:00:00')");
+//                updateTaskID4MobileJKN();//update task id
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 JOptionPane.showMessageDialog(null, "Terjadi kesalahan saat jeda eksekusi: " + e.getMessage());
@@ -6735,6 +6729,10 @@ private void catatanpasienKeyPressed(java.awt.event.KeyEvent evt) {
             if(i==JOptionPane.YES_OPTION){
                 if(Sequel.mengedittf("reg_periksa","no_rawat=?","stts=?",2,new String[]{"Sudah",TNoRw.getText()})==true){
                     Sequel.menyimpan("mutasi_berkas","'"+TNoRw.getText()+"','Sudah Kembali',now(),'0000-00-00 00:00:00',now(),'0000-00-00 00:00:00','0000-00-00 00:00:00'","status='Sudah Kembali',kembali=now()","no_rawat='"+TNoRw.getText()+"'");
+                    if (!akses.getkode().contains("D000")) {
+                        Sequel.queryu2("update antri_masuk_poli set selesai=now() where no_rawat='"+TNoRw.getText()+"'");//update ke antri_masuk_poli.tepatnya selesai di dalam poli
+    //                    updateTaskID5MobileJKN();//update task id
+                    }
                 }
             }
         } catch (Exception e) {
@@ -15119,6 +15117,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                     TindakLanjut.setText("");TPenilaian.setText("");TInstruksi.setText("");SpO2.setText("");
                                     TEvaluasi.setText("");cmbKesadaran.setSelectedIndex(0);
                                     LCount.setText(""+tabModePemeriksaan.getRowCount());
+//                                    updateTaskID3MobileJKN();//update task id
                             }
                         }else{
                             if(akses.getkode().equals(KdPeg.getText())){
@@ -15139,6 +15138,7 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                         TindakLanjut.setText("");TPenilaian.setText("");TInstruksi.setText("");SpO2.setText("");
                                         TEvaluasi.setText("");cmbKesadaran.setSelectedIndex(0);
                                         LCount.setText(""+tabModePemeriksaan.getRowCount());
+//                                        updateTaskID3MobileJKN();//update task id
                                 }
                             }else{
                                 JOptionPane.showMessageDialog(null,"Hanya bisa disimpan oleh dokter/petugas yang bersangkutan..!!");
@@ -15397,4 +15397,152 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
         executor.shutdownNow();
         super.dispose();
     }
+        //tambahan IT update task id manual dari user
+//    private void updateTaskID3MobileJKN() {
+//        if (!akses.getkode().contains("D000")) {
+//            runBackground(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        String nobooking = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", TNoRw.getText());
+//                        if(nobooking.equals("")){ nobooking = TNoRw.getText(); }
+//                        if (!nobooking.equals("")) {
+//                            if (Sequel.cariInteger("select count(taskid) from referensi_mobilejkn_bpjs_taskid where no_rawat=? and taskid='3'", TNoRw.getText()) == 0) {
+//                                String datajam = Sequel.cariIsi("select now()");
+//                                if (Sequel.menyimpantf2("referensi_mobilejkn_bpjs_taskid", "?,?,?", "task id", 3, new String[]{TNoRw.getText(), "3", datajam}) == true) {
+//                                    try {
+//                                        bridging.ApiMobileJKN apiMobileJKN = new bridging.ApiMobileJKN();
+//                                        String utc = String.valueOf(apiMobileJKN.GetUTCdatetimeAsString());
+//                                        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+//                                        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+//                                        headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+//                                        headers.add("x-timestamp", utc);
+//                                        headers.add("x-signature", apiMobileJKN.getHmac(utc));
+//                                        headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+//                                        
+//                                        java.util.Date parsedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datajam);
+//                                        String requestJson = "{\"kodebooking\": \"" + nobooking + "\", \"taskid\": \"3\", \"waktu\": \"" + parsedDate.getTime() + "\"}";
+//                                        
+//                                        org.springframework.http.HttpEntity requestEntity = new org.springframework.http.HttpEntity(requestJson, headers);
+//                                        String URL = koneksiDB.URLAPIMOBILEJKN() + "/antrean/updatewaktu";
+//                                        
+//                                        String response = apiMobileJKN.getRest().exchange(URL, org.springframework.http.HttpMethod.POST, requestEntity, String.class).getBody();
+//                                        
+//                                        com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response);
+//                                        if (!root.path("metadata").path("code").asText().equals("200")) {
+//                                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + TNoRw.getText() + "'");
+//                                        } else {
+//                                        }
+//                                    } catch (Exception ex) {
+//                                        Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + TNoRw.getText() + "'");
+//                                    }
+//                                } else {
+//                                }
+//                            } else {
+//                            }
+//                        } else {
+//                        }
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            });
+//        }
+//    }
+//
+//
+//    private void updateTaskID5MobileJKN() {
+//        if (!akses.getkode().contains("D000")) {
+//            runBackground(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        String nobooking = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", TNoRw.getText());
+//                        if(nobooking.equals("")){ nobooking = TNoRw.getText(); }
+//                        if (!nobooking.equals("")) {
+//                            if (Sequel.cariInteger("select count(taskid) from referensi_mobilejkn_bpjs_taskid where no_rawat=? and taskid='5'", TNoRw.getText()) == 0) {
+//                                String datajam = Sequel.cariIsi("select now()");
+//                                if (Sequel.menyimpantf("referensi_mobilejkn_bpjs_taskid", "?,?,?", "task id", 3, new String[]{TNoRw.getText(), "5", datajam}) == true) {
+//                                    try {
+//                                        bridging.ApiMobileJKN apiMobileJKN = new bridging.ApiMobileJKN();
+//                                        String utc = String.valueOf(apiMobileJKN.GetUTCdatetimeAsString());
+//                                        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+//                                        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+//                                        headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+//                                        headers.add("x-timestamp", utc);
+//                                        headers.add("x-signature", apiMobileJKN.getHmac(utc));
+//                                        headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+//                                        
+//                                        java.util.Date parsedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datajam);
+//                                        String requestJson = "{\"kodebooking\": \"" + nobooking + "\", \"taskid\": \"5\", \"waktu\": \"" + parsedDate.getTime() + "\"}";
+//                                        
+//                                        org.springframework.http.HttpEntity requestEntity = new org.springframework.http.HttpEntity(requestJson, headers);
+//                                        String URL = koneksiDB.URLAPIMOBILEJKN() + "/antrean/updatewaktu";
+//                                        
+//                                        com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(apiMobileJKN.getRest().exchange(URL, org.springframework.http.HttpMethod.POST, requestEntity, String.class).getBody());
+//                                        if (!root.path("metadata").path("code").asText().equals("200")) {
+//                                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + TNoRw.getText() + "'");
+//                                        }
+//                                    } catch (Exception ex) {
+//                                        Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + TNoRw.getText() + "'");
+//                                        System.out.println("Notif : " + ex);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//                        System.out.println("Notif Update Task ID 5 : " + e);
+//                    }
+//                }
+//            });
+//        }
+//    }
+//
+//
+//    private void updateTaskID4MobileJKN() {
+//        if (!akses.getkode().contains("D000")) {
+//            runBackground(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try {
+//                        String nobooking = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", TNoRw.getText());
+//                        if(nobooking.equals("")){ nobooking = TNoRw.getText(); }
+//                        if (!nobooking.equals("")) {
+//                            if (Sequel.cariInteger("select count(taskid) from referensi_mobilejkn_bpjs_taskid where no_rawat=? and taskid='4'", TNoRw.getText()) == 0) {
+//                                String datajam = Sequel.cariIsi("select now()");
+//                                if (Sequel.menyimpantf("referensi_mobilejkn_bpjs_taskid", "?,?,?", "task id", 3, new String[]{TNoRw.getText(), "4", datajam}) == true) {
+//                                    try {
+//                                        bridging.ApiMobileJKN apiMobileJKN = new bridging.ApiMobileJKN();
+//                                        String utc = String.valueOf(apiMobileJKN.GetUTCdatetimeAsString());
+//                                        org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+//                                        headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+//                                        headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+//                                        headers.add("x-timestamp", utc);
+//                                        headers.add("x-signature", apiMobileJKN.getHmac(utc));
+//                                        headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+//                                        
+//                                        java.util.Date parsedDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(datajam);
+//                                        String requestJson = "{\"kodebooking\": \"" + nobooking + "\", \"taskid\": \"4\", \"waktu\": \"" + parsedDate.getTime() + "\"}";
+//                                        
+//                                        org.springframework.http.HttpEntity requestEntity = new org.springframework.http.HttpEntity(requestJson, headers);
+//                                        String URL = koneksiDB.URLAPIMOBILEJKN() + "/antrean/updatewaktu";
+//                                        
+//                                        com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(apiMobileJKN.getRest().exchange(URL, org.springframework.http.HttpMethod.POST, requestEntity, String.class).getBody());
+//                                        if (!root.path("metadata").path("code").asText().equals("200")) {
+//                                            Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + TNoRw.getText() + "'");
+//                                        }
+//                                    } catch (Exception ex) {
+//                                        Sequel.queryu2("delete from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + TNoRw.getText() + "'");
+//                                        System.out.println("Notif : " + ex);
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//                        System.out.println("Notif Update Task ID 4 : " + e);
+//                    }
+//                }
+//            });
+//        }
+//    }
+    //sampai sini
 }
