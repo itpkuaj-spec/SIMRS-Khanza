@@ -177,6 +177,26 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
         } catch (Exception e) {
             TANGGALMUNDUR="yes";
         }
+        
+        poli.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(poli.getTable().getSelectedRow()!= -1){
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
+                }   
+                NmPoli.requestFocus();
+            }
+        });
+        
+        poli2.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(poli2.getTable().getSelectedRow()!= -1){
+                    NmPoli.setText(poli2.getTable().getValueAt(poli2.getTable().getSelectedRow(),1).toString());
+                }   
+                NmPoli.requestFocus();
+            }
+        });
     }
 
 
@@ -1605,9 +1625,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private widget.editorpane LoadHTML2;
     private widget.ComboBox Menit;
     private javax.swing.JMenuItem MnCetakLayananProgramKFR;
-    private widget.TextBox NIP;
-    private widget.TextBox NamaPetugas;
-    private widget.TextBox NmPoli;
+private widget.TextBox NmPoli;
     private widget.TextBox NmPetugas;
     public widget.TextBox NoPermintaan;
     private widget.PanelBiasa PanelAccor;
@@ -1911,7 +1929,7 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private void ganti() {
         if(Sequel.mengedittf("layanan_program_kfr","no_rawat=?","no_rawat_layanan=?,no_rawat=?,tanggal=?,nip=?,program=?,terapike=?,subjec=?,objec=?,asses=?,prosedur=?,klinik=?,tgl_kontrol=?,ket=?",14,new String[]{
             NoPermintaan.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-            NIP.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
+            KdPetugas.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
             NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText(),tbObat.getValueAt(tbObat.getSelectedRow(),0).toString()
         })==true){
             tbObat.setValueAt(TNoRw.getText(),tbObat.getSelectedRow(),0);
@@ -1925,8 +1943,8 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
             tbObat.setValueAt(Diagnosa.getText(),tbObat.getSelectedRow(),8);
             tbObat.setValueAt(PermintaanTerapi.getText(),tbObat.getSelectedRow(),9);
             tbObat.setValueAt(Program.getText(),tbObat.getSelectedRow(),10);
-            tbObat.setValueAt(NIP.getText(),tbObat.getSelectedRow(),11);
-            tbObat.setValueAt(NamaPetugas.getText(),tbObat.getSelectedRow(),12);
+            tbObat.setValueAt(KdPetugas.getText(),tbObat.getSelectedRow(),11);
+            tbObat.setValueAt(NmPetugas.getText(),tbObat.getSelectedRow(),12);
             tbObat.setValueAt(terapi_ke.getText(),tbObat.getSelectedRow(),13);
             tbObat.setValueAt(subjec.getText(),tbObat.getSelectedRow(),14);
             tbObat.setValueAt(objec.getText(),tbObat.getSelectedRow(),15);
@@ -1954,13 +1972,13 @@ public final class RMLayananProgramKFR extends javax.swing.JDialog {
     private void simpan() {
         if(Sequel.menyimpantf("layanan_program_kfr","?,?,?,?,?,?,?,?,?,?,?,?,?","Data",13,new String[]{
             NoPermintaan.getText(),TNoRw.getText(),Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-            NIP.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
+            KdPetugas.getText(),Program.getText(),terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
             NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText()
         })==true){
             tabMode.addRow(new Object[]{
                 TNoRw.getText(),TNoRM.getText(),TPasien.getText(),Umur.getText(),JK.getText(),TglLahir.getText(),
                 Valid.SetTgl(Tanggal.getSelectedItem()+"")+" "+Jam.getSelectedItem()+":"+Menit.getSelectedItem()+":"+Detik.getSelectedItem(),
-                NoPermintaan.getText(),Diagnosa.getText(),PermintaanTerapi.getText(),Program.getText(),NIP.getText(),NamaPetugas.getText(),
+                NoPermintaan.getText(),Diagnosa.getText(),PermintaanTerapi.getText(),Program.getText(),KdPetugas.getText(),NmPetugas.getText(),
                 terapi_ke.getText(),subjec.getText(),objec.getText(),asses.getText(),prosedur.getText(),
                 NmPoli.getText(),Valid.SetTgl(Tanggal1.getSelectedItem()+""),keterangan.getText()
             });

@@ -2,7 +2,20 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
     <comment>KhanzaHMS</comment> 
-    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
+        <!-- DB -->
+    <entry key="HOST">qMXbTjtVyEQ5aj3+iqZgrA==</entry>
+    <entry key="DATABASE">AZHNccBwSmSho84f+X8GyQ==</entry>
+    <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
+    <entry key="USER">x0iKmwH84s222PT62Pzu0w==</entry>
+    <entry key="PAS">J43RunN8YkTpvXC5FEGaNw==</entry>
+    <!-- WEBAPPS -->
+    <entry key="CARICEPAT">aktif</entry>
+    <entry key="HOSTHYBRIDWEB">sXC9FqrRVv3hhJShEwpiQw==</entry>
+    <entry key="USERHYBRIDWEB">nmXqCKzrz9i8GTZlq7JruQ==</entry>
+    <entry key="PASHYBRIDWEB">Trpq3Ho2go8Rwl0JMwoucQ==</entry>
+    <entry key="HYBRIDWEB">webapps</entry>
+    <entry key="PORTWEB">80</entry>
+<!--    <entry key="HOST">5k7+C7EnUw9nUv2Nix+DBA==</entry>
     <entry key="DATABASE">AZHNccBwSmSho84f+X8GyQ==</entry>
     <entry key="PORT">nioxtijcpDaKSUiUiP5FAg==</entry>
     <entry key="USER">kMR3WfAwUK6MbhCyydxa0g==</entry>
@@ -12,7 +25,7 @@
     <entry key="USERHYBRIDWEB">nmXqCKzrz9i8GTZlq7JruQ==</entry>
     <entry key="PASHYBRIDWEB">AsJ/0/gCnYnD+gK4fw9uKA==</entry>
     <entry key="HYBRIDWEB">webapps</entry>
-    <entry key="PORTWEB">80</entry>
+    <entry key="PORTWEB">80</entry>-->
     <entry key="AKTIFKANWARNARALAN">yes</entry>
     <entry key="ANTRIAN">player</entry>
     <entry key="LOKETANTRIAN">1</entry>
@@ -43,10 +56,16 @@
     <entry key="SECRETKEYAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIAPLICARE">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="URLAPIMOBILEJKN">https://apijkn.bpjs-kesehatan.go.id/antreanrs</entry>
+<!--    <entry key="URLAPIMOBILEJKN">https://apijkn.bpjs-kesehatan.go.id/antreanrs</entry>
     <entry key="SECRETKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="CONSIDAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="USERKEYAPIMOBILEJKN">l4nh5eVYrLAER/I2A4b3Tw==</entry>
+    <entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>-->
+        <!-- BPJS MJKN -->
+    <entry key="URLAPIMOBILEJKN">https://apijkn.bpjs-kesehatan.go.id/antreanrs</entry>
+    <entry key="SECRETKEYAPIMOBILEJKN">Wvcfo8VLSeT/OdKaNW6GyA==</entry>
+    <entry key="CONSIDAPIMOBILEJKN">uMzc7josSfixPelYAWdVxg==</entry>
+    <entry key="USERKEYAPIMOBILEJKN">YMtU37JTHBrUvvNKMYw35wPw5nu/jPJ/z/FrixGYhU5MCmMt+CYEVuVKFFkxR6zb</entry>
     <entry key="ADDANTRIANAPIMOBILEJKN">yes</entry>
     <entry key="URLAPIAPOTEKBPJS">https://apijkn-dev.bpjs-kesehatan.go.id/apotek-rest-dev</entry>
     <entry key="SECRETKEYAPIAPOTEKBPJS">yQFSUZpqSvFEmv3kcKNYyA==</entry>
@@ -89,7 +108,18 @@
     <entry key="URLAPICORONA">http://sirs.kemkes.go.id/fo/index.php</entry>
     <entry key="IDCORONA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
     <entry key="PASSCORONA">l4nh5eVYrLAER/I2A4b3Tw==</entry>
-    <entry key="CLIENTIDSATUSEHAT">84gc+gN5BhcCxLoJxHODBleZUdYHZiR2pYAb9T/w6hhyuWrFJFvPM7UvdNVtl7Sestw5ZVpC9SI/UUmSqSmYsA==</entry>
+        <!-- SARU SEHAT -->
+    <entry key="CLIENTIDSATUSEHAT">u1TJmJgiodLubwFEA2tL+vCY8LYFAQ0bBJ6vntSQrcRzcU6blIOiPy+m3doPt3+ivWN3zDDWUavNxQ88sHRwfA==</entry>
+    <entry key="SECRETKEYSATUSEHAT">wKo5vjLa3Skv8tVv8Z0v3f+DfrCCxb1spnfnDIzoMbnjIhIDhJRwC9+FI8rPOp/HmWe4/tzAMr8Kac7WHVX1wlc052SDaaRfJco7JxZy1lI=</entry>
+    <entry key="URLAUTHSATUSEHAT">https://api-satusehat.kemkes.go.id/oauth2/v1</entry> 
+    <entry key="URLFHIRSATUSEHAT">https://api-satusehat.kemkes.go.id/fhir-r4/v1</entry>
+    <entry key="IDSATUSEHAT">YkNsHQZ6yUE474GdrHshDA==</entry>
+    <entry key="KELURAHANSATUSEHAT">3320061011</entry>
+    <entry key="KECAMATANSATUSEHAT">332006</entry>
+    <entry key="KABUPATENSATUSEHAT">3320</entry>
+    <entry key="PROPINSISATUSEHAT">33</entry>
+    <entry key="KODEPOSSATUSEHAT">59415</entry>
+<!--    <entry key="CLIENTIDSATUSEHAT">84gc+gN5BhcCxLoJxHODBleZUdYHZiR2pYAb9T/w6hhyuWrFJFvPM7UvdNVtl7Sestw5ZVpC9SI/UUmSqSmYsA==</entry>
     <entry key="SECRETKEYSATUSEHAT">ukhrihQzC2cCqQ+DQy7T+wkKxe2YFfvnv1vQr/eAycsbJOiU0j6eeo7CFJE6D/WlEcwqwFE15TGfO5qcMTm+wclfWqpiscCeYZA9pZ/+44o=</entry>
     <entry key="URLAUTHSATUSEHAT">https://api-satusehat-dev.dto.kemkes.go.id/oauth2/v1</entry> 
     <entry key="URLFHIRSATUSEHAT">https://api-satusehat-dev.dto.kemkes.go.id/fhir-r4/v1</entry>
@@ -98,7 +128,7 @@
     <entry key="KECAMATANSATUSEHAT">3313160</entry>
     <entry key="KABUPATENSATUSEHAT">3313</entry>
     <entry key="PROPINSISATUSEHAT">33</entry>
-    <entry key="KODEPOSSATUSEHAT">57752</entry>
+    <entry key="KODEPOSSATUSEHAT">57752</entry>-->
     <entry key="KAMARAKTIFRANAP"></entry>
     <entry key="DOKTERAKTIFKASIRRALAN"></entry>
     <entry key="POLIAKTIFKASIRRALAN"></entry>
