@@ -9148,12 +9148,12 @@ public class DlgKamarInap extends javax.swing.JDialog {
 //                    JOptionPane.showMessageDialog(null, "Maaf, tabel masih kosong...!!!!");
 //                    TCari.requestFocus();
 //                } else {
-//                    // ⛔️ VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
+//                    // VALIDASI TAMBAHAN: Cek apakah TNoRwCari masih kosong
 //                    if (TNoRwCari.getText().trim().isEmpty()) {
 //                        JOptionPane.showMessageDialog(null, "Maaf, Nomor Rawat masih kosong. Tidak dapat melanjutkan proses klaim.", 
 //                                                     "Peringatan", JOptionPane.WARNING_MESSAGE);
 //                        TNoRwCari.requestFocus(); // Fokuskan ke field Nomor Rawat jika ada
-//                        return; // ⛔ Hentikan eksekusi
+//                        return; // Hentikan eksekusi
 //                    }
 //
 //                    int row = tbKamIn.getSelectedRow();
@@ -19534,11 +19534,9 @@ public class DlgKamarInap extends javax.swing.JDialog {
                            "inner join kamar on kamar_inap.kd_kamar=kamar.kd_kamar inner join bangsal on kamar.kd_bangsal=bangsal.kd_bangsal inner join kelurahan on pasien.kd_kel=kelurahan.kd_kel "+
                            "inner join kecamatan on pasien.kd_kec=kecamatan.kd_kec inner join kabupaten on pasien.kd_kab=kabupaten.kd_kab inner join dokter on reg_periksa.kd_dokter=dokter.kd_dokter "+
                            "inner join penjab on reg_periksa.kd_pj=penjab.kd_pj "+
-                           //(namadokter.equals("")?"where "+key+" "+order:"inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" "+order));//ubahanku
                            (namadokter.equals("") ? 
-                            "where "+key+" order by kamar_inap.ttl_biaya desc" : 
-                            "inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" order by kamar_inap.ttl_biaya desc")
-                            //sampe sini
+                            "where "+key+" "+order : 
+                            "inner join dpjp_ranap on dpjp_ranap.no_rawat=reg_periksa.no_rawat where dpjp_ranap.kd_dokter='"+namadokter+"' and "+key+" "+order)
                 );
                         try {
                             rs=ps.executeQuery();

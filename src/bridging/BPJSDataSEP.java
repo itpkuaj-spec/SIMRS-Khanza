@@ -2921,6 +2921,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             Valid.textKosong(KdDPJP, "DPJP");
         }else{  
             if(JenisPelayanan.getSelectedIndex()==0){
+                checkinmjkn(); //Tambahan IT
                 insertSEP();
             }else if(JenisPelayanan.getSelectedIndex()==1){
                 if(NmPoli.getText().toLowerCase().contains("darurat")){
@@ -2928,6 +2929,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null,"Maaf, sebelumnya sudah dilakukan 3x pembuatan SEP di jenis pelayanan yang sama..!!");
                         TCari.requestFocus();
                     }else{
+                        checkinmjkn(); //Tambahan IT
                         if(ADDANTRIANAPIMOBILEJKN.equals("yes")){
                             if(SimpanAntrianOnSite()==true){
                                 insertSEP();
@@ -2943,6 +2945,7 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                         JOptionPane.showMessageDialog(null,"Maaf, sebelumnya sudah dilakukan pembuatan SEP di jenis pelayanan yang sama..!!");
                         TCari.requestFocus();
                     }else{
+                        checkinmjkn(); //Tambahan IT
                         if(ADDANTRIANAPIMOBILEJKN.equals("yes")){
                             if(SimpanAntrianOnSite()==true){
                                 insertSEP();
@@ -7064,6 +7067,24 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             }
         }
     }
+
+    //Tambahan IT
+    private void checkinmjkn() {
+        if (Sequel.cariInteger("select count(referensi_mobilejkn_bpjs.no_rawat) from referensi_mobilejkn_bpjs where referensi_mobilejkn_bpjs.no_rawat=?", TNoRw.getText()) > 0) {
+            String nobooking = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", TNoRw.getText());
+            if (Sequel.mengedittf("referensi_mobilejkn_bpjs", "no_rawat=?", "status='Checkin',validasi=now()", 1, new String[]{
+                TNoRw.getText()
+            }) == true) {
+                if (!nobooking.equals("")) {
+                    Sequel.meghapus("referensi_mobilejkn_bpjs_batal", "nobooking", nobooking);
+                } else {
+                    Sequel.meghapus("referensi_mobilejkn_bpjs_batal", "nobooking", TNoRw.getText());
+                }
+                Sequel.queryu("update reg_periksa set jam_reg=NOW() where no_rawat='" + TNoRw.getText() + "'");
+                JOptionPane.showMessageDialog(null, "Berhasil Checkin MJKN!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
     
     public boolean SimpanAntrianOnSite(){
         statusantrean=true;
@@ -7191,6 +7212,11 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             nameNode = root.path("metadata");  
                             respon=nameNode.path("code").asText();
                             System.out.println("respon WS BPJS Kirim Pakai NoRujukan : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
+                            //Tambahan IT
+                            if (respon.equals("200") || respon.equals("208") || respon.equals("201")) {
+                                Sequel.queryu("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values('" + KdDPJP.getText() + "','" + KdPoli.getText() + "','" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW())");
+                            }
+                            //sampe sini
                         } catch (Exception e) {
                             statusantrean=false;
                             System.out.println("Notif No.Rujuk : "+e);
@@ -7240,6 +7266,11 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                                 root = mapper.readTree(apiMobileJKN.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
                                 nameNode = root.path("metadata");  
                                 System.out.println("respon WS BPJS Kirim Pakai SKDP : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
+                                //Tambahan IT
+                                if (nameNode.path("code").asText().equals("200") || nameNode.path("code").asText().equals("208") || nameNode.path("code").asText().equals("201")) {
+                                    Sequel.queryu("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values('" + KdDPJP.getText() + "','" + KdPoli.getText() + "','" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW())");
+                                }
+                                //sampe sini
                                 if(nameNode.path("code").asText().equals("201")){
                                     statusantrean=false;
                                 }

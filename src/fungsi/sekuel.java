@@ -1411,8 +1411,11 @@ public final class sekuel {
         return bool;
     }
     
-    //perubahanku
+    //perubahanku //Tambahan IT
     public boolean cekTanggal48jam(String tanggalmulai,String tanggalinputdata){
+        if(koneksiDB.PENGATURAN48JAM().equalsIgnoreCase("tidak") || koneksiDB.PENGATURAN48JAM().equalsIgnoreCase("nonaktif") || koneksiDB.PENGATURAN48JAM().equalsIgnoreCase("no") || koneksiDB.PENGATURAN48JAM().equalsIgnoreCase("tidak aktif")){
+            return true;
+        }
         bool=false;
         try {
             waktumulai = formattanggal.parse(tanggalmulai);

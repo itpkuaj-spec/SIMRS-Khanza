@@ -5,7 +5,8 @@
  * Created on May 22, 2010, 11:58:21 PM
  */
 
-package bridging;
+package tambahan_it;
+import bridging.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fungsi.WarnaTable;
@@ -13,6 +14,7 @@ import fungsi.koneksiDB;
 import fungsi.sekuel;
 import fungsi.validasi;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
@@ -27,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
@@ -40,7 +43,7 @@ import org.springframework.http.MediaType;
  *
  * @author dosen
  */
-public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
+public final class PKUtaskID extends javax.swing.JDialog {
     private final DefaultTableModel tabMode;
     private validasi Valid=new validasi();
     private Connection koneksi=koneksiDB.condb();
@@ -69,7 +72,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
      * @param modal */
-    public BPJSAntreanPerTanggal(java.awt.Frame parent, boolean modal) {
+    public PKUtaskID(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
 
@@ -77,7 +80,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         setSize(628,674);
 
         tabMode=new DefaultTableModel(null,new Object[]{
-                "Kode Booking","Tanggal","Kode Poli","Kode Dokter","Jam Praktek","NIK","Noka","No. HP","RM","Jenis Kunjungan","No. Ref","Sumber Data","Peserta","No. Antrean","Estimasi Dilayani","Created Time","Status"
+                "No. Rawat","No. RM","Nama Pasien","Nama Dokter","Poliklinik","No. SEP","Tanggal","Sumber Antrean","Checkin","SOAP","Status Periksa","Status Task ID","Task 1","Task 2","Task 3","Task 4","Task 5","Task 6","Task 7","Task 99"
             }){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -86,45 +89,37 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 17; i++) {
+        for (i = 0; i < 20; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(110);
             }else if(i==1){
                 column.setPreferredWidth(70);
             }else if(i==2){
-                column.setPreferredWidth(70);
+                column.setPreferredWidth(170);
             }else if(i==3){
-                column.setPreferredWidth(83);
+                column.setPreferredWidth(170);
             }else if(i==4){
-                column.setPreferredWidth(90);
+                column.setPreferredWidth(140);
             }else if(i==5){
-                column.setPreferredWidth(120);
+                column.setPreferredWidth(150);
             }else if(i==6){
-                column.setPreferredWidth(100);
+                column.setPreferredWidth(80);
             }else if(i==7){
                 column.setPreferredWidth(100);
             }else if(i==8){
-                column.setPreferredWidth(60);
+                column.setPreferredWidth(80);
             }else if(i==9){
-                column.setPreferredWidth(100);
+                column.setPreferredWidth(60);
             }else if(i==10){
-                column.setPreferredWidth(140);
-            }else if(i==11){
                 column.setPreferredWidth(100);
-            }else if(i==12){
+            }else if(i==11){
+                column.setPreferredWidth(110);
+            }else if(i>=12 && i<=19){
                 column.setPreferredWidth(70);
-            }else if(i==13){
-                column.setPreferredWidth(70);
-            }else if(i==14){
-                column.setPreferredWidth(120);
-            }else if(i==15){
-                column.setPreferredWidth(120);
-            }else if(i==15){
-                column.setPreferredWidth(90);
             }
         }
-        tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTable());
+        tbJnsPerawatan.setDefaultRenderer(Object.class, new WarnaTableCustom());
         
         try {
             link=koneksiDB.URLAPIMOBILEJKN();
@@ -152,11 +147,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         tbJnsPerawatan = new widget.Table();
         jPanel2 = new javax.swing.JPanel();
         panelGlass9 = new widget.panelisi();
-        jLabel12 = new widget.Label();
-        MJknBelum = new widget.Label();
-        MJknCapaian = new widget.Label();
-        jLabel13 = new widget.Label();
-        MJknSelesai = new widget.Label();
         jLabel19 = new widget.Label();
         DTPCari1 = new widget.Tanggal();
         jLabel21 = new widget.Label();
@@ -164,25 +154,15 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         BtnCari = new widget.Button();
         jLabel7 = new widget.Label();
         LCount = new widget.Label();
-        detailtaskid = new javax.swing.JButton();
-        dashboardbpjs = new javax.swing.JButton();
         BtnKeluar1 = new widget.Button();
         panelGlass8 = new widget.panelisi();
-        jLabel8 = new widget.Label();
-        TotBelum = new widget.Label();
-        jLabel9 = new widget.Label();
-        TotSelesai = new widget.Label();
-        jLabel14 = new widget.Label();
-        SEPTerbit = new widget.Label();
-        jLabel10 = new widget.Label();
-        JknBelum = new widget.Label();
-        jLabel11 = new widget.Label();
-        JknSelesai = new widget.Label();
-        JknCapaian = new widget.Label();
-        jLabel15 = new widget.Label();
-        NonJKNBelum = new widget.Label();
-        jLabel16 = new widget.Label();
-        NonJKNSelesai = new widget.Label();
+        lblsep = new widget.Label();
+        lbllengkap = new widget.Label();
+        lbltidaklengkap = new widget.Label();
+        lblbatal = new widget.Label();
+        lbltotalpasien = new widget.Label();
+        lblmjkn = new widget.Label();
+        lblnonnkjn = new widget.Label();
         totalantrol = new widget.Label();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
@@ -255,7 +235,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         setUndecorated(true);
         setResizable(false);
 
-        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Antrean Per Tanggal Mobile JKN ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
+        internalFrame1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(240, 245, 235)), "::[ Monitor PKU Aisyiyah task Id ]::", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(50, 50, 50))); // NOI18N
         internalFrame1.setName("internalFrame1"); // NOI18N
         internalFrame1.setLayout(new java.awt.BorderLayout(1, 1));
 
@@ -271,45 +251,12 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
 
         jPanel2.setName("jPanel2"); // NOI18N
         jPanel2.setOpaque(false);
-        jPanel2.setPreferredSize(new java.awt.Dimension(44, 100));
+        jPanel2.setPreferredSize(new java.awt.Dimension(44, 150));
         jPanel2.setLayout(new java.awt.BorderLayout(1, 1));
 
         panelGlass9.setName("panelGlass9"); // NOI18N
         panelGlass9.setPreferredSize(new java.awt.Dimension(44, 44));
         panelGlass9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
-
-        jLabel12.setForeground(new java.awt.Color(0, 153, 0));
-        jLabel12.setText("MJKN Belum :");
-        jLabel12.setName("jLabel12"); // NOI18N
-        jLabel12.setPreferredSize(new java.awt.Dimension(75, 23));
-        panelGlass9.add(jLabel12);
-
-        MJknBelum.setForeground(new java.awt.Color(0, 153, 0));
-        MJknBelum.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MJknBelum.setText("0");
-        MJknBelum.setName("MJknBelum"); // NOI18N
-        MJknBelum.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass9.add(MJknBelum);
-
-        MJknCapaian.setForeground(new java.awt.Color(0, 153, 0));
-        MJknCapaian.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MJknCapaian.setText("0");
-        MJknCapaian.setName("MJknCapaian"); // NOI18N
-        MJknCapaian.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass9.add(MJknCapaian);
-
-        jLabel13.setForeground(new java.awt.Color(0, 153, 0));
-        jLabel13.setText("MJKN Selesai :");
-        jLabel13.setName("jLabel13"); // NOI18N
-        jLabel13.setPreferredSize(new java.awt.Dimension(80, 23));
-        panelGlass9.add(jLabel13);
-
-        MJknSelesai.setForeground(new java.awt.Color(0, 153, 0));
-        MJknSelesai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        MJknSelesai.setText("0");
-        MJknSelesai.setName("MJknSelesai"); // NOI18N
-        MJknSelesai.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass9.add(MJknSelesai);
 
         jLabel19.setText("Tanggal :");
         jLabel19.setName("jLabel19"); // NOI18N
@@ -317,7 +264,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "21-07-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-07-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -331,7 +278,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "21-07-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-07-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -366,24 +313,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         LCount.setPreferredSize(new java.awt.Dimension(75, 23));
         panelGlass9.add(LCount);
 
-        detailtaskid.setText("Detail Task ID");
-        detailtaskid.setName("detailtaskid"); // NOI18N
-        detailtaskid.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                detailtaskidActionPerformed(evt);
-            }
-        });
-        panelGlass9.add(detailtaskid);
-
-        dashboardbpjs.setText("dashboard");
-        dashboardbpjs.setName("dashboardbpjs"); // NOI18N
-        dashboardbpjs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dashboardbpjsActionPerformed(evt);
-            }
-        });
-        panelGlass9.add(dashboardbpjs);
-
         BtnKeluar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/exit.png"))); // NOI18N
         BtnKeluar1.setMnemonic('K');
         BtnKeluar1.setText("Keluar");
@@ -405,113 +334,71 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         jPanel2.add(panelGlass9, java.awt.BorderLayout.CENTER);
 
         panelGlass8.setName("panelGlass8"); // NOI18N
-        panelGlass8.setPreferredSize(new java.awt.Dimension(44, 44));
+        panelGlass8.setPreferredSize(new java.awt.Dimension(44, 90));
         panelGlass8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
 
-        jLabel8.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel8.setText("Total Belum :");
-        jLabel8.setName("jLabel8"); // NOI18N
-        jLabel8.setPreferredSize(new java.awt.Dimension(72, 23));
-        panelGlass8.add(jLabel8);
+        lblsep.setForeground(new java.awt.Color(0, 153, 102));
+        lblsep.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblsep.setText("0");
+        lblsep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblsep.setName("lblsep"); // NOI18N
+        lblsep.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lblsep);
 
-        TotBelum.setForeground(new java.awt.Color(255, 153, 0));
-        TotBelum.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        TotBelum.setText("0");
-        TotBelum.setName("TotBelum"); // NOI18N
-        TotBelum.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(TotBelum);
+        lbllengkap.setForeground(new java.awt.Color(0, 153, 102));
+        lbllengkap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbllengkap.setText("0");
+        lbllengkap.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbllengkap.setName("lbllengkap"); // NOI18N
+        lbllengkap.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lbllengkap);
 
-        jLabel9.setForeground(new java.awt.Color(102, 153, 0));
-        jLabel9.setText("Total Selesai :");
-        jLabel9.setName("jLabel9"); // NOI18N
-        jLabel9.setPreferredSize(new java.awt.Dimension(77, 23));
-        panelGlass8.add(jLabel9);
+        lbltidaklengkap.setForeground(new java.awt.Color(0, 153, 102));
+        lbltidaklengkap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbltidaklengkap.setText("0");
+        lbltidaklengkap.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltidaklengkap.setName("lbltidaklengkap"); // NOI18N
+        lbltidaklengkap.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lbltidaklengkap);
 
-        TotSelesai.setForeground(new java.awt.Color(102, 153, 0));
-        TotSelesai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        TotSelesai.setText("0");
-        TotSelesai.setName("TotSelesai"); // NOI18N
-        TotSelesai.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(TotSelesai);
+        lblbatal.setForeground(new java.awt.Color(0, 153, 102));
+        lblbatal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblbatal.setText("0");
+        lblbatal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblbatal.setName("lblbatal"); // NOI18N
+        lblbatal.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lblbatal);
 
-        jLabel14.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel14.setText("SEP Terbit :");
-        jLabel14.setName("jLabel14"); // NOI18N
-        jLabel14.setPreferredSize(new java.awt.Dimension(65, 23));
-        panelGlass8.add(jLabel14);
+        lbltotalpasien.setForeground(new java.awt.Color(0, 153, 102));
+        lbltotalpasien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbltotalpasien.setText("0");
+        lbltotalpasien.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltotalpasien.setName("lbltotalpasien"); // NOI18N
+        lbltotalpasien.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lbltotalpasien);
 
-        SEPTerbit.setForeground(new java.awt.Color(0, 153, 255));
-        SEPTerbit.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        SEPTerbit.setText("0");
-        SEPTerbit.setName("SEPTerbit"); // NOI18N
-        SEPTerbit.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(SEPTerbit);
+        lblmjkn.setForeground(new java.awt.Color(0, 153, 102));
+        lblmjkn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblmjkn.setText("0");
+        lblmjkn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblmjkn.setName("lblmjkn"); // NOI18N
+        lblmjkn.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lblmjkn);
 
-        jLabel10.setForeground(new java.awt.Color(204, 204, 0));
-        jLabel10.setText("JKN Belum :");
-        jLabel10.setName("jLabel10"); // NOI18N
-        jLabel10.setPreferredSize(new java.awt.Dimension(65, 23));
-        panelGlass8.add(jLabel10);
-
-        JknBelum.setForeground(new java.awt.Color(204, 204, 0));
-        JknBelum.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        JknBelum.setText("0");
-        JknBelum.setName("JknBelum"); // NOI18N
-        JknBelum.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(JknBelum);
-
-        jLabel11.setForeground(new java.awt.Color(204, 204, 0));
-        jLabel11.setText("JKN Selesai :");
-        jLabel11.setName("jLabel11"); // NOI18N
-        jLabel11.setPreferredSize(new java.awt.Dimension(70, 23));
-        panelGlass8.add(jLabel11);
-
-        JknSelesai.setForeground(new java.awt.Color(204, 204, 0));
-        JknSelesai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        JknSelesai.setText("0");
-        JknSelesai.setName("JknSelesai"); // NOI18N
-        JknSelesai.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(JknSelesai);
-
-        JknCapaian.setForeground(new java.awt.Color(204, 204, 0));
-        JknCapaian.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        JknCapaian.setText("0 ");
-        JknCapaian.setName("JknCapaian"); // NOI18N
-        JknCapaian.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(JknCapaian);
-
-        jLabel15.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel15.setText("Non JKN Belum :");
-        jLabel15.setName("jLabel15"); // NOI18N
-        jLabel15.setPreferredSize(new java.awt.Dimension(90, 23));
-        panelGlass8.add(jLabel15);
-
-        NonJKNBelum.setForeground(new java.awt.Color(0, 153, 153));
-        NonJKNBelum.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        NonJKNBelum.setText("0");
-        NonJKNBelum.setName("NonJKNBelum"); // NOI18N
-        NonJKNBelum.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(NonJKNBelum);
-
-        jLabel16.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel16.setText("Non JKN Selesai :");
-        jLabel16.setName("jLabel16"); // NOI18N
-        jLabel16.setPreferredSize(new java.awt.Dimension(92, 23));
-        panelGlass8.add(jLabel16);
-
-        NonJKNSelesai.setForeground(new java.awt.Color(0, 153, 153));
-        NonJKNSelesai.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        NonJKNSelesai.setText("0");
-        NonJKNSelesai.setName("NonJKNSelesai"); // NOI18N
-        NonJKNSelesai.setPreferredSize(new java.awt.Dimension(35, 23));
-        panelGlass8.add(NonJKNSelesai);
+        lblnonnkjn.setForeground(new java.awt.Color(0, 153, 102));
+        lblnonnkjn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblnonnkjn.setText("0");
+        lblnonnkjn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lblnonnkjn.setName("lblnonnkjn"); // NOI18N
+        lblnonnkjn.setPreferredSize(new java.awt.Dimension(150, 23));
+        panelGlass8.add(lblnonnkjn);
 
         totalantrol.setForeground(new java.awt.Color(0, 153, 153));
         totalantrol.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         totalantrol.setText("0");
-        totalantrol.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        totalantrol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         totalantrol.setName("totalantrol"); // NOI18N
-        totalantrol.setPreferredSize(new java.awt.Dimension(120, 23));
+        totalantrol.setPreferredSize(new java.awt.Dimension(190, 23));
         panelGlass8.add(totalantrol);
 
         jPanel2.add(panelGlass8, java.awt.BorderLayout.PAGE_START);
@@ -547,8 +434,19 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private void MnCekKodeBookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnCekKodeBookingActionPerformed
         if(tbJnsPerawatan.getSelectedRow()!= -1){
             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            String noRawat = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
+            String sumberAntrean = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString();
+            String kodeBooking = noRawat;
+
+            if (sumberAntrean.equals("Mobile JKN")) {
+                String nobooking = Sequel.cariIsi("select referensi_mobilejkn_bpjs.nobooking from referensi_mobilejkn_bpjs where referensi_mobilejkn_bpjs.no_rawat=?", noRawat);
+                if (!nobooking.trim().isEmpty()) {
+                    kodeBooking = nobooking;
+                }
+            }
+
             BPJSCekKodeBooking detail=new BPJSCekKodeBooking(null,false);
-            detail.tampil(tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString());
+            detail.tampil(kodeBooking);
             detail.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
             detail.setLocationRelativeTo(internalFrame1);
             detail.setVisible(true);
@@ -574,25 +472,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         BtnBatalMJKNActionPerformed(evt);
     }//GEN-LAST:event_MnKirimBatalBPJSActionPerformed
 
-    private void dashboardbpjsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardbpjsActionPerformed
-        // TODO add your handling code here:     
-        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
-        bridging.PKUDashboardBPJS aplikasi = new bridging.PKUDashboardBPJS(null, false);
-        aplikasi.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
-        aplikasi.setLocationRelativeTo(internalFrame1);
-        aplikasi.setVisible(true);
-        this.setCursor(java.awt.Cursor.getDefaultCursor());
-}//GEN-LAST:event_dashboardbpjsActionPerformed
-
-    private void detailtaskidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_detailtaskidActionPerformed
-        this.setCursor(java.awt.Cursor.getPredefinedCursor(java.awt.Cursor.WAIT_CURSOR));
-        tambahan_it.PKUtaskID aplikasi = new tambahan_it.PKUtaskID(null, false);
-        aplikasi.setSize(internalFrame1.getWidth(), internalFrame1.getHeight());
-        aplikasi.setLocationRelativeTo(internalFrame1);
-        aplikasi.setVisible(true);
-        this.setCursor(java.awt.Cursor.getDefaultCursor());
-    }//GEN-LAST:event_detailtaskidActionPerformed
-
 
 
 
@@ -601,7 +480,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
-            BPJSAntreanPerTanggal dialog = new BPJSAntreanPerTanggal(new javax.swing.JFrame(), true);
+            PKUtaskID dialog = new PKUtaskID(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent e) {
@@ -614,17 +493,6 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     
     
     private void emptTeks(){
-        SEPTerbit.setText("");
-        TotBelum.setText("");
-        TotSelesai.setText("");
-        JknBelum.setText("");
-        JknSelesai.setText("");
-        MJknBelum.setText("");
-        MJknSelesai.setText("");
-        NonJKNBelum.setText("");
-        NonJKNSelesai.setText("");
-        JknCapaian.setText("");
-        MJknCapaian.setText("");
         sep = 0;
         tot_belum = 0;
         tot_selesai = 0;
@@ -643,160 +511,214 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
     private widget.Button BtnKeluar1;
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
-    private widget.Label JknBelum;
-    private widget.Label JknCapaian;
-    private widget.Label JknSelesai;
     private widget.Label LCount;
-    private widget.Label MJknBelum;
-    private widget.Label MJknCapaian;
-    private widget.Label MJknSelesai;
     private javax.swing.JMenuItem MnCekKodeBooking;
     private javax.swing.JMenuItem MnKirimBatalBPJS;
     private javax.swing.JMenuItem MnKirimUlangJKN;
     private javax.swing.JMenuItem MnKirimUlangMJKN;
-    private widget.Label NonJKNBelum;
-    private widget.Label NonJKNSelesai;
-    private widget.Label SEPTerbit;
     private widget.ScrollPane Scroll;
-    private widget.Label TotBelum;
-    private widget.Label TotSelesai;
-    private javax.swing.JButton dashboardbpjs;
-    private javax.swing.JButton detailtaskid;
     private widget.InternalFrame internalFrame1;
-    private widget.Label jLabel10;
-    private widget.Label jLabel11;
-    private widget.Label jLabel12;
-    private widget.Label jLabel13;
-    private widget.Label jLabel14;
-    private widget.Label jLabel15;
-    private widget.Label jLabel16;
     private widget.Label jLabel19;
     private widget.Label jLabel21;
     private widget.Label jLabel7;
-    private widget.Label jLabel8;
-    private widget.Label jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private widget.Label lblbatal;
+    private widget.Label lbllengkap;
+    private widget.Label lblmjkn;
+    private widget.Label lblnonnkjn;
+    private widget.Label lblsep;
+    private widget.Label lbltidaklengkap;
+    private widget.Label lbltotalpasien;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.Table tbJnsPerawatan;
     private widget.Label totalantrol;
     // End of variables declaration//GEN-END:variables
 
-    private void tampil() {
-        Valid.tabelKosong(tabMode);
-        try{
-            ps=koneksi.prepareStatement(
-                   "SELECT reg_periksa.tgl_registrasi FROM reg_periksa WHERE reg_periksa.tgl_registrasi BETWEEN ? AND ? group by reg_periksa.tgl_registrasi");
-            try {
-                ps.setString(1,Valid.SetTgl(DTPCari1.getSelectedItem()+""));
-                ps.setString(2,Valid.SetTgl(DTPCari2.getSelectedItem()+""));
-                rs=ps.executeQuery();
-                while(rs.next()){
-                    try {
-                        headers = new HttpHeaders();
-                        headers.setContentType(MediaType.APPLICATION_JSON);
-                        headers.add("x-cons-id",koneksiDB.CONSIDAPIMOBILEJKN());
-                        utc=String.valueOf(api.GetUTCdatetimeAsString());
-                        headers.add("x-timestamp",utc);
-                        headers.add("x-signature",api.getHmac(utc));
-                        headers.add("user_key",koneksiDB.USERKEYAPIMOBILEJKN());
-                        requestEntity = new HttpEntity(headers);
-                        URL = link+"/antrean/pendaftaran/tanggal/"+rs.getString("tgl_registrasi");	
-                        System.out.println("URL : "+URL);
-                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.GET, requestEntity, String.class).getBody());
-                        nameNode = root.path("metadata");
-                        if(nameNode.path("code").asText().equals("200")){
-                            response = mapper.readTree(api.Decrypt(root.path("response").asText(),utc));
-                            if(response.isArray()){
-                                for(JsonNode list:response){
-                                    tabMode.addRow(new Object[]{
-                                        list.path("kodebooking").asText(),list.path("tanggal").asText(),list.path("kodepoli").asText(),
-                                        list.path("kodedokter").asText(),list.path("jampraktek").asText(),list.path("nik").asText(),list.path("nokapst").asText(),list.path("nohp").asText(),list.path("norekammedis").asText(),list.path("jeniskunjungan").asText(),list.path("nomorreferensi").asText(),list.path("sumberdata").asText(),list.path("ispeserta").asText().equals("true")?"Ya":"Tidak",list.path("noantrean").asText(),list.path("estimasidilayani").asText(),list.path("createdtime").asText(),list.path("status").asText()
-                                    });
-                                    if (list.path("status").asText().equals("Belum dilayani")) {
-                                        tot_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani")) {
-                                        tot_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("sumberdata").asText().equals("Bridging Antrean") && list.path("ispeserta").asText().equals("true")) {
-                                        jkn_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("sumberdata").asText().equals("Bridging Antrean") && list.path("ispeserta").asText().equals("true")) {
-                                        jkn_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("sumberdata").asText().equals("Mobile JKN")) {
-                                        mjkn_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("sumberdata").asText().equals("Mobile JKN")) {
-                                        mjkn_selesai += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Belum dilayani") && list.path("ispeserta").asText().equals("false")) {
-                                        umum_belum += 1;
-                                    }
-                                    if (list.path("status").asText().equals("Selesai dilayani") && list.path("ispeserta").asText().equals("false")) {
-                                        umum_selesai += 1;
-                                    }
-                                }
-                            }
-                        }else {
-                            System.out.println("Notif : "+nameNode.path("message").asText());               
-                        }   
-                    } catch (Exception ex) {
-                        System.out.println("Notifikasi : "+ex);
-                        if(ex.toString().contains("UnknownHostException")){
-                            JOptionPane.showMessageDialog(rootPane,"Koneksi ke server BPJS terputus...!");
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println("Notif : "+e);
-            } finally{
-                if(rs!=null){
-                    rs.close();
-                }
-                if(ps!=null){
-                    ps.close();
+    private class WarnaTableCustom extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            Object statusTaskId = table.getValueAt(row, 11);
+            if (statusTaskId != null && statusTaskId.toString().equals("TIDAK LENGKAP")) {
+                component.setBackground(new Color(255, 215, 215)); // Merah soft
+            } else if (statusTaskId != null && statusTaskId.toString().equals("BATAL")) {
+                component.setBackground(new Color(255, 255, 190)); // Kuning soft
+            } else {
+                // Standar Biru Putih Khanza
+                if (row % 2 == 1) {
+                    component.setBackground(new Color(195, 240, 255)); // Biru muda
+                } else {
+                    component.setBackground(new Color(255, 255, 255)); // Putih
                 }
             }
-        }catch(Exception e){
-            System.out.println("Notifikasi : "+e);
+
+            component.setForeground(new Color(50, 50, 50)); // Font tetap hitam
+
+            if (isSelected) {
+                component.setBackground(new Color(245, 200, 75)); // Seleksi baris
+                component.setForeground(new Color(0, 0, 0));
+            }
+
+            return component;
         }
-        
+    }
 
-        sep = Sequel.cariInteger("select count(bridging_sep.no_rawat) from bridging_sep where bridging_sep.tglsep between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' and bridging_sep.jnspelayanan = '2' and bridging_sep.kdpolitujuan <> 'IGD'")+
-                Sequel.cariInteger("select count(bridging_sep_internal.no_rawat) from bridging_sep_internal where bridging_sep_internal.tglsep between '"+Valid.SetTgl(DTPCari1.getSelectedItem()+"")+"' and '"+Valid.SetTgl(DTPCari2.getSelectedItem()+"")+"' and bridging_sep_internal.jnspelayanan = '2' and bridging_sep_internal.kdpolitujuan <> 'IGD'");
-//        jkn_capaian = (jkn_selesai/sep)*100;
-//        mjkn_capaian = (mjkn_selesai/sep)*100;
-        jkn_capaian = (sep == 0) ? 0 : ((double) jkn_selesai / sep) * 100;//ubahan
-        mjkn_capaian = (sep == 0) ? 0 : ((double) mjkn_selesai / sep) * 100;//ubahan
-        // Penambahan total capaian:
-        double total_capaian = jkn_capaian + mjkn_capaian;//tambahan
-        jkn_capaian_angka = (int)jkn_capaian;
-        mjkn_capaian_angka = (int)mjkn_capaian;
-        LCount.setText(""+tabMode.getRowCount());
-        SEPTerbit.setText(""+sep);
-        TotBelum.setText(""+tot_belum);
-        TotSelesai.setText(""+tot_selesai);
-        JknBelum.setText(""+jkn_belum);
-        JknSelesai.setText(""+jkn_selesai);
-        JknCapaian.setText("("+jkn_capaian_angka+"%)");
-        MJknBelum.setText(""+mjkn_belum);
-        MJknSelesai.setText(""+mjkn_selesai);
-        MJknCapaian.setText("("+mjkn_capaian_angka+"%)");
-        NonJKNBelum.setText(""+umum_belum);
-        NonJKNSelesai.setText(""+umum_selesai);
-        // Tampilkan ke label:
-        totalantrol.setText("Total Antrol: " + Valid.SetAngka(total_capaian) + " %");//tamabahan
+    private void tampil() {
+        Valid.tabelKosong(tabMode);
+        int tot_batal = 0;
+        int tot_sep = 0;
+        int tot_mjkn = 0;
+        int tot_nonmjkn = 0;
+        tot_belum = 0;
+        tot_selesai = 0;
+        jkn_belum = 0;
+        jkn_selesai = 0;
+        mjkn_belum = 0;
+        mjkn_selesai = 0;
+        umum_belum = 0;
+        umum_selesai = 0;
 
-        // Ubah warna label sesuai capaian:
-        if(total_capaian < 75){
+        try {
+            ps = koneksi.prepareStatement(
+                "SELECT r.no_rawat, r.no_rkm_medis, p.nm_pasien, IFNULL(d.nm_dokter, '-') AS nm_dokter, IFNULL(poli.nm_poli, '-') AS nm_poli, IFNULL(sep.no_sep, '-') AS no_sep, r.tgl_registrasi, " +
+                "IF(m.no_rawat IS NOT NULL, 'Mobile JKN', 'Non Mobile JKN') AS sumber_antrean, IFNULL(m.status, '-') AS status_checkin, IF(COUNT(pem.no_rawat) > 0, 'Ada', '-') AS stts_soap, r.stts AS status_periksa, " +
+                "MAX(CASE WHEN t.taskid = '1' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task1, " +
+                "MAX(CASE WHEN t.taskid = '2' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task2, " +
+                "MAX(CASE WHEN t.taskid = '3' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task3, " +
+                "MAX(CASE WHEN t.taskid = '4' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task4, " +
+                "MAX(CASE WHEN t.taskid = '5' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task5, " +
+                "MAX(CASE WHEN t.taskid = '6' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task6, " +
+                "MAX(CASE WHEN t.taskid = '7' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task7, " +
+                "MAX(CASE WHEN t.taskid = '99' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task99 " +
+                "FROM reg_periksa r " +
+                "INNER JOIN pasien p ON r.no_rkm_medis = p.no_rkm_medis " +
+                "LEFT JOIN dokter d ON r.kd_dokter = d.kd_dokter " +
+                "LEFT JOIN poliklinik poli ON r.kd_poli = poli.kd_poli " +
+                "LEFT JOIN bridging_sep sep ON r.no_rawat = sep.no_rawat " +
+                "LEFT JOIN pemeriksaan_ralan pem ON r.no_rawat = pem.no_rawat " +
+                "INNER JOIN maping_poli_bpjs mp ON r.kd_poli = mp.kd_poli_rs " +
+                "INNER JOIN maping_dokter_dpjpvclaim md ON r.kd_dokter = md.kd_dokter " +
+                "INNER JOIN jadwal j ON (j.hari_kerja = (CASE DAYOFWEEK(r.tgl_registrasi) WHEN 1 THEN 'AKHAD' WHEN 2 THEN 'SENIN' WHEN 3 THEN 'SELASA' WHEN 4 THEN 'RABU' WHEN 5 THEN 'KAMIS' WHEN 6 THEN 'JUMAT' WHEN 7 THEN 'SABTU' END) AND j.kd_dokter = r.kd_dokter AND j.kd_poli = r.kd_poli) " +
+                "LEFT JOIN referensi_mobilejkn_bpjs m ON r.no_rawat = m.no_rawat " +
+                "LEFT JOIN referensi_mobilejkn_bpjs_taskid t ON r.no_rawat = t.no_rawat " +
+                "WHERE r.tgl_registrasi BETWEEN ? AND ? " +
+                "GROUP BY r.no_rawat, r.no_rkm_medis, p.nm_pasien, d.nm_dokter, poli.nm_poli, sep.no_sep, r.tgl_registrasi, m.no_rawat, m.status, r.stts " +
+                "ORDER BY r.tgl_registrasi ASC, r.no_rawat ASC"
+            );
+            try {
+                ps.setString(1, Valid.SetTgl(DTPCari1.getSelectedItem() + ""));
+                ps.setString(2, Valid.SetTgl(DTPCari2.getSelectedItem() + ""));
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    String noRawat = rs.getString("no_rawat");
+                    String noRm = rs.getString("no_rkm_medis");
+                    String nmPasien = rs.getString("nm_pasien");
+                    String nmDokter = rs.getString("nm_dokter");
+                    String nmPoli = rs.getString("nm_poli");
+                    String noSep = rs.getString("no_sep");
+                    String tglReg = rs.getString("tgl_registrasi");
+                    String sumber = rs.getString("sumber_antrean");
+                    String statusCheckin = rs.getString("status_checkin") == null || rs.getString("status_checkin").equals("") ? "-" : rs.getString("status_checkin");
+                    String sttsSoap = rs.getString("stts_soap");
+                    String sttsPeriksa = rs.getString("status_periksa");
+                    String t1 = rs.getString("task1") == null ? "-" : rs.getString("task1");
+                    String t2 = rs.getString("task2") == null ? "-" : rs.getString("task2");
+                    String t3 = rs.getString("task3") == null ? "-" : rs.getString("task3");
+                    String t4 = rs.getString("task4") == null ? "-" : rs.getString("task4");
+                    String t5 = rs.getString("task5") == null ? "-" : rs.getString("task5");
+                    String t6 = rs.getString("task6") == null ? "-" : rs.getString("task6");
+                    String t7 = rs.getString("task7") == null ? "-" : rs.getString("task7");
+                    String t99 = rs.getString("task99") == null ? "-" : rs.getString("task99");
+
+                    if (!noSep.equals("-") && !noSep.trim().isEmpty()) {
+                        tot_sep++;
+                    }
+
+                    if (sumber.equals("Mobile JKN")) {
+                        tot_mjkn++;
+                    } else {
+                        tot_nonmjkn++;
+                    }
+
+                    String statusTaskId = "TIDAK LENGKAP";
+                    if (!t99.equals("-")) {
+                        statusTaskId = "BATAL";
+                    } else if (sumber.equals("Mobile JKN")) {
+                        if (!t3.equals("-") && !t4.equals("-") && !t5.equals("-")) {
+                            if (!t6.equals("-") && t7.equals("-")) {
+                                statusTaskId = "TIDAK LENGKAP";
+                            } else {
+                                statusTaskId = "LENGKAP";
+                            }
+                        } else {
+                            statusTaskId = "TIDAK LENGKAP";
+                        }
+                    } else {
+                        // Non Mobile JKN
+                        if (!t3.equals("-") && !t4.equals("-") && !t5.equals("-")) {
+                            if (!t6.equals("-") && t7.equals("-")) {
+                                statusTaskId = "TIDAK LENGKAP";
+                            } else {
+                                statusTaskId = "LENGKAP";
+                            }
+                        } else {
+                            statusTaskId = "TIDAK LENGKAP";
+                        }
+                    }
+
+                    if (statusTaskId.equals("LENGKAP")) {
+                        tot_selesai++;
+                        if (sumber.equals("Mobile JKN")) {
+                            mjkn_selesai++;
+                        } else {
+                            umum_selesai++;
+                        }
+                    } else if (statusTaskId.equals("BATAL")) {
+                        tot_batal++;
+                    } else {
+                        tot_belum++;
+                        if (sumber.equals("Mobile JKN")) {
+                            mjkn_belum++;
+                        } else {
+                            umum_belum++;
+                        }
+                    }
+
+                    tabMode.addRow(new Object[]{
+                        noRawat, noRm, nmPasien, nmDokter, nmPoli, noSep, tglReg, sumber, statusCheckin, sttsSoap, sttsPeriksa,
+                        statusTaskId, t1, t2, t3, t4, t5, t6, t7, t99
+                    });
+                }
+            } catch (Exception e) {
+                System.out.println("Error query tampil: " + e);
+            } finally {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            }
+        } catch (Exception e) {
+            System.out.println("Notifikasi : " + e);
+        }
+
+        int totalPasienValid = tot_selesai + tot_belum;
+        double persenLengkap = (totalPasienValid == 0) ? 0 : ((double) tot_selesai / totalPasienValid) * 100;
+
+        LCount.setText("" + tabMode.getRowCount());
+        totalantrol.setText("Capaian Antrol: " + Valid.SetAngka(persenLengkap) + "%");
+        lbllengkap.setText("Lengkap: " + tot_selesai);
+        lbltidaklengkap.setText("Tdk Lengkap: " + tot_belum);
+        lblbatal.setText("Batal: " + tot_batal);
+        lbltotalpasien.setText("Total Pasien: " + tabMode.getRowCount());
+        lblsep.setText("SEP Terbit: " + tot_sep);
+        lblmjkn.setText("Mobile JKN: " + tot_mjkn);
+        lblnonnkjn.setText("Non Mobile JKN: " + tot_nonmjkn);
+
+        if (persenLengkap < 97) {
             totalantrol.setForeground(Color.RED);
-        } else if(total_capaian <= 95){
-            totalantrol.setForeground(Color.ORANGE);
         } else {
-            totalantrol.setForeground(new Color(0, 128, 0)); // Hijau tua
+            totalantrol.setForeground(new Color(0, 128, 0));
         }
     }
     //tambahan
@@ -809,10 +731,9 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 "Konfirmasi Pembatalan",
                 JOptionPane.YES_NO_OPTION);
             if (pilihan == JOptionPane.YES_OPTION) {
-                // Ambil kode booking dari tabel
-                String kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
-                // Updated to get sumber data from column index 13 (shifted due to new No Rawat and No SEP columns)
-                String sumberData = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 11).toString();
+                // Ambil no_rawat dan sumber antrean dari tabel
+                String noRawat = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
+                String sumberData = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 7).toString();
 
                 // Input keterangan pembatalan
                 String keterangan = JOptionPane.showInputDialog(null,
@@ -832,27 +753,11 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                         headers.add("x-signature", api.getHmac(utc));
                         headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
 
-                        // Tentukan kode booking yang akan digunakan
-                        // kodebooking di kolom 0 = nilai nobooking di tabel referensi_mobilejkn_bpjs
-                        String kodeBookingRequest = kodebooking;
-                        if (sumberData.equals("Bridging Antrean")) {
-                            // Verifikasi nobooking ada di database lokal
-                            String nobooking = Sequel.cariIsi(
-                                "select nobooking from referensi_mobilejkn_bpjs where nobooking=?", kodebooking);
-                            if (!nobooking.isEmpty()) {
-                                kodeBookingRequest = nobooking;
-                            } else {
-                                // Fallback: coba cari berdasarkan no_rawat (No. Ref dari kolom 10)
-                                String noRef = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 10).toString();
-                                if (!noRef.isEmpty()) {
-                                    String nbk = Sequel.cariIsi(
-                                        "select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", noRef);
-                                    if (!nbk.isEmpty()) {
-                                        kodeBookingRequest = nbk;
-                                    }
-                                }
-                                System.out.println("Info: menggunakan kodeBookingRequest=" + kodeBookingRequest);
-                            }
+                        // Tentukan kode booking yang akan dikirim ke BPJS
+                        String kodeBookingRequest = noRawat;
+                        String carinobooking = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", noRawat);
+                        if (!carinobooking.isEmpty()) {
+                            kodeBookingRequest = carinobooking;
                         }
 
                         // Buat request JSON
@@ -875,16 +780,21 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
 
                             // Update status ke database lokal
                             try {
-                                if (sumberData.equals("Bridging Antrean")) {
-                                    Sequel.queryu2(
-                                        "update referensi_mobilejkn_bpjs set status='Batal' where nobooking='" + kodeBookingRequest + "'");
-                                    System.out.println("Update status Batal untuk nobooking: " + kodeBookingRequest);
+                                Sequel.queryu2("update referensi_mobilejkn_bpjs set status='Batal' where no_rawat='" + noRawat + "' or nobooking='" + kodeBookingRequest + "'");
+                                
+                                String now = Sequel.cariIsi("select NOW()");
+                                if (!Sequel.cariIsi("select count(*) from referensi_mobilejkn_bpjs_taskid where no_rawat=? and taskid='99'", noRawat).equals("0")) {
+                                    Sequel.queryu2("update referensi_mobilejkn_bpjs_taskid set waktu='" + now + "' where no_rawat='" + noRawat + "' and taskid='99'");
+                                } else {
+                                    Sequel.queryu2("insert into referensi_mobilejkn_bpjs_taskid(no_rawat, taskid, waktu) values('" + noRawat + "', '99', '" + now + "')");
                                 }
+                                System.out.println("Update status Batal & Task ID 99 sukses untuk no_rawat: " + noRawat);
                             } catch (Exception e) {
                                 System.out.println("Error update database lokal: " + e);
                             }
 
-                            // Refresh tampilan
+                            // Sync list task dari cloud BPJS & Refresh tampilan
+                            syncListTaskBPJS(noRawat, kodeBookingRequest);
                             tampil();
                         } else {
                             JOptionPane.showMessageDialog(null,
@@ -918,19 +828,82 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         }
     }
     
+    private void syncListTaskBPJS(String noRawat, String kodeBooking) {
+        if (kodeBooking == null || kodeBooking.trim().isEmpty()) {
+            kodeBooking = noRawat;
+        }
+        try {
+            headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+            utc = String.valueOf(api.GetUTCdatetimeAsString());
+            headers.add("x-timestamp", utc);
+            headers.add("x-signature", api.getHmac(utc));
+            headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+            requestJson = "{\"kodebooking\": \"" + kodeBooking + "\"}";
+            requestEntity = new HttpEntity(requestJson, headers);
+            URL = link + "/antrean/getlisttask";
+            root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+            if (root.path("metadata").path("code").asText().equals("200")) {
+                response = mapper.readTree(api.Decrypt(root.path("response").asText(), utc));
+                JsonNode arrayNode = response;
+                if (response.isObject() && response.has("list")) {
+                    arrayNode = response.path("list");
+                }
+                if (arrayNode.isArray()) {
+                    for (JsonNode listNode : arrayNode) {
+                        String tid = listNode.path("taskid").asText();
+                        String wktStr = listNode.path("wakturs").asText();
+                        if (wktStr.equals("") || wktStr.equals("null")) {
+                            wktStr = listNode.path("waktuRS").asText();
+                        }
+                        if (wktStr.equals("") || wktStr.equals("null")) {
+                            wktStr = listNode.path("waktu").asText();
+                        }
+                        if (!wktStr.equals("") && !wktStr.equals("null")) {
+                            try {
+                                String cleanTime = wktStr.replaceAll(" WIB| WITA| WIT", "");
+                                Date dTask;
+                                if (cleanTime.contains("-")) {
+                                    if (cleanTime.indexOf("-") == 4) {
+                                        dTask = dateFormat.parse(cleanTime);
+                                    } else {
+                                        dTask = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").parse(cleanTime);
+                                    }
+                                } else {
+                                    dTask = dateFormat.parse(cleanTime);
+                                }
+                                String formattedTime = dateFormat.format(dTask);
+                                if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='" + tid + "' and no_rawat='" + noRawat + "'") == 0) {
+                                    Sequel.queryu2("insert into referensi_mobilejkn_bpjs_taskid values('" + noRawat + "','" + tid + "','" + formattedTime + "')");
+                                }
+                            } catch (Exception ex2) {
+                                System.out.println("Error parse task " + tid + " : " + ex2);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Info syncListTaskBPJS: " + e);
+        }
+    }
+
     private void KirimUlangMJKN() {                                             
         // TODO add your handling code here: JKN
-        kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
-        data = kodebooking; // tetap dipakai sebagai field "kodebooking" pada JSON ke BPJS
+        String norawat = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
+        String carinobooking = Sequel.cariIsi(
+            "select referensi_mobilejkn_bpjs.nobooking from referensi_mobilejkn_bpjs where referensi_mobilejkn_bpjs.no_rawat=?", norawat);
+        data = carinobooking;
+        String no_rawat = norawat;
 
-        // === PERBAIKAN UTAMA: resolve no_rawat internal dari nobooking BPJS ===
-        String no_rawat = Sequel.cariIsi(
-            "SELECT no_rawat FROM referensi_mobilejkn_bpjs WHERE nobooking=?", kodebooking);
-
-        if (no_rawat == null || no_rawat.equals("")) {
-            System.out.println("GAGAL: no_rawat tidak ditemukan untuk nobooking=" + kodebooking + ", proses dibatalkan\n");
+        if (carinobooking == null || carinobooking.equals("")) {
+            System.out.println("GAGAL: nobooking tidak ditemukan di referensi_mobilejkn_bpjs untuk no_rawat=" + norawat + ", proses dibatalkan\n");
             return;
         }
+
+        // 1. Tarik & simpan task ID yang sudah ada di BPJS cloud
+        syncListTaskBPJS(no_rawat, data);
 
         // ---------- TASK ID 99 (batal pelayanan) ----------
         datajam = Sequel.cariIsi("select now() from reg_periksa where reg_periksa.stts='Batal' and reg_periksa.no_rawat=?", no_rawat);
@@ -970,7 +943,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='1' and no_rawat='" + no_rawat + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=1 sudah ada akan skip\n");
+                    System.out.println("TaskId=1 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1003,14 +976,14 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 System.out.println("Notifikasi Bridging : " + ex);
             }
         } else {
-            System.out.println("WAKTU TASK ID 1 MJKN = BELUM add adtrian, SKIP KIRIM " + kodebooking + " (no_rawat=" + no_rawat + ")");
+            System.out.println("WAKTU TASK ID 1 MJKN = BELUM add adtrian, SKIP KIRIM " + data + " (no_rawat=" + no_rawat + ")");
         }
                 // ---------- TASK ID 2 (selesai admisi) ----------
         datajam = Sequel.cariIsi("select DATE_ADD(referensi_mobilejkn_bpjs.validasi, INTERVAL FLOOR(1 + RAND() * 2) MINUTE) from referensi_mobilejkn_bpjs where referensi_mobilejkn_bpjs.no_rawat='" + no_rawat + "'");    
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='2' and no_rawat='" + no_rawat + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=2 sudah ada akan skip\n");
+                    System.out.println("TaskId=2 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1043,7 +1016,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 System.out.println("Notifikasi Bridging : " + ex);
             }
         } else {
-            System.out.println("WAKTU TASK ID 2 MJKN = BELUM ada TASK ID 1, SKIP KIRIM " + kodebooking + " (no_rawat=" + no_rawat + ")");
+            System.out.println("WAKTU TASK ID 2 MJKN = BELUM ada TASK ID 1, SKIP KIRIM " + data + " (no_rawat=" + no_rawat + ")");
         }
 
         // ---------- TASK ID 3 (mulai tunggu poli) ----------
@@ -1052,7 +1025,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + no_rawat + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=3 sudah ada akan skip\n");
+                    System.out.println("TaskId=3 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1085,7 +1058,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 System.out.println("Notifikasi Bridging : " + ex);
             }
         } else {
-            System.out.println("WAKTU TASK ID 3 MJKN = BELUM MENGISI SOAP PERAWAT, SKIP KIRIM " + kodebooking + " (no_rawat=" + no_rawat + ")");
+            System.out.println("WAKTU TASK ID 3 MJKN = BELUM MENGISI SOAP PERAWAT, SKIP KIRIM " + data + " (no_rawat=" + no_rawat + ")");
         }
         // ---------- TASK ID 4 (mulai pelayanan poli) ----------
             datajam = Sequel.cariIsi("select antri_masuk_poli.tgl_jam from antri_masuk_poli where antri_masuk_poli.no_rawat = '" + no_rawat + "'");
@@ -1093,7 +1066,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + no_rawat + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=4 sudah ada akan skip\n");
+                    System.out.println("TaskId=4 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -1178,7 +1151,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (!task3Time.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + no_rawat + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=4 sudah ada akan skip\n");
+                        System.out.println("TaskId=4 sudah ada akan skip\n");
                     } else {
                     String cleanTime = task3Time.replaceAll(" WIB| WITA| WIT", "");
                     String timeOnly = "";
@@ -1231,7 +1204,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + no_rawat + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=5 sudah ada akan skip\n");
+                    System.out.println("TaskId=5 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid selesai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -1317,7 +1290,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (!task4Time.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + no_rawat + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=5 sudah ada akan skip\n");
+                        System.out.println("TaskId=5 sudah ada akan skip\n");
                     } else {
                     String cleanTime = task4Time.replaceAll(" WIB| WITA| WIT", "");
                     String timeOnly = "";
@@ -1372,7 +1345,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (datajam != null && !datajam.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + no_rawat + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=6 sudah ada akan skip\n");
+                        System.out.println("TaskId=6 sudah ada akan skip\n");
                     } else {
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid racik obat Mobile JKN\n");
@@ -1384,7 +1357,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     headers.add("x-signature", api.getHmac(utc));
                     headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
                     requestJson = "{" +
-                                     "\"kodebooking\": \"" + kodebooking + "\"," +
+                                     "\"kodebooking\": \"" + data + "\"," +
                                      "\"taskid\": \"6\"," +
                                      "\"waktu\": \"" + parsedDate.getTime() + "\"" +
                                   "}";
@@ -1424,7 +1397,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     headers.add("x-timestamp", utc);
                     headers.add("x-signature", api.getHmac(utc));
                     headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
-                    requestJson = "{\"kodebooking\": \"" + kodebooking + "\"}";
+                    requestJson = "{\"kodebooking\": \"" + data + "\"}";
                     requestEntity = new HttpEntity(requestJson, headers);
                     URL = link + "/antrean/getlisttask";
                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
@@ -1457,7 +1430,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 if (!task5Time.equals("")) {
                     try {
                         if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + no_rawat + "'") > 0) {
-                            System.out.println("respon WS BPJS : 208 TaskId=6 sudah ada akan skip\n");
+                            System.out.println("TaskId=6 sudah ada akan skip\n");
                         } else {
                         String cleanTime = task5Time.replaceAll(" WIB| WITA| WIT", "");
                         String timeOnly = "";
@@ -1479,7 +1452,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                         headers.add("x-signature", api.getHmac(utc));
                         headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
                         requestJson = "{" +
-                                         "\"kodebooking\": \"" + kodebooking + "\"," +
+                                         "\"kodebooking\": \"" + data + "\"," +
                                          "\"taskid\": \"6\"," +
                                          "\"waktu\": \"" + parsedDate.getTime() + "\"" +
                                       "}";
@@ -1509,7 +1482,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (datajam != null && !datajam.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + no_rawat + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=7 sudah ada akan skip\n");
+                        System.out.println("TaskId=7 sudah ada akan skip\n");
                     } else {
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid selesai obat Mobile JKN\n");
@@ -1521,7 +1494,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     headers.add("x-signature", api.getHmac(utc));
                     headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
                     requestJson = "{" +
-                                     "\"kodebooking\": \"" + kodebooking + "\"," +
+                                     "\"kodebooking\": \"" + data + "\"," +
                                      "\"taskid\": \"7\"," +
                                      "\"waktu\": \"" + parsedDate.getTime() + "\"" +
                                   "}";
@@ -1561,7 +1534,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                     headers.add("x-timestamp", utc);
                     headers.add("x-signature", api.getHmac(utc));
                     headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
-                    requestJson = "{\"kodebooking\": \"" + kodebooking + "\"}";
+                    requestJson = "{\"kodebooking\": \"" + data + "\"}";
                     requestEntity = new HttpEntity(requestJson, headers);
                     URL = link + "/antrean/getlisttask";
                     root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
@@ -1594,7 +1567,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 if (!task6Time.equals("")) {
                     try {
                         if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + no_rawat + "'") > 0) {
-                            System.out.println("respon WS BPJS : 208 TaskId=7 sudah ada akan skip\n");
+                            System.out.println("TaskId=7 sudah ada akan skip\n");
                         } else {
                         String cleanTime = task6Time.replaceAll(" WIB| WITA| WIT", "");
                         String timeOnly = "";
@@ -1616,7 +1589,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                         headers.add("x-signature", api.getHmac(utc));
                         headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
                         requestJson = "{" +
-                                         "\"kodebooking\": \"" + kodebooking + "\"," +
+                                         "\"kodebooking\": \"" + data + "\"," +
                                          "\"taskid\": \"7\"," +
                                          "\"waktu\": \"" + parsedDate.getTime() + "\"" +
                                       "}";
@@ -1638,14 +1611,22 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 }
             }
         } else {
-            System.out.println("TIDAK ADA RESEP OBAT, SKIP TASK 6 DAN 7 UNTUK " + kodebooking + " (no_rawat=" + no_rawat + ")");
+            System.out.println("TIDAK ADA RESEP OBAT, SKIP TASK 6 DAN 7 UNTUK " + data + " (no_rawat=" + no_rawat + ")");
         }
+
+        // Tarik kembali status akhir dari BPJS cloud & refresh tabel
+        syncListTaskBPJS(no_rawat, data);
+        tampil();
     }
 
     private void KirimUlangJKN() {                                              
-            // TODO add your handling code here: JKN
+        // TODO add your handling code here: JKN
         kodebooking = tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(), 0).toString();
         data = kodebooking; // tetap dipakai sebagai field "kodebooking" pada JSON ke BPJS
+        String no_rawat = kodebooking;
+
+        // 1. Tarik & simpan task ID yang sudah ada di BPJS cloud
+        syncListTaskBPJS(no_rawat, data);
 
         // ---------- TASK ID 99 (batal pelayanan) ----------
         datajam = Sequel.cariIsi("select now() from reg_periksa where reg_periksa.stts='Batal' and reg_periksa.no_rawat=?", kodebooking);
@@ -1685,7 +1666,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='1' and no_rawat='" + kodebooking + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=1 sudah ada akan skip\n");
+                    System.out.println("TaskId=1 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1725,7 +1706,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='2' and no_rawat='" + kodebooking + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=2 sudah ada akan skip\n");
+                    System.out.println("TaskId=2 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1767,7 +1748,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + kodebooking + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=3 sudah ada akan skip\n");
+                    System.out.println("TaskId=3 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai tunggu poli Mobile JKN Pasien BPJS\n");
@@ -1808,7 +1789,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + kodebooking + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=4 sudah ada akan skip\n");
+                    System.out.println("TaskId=4 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid mulai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -1893,7 +1874,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (!task3Time.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='4' and no_rawat='" + kodebooking + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=4 sudah ada akan skip\n");
+                        System.out.println("TaskId=4 sudah ada akan skip\n");
                     } else {
                     String cleanTime = task3Time.replaceAll(" WIB| WITA| WIT", "");
                     String timeOnly = "";
@@ -1946,7 +1927,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + kodebooking + "'") > 0) {
-                    System.out.println("respon WS BPJS : 208 TaskId=5 sudah ada akan skip\n");
+                    System.out.println("TaskId=5 sudah ada akan skip\n");
                 } else {
                 parsedDate = dateFormat.parse(datajam);
                 System.out.println("Menjalankan WS taskid selesai pelayanan poli Mobile JKN Pasien BPJS\n");
@@ -2032,7 +2013,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (!task4Time.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='5' and no_rawat='" + kodebooking + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=5 sudah ada akan skip\n");
+                        System.out.println("TaskId=5 sudah ada akan skip\n");
                     } else {
                     String cleanTime = task4Time.replaceAll(" WIB| WITA| WIT", "");
                     String timeOnly = "";
@@ -2086,7 +2067,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (datajam != null && !datajam.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + kodebooking + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=6 sudah ada akan skip\n");
+                        System.out.println("TaskId=6 sudah ada akan skip\n");
                     } else {
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid racik obat Mobile JKN\n");
@@ -2171,7 +2152,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 if (!task5Time.equals("")) {
                     try {
                         if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='6' and no_rawat='" + kodebooking + "'") > 0) {
-                            System.out.println("respon WS BPJS : 208 TaskId=6 sudah ada akan skip\n");
+                            System.out.println("TaskId=6 sudah ada akan skip\n");
                         } else {
                         String cleanTime = task5Time.replaceAll(" WIB| WITA| WIT", "");
                         String timeOnly = "";
@@ -2223,7 +2204,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
             if (datajam != null && !datajam.equals("")) {
                 try {
                     if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + kodebooking + "'") > 0) {
-                        System.out.println("respon WS BPJS : 208 TaskId=7 sudah ada akan skip\n");
+                        System.out.println("TaskId=7 sudah ada akan skip\n");
                     } else {
                     parsedDate = dateFormat.parse(datajam);
                     System.out.println("Menjalankan WS taskid selesai obat Mobile JKN\n");
@@ -2308,7 +2289,7 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
                 if (!task6Time.equals("")) {
                     try {
                         if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='7' and no_rawat='" + kodebooking + "'") > 0) {
-                            System.out.println("respon WS BPJS : 208 TaskId=7 sudah ada akan skip\n");
+                            System.out.println("TaskId=7 sudah ada akan skip\n");
                         } else {
                         String cleanTime = task6Time.replaceAll(" WIB| WITA| WIT", "");
                         String timeOnly = "";
@@ -2354,6 +2335,10 @@ public final class BPJSAntreanPerTanggal extends javax.swing.JDialog {
         } else {
             System.out.println("TIDAK ADA RESEP OBAT, SKIP TASK 6 DAN 7 UNTUK " + kodebooking + " (no_rawat=" + kodebooking + ")");
         }
+
+        // Tarik kembali status akhir dari BPJS cloud & refresh tabel
+        syncListTaskBPJS(no_rawat, data);
+        tampil();
     }
     //sampe sini
     

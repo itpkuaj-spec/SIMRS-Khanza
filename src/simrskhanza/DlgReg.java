@@ -1128,10 +1128,7 @@ public final class DlgReg extends javax.swing.JDialog {
         sisa_antrian = new widget.Label();
         Ulang = new widget.Button();
         Panggil = new widget.Button();
-        BtnCheckin = new widget.Button();
         btn_buka_booking = new javax.swing.JButton();
-        Checkin = new widget.TextBox();
-        Booking = new widget.TextBox();
         BtnLabelNama11 = new widget.Button();
         txtNoAntriUlang = new widget.TextBox();
         btnterlewat = new widget.Button();
@@ -6748,25 +6745,6 @@ public final class DlgReg extends javax.swing.JDialog {
         });
         FormInput.add(Panggil);
         Panggil.setBounds(1060, 50, 180, 30);
-        
-        BtnCheckin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/save-16x16.png"))); // NOI18N
-        BtnCheckin.setMnemonic('S');
-        BtnCheckin.setText("Check in BPJS");
-        BtnCheckin.setToolTipText("Alt+S");
-        BtnCheckin.setName("BtnCheckin"); // NOI18N
-        BtnCheckin.setPreferredSize(new java.awt.Dimension(100, 30));
-        BtnCheckin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnCheckinActionPerformed(evt);
-            }
-        });
-        BtnCheckin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BtnCheckinKeyPressed(evt);
-            }
-        });
-        FormInput.add(BtnCheckin);
-        BtnCheckin.setBounds(1250, 90, 140, 30);
 
         btn_buka_booking.setBackground(new java.awt.Color(204, 255, 255));
         btn_buka_booking.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -6798,24 +6776,6 @@ public final class DlgReg extends javax.swing.JDialog {
         });
         FormInput.add(BtnLabelNama11);
         BtnLabelNama11.setBounds(1250, 10, 150, 30);
-        
-        Checkin.setName("Checkin"); // NOI18N
-        Checkin.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                CheckinKeyPressed(evt);
-            }
-        });
-        FormInput.add(Checkin);
-        Checkin.setBounds(1320, 130, 150, 23);
-
-        Booking.setName("Booking"); // NOI18N
-        Booking.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                BookingKeyPressed(evt);
-            }
-        });
-        FormInput.add(Booking);
-        Booking.setBounds(1170, 130, 150, 23);
         
 //akhir
         PanelInput.add(FormInput, java.awt.BorderLayout.CENTER);
@@ -14993,26 +14953,6 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
         // TODO add your handling code here:
     }    
     
-    private void BtnCheckinActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        if(Sequel.mengedittf("referensi_mobilejkn_bpjs","no_rawat=?","status='Checkin',validasi=now()",1,new String[]{
-            TNoRw.getText()
-        })==true){
-            Sequel.meghapus("referensi_mobilejkn_bpjs_batal","nobooking",Booking.getText());
-            Sequel.queryu("update reg_periksa set jam_reg=NOW() where no_rawat='"+TNoRw.getText()+"'");
-            JOptionPane.showMessageDialog(null, "Berhasil Checkin BPJS!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-                    NotifWaBuktiRegister();
-        }
-        getData();
-    }
-    
-    private void BtnCheckinKeyPressed(java.awt.event.KeyEvent evt) {                                      
-        if(evt.getKeyCode()==KeyEvent.VK_SPACE){
-            BtnCheckinActionPerformed(null);
-        }else{
-            Valid.pindah(evt, BtnCari, BtnBatal);
-        }
-    }
-    
     private void btn_buka_bookingActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         // TODO add your handling code here:
         DlgBookingRegistrasi pilih = new DlgBookingRegistrasi(null, true);
@@ -15042,15 +14982,6 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     }                                              
 
     private void BtnLabelNama11KeyPressed(java.awt.event.KeyEvent evt) {                                          
-        // TODO add your handling code here:
-    }
-
-
-    private void CheckinKeyPressed(java.awt.event.KeyEvent evt) {                                   
-        // TODO add your handling code here:
-    }                                  
-
-    private void BookingKeyPressed(java.awt.event.KeyEvent evt) {                                   
         // TODO add your handling code here:
     }
     
@@ -17165,11 +17096,8 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
     private widget.Button Ulang;
     private widget.Button Panggil;
     private widget.Label sisa_antrian;
-    private widget.Button BtnCheckin;
     private javax.swing.JButton btn_buka_booking;
     private widget.Button BtnLabelNama11;
-    private widget.TextBox Booking;
-    private widget.TextBox Checkin;
     private widget.TextBox txtNoAntriUlang;
     private widget.Button btnterlewat;
     private widget.Button Btnrefresh;
@@ -17456,8 +17384,6 @@ private void MnLaporanRekapKunjunganBulananPoliActionPerformed(java.awt.event.Ac
             Sequel.cariIsi("select rujuk_masuk.perujuk from rujuk_masuk where rujuk_masuk.no_rawat=?", AsalRujukan,tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
             TNoRw.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),2).toString());
             TNoReg.setText(tbPetugas.getValueAt(tbPetugas.getSelectedRow(),1).toString());    
-            Checkin.setText(Sequel.cariIsi("select referensi_mobilejkn_bpjs.status from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
-            Booking.setText(Sequel.cariIsi("select referensi_mobilejkn_bpjs.nobooking from referensi_mobilejkn_bpjs where no_rawat=?",TNoRw.getText()));
         }
     }
 

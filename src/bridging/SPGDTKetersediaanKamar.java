@@ -829,13 +829,13 @@ public final class SPGDTKetersediaanKamar extends javax.swing.JDialog {
             headers.setContentType(MediaType.APPLICATION_JSON);
             requestEntity = new HttpEntity(headers);
 
-            String idFaskes = "3320102";
-            String username = "3320102";
-            String password = "pkuaisyiyah";
+            String idFaskes = koneksiDB.USERSPGDT();
+            String username = koneksiDB.USERSPGDT();
+            String password = koneksiDB.PASSSPGDT();
             String md5Token = md5(username + password);
 
             // POST ke SPGDT
-            String fullUrl = "https://spgdt-service.sik-jepara.co.id/add_kamar.php?idFaskes=" + idFaskes +
+            String fullUrl = koneksiDB.URLAPISPGDT() + "/add_kamar.php?idFaskes=" + idFaskes +
                              "&idKelas=" + KdKelas.getText() +
 //                             "&namaKamar=" + URLEncoder.encode(NmKamar.getText(), "UTF-8") +
                              "&namaKamar=" + NmKamar.getText() +
@@ -851,7 +851,7 @@ public final class SPGDTKetersediaanKamar extends javax.swing.JDialog {
 
             if (status.equalsIgnoreCase("success")) {
                 // Ambil idKamar setelah POST sukses
-                String listUrl = "https://spgdt-service.sik-jepara.co.id/list_kamar.php?idFaskes=" + idFaskes +
+                String listUrl = koneksiDB.URLAPISPGDT() + "/list_kamar.php?idFaskes=" + idFaskes +
                                  "&token=" + md5Token +
                                  "&idKelas=" + KdKelas.getText() +
                                  "&namaKamar=" + NmKamar.getText();
@@ -914,10 +914,10 @@ public final class SPGDTKetersediaanKamar extends javax.swing.JDialog {
             try {
                 // Ambil id kamar dari kolom ke-10
                 String idKamarSPGDT = tbJnsPerawatan.getValueAt(i, 3).toString();
-                String md5Token = md5("3320102" + "pkuaisyiyah"); // Sesuaikan
+                String md5Token = md5(koneksiDB.USERSPGDT() + koneksiDB.PASSSPGDT());
 
                 // URL DELETE SPGDT
-                String fullUrl = "https://spgdt-service.sik-jepara.co.id/delete_kamar.php?" +
+                String fullUrl = koneksiDB.URLAPISPGDT() + "/delete_kamar.php?" +
                                  "idKamar=" + idKamarSPGDT +
                                  "&token=" + md5Token;
 
@@ -993,9 +993,9 @@ public final class SPGDTKetersediaanKamar extends javax.swing.JDialog {
             headers.setContentType(MediaType.APPLICATION_JSON);
             requestEntity = new HttpEntity(headers);
 
-            String md5Token = md5("3320102" + "pkuaisyiyah"); // Sesuaikan user/pass
-            String fullUrl = "https://spgdt-service.sik-jepara.co.id/update_kamar.php?" +
-                             "idFaskes=3320102" +
+            String md5Token = md5(koneksiDB.USERSPGDT() + koneksiDB.PASSSPGDT());
+            String fullUrl = koneksiDB.URLAPISPGDT() + "/update_kamar.php?" +
+                             "idFaskes=" + koneksiDB.USERSPGDT() +
                              "&idKelas=" + KdKelas.getText() +
 //                             "&namaKamar=" + URLEncoder.encode(NmKamar.getText(), "UTF-8") +
                              "&namaKamar=" + NmKamar.getText() +

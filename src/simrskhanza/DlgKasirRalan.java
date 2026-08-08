@@ -885,6 +885,9 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         //tambahan
         lcatatanpasien = new widget.Label();
         catatanpasien = new widget.TextBox();
+        lblsoap = new widget.Label();
+        lblpanggilpasien = new widget.Label();
+        lblselesai = new widget.Label();
         //akhir
 
         jPopupMenu1.setForeground(new java.awt.Color(50, 50, 50));
@@ -6416,6 +6419,21 @@ public final class DlgKasirRalan extends javax.swing.JDialog {
         cmbStatusBayar.setName("cmbStatusBayar"); // NOI18N
         cmbStatusBayar.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(cmbStatusBayar);
+
+        lblsoap.setText("SOAP : -");
+        lblsoap.setName("lblsoap"); // NOI18N
+        lblsoap.setPreferredSize(new java.awt.Dimension(110, 23));
+        panelGlass8.add(lblsoap);
+
+        lblpanggilpasien.setText("PANGGIL : -");
+        lblpanggilpasien.setName("lblpanggilpasien"); // NOI18N
+        lblpanggilpasien.setPreferredSize(new java.awt.Dimension(120, 23));
+        panelGlass8.add(lblpanggilpasien);
+
+        lblselesai.setText("SELESAI : -");
+        lblselesai.setName("lblselesai"); // NOI18N
+        lblselesai.setPreferredSize(new java.awt.Dimension(120, 23));
+        panelGlass8.add(lblselesai);
 
         jPanel2.add(panelGlass8, java.awt.BorderLayout.PAGE_START);
 
@@ -12016,11 +12034,6 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
         }else{
             if(tbKasirRalan.getSelectedRow()!= -1){
                try {//tambahan task id 4
-                // Eksekusi query pertama
-                Sequel.queryu("delete from antripoli where kd_dokter='" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 0).toString() + 
-                              "' and kd_poli='" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 18).toString() + "'");
-                Thread.sleep(500); // Jeda 500ms
-
                 // Eksekusi query kedua
                 Sequel.queryu("insert into antripoli values('" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 0).toString() + 
                               "','" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 18).toString() + 
@@ -12028,9 +12041,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
                 Thread.sleep(500); // Jeda 500ms
 
                 // Eksekusi query ketiga
-                Sequel.queryu("insert into antri_masuk_poli values('" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 0).toString() + 
-                              "','" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 18).toString() + 
-                              "','" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 11).toString() + "',now(),'0000-00-00 00:00:00')");
+                Sequel.queryu("update antri_masuk_poli set tgl_jam=now() where no_rawat='" + tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 11).toString() + "'");
 //                updateTaskID4MobileJKN(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(), 11).toString());
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -16218,6 +16229,9 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     private widget.TextBox catatanpasien;
     private widget.Label jLabel23,antrianpasien,digit;
     private widget.Button BtnReviewSEP;
+    private widget.Label lblsoap;
+    private widget.Label lblpanggilpasien;
+    private widget.Label lblselesai;
     // End of variables declaration//GEN-END:variables
     private javax.swing.JMenuItem MnPenilaianPreInduksi,MnHasilPemeriksaanUSG,MnHasilPemeriksaanUSGUrologi,MnHasilPemeriksaanUSGGynecologi,MnHasilPemeriksaanEKG,MnSudahTerbitSEP,MnPenatalaksanaanTerapiOkupasi,MnHasilPemeriksaanUSGNeonatus,
                                   MnHasilEndoskopiFaringLaring,MnHasilEndoskopiHidung,MnHasilEndoskopiTelinga,MnPenilaianPasienImunitasRendah,MnCatatanKeseimbanganCairan,MnCatatanObservasiCHBP,MnCatatanObservasiInduksiPersalinan,
@@ -16407,6 +16421,49 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     }
 
 
+    //Tambahan IT
+    private void getWaktuTracking(String noRawat) {
+        if (!noRawat.trim().equals("")) {
+            String jamSoap = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.soap, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat", noRawat);
+            String jamPanggil = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.tgl_jam, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat=?", noRawat);
+            String jamSelesai = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.selesai, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat=?", noRawat);
+
+            lblsoap.setText("SOAP : " + (jamSoap.equals("") ? "-" : jamSoap));
+            lblpanggilpasien.setText("PANGGIL : " + (jamPanggil.equals("") ? "-" : jamPanggil));
+            lblselesai.setText("SELESAI : " + (jamSelesai.equals("") ? "-" : jamSelesai));
+
+            if (!jamPanggil.equals("") && !jamSoap.equals("")) {
+                if (jamPanggil.compareTo(jamSoap) < 0) {
+                    lblpanggilpasien.setForeground(new java.awt.Color(200, 0, 0));
+                } else if (jamPanggil.compareTo(jamSoap) > 0) {
+                    lblpanggilpasien.setForeground(new java.awt.Color(0, 150, 0));
+                } else {
+                    lblpanggilpasien.setForeground(new java.awt.Color(50, 50, 50));
+                }
+            } else {
+                lblpanggilpasien.setForeground(new java.awt.Color(50, 50, 50));
+            }
+
+            if (!jamSelesai.equals("") && !jamPanggil.equals("")) {
+                if (jamSelesai.compareTo(jamPanggil) < 0) {
+                    lblselesai.setForeground(new java.awt.Color(200, 0, 0));
+                } else if (jamSelesai.compareTo(jamPanggil) > 0) {
+                    lblselesai.setForeground(new java.awt.Color(0, 150, 0));
+                } else {
+                    lblselesai.setForeground(new java.awt.Color(50, 50, 50));
+                }
+            } else {
+                lblselesai.setForeground(new java.awt.Color(50, 50, 50));
+            }
+        } else {
+            lblsoap.setText("SOAP : -");
+            lblpanggilpasien.setText("PANGGIL : -");
+            lblselesai.setText("SELESAI : -");
+            lblpanggilpasien.setForeground(new java.awt.Color(50, 50, 50));
+            lblselesai.setForeground(new java.awt.Color(50, 50, 50));
+        }
+    }
+
     private void getDatakasir() {
         if(tbKasirRalan.getSelectedRow()!= -1){
             TNoRw.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),11).toString());
@@ -16419,6 +16476,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
             digit.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),14).toString());
             
             catatanpasien.setText(Sequel.cariIsi("select catatan_pasien.catatan from catatan_pasien where no_rkm_medis='"+TNoRMCari.getText()+"'"));
+            getWaktuTracking(TNoRw.getText()); //Tambahan IT
         }
     }
 
@@ -17289,6 +17347,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
             //tamabahan
             digit.setText(tbKasirRalan.getValueAt(tbKasirRalan.getSelectedRow(),14).toString());            
             catatanpasien.setText(Sequel.cariIsi("select catatan_pasien.catatan from catatan_pasien where no_rkm_medis='"+TNoRMCari.getText()+"'"));
+            getWaktuTracking(TNoRwCari.getText()); //Tambahan IT
         }
     }
     

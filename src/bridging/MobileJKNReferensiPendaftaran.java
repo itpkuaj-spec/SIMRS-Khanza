@@ -33,6 +33,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
@@ -48,6 +54,16 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
     private int i=0;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private volatile boolean ceksukses = false;
+    private ApiMobileJKN api = new ApiMobileJKN();
+    private String link = koneksiDB.URLAPIMOBILEJKN();
+    private HttpHeaders headers;
+    private HttpEntity requestEntity;
+    private ObjectMapper mapper = new ObjectMapper();
+    private JsonNode root;
+    private JsonNode nameNode;
+    private String utc = "";
+    private String requestJson = "";
+    private String URL = "";
 
     /** Creates new form DlgJnsPerawatanRalan
      * @param parent
@@ -117,6 +133,8 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        MnKirimBatalBPJS = new javax.swing.JMenuItem();
         internalFrame1 = new widget.InternalFrame();
         Scroll = new widget.ScrollPane();
         tbJnsPerawatan = new widget.Table();
@@ -139,6 +157,24 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
         BtnCari = new widget.Button();
         BtnAll = new widget.Button();
 
+        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+
+        MnKirimBatalBPJS.setBackground(new java.awt.Color(255, 255, 254));
+        MnKirimBatalBPJS.setFont(new java.awt.Font("Tahoma", 0, 11)); // NOI18N
+        MnKirimBatalBPJS.setForeground(new java.awt.Color(50, 50, 50));
+        MnKirimBatalBPJS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/category.png"))); // NOI18N
+        MnKirimBatalBPJS.setText("Kirim Servis Batal");
+        MnKirimBatalBPJS.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        MnKirimBatalBPJS.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        MnKirimBatalBPJS.setName("MnKirimBatalBPJS"); // NOI18N
+        MnKirimBatalBPJS.setPreferredSize(new java.awt.Dimension(160, 26));
+        MnKirimBatalBPJS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MnKirimBatalBPJSActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(MnKirimBatalBPJS);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -157,6 +193,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
 
         tbJnsPerawatan.setToolTipText("Silahkan klik untuk memilih data yang mau diedit ataupun dihapus");
         tbJnsPerawatan.setName("tbJnsPerawatan"); // NOI18N
+        tbJnsPerawatan.setComponentPopupMenu(jPopupMenu1);
         Scroll.setViewportView(tbJnsPerawatan);
 
         internalFrame1.add(Scroll, java.awt.BorderLayout.CENTER);
@@ -283,7 +320,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
         panelGlass10.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-07-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -297,7 +334,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
         panelGlass10.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "29-07-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -456,19 +493,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
 }//GEN-LAST:event_BtnAllKeyPressed
 
     private void BtnBatalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnBatalActionPerformed
-        if(tbJnsPerawatan.getSelectedRow()!= -1){
-            if(Sequel.mengedittf("referensi_mobilejkn_bpjs","nobooking=?","status='Batal',validasi=now()",1,new String[]{
-                tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),14).toString()
-            })==true){
-                Sequel.menyimpan2("referensi_mobilejkn_bpjs_batal","?,?,?,now(),?,?,?",6,new String[]{
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),1).toString(),tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),0).toString(), 
-                    tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),11).toString(),"Dibatalkan Oleh Admin","Belum",tbJnsPerawatan.getValueAt(tbJnsPerawatan.getSelectedRow(),14).toString()
-                });
-                runBackground(() ->tampil());
-            }
-        }else{
-            JOptionPane.showMessageDialog(null,"Silahkan pilih dulu data yang mau dibatalkan..!!");
-        }
+        BtnBatalMJKNActionPerformed(evt); //Tambahan IT
     }//GEN-LAST:event_BtnBatalActionPerformed
 
     private void BtnBatalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnBatalKeyPressed
@@ -536,6 +561,11 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
         }  
     }//GEN-LAST:event_formWindowOpened
 
+    private void MnKirimBatalBPJSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MnKirimBatalBPJSActionPerformed
+        // TODO add your handling code here:
+        BtnBatalMJKNActionPerformed(evt);
+    }//GEN-LAST:event_MnKirimBatalBPJSActionPerformed
+
     /**
     * @param args the command line arguments
     */
@@ -563,6 +593,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
     private widget.Tanggal DTPCari1;
     private widget.Tanggal DTPCari2;
     private widget.Label LCount;
+    private javax.swing.JMenuItem MnKirimBatalBPJS;
     private widget.ScrollPane Scroll;
     private widget.TextBox TCari;
     private widget.InternalFrame internalFrame1;
@@ -571,6 +602,7 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
     private widget.Label jLabel6;
     private widget.Label jLabel7;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private widget.panelisi panelGlass10;
     private widget.panelisi panelGlass8;
     private widget.Table tbJnsPerawatan;
@@ -629,6 +661,111 @@ public final class MobileJKNReferensiPendaftaran extends javax.swing.JDialog {
             System.out.println("Notifikasi : "+e);
         }
         LCount.setText(""+tabMode.getRowCount());
+    }
+    
+    //Tambahan IT
+    private void BtnBatalMJKNActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tbJnsPerawatan.getSelectedRow() != -1) {
+            int pilihan = JOptionPane.showConfirmDialog(null,
+                "Apakah Anda yakin ingin membatalkan antrean ini?",
+                "Konfirmasi Pembatalan",
+                JOptionPane.YES_NO_OPTION);
+            if (pilihan == JOptionPane.YES_OPTION) {
+                int selectedRow = tbJnsPerawatan.getSelectedRow();
+                String noRawat = tbJnsPerawatan.getValueAt(selectedRow, 0).toString();
+                String norm = tbJnsPerawatan.getValueAt(selectedRow, 1).toString();
+                String nomorreferensi = tbJnsPerawatan.getValueAt(selectedRow, 11).toString();
+                String nobooking = tbJnsPerawatan.getValueAt(selectedRow, 14).toString();
+
+                String keterangan = JOptionPane.showInputDialog(null,
+                    "Masukkan keterangan pembatalan:",
+                    "Keterangan Pembatalan",
+                    JOptionPane.QUESTION_MESSAGE);
+
+                if (keterangan != null && !keterangan.trim().isEmpty()) {
+                    this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                    try {
+                        headers = new HttpHeaders();
+                        headers.setContentType(MediaType.APPLICATION_JSON);
+                        headers.add("x-cons-id", koneksiDB.CONSIDAPIMOBILEJKN());
+                        utc = String.valueOf(api.GetUTCdatetimeAsString());
+                        headers.add("x-timestamp", utc);
+                        headers.add("x-signature", api.getHmac(utc));
+                        headers.add("user_key", koneksiDB.USERKEYAPIMOBILEJKN());
+
+                        String kodeBookingRequest = nobooking.trim();
+                        if (kodeBookingRequest.isEmpty()) {
+                            kodeBookingRequest = Sequel.cariIsi("select nobooking from referensi_mobilejkn_bpjs where no_rawat=?", noRawat);
+                            if (kodeBookingRequest.isEmpty()) {
+                                kodeBookingRequest = noRawat;
+                            }
+                        }
+
+                        requestJson = "{"
+                            + "\"kodebooking\": \"" + kodeBookingRequest + "\","
+                            + "\"keterangan\": \"" + keterangan.trim() + "\""
+                            + "}";
+
+                        requestEntity = new HttpEntity(requestJson, headers);
+                        URL = link + "/antrean/batal";
+                        System.out.println("URL Batal: " + URL);
+                        System.out.println("Request: " + requestJson);
+
+                        root = mapper.readTree(api.getRest().exchange(URL, HttpMethod.POST, requestEntity, String.class).getBody());
+                        nameNode = root.path("metadata");
+
+                        if (nameNode.path("code").asText().equals("200") || nameNode.path("code").asText().equals("201")) {
+                            JOptionPane.showMessageDialog(null, "Antrean berhasil dibatalkan!\n" + nameNode.path("message").asText());
+
+                            try {
+                                Sequel.mengedittf("referensi_mobilejkn_bpjs", "no_rawat=?", "status='Batal',validasi=now()", 1, new String[]{noRawat});
+                                Sequel.menyimpan2("referensi_mobilejkn_bpjs_batal", "?,?,?,now(),?,?,?", 6, new String[]{
+                                    norm, noRawat, nomorreferensi, keterangan.trim(), "Belum", kodeBookingRequest
+                                });
+                                Sequel.queryu2("update reg_periksa set stts='Batal', biaya_reg='0' where no_rawat='" + noRawat + "'"); //Tambahan IT
+
+                                String now = Sequel.cariIsi("select NOW()");
+                                if (!Sequel.cariIsi("select count(*) from referensi_mobilejkn_bpjs_taskid where no_rawat=? and taskid='99'", noRawat).equals("0")) {
+                                    Sequel.queryu2("update referensi_mobilejkn_bpjs_taskid set waktu='" + now + "' where no_rawat='" + noRawat + "' and taskid='99'");
+                                } else {
+                                    Sequel.queryu2("insert into referensi_mobilejkn_bpjs_taskid(no_rawat, taskid, waktu) values('" + noRawat + "', '99', '" + now + "')");
+                                }
+                                System.out.println("Update status Batal & Task ID 99 sukses untuk no_rawat: " + noRawat);
+                            } catch (Exception e) {
+                                System.out.println("Error update database lokal: " + e);
+                            }
+
+                            runBackground(() -> tampil());
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                "Gagal membatalkan antrean!\n"
+                                + "Kode: " + nameNode.path("code").asText() + "\n"
+                                + "Pesan: " + nameNode.path("message").asText(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } catch (Exception ex) {
+                        System.out.println("Error membatalkan antrean: " + ex);
+                        String errorMessage = "Gagal membatalkan antrean: " + ex.getMessage();
+                        if (ex.toString().contains("UnknownHostException")) {
+                            errorMessage = "Koneksi ke server BPJS terputus!";
+                        } else if (ex.toString().contains("SocketTimeoutException")) {
+                            errorMessage = "Timeout koneksi ke server BPJS!";
+                        }
+
+                        JOptionPane.showMessageDialog(null, errorMessage, "Error", JOptionPane.ERROR_MESSAGE);
+                    } finally {
+                        this.setCursor(Cursor.getDefaultCursor());
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Keterangan pembatalan tidak boleh kosong!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Silahkan pilih data antrean yang akan dibatalkan!", "Peringatan", JOptionPane.WARNING_MESSAGE);
+            tbJnsPerawatan.requestFocus();
+        }
     }
     
     private void runBackground(Runnable task) {

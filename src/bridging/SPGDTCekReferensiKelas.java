@@ -342,11 +342,11 @@ public final class SPGDTCekReferensiKelas extends javax.swing.JDialog {
     public void tampil() {        
         
                 try {
-                    // Ambil username dan password dari konfigurasi Anda
-                    String username = "3320102";
-                    String password = "pkuaisyiyah";
+                    // Ambil username, password, dan URL dari konfigurasi database.xml
+                    String username = koneksiDB.USERSPGDT();
+                    String password = koneksiDB.PASSSPGDT();
                     String token = md5(username + password);
-                    String url = "https://spgdt-service.sik-jepara.co.id/list_kelas.php?token=" + token;
+                    String url = koneksiDB.URLAPISPGDT() + "/list_kelas.php?token=" + token;
 
                     // Lakukan GET request
                     HttpHeaders headers = new HttpHeaders();

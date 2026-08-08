@@ -109,25 +109,27 @@ public class koneksiDB {
                 connection.setAutoCommit(true);
                 connection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
                 System.out.println(
-                    "  Koneksi Berhasil. Sorry bro loading, silahkan baca dulu.... \n\n"+
-                    "	Software ini adalah Software Menejemen Rumah Sakit/Klinik/\n" +
-                    "  Puskesmas yang  gratis dan boleh digunakan siapa saja tanpa dikenai \n" +
-                    "  biaya apapun. Dilarang keras memperjualbelikan/mengambil \n" +
-                    "  keuntungan dari Software ini dalam bentuk apapun tanpa seijin pembuat \n" +
-                    "  software (Khanza.Soft Media). Bagi yang sengaja memperjualbelikan/\n"+
-                    "  mengambil keuntangan dari softaware ini tanpa ijin, kami  sumpahi sial\n"+
-                    "  1000 turunan, miskin sampai 500 turunan.\n"+
+//                    "  Koneksi Berhasil. Sorry bro loading, silahkan baca dulu.... \n\n"+
+//                    "	Software ini adalah Software Menejemen Rumah Sakit/Klinik/\n" +
+//                    "  Puskesmas yang  gratis dan boleh digunakan siapa saja tanpa dikenai \n" +
+//                    "  biaya apapun. Dilarang keras memperjualbelikan/mengambil \n" +
+//                    "  keuntungan dari Software ini dalam bentuk apapun tanpa seijin pembuat \n" +
+//                    "  software (Khanza.Soft Media). Bagi yang sengaja memperjualbelikan/\n"+
+//                    "  mengambil keuntangan dari softaware ini tanpa ijin, kami  sumpahi sial\n"+
+//                    "  1000 turunan, miskin sampai 500 turunan.\n"+
+                    "  Assalamualaikum.."+
                     "                                                                           \n"+
-                    "  #    ____  ___  __  __  ____   ____    _  __ _                              \n" +
-                    "  #   / ___||_ _||  \\/  ||  _ \\ / ___|  | |/ /| |__    __ _  _ __   ____ __ _ \n" +
-                    "  #   \\___ \\ | | | |\\/| || |_) |\\___ \\  | ' / | '_ \\  / _` || '_ \\ |_  // _` |\n" +
-                    "  #    ___) || | | |  | ||  _ <  ___) | | . \\ | | | || (_| || | | | / /| (_| |\n" +
-                    "  #   |____/|___||_|  |_||_| \\_\\|____/  |_|\\_\\|_| |_| \\__,_||_| |_|/___|\\__,_|\n" +
+                    "  #    ____   ___  __  __  ____   ____    ____  _  __  _   _     _         _  _____ \n" +
+                    "  #   / ___| |_ _| |  \\/  | |  _ \\ / ___|  |  _ \\| |/ / | | | |   / \\       | || ____|\n" +
+                    "  #   \\___ \\  | |  | |\\/| | | |_) |\\___ \\  | |_) | ' /  | | | |  / _ \\   _  | ||  _|  \n" +
+                    "  #    ___) | | |  | |  | | |  _ <  ___) | |  __/| . \\  | |_| | / ___ \\ | |_| || |___ \n" +
+                    "  #   |____/ |___| |_|  |_| |_| \\_\\|____/  |_|   |_|\\_\\  \\___/ /_/   \\_\\\\___/ |_____|\n" +
                     "  #                                                                           \n"+
                     "                                                                           \n"+
-                    "  Licensi yang dianut di software ini https://en.wikipedia.org/wiki/Aladdin_Free_Public_License \n"+
-                    "  Informasi dan panduan bisa dicek di halaman https://github.com/mas-elkhanza/SIMRS-Khanza/wiki \n"+
-                    "  Bagi yang ingin berdonasi untuk pengembangan aplikasi ini bisa ke BSI 1015369872 atas nama Windiarto\n"+
+//                    "  Licensi yang dianut di software ini https://en.wikipedia.org/wiki/Aladdin_Free_Public_License \n"+
+//                    "  Informasi dan panduan bisa dicek di halaman https://github.com/mas-elkhanza/SIMRS-Khanza/wiki \n"+
+//                    "  Bagi yang ingin berdonasi untuk pengembangan aplikasi ini bisa ke BSI 1015369872 atas nama Windiarto\n"+
+                      "  IT RS PKU Aisyiyah Jepara 2026\n"+
                     "                                                                           "
                 );         
                 return;
@@ -1798,6 +1800,17 @@ public class koneksiDB {
     }
     
     //tambahan
+    
+    public static String PENGATURAN48JAM(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("PENGATURAN48JAM");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
     public static String NOTIFWA(){
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
@@ -1982,6 +1995,36 @@ public class koneksiDB {
         try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
             prop.loadFromXML(fis);
             var=prop.getProperty("FOLDERIDRG");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String URLAPISPGDT(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=prop.getProperty("URLAPISPGDT");
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String USERSPGDT(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=EnkripsiAES.decrypt(prop.getProperty("USERSPGDT"));
+        }catch(Exception e){
+            var=""; 
+        }
+        return var;
+    }
+    
+    public static String PASSSPGDT(){
+        try (FileInputStream fis = new FileInputStream("setting/database.xml")) {
+            prop.loadFromXML(fis);
+            var=EnkripsiAES.decrypt(prop.getProperty("PASSSPGDT"));
         }catch(Exception e){
             var=""; 
         }

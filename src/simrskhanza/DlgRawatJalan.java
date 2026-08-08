@@ -5472,16 +5472,12 @@ public final class DlgRawatJalan extends javax.swing.JDialog {
             Valid.textKosong(TNoRw,"No Rawat kosong");
         }else{
             try {
-                // Eksekusi query pertama
-                Sequel.queryu("delete from antripoli where kd_dokter='"+KdDok2.getText()+"' and kd_poli='"+poli+"'");
-                Thread.sleep(500); // Jeda 500ms
-
                 // Eksekusi query kedua
                 Sequel.queryu("insert into antripoli values('"+KdDok2.getText()+"','"+poli+"','1','"+TNoRw.getText()+"')");
                 Thread.sleep(500); // Jeda 500ms
 
                 // Eksekusi query ketiga
-                Sequel.queryu("insert into antri_masuk_poli values('"+KdDok2.getText()+"','"+poli+"','"+TNoRw.getText()+"',now(),'0000-00-00 00:00:00')");
+                Sequel.queryu("update antri_masuk_poli set tgl_jam=now() where no_rawat='"+TNoRw.getText()+"'");
 //                updateTaskID4MobileJKN();//update task id
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -6729,7 +6725,7 @@ private void catatanpasienKeyPressed(java.awt.event.KeyEvent evt) {
             if(i==JOptionPane.YES_OPTION){
                 if(Sequel.mengedittf("reg_periksa","no_rawat=?","stts=?",2,new String[]{"Sudah",TNoRw.getText()})==true){
                     Sequel.menyimpan("mutasi_berkas","'"+TNoRw.getText()+"','Sudah Kembali',now(),'0000-00-00 00:00:00',now(),'0000-00-00 00:00:00','0000-00-00 00:00:00'","status='Sudah Kembali',kembali=now()","no_rawat='"+TNoRw.getText()+"'");
-                    if (!akses.getkode().contains("D000")) {
+                    if (akses.getkode().contains("D000")) {
                         Sequel.queryu2("update antri_masuk_poli set selesai=now() where no_rawat='"+TNoRw.getText()+"'");//update ke antri_masuk_poli.tepatnya selesai di dalam poli
     //                    updateTaskID5MobileJKN();//update task id
                     }
@@ -15116,7 +15112,10 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                     TPemeriksaan.setText("");TAlergi.setText("");LingkarPerut.setText("");
                                     TindakLanjut.setText("");TPenilaian.setText("");TInstruksi.setText("");SpO2.setText("");
                                     TEvaluasi.setText("");cmbKesadaran.setSelectedIndex(0);
-                                    LCount.setText(""+tabModePemeriksaan.getRowCount());
+                                     LCount.setText(""+tabModePemeriksaan.getRowCount());
+                                     if(!akses.getkode().contains("D000")){
+                                         Sequel.queryu2("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values((select kd_dokter from reg_periksa where no_rawat='" + TNoRw.getText() + "'),(select kd_poli from reg_periksa where no_rawat='" + TNoRw.getText() + "'),'" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW(),NOW()) on duplicate key update soap=NOW()"); //Tambahan IT
+                                     }
 //                                    updateTaskID3MobileJKN();//update task id
                             }
                         }else{
@@ -15138,7 +15137,12 @@ private void BtnEditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_B
                                         TindakLanjut.setText("");TPenilaian.setText("");TInstruksi.setText("");SpO2.setText("");
                                         TEvaluasi.setText("");cmbKesadaran.setSelectedIndex(0);
                                         LCount.setText(""+tabModePemeriksaan.getRowCount());
-//                                        updateTaskID3MobileJKN();//update task id
+                                         //Tambahan IT
+                                        if(!akses.getkode().contains("D000")){
+                                            Sequel.queryu2("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values((select kd_dokter from reg_periksa where no_rawat='" + TNoRw.getText() + "'),(select kd_poli from reg_periksa where no_rawat='" + TNoRw.getText() + "'),'" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW(),NOW()) on duplicate key update soap=NOW()");
+                                        }
+                                         //sampe sinii
+//                                        updateTaskID3MobileJKN();//update task idd
                                 }
                             }else{
                                 JOptionPane.showMessageDialog(null,"Hanya bisa disimpan oleh dokter/petugas yang bersangkutan..!!");

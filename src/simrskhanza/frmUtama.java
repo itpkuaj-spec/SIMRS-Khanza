@@ -12,6 +12,7 @@
 
 package simrskhanza;
 //tambahan
+import tambahan_it.PKUtaskID;
 import tambahan_it.FRMKirimBilling;
 //akhir
 import bridging.AkunRekeningBankJabar;
@@ -20372,7 +20373,8 @@ private void MnGantiPasswordBtnLogActionPerformed(java.awt.event.ActionEvent evt
         isTutup();
         DlgHome.dispose();
         this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        BPJSAntreanPerTanggal aplikasi=new BPJSAntreanPerTanggal(this,false);
+//        BPJSAntreanPerTanggal aplikasi=new BPJSAntreanPerTanggal(this,false);//asli khanza
+        PKUtaskID aplikasi=new PKUtaskID(this,false);//tambahan cek antrol
         aplikasi.setSize(PanelUtama.getWidth(), PanelUtama.getHeight());
         aplikasi.setLocationRelativeTo(PanelUtama);
         aplikasi.setVisible(true);
