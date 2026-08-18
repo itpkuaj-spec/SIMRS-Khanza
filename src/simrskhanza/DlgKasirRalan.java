@@ -16424,7 +16424,7 @@ private void MnDataPemberianObatActionPerformed(java.awt.event.ActionEvent evt) 
     //Tambahan IT
     private void getWaktuTracking(String noRawat) {
         if (!noRawat.trim().equals("")) {
-            String jamSoap = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.soap, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat", noRawat);
+            String jamSoap = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.soap, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat=?", noRawat);
             String jamPanggil = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.tgl_jam, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat=?", noRawat);
             String jamSelesai = Sequel.cariIsi("select DATE_FORMAT(antri_masuk_poli.selesai, '%H:%i:%s') from antri_masuk_poli where antri_masuk_poli.no_rawat=?", noRawat);
 

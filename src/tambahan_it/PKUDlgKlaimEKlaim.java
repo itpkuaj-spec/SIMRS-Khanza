@@ -5895,7 +5895,7 @@ public final class PKUDlgKlaimEKlaim extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
  public void setDataPasien(String noRawat, String noRkmMedis, String nmPasien, String statusKunjungan) {
         this.norawat = noRawat;
-        this.noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + noRawat + "'");
+        this.noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + noRawat + "' AND bridging_sep.jnspelayanan='1'");
         this.norkmMedis = noRkmMedis;
         this.namaPasien = nmPasien.replaceAll("\\s*\\([^)]*Th\\)", "").trim();
         this.status = statusKunjungan;

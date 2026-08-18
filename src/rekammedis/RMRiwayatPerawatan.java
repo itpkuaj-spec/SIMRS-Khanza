@@ -3036,7 +3036,9 @@ private void BtnPasienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event
                 case 2:
                     String teksHTML = LoadHTMLRiwayatPerawatan.getText();
                     if (R4.isSelected() && !NoRawat.getText().trim().equals("")) {
-                        String noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + NoRawat.getText().trim() + "'");
+                        String sttsLanjut = Sequel.cariIsi("select status_lanjut from reg_periksa where no_rawat='" + NoRawat.getText().trim() + "'");
+                        String jnsPelayanan = "Ranap".equals(sttsLanjut) ? "1" : "2";
+                        String noSep = Sequel.cariIsi("select no_sep from bridging_sep where no_rawat='" + NoRawat.getText().trim() + "' and jnspelayanan='" + jnsPelayanan + "'");
                         if (noSep != null && !noSep.trim().equals("")) {
                             StringBuilder extraHtml = new StringBuilder();
                             this.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

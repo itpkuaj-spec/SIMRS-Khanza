@@ -2546,7 +2546,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                         break;
                 }
             }
-            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat INNER JOIN kamar_inap ON reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.stts_pulang<>'Pindah Kamar' where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') " + filter + " and kamar_inap.tgl_keluar BETWEEN ? and ? and (kamar_inap.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) group by reg_periksa.no_rawat ORDER BY bridging_sep.no_sep ASC";
+            sql = "select *,date(bridging_sep.tglpulang) as tgl_pulang  from reg_periksa JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis JOIN poliklinik ON reg_periksa.kd_poli=poliklinik.kd_poli LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat AND bridging_sep.jnspelayanan='1' LEFT JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat INNER JOIN kamar_inap ON reg_periksa.no_rawat=kamar_inap.no_rawat and kamar_inap.stts_pulang<>'Pindah Kamar' where " + shortdokter + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' and reg_periksa.no_rawat not in (select no_rawat2 from ranap_gabung) and (pku_list_klaim.no_rawat is null or pku_list_klaim.status_tidak_klaim='0') " + filter + " and kamar_inap.tgl_keluar BETWEEN ? and ? and (kamar_inap.no_rawat like ? or pasien.nm_pasien like ? or pasien.no_rkm_medis like ?  or bridging_sep.no_sep like ? or bridging_sep.no_rujukan like ?) group by reg_periksa.no_rawat ORDER BY bridging_sep.no_sep ASC";
             ps = koneksi.prepareStatement(sql);
             try {
                 ps.setString(1, Valid.SetTgl(DTPTglAwal.getSelectedItem() + ""));
@@ -2895,7 +2895,7 @@ public final class PKUDlgListKlaim extends javax.swing.JDialog {
                 + "pku_list_klaim.catatan, pku_list_klaim.tgl_input, pku_list_klaim.user_input "
                 + "from reg_periksa "
                 + "JOIN pasien ON reg_periksa.no_rkm_medis=pasien.no_rkm_medis "
-                + "LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat "
+                + "LEFT JOIN bridging_sep ON reg_periksa.no_rawat=bridging_sep.no_rawat AND bridging_sep.jnspelayanan='1' "
                 + "JOIN pku_list_klaim ON reg_periksa.no_rawat=pku_list_klaim.no_rawat "
                 + "where " + shortdokter2 + " status_lanjut='Ranap' and reg_periksa.kd_pj='BPJ' "
                 + "and reg_periksa.stts<>'Batal' and pku_list_klaim.status_tidak_klaim='1' "

@@ -11990,7 +11990,8 @@ public class DlgKamarInap extends javax.swing.JDialog {
                             psanak.setString(1,tbKamIn.getValueAt(tbKamIn.getSelectedRow()-1,0).toString());
                             rs2=psanak.executeQuery();
                             if(rs2.next()){
-                                ps=koneksi.prepareStatement("select * from bridging_sep where bridging_sep.no_rawat=? order by bridging_sep.tglsep desc limit 1");
+                                // Tambahan IT: Utamakan SEP Rawat Inap (jnspelayanan='1') daripada Rawat Jalan ('2'), kemudian tglsep & no_sep terbaru
+                                ps=koneksi.prepareStatement("select * from bridging_sep where bridging_sep.no_rawat=? order by bridging_sep.jnspelayanan asc, bridging_sep.tglsep desc, bridging_sep.no_sep desc limit 1");
                                 try {
                                     ps.setString(1,rs2.getString("no_rawat2"));
                                     rs=ps.executeQuery();
@@ -12035,7 +12036,8 @@ public class DlgKamarInap extends javax.swing.JDialog {
                     } 
                 }else{
                     try {
-                        ps=koneksi.prepareStatement("select * from bridging_sep where bridging_sep.no_rawat=? order by bridging_sep.tglsep desc limit 1");
+                        // Tambahan IT: Utamakan SEP Rawat Inap (jnspelayanan='1') daripada Rawat Jalan ('2'), kemudian tglsep & no_sep terbaru
+                        ps=koneksi.prepareStatement("select * from bridging_sep where bridging_sep.no_rawat=? order by bridging_sep.jnspelayanan asc, bridging_sep.tglsep desc, bridging_sep.no_sep desc limit 1");
                         try {
                             ps.setString(1,norawat.getText());
                             rs=ps.executeQuery();

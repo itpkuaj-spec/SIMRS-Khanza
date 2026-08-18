@@ -2921,7 +2921,6 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
             Valid.textKosong(KdDPJP, "DPJP");
         }else{  
             if(JenisPelayanan.getSelectedIndex()==0){
-                checkinmjkn(); //Tambahan IT
                 insertSEP();
             }else if(JenisPelayanan.getSelectedIndex()==1){
                 if(NmPoli.getText().toLowerCase().contains("darurat")){
@@ -7214,7 +7213,9 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                             System.out.println("respon WS BPJS Kirim Pakai NoRujukan : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
                             //Tambahan IT
                             if (respon.equals("200") || respon.equals("208") || respon.equals("201")) {
+                                if (Sequel.cariInteger("select count(no_rawat) from antri_masuk_poli where no_rawat='" + TNoRw.getText() + "'") == 0) {
                                 Sequel.queryu("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values('" + KdDPJP.getText() + "','" + KdPoli.getText() + "','" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW())");
+                                }
                             }
                             //sampe sini
                         } catch (Exception e) {
@@ -7268,7 +7269,9 @@ public final class BPJSDataSEP extends javax.swing.JDialog {
                                 System.out.println("respon WS BPJS Kirim Pakai SKDP : "+nameNode.path("code").asText()+" "+nameNode.path("message").asText()+"\n");
                                 //Tambahan IT
                                 if (nameNode.path("code").asText().equals("200") || nameNode.path("code").asText().equals("208") || nameNode.path("code").asText().equals("201")) {
+                                    if (Sequel.cariInteger("select count(no_rawat) from antri_masuk_poli where no_rawat='" + TNoRw.getText() + "'") == 0) {
                                     Sequel.queryu("insert into antri_masuk_poli(kd_dokter,kd_poli,no_rawat,tgl_jam,selesai,soap,tambah) values('" + KdDPJP.getText() + "','" + KdPoli.getText() + "','" + TNoRw.getText() + "','0000-00-00 00:00:00','0000-00-00 00:00:00','0000-00-00 00:00:00',NOW())");
+                                    }
                                 }
                                 //sampe sini
                                 if(nameNode.path("code").asText().equals("201")){

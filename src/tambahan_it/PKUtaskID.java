@@ -80,7 +80,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         setSize(628,674);
 
         tabMode=new DefaultTableModel(null,new Object[]{
-                "No. Rawat","No. RM","Nama Pasien","Nama Dokter","Poliklinik","No. SEP","Tanggal","Sumber Antrean","Checkin","SOAP","Status Periksa","Status Task ID","Task 1","Task 2","Task 3","Task 4","Task 5","Task 6","Task 7","Task 99"
+                "No. Rawat","No. RM","Nama Pasien","Nama Dokter","Poliklinik","No. SEP","Tanggal","Sumber Antrean","Checkin","SOAP","Resep","Status Periksa","Status Task ID","Add","Task 1","Task 2","Task 3","Task 4","Task 5","Task 6","Task 7","Task 99"
             }){
              @Override public boolean isCellEditable(int rowIndex, int colIndex){return false;}
         };
@@ -89,7 +89,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         tbJnsPerawatan.setPreferredScrollableViewportSize(new Dimension(500,500));
         tbJnsPerawatan.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        for (i = 0; i < 20; i++) {
+        for (i = 0; i < 22; i++) {
             TableColumn column = tbJnsPerawatan.getColumnModel().getColumn(i);
             if(i==0){
                 column.setPreferredWidth(110);
@@ -112,10 +112,14 @@ public final class PKUtaskID extends javax.swing.JDialog {
             }else if(i==9){
                 column.setPreferredWidth(60);
             }else if(i==10){
-                column.setPreferredWidth(100);
+                column.setPreferredWidth(60);
             }else if(i==11){
+                column.setPreferredWidth(100);
+            }else if(i==12){
                 column.setPreferredWidth(110);
-            }else if(i>=12 && i<=19){
+            }else if(i==13){
+                column.setPreferredWidth(70);
+            }else if(i>=14 && i<=21){
                 column.setPreferredWidth(70);
             }
         }
@@ -164,6 +168,9 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblmjkn = new widget.Label();
         lblnonnkjn = new widget.Label();
         totalantrol = new widget.Label();
+        lbltaskid = new widget.Label();
+        lbltunggupoli = new widget.Label();
+        lbltunggurs = new widget.Label();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -264,7 +271,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         panelGlass9.add(jLabel19);
 
         DTPCari1.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-07-2026" }));
+        DTPCari1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-08-2026" }));
         DTPCari1.setDisplayFormat("dd-MM-yyyy");
         DTPCari1.setName("DTPCari1"); // NOI18N
         DTPCari1.setOpaque(false);
@@ -278,7 +285,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         panelGlass9.add(jLabel21);
 
         DTPCari2.setForeground(new java.awt.Color(50, 70, 50));
-        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "28-07-2026" }));
+        DTPCari2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "11-08-2026" }));
         DTPCari2.setDisplayFormat("dd-MM-yyyy");
         DTPCari2.setName("DTPCari2"); // NOI18N
         DTPCari2.setOpaque(false);
@@ -337,7 +344,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         panelGlass8.setPreferredSize(new java.awt.Dimension(44, 90));
         panelGlass8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 9));
 
-        lblsep.setForeground(new java.awt.Color(0, 153, 102));
+        lblsep.setForeground(new java.awt.Color(0, 0, 0));
         lblsep.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblsep.setText("0");
         lblsep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -345,7 +352,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblsep.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lblsep);
 
-        lbllengkap.setForeground(new java.awt.Color(0, 153, 102));
+        lbllengkap.setForeground(new java.awt.Color(0, 0, 0));
         lbllengkap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbllengkap.setText("0");
         lbllengkap.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -353,7 +360,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lbllengkap.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lbllengkap);
 
-        lbltidaklengkap.setForeground(new java.awt.Color(0, 153, 102));
+        lbltidaklengkap.setForeground(new java.awt.Color(0, 0, 0));
         lbltidaklengkap.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbltidaklengkap.setText("0");
         lbltidaklengkap.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -361,7 +368,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lbltidaklengkap.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lbltidaklengkap);
 
-        lblbatal.setForeground(new java.awt.Color(0, 153, 102));
+        lblbatal.setForeground(new java.awt.Color(0, 0, 0));
         lblbatal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblbatal.setText("0");
         lblbatal.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -369,7 +376,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblbatal.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lblbatal);
 
-        lbltotalpasien.setForeground(new java.awt.Color(0, 153, 102));
+        lbltotalpasien.setForeground(new java.awt.Color(0, 0, 0));
         lbltotalpasien.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbltotalpasien.setText("0");
         lbltotalpasien.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -377,7 +384,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lbltotalpasien.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lbltotalpasien);
 
-        lblmjkn.setForeground(new java.awt.Color(0, 153, 102));
+        lblmjkn.setForeground(new java.awt.Color(0, 0, 0));
         lblmjkn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblmjkn.setText("0");
         lblmjkn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -385,7 +392,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblmjkn.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lblmjkn);
 
-        lblnonnkjn.setForeground(new java.awt.Color(0, 153, 102));
+        lblnonnkjn.setForeground(new java.awt.Color(0, 0, 0));
         lblnonnkjn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lblnonnkjn.setText("0");
         lblnonnkjn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -393,13 +400,37 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblnonnkjn.setPreferredSize(new java.awt.Dimension(150, 23));
         panelGlass8.add(lblnonnkjn);
 
-        totalantrol.setForeground(new java.awt.Color(0, 153, 153));
+        totalantrol.setForeground(new java.awt.Color(0, 0, 0));
         totalantrol.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         totalantrol.setText("0");
         totalantrol.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         totalantrol.setName("totalantrol"); // NOI18N
         totalantrol.setPreferredSize(new java.awt.Dimension(190, 23));
         panelGlass8.add(totalantrol);
+
+        lbltaskid.setForeground(new java.awt.Color(0, 0, 0));
+        lbltaskid.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbltaskid.setText("0");
+        lbltaskid.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltaskid.setName("lbltaskid"); // NOI18N
+        lbltaskid.setPreferredSize(new java.awt.Dimension(550, 23));
+        panelGlass8.add(lbltaskid);
+
+        lbltunggupoli.setForeground(new java.awt.Color(0, 0, 0));
+        lbltunggupoli.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbltunggupoli.setText("0");
+        lbltunggupoli.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltunggupoli.setName("lbltunggupoli"); // NOI18N
+        lbltunggupoli.setPreferredSize(new java.awt.Dimension(400, 23));
+        panelGlass8.add(lbltunggupoli);
+
+        lbltunggurs.setForeground(new java.awt.Color(0, 0, 0));
+        lbltunggurs.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbltunggurs.setText("0");
+        lbltunggurs.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        lbltunggurs.setName("lbltunggurs"); // NOI18N
+        lbltunggurs.setPreferredSize(new java.awt.Dimension(400, 23));
+        panelGlass8.add(lbltunggurs);
 
         jPanel2.add(panelGlass8, java.awt.BorderLayout.PAGE_START);
 
@@ -528,8 +559,11 @@ public final class PKUtaskID extends javax.swing.JDialog {
     private widget.Label lblmjkn;
     private widget.Label lblnonnkjn;
     private widget.Label lblsep;
+    private widget.Label lbltaskid;
     private widget.Label lbltidaklengkap;
     private widget.Label lbltotalpasien;
+    private widget.Label lbltunggupoli;
+    private widget.Label lbltunggurs;
     private widget.panelisi panelGlass8;
     private widget.panelisi panelGlass9;
     private widget.Table tbJnsPerawatan;
@@ -541,7 +575,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             Component component = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            Object statusTaskId = table.getValueAt(row, 11);
+            Object statusTaskId = table.getValueAt(row, 12);
             if (statusTaskId != null && statusTaskId.toString().equals("TIDAK LENGKAP")) {
                 component.setBackground(new Color(255, 215, 215)); // Merah soft
             } else if (statusTaskId != null && statusTaskId.toString().equals("BATAL")) {
@@ -578,13 +612,21 @@ public final class PKUtaskID extends javax.swing.JDialog {
         jkn_selesai = 0;
         mjkn_belum = 0;
         mjkn_selesai = 0;
+        mjkn_selesai = 0;
         umum_belum = 0;
         umum_selesai = 0;
+        
+        int missingT1 = 0, missingT2 = 0, missingT3 = 0, missingT4 = 0, missingT5 = 0, missingT6 = 0, missingT7 = 0;
+        long totalWaktuPoli = 0;
+        int countPoli = 0;
+        long totalWaktuRS = 0;
+        int countRS = 0;
 
         try {
             ps = koneksi.prepareStatement(
                 "SELECT r.no_rawat, r.no_rkm_medis, p.nm_pasien, IFNULL(d.nm_dokter, '-') AS nm_dokter, IFNULL(poli.nm_poli, '-') AS nm_poli, IFNULL(sep.no_sep, '-') AS no_sep, r.tgl_registrasi, " +
-                "IF(m.no_rawat IS NOT NULL, 'Mobile JKN', 'Non Mobile JKN') AS sumber_antrean, IFNULL(m.status, '-') AS status_checkin, IF(COUNT(pem.no_rawat) > 0, 'Ada', '-') AS stts_soap, r.stts AS status_periksa, " +
+                "IF(m.no_rawat IS NOT NULL, 'Mobile JKN', 'Non Mobile JKN') AS sumber_antrean, IFNULL(m.status, '-') AS status_checkin, IF(COUNT(pem.no_rawat) > 0, 'Ada', '-') AS stts_soap, IF(COUNT(res.no_rawat) > 0, 'Ada', '-') AS stts_resep, r.stts AS status_periksa, " +
+                "IFNULL(MAX(CASE WHEN amp.tambah <> '0000-00-00 00:00:00' THEN DATE_FORMAT(amp.tambah, '%H:%i:%s') END), '-') AS stts_add, " +
                 "MAX(CASE WHEN t.taskid = '1' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task1, " +
                 "MAX(CASE WHEN t.taskid = '2' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task2, " +
                 "MAX(CASE WHEN t.taskid = '3' THEN DATE_FORMAT(t.waktu, '%H:%i:%s') END) AS task3, " +
@@ -597,8 +639,10 @@ public final class PKUtaskID extends javax.swing.JDialog {
                 "INNER JOIN pasien p ON r.no_rkm_medis = p.no_rkm_medis " +
                 "LEFT JOIN dokter d ON r.kd_dokter = d.kd_dokter " +
                 "LEFT JOIN poliklinik poli ON r.kd_poli = poli.kd_poli " +
-                "LEFT JOIN bridging_sep sep ON r.no_rawat = sep.no_rawat " +
+                "LEFT JOIN bridging_sep sep ON r.no_rawat = sep.no_rawat AND sep.jnspelayanan = '2' " +
                 "LEFT JOIN pemeriksaan_ralan pem ON r.no_rawat = pem.no_rawat " +
+                "LEFT JOIN resep_obat res ON r.no_rawat = res.no_rawat " +
+                "LEFT JOIN antri_masuk_poli amp ON r.no_rawat = amp.no_rawat " +
                 "INNER JOIN maping_poli_bpjs mp ON r.kd_poli = mp.kd_poli_rs " +
                 "INNER JOIN maping_dokter_dpjpvclaim md ON r.kd_dokter = md.kd_dokter " +
                 "INNER JOIN jadwal j ON (j.hari_kerja = (CASE DAYOFWEEK(r.tgl_registrasi) WHEN 1 THEN 'AKHAD' WHEN 2 THEN 'SENIN' WHEN 3 THEN 'SELASA' WHEN 4 THEN 'RABU' WHEN 5 THEN 'KAMIS' WHEN 6 THEN 'JUMAT' WHEN 7 THEN 'SABTU' END) AND j.kd_dokter = r.kd_dokter AND j.kd_poli = r.kd_poli) " +
@@ -623,7 +667,9 @@ public final class PKUtaskID extends javax.swing.JDialog {
                     String sumber = rs.getString("sumber_antrean");
                     String statusCheckin = rs.getString("status_checkin") == null || rs.getString("status_checkin").equals("") ? "-" : rs.getString("status_checkin");
                     String sttsSoap = rs.getString("stts_soap");
+                    String sttsResep = rs.getString("stts_resep");
                     String sttsPeriksa = rs.getString("status_periksa");
+                    String sttsAdd = rs.getString("stts_add") == null ? "-" : rs.getString("stts_add");
                     String t1 = rs.getString("task1") == null ? "-" : rs.getString("task1");
                     String t2 = rs.getString("task2") == null ? "-" : rs.getString("task2");
                     String t3 = rs.getString("task3") == null ? "-" : rs.getString("task3");
@@ -668,6 +714,20 @@ public final class PKUtaskID extends javax.swing.JDialog {
                             statusTaskId = "TIDAK LENGKAP";
                         }
                     }
+                    
+                    // Hitung task id yang kosong (belum terkirim) khusus untuk pasien yang tidak dibatalkan (bukan task 99)
+                    if (t99.equals("-")) {
+                        if (t1.equals("-")) missingT1++;
+                        if (t2.equals("-")) missingT2++;
+                        if (t3.equals("-")) missingT3++;
+                        if (t4.equals("-")) missingT4++;
+                        if (t5.equals("-")) missingT5++;
+                        // Task 6 dan 7 hanya wajib jika pasien memiliki resep obat
+                        if (sttsResep.equals("Ada")) {
+                            if (t6.equals("-")) missingT6++;
+                            if (t7.equals("-")) missingT7++;
+                        }
+                    }
 
                     if (statusTaskId.equals("LENGKAP")) {
                         tot_selesai++;
@@ -686,10 +746,49 @@ public final class PKUtaskID extends javax.swing.JDialog {
                             umum_belum++;
                         }
                     }
+                    
+                    // Hitung waktu tunggu poli (Task 4 - Task 2) & waktu tunggu RS
+                    if (t99.equals("-")) { // Jika tidak batal
+                        if (!t2.equals("-") && !t4.equals("-")) {
+                            try {
+                                java.util.Date d2 = dateFormat.parse(tglReg + " " + t2);
+                                java.util.Date d4 = dateFormat.parse(tglReg + " " + t4);
+                                long diff = d4.getTime() - d2.getTime();
+                                if (diff < 0) diff += 24 * 60 * 60 * 1000; // handle beda hari
+                                totalWaktuPoli += diff;
+                                countPoli++;
+                            } catch (Exception ex) {}
+                        }
+                        
+                        // Hitung waktu tunggu RS
+                        if (sttsResep.equals("Ada")) {
+                            if (!t1.equals("-") && !t7.equals("-")) {
+                                try {
+                                    java.util.Date d1 = dateFormat.parse(tglReg + " " + t1);
+                                    java.util.Date d7 = dateFormat.parse(tglReg + " " + t7);
+                                    long diff = d7.getTime() - d1.getTime();
+                                    if (diff < 0) diff += 24 * 60 * 60 * 1000;
+                                    totalWaktuRS += diff;
+                                    countRS++;
+                                } catch (Exception ex) {}
+                            }
+                        } else {
+                            if (!t1.equals("-") && !t5.equals("-")) {
+                                try {
+                                    java.util.Date d1 = dateFormat.parse(tglReg + " " + t1);
+                                    java.util.Date d5 = dateFormat.parse(tglReg + " " + t5);
+                                    long diff = d5.getTime() - d1.getTime();
+                                    if (diff < 0) diff += 24 * 60 * 60 * 1000;
+                                    totalWaktuRS += diff;
+                                    countRS++;
+                                } catch (Exception ex) {}
+                            }
+                        }
+                    }
 
                     tabMode.addRow(new Object[]{
-                        noRawat, noRm, nmPasien, nmDokter, nmPoli, noSep, tglReg, sumber, statusCheckin, sttsSoap, sttsPeriksa,
-                        statusTaskId, t1, t2, t3, t4, t5, t6, t7, t99
+                        noRawat, noRm, nmPasien, nmDokter, nmPoli, noSep, tglReg, sumber, statusCheckin, sttsSoap, sttsResep, sttsPeriksa,
+                        statusTaskId, sttsAdd, t1, t2, t3, t4, t5, t6, t7, t99
                     });
                 }
             } catch (Exception e) {
@@ -714,6 +813,34 @@ public final class PKUtaskID extends javax.swing.JDialog {
         lblsep.setText("SEP Terbit: " + tot_sep);
         lblmjkn.setText("Mobile JKN: " + tot_mjkn);
         lblnonnkjn.setText("Non Mobile JKN: " + tot_nonmjkn);
+        
+        // Tampilkan jumlah task id yang belum terkirim ke lbltaskid
+        lbltaskid.setText("Belum Terkirim: T1(" + missingT1 + ") T2(" + missingT2 + ") T3(" + missingT3 + ") T4(" + missingT4 + ") T5(" + missingT5 + ") T6(" + missingT6 + ") T7(" + missingT7 + ")");
+
+        // Tampilkan Rata-rata Waktu Tunggu
+        if (countPoli > 0) {
+            long avgPoli = totalWaktuPoli / countPoli;
+            long s = avgPoli / 1000;
+            String avgPoliStr = String.format("%02d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+            lbltunggupoli.setText("Rata-rata Tunggu Poli : " + avgPoliStr);
+            if (s > 3600) {
+                lbltunggupoli.setForeground(Color.RED);
+            } else {
+                lbltunggupoli.setForeground(new Color(0, 153, 102)); // hijau default
+            }
+        } else {
+            lbltunggupoli.setText("Rata-rata Tunggu Poli : 00:00:00");
+            lbltunggupoli.setForeground(new Color(0, 153, 102));
+        }
+        
+        if (countRS > 0) {
+            long avgRS = totalWaktuRS / countRS;
+            long s = avgRS / 1000;
+            String avgRSStr = String.format("%02d:%02d:%02d", s / 3600, (s % 3600) / 60, (s % 60));
+            lbltunggurs.setText("Rata-rata Pasien di RS : " + avgRSStr);
+        } else {
+            lbltunggurs.setText("Rata-rata Pasien di RS : 00:00:00");
+        }
 
         if (persenLengkap < 97) {
             totalantrol.setForeground(Color.RED);
@@ -1021,7 +1148,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
 
         // ---------- TASK ID 3 (mulai tunggu poli) ----------
 //        datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + no_rawat + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + no_rawat + "')), INTERVAL (300 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-        datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat='" + no_rawat + "' and pemeriksaan_ralan.nip<>'D000'");    
+        datajam = Sequel.cariIsi("select soap from antri_masuk_poli where no_rawat='" + no_rawat + "'");    
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + no_rawat + "'") > 0) {
@@ -1744,7 +1871,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
 
         // ---------- TASK ID 3 (mulai tunggu poli) ----------
 //        datajam = Sequel.cariIsi("SELECT DATE_FORMAT(DATE_ADD(IFNULL((SELECT MAX(waktu) FROM referensi_mobilejkn_bpjs_taskid WHERE no_rawat='" + kodebooking + "' AND taskid='3'), (SELECT concat(tgl_registrasi,' ',jam_reg) FROM reg_periksa WHERE no_rawat='" + kodebooking + "')), INTERVAL (300 + FLOOR(RAND() * 59)) SECOND), '%Y-%m-%d %H:%i:%s')");
-        datajam = Sequel.cariIsi("select concat(pemeriksaan_ralan.tgl_perawatan,' ',pemeriksaan_ralan.jam_rawat) from pemeriksaan_ralan where pemeriksaan_ralan.no_rawat='" + kodebooking + "' and pemeriksaan_ralan.nip<>'D000'");    
+        datajam = Sequel.cariIsi("select soap from antri_masuk_poli where no_rawat='" + kodebooking + "'");    
         if (datajam != null && !datajam.equals("")) {
             try {
                 if (Sequel.cariInteger("select count(no_rawat) from referensi_mobilejkn_bpjs_taskid where taskid='3' and no_rawat='" + kodebooking + "'") > 0) {
