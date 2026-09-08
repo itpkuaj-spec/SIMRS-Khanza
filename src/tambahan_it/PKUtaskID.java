@@ -648,7 +648,7 @@ public final class PKUtaskID extends javax.swing.JDialog {
                 "INNER JOIN jadwal j ON (j.hari_kerja = (CASE DAYOFWEEK(r.tgl_registrasi) WHEN 1 THEN 'AKHAD' WHEN 2 THEN 'SENIN' WHEN 3 THEN 'SELASA' WHEN 4 THEN 'RABU' WHEN 5 THEN 'KAMIS' WHEN 6 THEN 'JUMAT' WHEN 7 THEN 'SABTU' END) AND j.kd_dokter = r.kd_dokter AND j.kd_poli = r.kd_poli) " +
                 "LEFT JOIN referensi_mobilejkn_bpjs m ON r.no_rawat = m.no_rawat " +
                 "LEFT JOIN referensi_mobilejkn_bpjs_taskid t ON r.no_rawat = t.no_rawat " +
-                "WHERE r.tgl_registrasi BETWEEN ? AND ? " +
+                "WHERE r.tgl_registrasi BETWEEN ? AND ? AND r.no_rawat NOT IN (SELECT ranap_gabung.no_rawat2 FROM ranap_gabung) " +
                 "GROUP BY r.no_rawat, r.no_rkm_medis, p.nm_pasien, d.nm_dokter, poli.nm_poli, sep.no_sep, r.tgl_registrasi, m.no_rawat, m.status, r.stts " +
                 "ORDER BY r.tgl_registrasi ASC, r.no_rawat ASC"
             );
